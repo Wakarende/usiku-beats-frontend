@@ -1,40 +1,40 @@
 var filterCatgories = [
 
     {
-        name:"Toutes",
+        name:"All",
         tag : "All",
         link:""
     },
     {
-        name:"Nouveautés",
+        name:"New",
         tag : "New",
         link:""
     },
     {
-        name:"100% Fun",
-        tag : "Fun",
+        name:"Top",
+        tag : "Top",
         link:""
     },
+    // {
+    //     name:"Trending",
+    //     tag : "Trending",
+    //     link:""
+    // },
     {
-        name:"Tendances",
-        tag : "Trending",
+        name:"Français",
+        tag : "Français",
         link:""
     },
-    {
-        name:"Classiques",
-        tag : "Classic",
-        link:""
-    },
-    {
-        name:"Updated",
-        tag : "Updated",
-        link:""
-    },
-    {
-        name:"Aléatoire",
-        tag : "Random",
-        link:""
-    }
+    // {
+    //     name:"Updated",
+    //     tag : "Updated",
+    //     link:""
+    // },
+    // {
+    //     name:"Random",
+    //     tag : "Random",
+    //     link:""
+    // }
 ]
 
 export default filterCatgories;

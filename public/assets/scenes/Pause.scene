@@ -1,0 +1,84 @@
+{
+    "id": "55cfa806-c16e-427b-ad78-256b80e20d35",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "Pause",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "756af7bd-cf82-443e-bb46-7af1d17c713d",
+            "label": "pause_overlay",
+            "components": [],
+            "texture": {
+                "key": "pause_overlay"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Text",
+            "id": "e81cb45b-01c7-4042-8c80-dec7f9a4e568",
+            "label": "score_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 82,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Pause",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "55px"
+        },
+        {
+            "type": "Image",
+            "id": "516aeec2-8805-4343-a697-8533f2f212a6",
+            "label": "continue_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button_inactive"
+            },
+            "x": 180,
+            "y": 372
+        },
+        {
+            "type": "Text",
+            "id": "e9335cd9-5040-4bcc-b37b-3ff9aca5985f",
+            "label": "continue_text",
+            "components": [],
+            "x": 180,
+            "y": 370.0831465590536,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Continue",
+            "fontFamily": "DINPro",
+            "fontSize": "25px"
+        },
+        {
+            "type": "Text",
+            "id": "d75b14aa-da00-43ac-b6f5-e1ae4798e4bf",
+            "label": "quit_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 432.8584157011215,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Quit",
+            "fontFamily": "DINPro",
+            "fontSize": "25px"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

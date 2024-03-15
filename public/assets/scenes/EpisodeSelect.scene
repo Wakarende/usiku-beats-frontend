@@ -1,0 +1,166 @@
+{
+    "id": "1a9f5df7-c8c8-441f-9a13-4e9ffe9c3099",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "EpisodeSelect",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "ab55e02e-2af4-4264-9c74-f613df0c8622",
+            "label": "hub_background",
+            "components": [],
+            "texture": {
+                "key": "hub_background"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Image",
+            "id": "b19dc7df-ea24-4c39-97c2-2cdd53997b70",
+            "label": "play_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button"
+            },
+            "x": 180,
+            "y": 526
+        },
+        {
+            "type": "Text",
+            "id": "160480ee-f34a-4f61-a680-0d46166e4db4",
+            "label": "playtext",
+            "components": [],
+            "x": 180,
+            "y": 526,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Play",
+            "fontFamily": "DINPro",
+            "fontSize": "18px"
+        },
+        {
+            "type": "Image",
+            "id": "176d0eee-8a23-491c-a813-64fd54e6d7fd",
+            "label": "star_empty",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 120,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "3d395afa-1cc9-47cb-9166-1c83ad9e0d1d",
+            "label": "star_empty_1",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 150,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "50f50a3c-bd9c-4d52-9566-12e9d7d6ba43",
+            "label": "star_empty_2",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 180,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "da2b8c91-3aeb-4cfe-9694-31d6ad082a25",
+            "label": "star_empty_3",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 210,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "349a721f-b865-47f4-959d-8e617367639b",
+            "label": "star_empty_4",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 240,
+            "y": 402
+        },
+        {
+            "type": "Text",
+            "id": "0c9a4db1-3290-4974-ba20-0edd7f7c59fe",
+            "label": "artist_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 40,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "artist_name",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "15px"
+        },
+        {
+            "type": "Text",
+            "id": "0199f1d3-56bf-4451-8b23-7bacbf9f5d72",
+            "label": "song_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 66.58502841719303,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "song_name",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "22px"
+        },
+        {
+            "type": "Text",
+            "id": "ee7ca9fd-75e9-43d6-bd00-77e916dfc3e9",
+            "label": "maximum_score",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 444,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "00000",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "40px"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    },
+    "lists": [
+        {
+            "id": "6ea352c9-b955-4414-bbc3-c48956390974",
+            "label": "stars",
+            "objectIds": [
+                "176d0eee-8a23-491c-a813-64fd54e6d7fd",
+                "3d395afa-1cc9-47cb-9166-1c83ad9e0d1d",
+                "50f50a3c-bd9c-4d52-9566-12e9d7d6ba43",
+                "da2b8c91-3aeb-4cfe-9694-31d6ad082a25",
+                "349a721f-b865-47f4-959d-8e617367639b"
+            ]
+        }
+    ]
+}

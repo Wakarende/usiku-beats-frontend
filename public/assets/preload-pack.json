@@ -1,0 +1,67 @@
+{
+    "section1": {
+        "files": [
+            {
+                "url": [
+                    "assets/sounds/SoundScape/BackGround_Music.mp3"
+                ],
+                "type": "audio",
+                "key": "BackGround_Music"
+            },
+            {
+                "url": "assets/sprites/beat_meter_empty.png",
+                "type": "image",
+                "key": "beat_meter_empty"
+            },
+            {
+                "url": "assets/sprites/preloader/beats_logo.png",
+                "type": "image",
+                "key": "beats_logo"
+            },
+            {
+                "url": "assets/sprites/brandingtransitionscene/branding_transition_background.jpg",
+                "type": "image",
+                "key": "branding_transition_background"
+            },
+            {
+                "url": "assets/sprites/hubscene/carousel_2.png",
+                "type": "image",
+                "key": "carousel_2"
+            },
+            {
+                "url": "assets/sprites/playscene/logos_background.png",
+                "type": "image",
+                "key": "logos_background"
+            },
+            {
+                "url": "assets/sprites/hubscene/play_button.png",
+                "type": "image",
+                "key": "play_button"
+            },
+            {
+                "url": "assets/scenes/Preload.js",
+                "type": "sceneFile",
+                "key": "Preload"
+            },
+            {
+                "url": [
+                    "assets/sounds/start_sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "start_sfx"
+            },
+            {
+                "url": "assets/sprites/bufferscene/UB logomark.png",
+                "type": "image",
+                "key": "UB logomark"
+            }
+        ]
+    },
+    "meta": {
+        "app": "Phaser Editor 2D - Asset Pack Editor",
+        "contentType": "phasereditor2d.pack.core.AssetContentType",
+        "url": "https://phasereditor2d.com",
+        "version": 2,
+        "showAllFilesInBlocks": false
+    }
+}

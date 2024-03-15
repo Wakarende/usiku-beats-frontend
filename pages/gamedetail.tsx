@@ -9,7 +9,7 @@ import { bindActionCreators} from 'redux';
 import * as mainActions from '../redux/main/mainActions'
 import GamesPageList from '../components/GamesPageList';
 import GameDetailComp from '../components/GameDetailComp';
-import { withRouter } from 'next/router';
+import { withRouter, useRouter } from 'next/router';
 
 
 
@@ -40,15 +40,17 @@ class GameDetailPage extends Component<any,State> {
   }
  
    render(): React.ReactNode {
+    const { router } = this.props;
+    const { id } = router.query;
      return(
         <div className="cmd-page">
             <Header />
-            <CategoriesCards />
+            {/* <CategoriesCards /> */}
             <div className='kayfo-body-content'>
 
-              <GameDetailComp game={this.props.mainState.game} />
+              <GameDetailComp id={id} />
 
-              <GamesPageList />
+              {/* <GamesPageList /> */}
               
               <CategoriesFooter />
 

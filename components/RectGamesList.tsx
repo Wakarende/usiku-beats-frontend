@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { withRouter } from 'next/router';
 import { baseUrl } from '../services/apiUrl';
 import contentService from '../services/content.service';
+import {instance as axios} from '../services/axios.config';
 
 
 interface Props {
@@ -52,14 +53,34 @@ State> {
 
     var rubricId = this.props.rubricId;
 
-    contentService.getRubricGames(rubricId)
+    axios.get("song-list/?limit=10")
     .then((d:any)=>{
 
-      var games = d.data.attributes.games.data;
- 
+      var games = d.data
+
+      games = games.map((game) => {
+        return {
+          ...game,
+          banner_url: null,
+          banner_file: null,
+          filters: [],
+          rubrics: [],
+          tags: [
+            {
+              id: 6,
+              tag: "All",
+            },
+            {
+              id: 7,
+              tag: "Fun",
+            },
+            "All",
+          ],
+        };
+      }); 
       // Tags objects to array
       games.forEach(g => {
-        var tags = g.attributes.tags;
+        var tags = g.tags;
         var tagsKeys : any[] = []
         tags.forEach(t => {
           tagsKeys.push(t.tag)
@@ -70,10 +91,10 @@ State> {
       });
 
       games.forEach(g => {
-        if(!g.attributes.tags.includes("All")) g.attributes.tags.push("All")
+        if(!g.tags.includes("All")) g.tags.push("All")
       });
 
-      games = games.filter(e=>e.attributes.published != false);
+      // games = games.filter(e=>e.attributes.published != false);
       //games = games.sort((a,b)=>b.attributes.priority - a.attributes.priority);
 
       this.setState({items : games, completed:true})
@@ -81,7 +102,7 @@ State> {
       // console.log(games)
 
     })
-    .catch((e)=>{console.log("Error while getting games")})
+    .catch((e)=>{console.log("Error while getting games",e)})
 
   }
 
@@ -93,11 +114,10 @@ State> {
   gotoGameDetail = (_game:any, _index:number)=>{
     const { router } = this.props;
 
-    this.props.mainActions.setGame(_game);
-    localStorage.setItem("game", JSON.stringify(_game))
-    router.push({pathname:"/gamedetail"})
-    
-    this.createStat("viewed", _game.id)
+    router.push({
+      pathname: "/game",
+      query: { track: JSON.stringify(_game) } // for example
+    });
 
   }
  
@@ -122,27 +142,27 @@ State> {
    render(): React.ReactNode {
      return(
         <Container>
-            <Row className='kayfo-block-header' onClick={()=>this.gotoGames(this.props.title)}>
+            <Row className='kayfo-block-header'>
              <div className='kayfo-block-title'><span>{this.props.title}</span></div>
-             <div className='kayfo-block-arrow' ><Image src={require("../assets/icons/arrow.png")} alt="" /></div>
+             {/* <div className='kayfo-block-arrow' ><Image src={require("../assets/icons/arrow.png")} alt="" /></div> */}
             </Row>
             <Row>
              <Col className='kayfo-masonry-main' style={{overflowX:'auto', overflowY:'hidden'}}>
 
                 <div style={{minWidth:"100%", display:'flex', flexDirection:'row'}}>
 
-                    {this.state.items.filter(item => item.attributes.tags.includes(this.props.mainState.filterTag)).map((item,index)=>
+                    {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).map((item,index)=>
                         <div className='kayfo-masonry-container' key={index} style={{display:'flex', maxHeight:110, minHeight:130, flexDirection:'column', justifyContent:'space-between'}}>
                             <Col className='kayfo-masonry-item' style={{maxHeight:110}}  onClick={()=>this.gotoGameDetail(item, index)}  >
-                              <Tooltip placement='top' title={item.attributes.title}>
-                                <Image src={item.attributes.banner.data.attributes.url} alt="" width={234} height={110} style={{width:234, height:'100%', objectFit:'cover', borderRadius:6}}/>
+                              <Tooltip placement='top' title={item.song_name}>
+                                <Image src={item.thumbnail_file} alt="" width={234} height={110} style={{width:234, height:'100%', objectFit:'cover', borderRadius:6}}/>
                               </Tooltip>
                             </Col>
                         </div>
                     )}
-                    {this.state.items.filter(item => item.attributes.tags.includes(this.props.mainState.filterTag)).length == 0 &&
+                    {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length == 0 &&
                       <Col className='kayfo-filter-no-result-box'>
-                        {this.state.completed ? 'Aucun résultat' : 'Chargement...'}
+                        {this.state.completed ? 'No result' : 'loading...'}
                       </Col>
                     }
 

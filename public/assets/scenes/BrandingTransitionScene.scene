@@ -1,0 +1,57 @@
+{
+    "id": "336b7be5-857e-4c46-ad5e-c76d78b34482",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "BrandingTransitionScene",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "c0bb2c67-be1a-4f40-b08e-c7667a4ff423",
+            "label": "branding_transition_background",
+            "components": [],
+            "texture": {
+                "key": "branding_transition_background"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Text",
+            "id": "38748fcf-b576-4f31-9b64-ab77001847d6",
+            "label": "loading_txt",
+            "components": [],
+            "x": 180,
+            "y": 84.21152150692235,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "LOADING SONG",
+            "fontFamily": "DINPro",
+            "fontSize": "12px"
+        },
+        {
+            "type": "Image",
+            "id": "4df004c4-8b3c-4fec-9553-7aaf8c16fd30",
+            "label": "loading",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "beat_meter_empty"
+            },
+            "x": 118,
+            "y": 105,
+            "originX": 0
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

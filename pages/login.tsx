@@ -35,7 +35,7 @@ any> {
       countries : countries, //.sort((a, b) => parseInt(a.dial_code) - parseInt(b.dial_code)),
       processing:false,
       error:false,
-      errorMessage:"Une erreur s'est produite lors de l'opération",
+      errorMessage:"An unexpected error has occurred",
       success : false,
       dialCode : "+221",
       flag : "SN.svg",
@@ -50,24 +50,24 @@ any> {
 
   componentDidMount(): void {
 
-    this.getUserCountry()
+    // this.getUserCountry()
     
   }
 
-  getUserCountry = async () => {
-    try {
-      const response = await fetch("https://ipapi.co/json");
-      const data = await response.json();
-      var countryName = data.country_name;
+  // getUserCountry = async () => {
+  //   try {
+  //     const response = await fetch("https://ipapi.co/json");
+  //     const data = await response.json();
+  //     var countryName = data.country_name;
 
-      var country = countries.find(c=>c.name == countryName) || countries.find(c=>c.name == "Senegal") // senegal by default
+  //     var country = countries.find(c=>c.name == countryName) || countries.find(c=>c.name == "Senegal") // senegal by default
 
-      this.setState({dialCode : country?.dial_code, flag : country?.image})
+  //     this.setState({dialCode : country?.dial_code, flag : country?.image})
 
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
  
   switchNavstate = (state:string)=>{
     this.setState({navState : state})
@@ -84,13 +84,28 @@ any> {
     return paddedNumber;
   }
 
-  submitForm = () =>{
+  submitForm = (e) =>{
+    e.preventDefault()
+    
+    // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!this.state.username.trim().length || !emailRegex.test(this.state.username)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
 
     if(!this.state.username.trim().length) return;
     if(!this.state.password.trim().length) return;
 
-    if(this.state.navState == "signup")
-      if(this.state.password != this.state.repassword) return;
+    if(this.state.navState == "signup"){
+      if(this.state.password != this.state.repassword){
+
+        // console.log('here');
+        return;
+      } 
+    }
+      
 
 
     this.setState({processing : true})
@@ -101,40 +116,32 @@ any> {
     if(this.state.navState == "signup")
     {
 
-      const shortId = this.getRandomNumberWithPadding();
+      // const shortId = this.getRandomNumberWithPadding();
 
       var signupData = 
       {
-        username : phone,
+        // username : phone,
+        email : this.state.username,
         password : this.state.password,
-        email : phone+"@kayfo-portal.games",
-        name : "Joueur "+shortId,
-        activated : false,
+        // name : "Joueur "+shortId,
+        // activated : false,
         // subscription : "TRIAL",
-        subscriptionDate : new Date(),
+        // subscriptionDate : new Date(),
         // subscriptionDuration : 2,
 
       }
         
-      userService.createUser(signupData).then((d:any)=>{
+      userService.createUser(signupData).then((data:any)=>{
+
         
-        var user = d.user;
         this.setState({success : true})
 
-        var signinData = 
-        {
-          identifier : phone,
-          password : this.state.password,
-        }
-  
-        this.authUser(signinData)
+        this.loginUser(data)
         
-        console.log(user)
-
       })
       .catch(e=>{
         console.log(e)
-        this.setState({error : true})
+        this.setState({error : true, errorMessage : e})
 
       })
     }
@@ -142,62 +149,43 @@ any> {
     {
       var signinData = 
       {
-        identifier : phone,
+        email : this.state.username,
         password : this.state.password,
       }
 
-      this.authUser(signinData)
+      userService.loginUser(signinData).then((data:any)=>{
+
+        this.setState({success : true})
+  
+        this.loginUser(data)
+        
+      })
+      .catch(e=>{
+        console.log(e)
+        this.setState({error : true, errorMessage : e})
+
+      })
+
     }
 
   }
 
-  authUser = (signinData : any)=>{
+  loginUser = (authData : any)=>{
 
-    this.setState({navState : 'signin', processing : true})
+    // this.setState({navState : 'signin', processing : true})
+    const { router } = this.props;
 
-    userService.authUser(signinData).then((d:any)=>{
-          
-      var user = d.user;
-      this.setState({success : true})
+    this.props.mainActions.setAuth(authData)
 
-      setTimeout(() => {
-        
-        const { router } = this.props;
+    localStorage.setItem("access", authData.access);
+    localStorage.setItem("refresh", authData.refresh);
+    localStorage.setItem("user_data", JSON.stringify(authData.data));
 
-        this.props.mainActions.setUser(user);
-        localStorage.setItem('user', JSON.stringify(user))
-        var to = this.props.mainState.pageOrigin ? this.props.mainState.pageOrigin : "/";
+    var to = this.props.mainState.pageOrigin ? this.props.mainState.pageOrigin : "/";
 
-        this.props.mainActions.setPageOrigin(null)
+    this.props.mainActions.setPageOrigin(null)
 
-        router.push({pathname:to})
-
-      }, 1000);
-      console.log(user)
-
-    })
-    .catch(e=>{
-
-      var errorMessage = e.response.data.error.message;
-
-      switch (errorMessage) {
-        case accountErrors.noExistingAccount:
-          setTimeout(() => {
-            this.setState({
-              username : "",
-              password: "",
-              error: false,
-              processing:false, 
-              navState : 'signup'
-            })
-          }, 10);
-          break;
-       
-      }
-
-      this.setState({error : true, errorMessage : errorMessage})
-
-    })
+    router.push({pathname:to})
 
   }
 
@@ -217,7 +205,7 @@ any> {
             <Header hidebtn={true} />
             <div className='kayfo-body-content'>
 
-             <div className='kayfo-block-title' style={{textAlign:'center', marginTop:15, textTransform:'uppercase'}}><span>{this.state.navState == "signup" ? "Créer un compte" : "Se connecter"}</span></div>
+             <div className='kayfo-block-title' style={{textAlign:'center', marginTop:15, textTransform:'uppercase'}}><span>{this.state.navState == "signup" ? "Sign Up" : "Login"}</span></div>
 
               <Container>
                 <Row style={{justifyContent:'center', marginTop:15, color:'#fff'}}>
@@ -226,7 +214,7 @@ any> {
                       <Form>
                       <Form.Group className="mb-3" controlId="formBasicTel" style={{display:'flex'}}>
  
-                        <Dropdown>
+                        {/* <Dropdown>
                           <Dropdown.Toggle variant="default" style={{color:'#fff'}} id="dropdown-basic">
                             <Image src={`https://country-code-au6g.vercel.app/${this.state.flag}`} width={20} height={20}  alt="flag"  />
                             <span>{this.state.dialCode}</span>
@@ -241,47 +229,47 @@ any> {
                             })
                             }
                           </Dropdown.Menu>
-                        </Dropdown>
-                        <Form.Control required className='kayfo-signin-input' value={this.state.username} onChange={(e)=>this.updateInput("username", e.target.value)} type="tel" placeholder="Numéro de mobile*"  style={{border:'none', borderBottom:'solid 1px #fff', backgroundColor:'transparent', borderRadius:0}} />
+                        </Dropdown> */}
+                        <Form.Control required className='kayfo-signin-input' value={this.state.username} onChange={(e)=>this.updateInput("username", e.target.value)} type="email" placeholder="Email Address"  style={{border:'none', borderBottom:'solid 1px #fff', backgroundColor:'transparent', borderRadius:0}} />
                       </Form.Group>
 
                       <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Control required className='kayfo-signin-input' value={this.state.password} onChange={(e)=>this.updateInput("password", e.target.value)} type="password" placeholder="Mot de passe*" style={{border:'none', borderBottom:'solid 1px #fff', backgroundColor:'transparent', borderRadius:0}} />
+                        <Form.Control required className='kayfo-signin-input' value={this.state.password} onChange={(e)=>this.updateInput("password", e.target.value)} type="password" placeholder="Password" style={{border:'none', borderBottom:'solid 1px #fff', backgroundColor:'transparent', borderRadius:0}} />
 
-                        {this.state.navState == "signin" &&
+                        {/* {this.state.navState == "signin" &&
                           <Form.Text className="text-muted" style={{float:'right', marginTop:15}}>
                             <span style={{color:"#fff"}}>Oups ! </span><a onClick={()=>this.requestPassword()} style={{color:"#FF7A00"}}>Mot de passe oublié ?</a>
                           </Form.Text>
-                        }
+                        } */}
                         
                       </Form.Group>
 
                       {this.state.navState == "signup" &&
                         <>
                           <Form.Group className="mb-3" controlId="formBasicPassword2">
-                            <Form.Control required className='kayfo-signin-input' onChange={(e)=>this.updateInput("repassword", e.target.value)} type="password" placeholder="Confirmer le mot de passe*" style={{border:'none', borderBottom:'solid 1px #fff', backgroundColor:'transparent', borderRadius:0}} />
+                            <Form.Control required className='kayfo-signin-input' onChange={(e)=>this.updateInput("repassword", e.target.value)} type="password" placeholder="Confirm password" style={{border:'none', borderBottom:'solid 1px #fff', backgroundColor:'transparent', borderRadius:0}} />
                           </Form.Group>
                           
                           {this.state.password != this.state.repassword &&
                             <Form.Text className="text-muted" style={{display:'flex', flex:1, marginTop:10, justifyContent:'flex-end', textAlign:'right'}}>
-                              <a style={{color:"tomato"}}> Mots de passe non identiques</a>
+                              <a style={{color:"tomato"}}> Passwords do not match</a>
                             </Form.Text>
                           }
                         </>
                       }
 
                       
-                      <Button variant="default kayfo-signin-btn" style={{width:'100%', marginTop:45}} onClick={this.submitForm} type="submit" size='lg' >{this.state.navState == "signup" ? 'Créer mon compte' : 'Se connecter'}</Button>
+                      <Button variant="default kayfo-signin-btn" style={{width:'100%', marginTop:45}} onClick={this.submitForm} type="submit" size='lg' >{this.state.navState == "signup" ? 'Sign Up' : 'Log In'}</Button>
 
                       {this.state.navState == "signin" &&
                         <Form.Text className="text-muted" style={{display:'flex', flex:1, marginTop:10, justifyContent:'center', textAlign:'center', cursor:'pointer'}}>
-                          <span style={{color:"#fff", marginRight:10}}>Pas de compte ? </span> <a onClick={()=>this.switchNavstate("signup")} style={{color:"#FF7A00"}}> Créer mon compte</a>
+                          <span style={{color:"#fff", marginRight:10}}>No account? </span> <a onClick={()=>this.switchNavstate("signup")} style={{color:"#FF7A00"}}> Create my account</a>
                         </Form.Text>
                       }
                       
                       {this.state.navState == "signup" &&
                         <Form.Text className="text-muted" style={{display:'flex', flex:1, marginTop:10, justifyContent:'center', textAlign:'center', cursor:'pointer'}}>
-                          <span style={{color:"#fff", marginRight:10}}>Déjà inscrit ? </span> <a onClick={()=>this.switchNavstate("signin")} style={{color:"#FF7A00"}}> Se connecter</a>
+                          <span style={{color:"#fff", marginRight:10}}>Already registered ? </span> <a onClick={()=>this.switchNavstate("signin")} style={{color:"#FF7A00"}}> Go to login</a>
                         </Form.Text>
                       }
 
@@ -293,13 +281,13 @@ any> {
                         {this.state.navState == "signup" &&
                             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
                               <Spinner animation="grow" style={{marginBottom:15}} />
-                              <span>Création de votre compte en cours ...</span>
+                              <span>Creating your account ... </span>
                             </div>
                         }
                         {this.state.navState == "signin" &&
                             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
                               <Spinner animation="grow" style={{marginBottom:15}} />
-                              <span>Connexion en cours ...</span>
+                              <span>Logging In ... </span>
                             </div>
                         }
 
@@ -313,13 +301,13 @@ any> {
                         {this.state.navState == "signup" &&
                             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
                               <span>{this.state.errorMessage}</span>
-                              <a href="" style={{color:"#FF7A00"}} >reprendre</a>
+                              <a onClick={()=>{ this.setState({navState: "signup", processing: false, error: false}) }} style={{color:"#FF7A00"}} >go back</a>
                             </div>
                         }
                         {this.state.navState == "signin" &&
                             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
                               <span>{this.state.errorMessage}</span>
-                              <a href="" style={{color:"#FF7A00"}} >reprendre</a>
+                              <a  onClick={()=>{ this.setState({navState: "signin", processing: false, error: false}) }} style={{color:"#FF7A00"}} >go back</a>
                             </div>
                         }
 
@@ -329,7 +317,7 @@ any> {
 
                       <Snackbar open={true}  anchorOrigin={{ vertical:'top', horizontal:"center" }} autoHideDuration={5000}>
                         <Alert severity="success" sx={{ width: '100%' }}>
-                          {this.state.navState == "signup" ? 'Compte créé avec succés !' : 'Connecté.e !'}
+                          {this.state.navState == "signup" ? 'Registered Successfully!' : 'Connected Successfully!'}
                         </Alert>
                       </Snackbar>
                     }

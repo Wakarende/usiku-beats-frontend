@@ -25,6 +25,8 @@ class Header extends Component<any, any> {
       index : 0,
       user : null,
       dev:false,
+
+      user_data: null,
     };
   }
 
@@ -32,6 +34,14 @@ class Header extends Component<any, any> {
   componentDidMount(): void {
     
     var user = (localStorage.getItem("user") && localStorage.getItem("user") != 'undefined') ? JSON.parse(localStorage.getItem("user") || "{}") : null;
+    
+
+    let user_data = localStorage.getItem("user_data");
+    if (user_data !== null) {
+        user_data = JSON.parse(user_data);
+    }
+
+    this.setState({user_data})
 
     const { router } = this.props;
     if(router.asPath.includes("?dev")) this.setState({dev:true})
@@ -77,31 +87,31 @@ class Header extends Component<any, any> {
       <Navbar expand="lg" className="bg-body-tertiary kayfo-header">
       <Container fluid>
         <Navbar.Brand href="/">
-          <Image src={require("../assets/icons/kayfo-logo.png")} className='kayfo-logo' width={150} alt="Kayfo"  />
+          <Image src={require("../assets/icons/beats_logo.png")} className='beats-logo' width={150} alt="Beats"  />
         </Navbar.Brand>
 
         {/* {this.state.dev && */}
         <>
-          {!this.props.hidebtn && !this.state.user &&
-            <Button variant="default kayfo-connexion-btn" size='lg' onClick={this.gotoLogin} >Connexion</Button>
+          {!this.props.hidebtn && !this.state.user_data &&
+            <Button variant="default kayfo-connexion-btn" size='lg' onClick={this.gotoLogin} >Login</Button>
           }
         </>
         {/* } */}
         
-        {this.state.user &&
+        {this.state.user_data &&
           <Dropdown drop={"start"}>
           <Dropdown.Toggle variant="default" style={{color:'#fff', border:'none'}} id="dropdown-basic">
-            <span style={{position:'absolute', right:'150%'}}>{this.state.user.name}</span><Avatar style={{position:'absolute', top:0, left:-5}} sx={{ bgcolor: deepOrange[500] }}>{/* this.state.user?.name ? this.state.user?.name[0] : */ null }</Avatar>
+            <span style={{position:'absolute', right:'150%'}}>{this.state.user_data?.user.username}</span><Avatar style={{position:'absolute', top:0, left:-5}} sx={{ bgcolor: deepOrange[500] }}></Avatar>
           </Dropdown.Toggle>
-          <Dropdown.Menu >
+          {/* <Dropdown.Menu >
             <Dropdown.Item onClick={()=>this.myaccount()}>
-              Mon compte
+              My Account
             </Dropdown.Item>
             <Dropdown.Item onClick={()=>this.logout()}>
-              Déconnexion
+              Logout
             </Dropdown.Item>
             
-          </Dropdown.Menu>
+          </Dropdown.Menu> */}
         </Dropdown>
         }
         {/* {this.props.hidebtn &&

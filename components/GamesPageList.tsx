@@ -181,7 +181,7 @@ State> {
                 
                 {this.state.items.filter(item => item.attributes.tags.includes(this.props.mainState.filterTag)).length == 0 &&
                   <Col className='kayfo-filter-no-result-box'>
-                    {this.state.completed ? 'Aucun résultat' : 'Chargement...'}
+                    {this.state.completed ? 'No result' : 'loading...'}
                   </Col>
                 }
                 

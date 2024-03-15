@@ -1,5 +1,30 @@
 import { produce } from "immer";
 
+
+// const access = localStorage.getItem("access");
+// const refresh = localStorage.getItem("refresh");
+// let user = localStorage.getItem("user");
+// if (user !== null) {
+//     user = JSON.parse(user);
+// }
+
+let access, refresh, user_data;
+
+if (typeof window !== "undefined") {
+    // Access localStorage only in the browser
+    access = localStorage.getItem("access");
+    refresh = localStorage.getItem("refresh");
+    user_data = localStorage.getItem("user_data");
+    if (user_data !== null) {
+        user_data = JSON.parse(user_data);
+    }
+} else {
+    // Set defaults for server-side execution
+    access = null;
+    refresh = null;
+    user_data = null;
+}
+
 interface MainState {
     filterTag: string;
     rubrics:any[];
@@ -9,6 +34,12 @@ interface MainState {
     pageOrigin : any;
     trialDuration:number;
     pack30dDuration:number;
+
+    isAuthenticated: boolean;
+    user_data: any;
+    access: any;
+    refresh: any;
+
   }
   
   const initialState: MainState = {
@@ -20,6 +51,11 @@ interface MainState {
     pageOrigin : null,
     trialDuration:2,
     pack30dDuration:720,
+
+    isAuthenticated: access && refresh && user_data ? true : false,
+    user_data: user_data || null,
+    access: access || null,
+    refresh: refresh || null,
   };
   
   export enum MainActionTypes {
@@ -28,6 +64,7 @@ interface MainState {
     SET_ALL_GAMES = "SET_ALL_GAMES",
     SET_GAME = "SET_GAME",
     SET_USER = "SET_USER",
+    SET_AUTH = "SET_AUTH",
     SET_PAGE_ORIGIN = "SET_PAGE_ORIGIN",
     
     SET_TRIAL_DURATION = "SET_TRIAL_DURATION",
@@ -69,6 +106,13 @@ interface MainState {
 
       
       })  
+
+      case MainActionTypes.SET_AUTH:
+        // console.log('HERE', action.payload);
+        
+
+        return { ...state, isAuthenticated: true, access: action.payload.access, refresh: action.payload.refresh, user_data: action.payload.data };
+    
       
       case MainActionTypes.SET_PAGE_ORIGIN:
         return { ...state, pageOrigin: action.payload };

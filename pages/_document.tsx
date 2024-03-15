@@ -26,6 +26,9 @@ export default function Document() {
         <Main  />
         <NextScript />
       </body>
+      <script defer src="https://unpkg.com/@tonejs/midi">
+		    const Midi = new Midi()
+	    </script>
     </Html>
   )
 }

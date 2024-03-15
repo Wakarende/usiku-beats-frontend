@@ -11,6 +11,8 @@ import * as mainActions from '../redux/main/mainActions'
 import userService from '../services/user.service';
 import { Alert, Snackbar } from '@mui/material';
 import moment from 'moment';
+import axios from 'axios';
+import ReactCountryFlag from "react-country-flag";
 
 interface Props {
 
@@ -48,18 +50,31 @@ State> {
   
 
   componentDidMount(): void {
- 
-    var game = JSON.parse(localStorage.getItem("game") || '{}')
-    var user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "{}") : null;
-
     const { router } = this.props;
-    if(router.asPath.includes("?dev")) this.setState({dev:true})
+    const { id } = router.query    
 
-    this.setState({item : game, user : user})
-    // localStorage.setItem("game", JSON.stringify(game))
+    axios.get(`https://api.usiku.games/song-detail/${id}`)
+    .then((d:any)=>{
+      let track = d.data
+
+      this.setState({item:track})
+
+      let scores = JSON.parse(localStorage.getItem("scores") || "{}");
+      let savedScore = scores[track.song_name] || 0;
+
+      this.setState(
+        {
+          item:{
+            ...track,
+            my_score: savedScore
+          }
+        }
+      )
+
+    })
+    .catch((e)=>{console.log("Error while getting track", e)})
 
     var card = document.querySelector('.kayfo-game-detail-container');
-
     var cardWidth = card?.getBoundingClientRect().width;
 
     this.setState({cardWidth})
@@ -67,142 +82,17 @@ State> {
     setTimeout(() => {
       window?.scrollTo(0,0);
     }, 500);
-
-
-    // Request user updates
-    if(user)
-    {
-      this.getUser(user.id);
-    }
-
-  }
-
-  getUser(id){
-
-    userService.getUser(id)
-    .then(d=>{
-
-      var user = d;
-      this.props.mainActions.setUser(user);
-      localStorage.setItem('user', JSON.stringify(user))
-      this.setState({user : user})
-
-    })
-    .catch(e=>{
-      console.log(e)
-    })
-
   }
 
 
 
-  createStat(_type, _gameId){
-
-    var stat = 
-      {data:{
-        type: _type,
-        game : _gameId
-      }}
-
-    contentService.createStat(stat)
-    .then(d=>{
-      console.log("Created stat")
-    })
-    .catch(e=>{
-      console.log(e)
-    })
-
-  }
-
-
-  requestAccess(){
-
-    var data = 
-      {
-        access: "REQUESTED",
-      }
-
-    userService.updateUser(this.state.user.id, data)
-    .then(d=>{
-      console.log("Access requested")
-      
-      var user = {...this.state.user};
-
-      user.access = "REQUESTED";
-      this.props.mainActions.setUser(user);
-      localStorage.setItem('user', JSON.stringify(user))
-      
-      this.setState({success : true, user : user})
-    })
-    .catch(e=>{
-      console.log(e)
-    })
-
-  }
-
-  isSubscriptionValid()
-  {
-    var subscription = this.state.user.subscription;
-
-    var valid = false;
-    var creationDateString = this.state.user.subscriptionDate;
-    const creationDate = moment(creationDateString);
-    const currentDate = moment();
-    var limitDate;
-
-    switch (subscription) {
-      case "TRIAL":
-        
-        var subsDuration = this.props.mainState.trialDuration;
-      
-        //Add subs duration
-        limitDate = creationDate.add(subsDuration, 'hours');
-        // 
-        valid = currentDate.isBefore(limitDate);
-
-        break;
-
-      case "PACK 30D":
-    
-        var subsDuration = this.props.mainState.pack30dDuration;
-
-        //Add subs duration
-        limitDate = creationDate.add(subsDuration, 'hours');
-
-        // 
-        valid = currentDate.isBefore(limitDate);
- 
-
-        break;
-      
-      default:
-        valid = false;
-      break;
-       
-    }
-
-    return valid;
-  }
- 
-  goplayGame = (_game:any)=>{
-    // const navigate = useNavigate();
-    // this.props.navigate("/gamedetail", {state : {game : _game}})
-    
-  }
-
-  gotoAccount = ()=>{
+  gotoGame = ()=>{
     const { router } = this.props;
 
-    router.push({pathname:"/account"})
-  }
-
-
-  gotoLogin = ()=>{
-    const { router } = this.props;
-
-    this.props.mainActions.setPageOrigin("/gamedetail")
-
-    router.push({pathname:"/login"})
+    router.push({
+      pathname: "/game",
+      query: { track: JSON.stringify(this.state.item) } // for example
+    });
   }
 
  
@@ -214,29 +104,47 @@ State> {
                 {this.state.item &&
                   <Card className='kayfo-game-detail-container'>
                   <div style={{position:'relative'}}>
-                    <img  src={this.state.item?.attributes?.banner.data.attributes.url} className='kayfo-game-detail-img' width={this.state.cardWidth || 600} style={{objectFit:'cover', width:'100%', minHeight:250}} alt='' />
-                    {/* {this.state.dev && */}
-                      <>
-                        {(this.state.user && this.isSubscriptionValid()) && <Button onClick={()=>this.createStat("played",this.state.item?.id)} href={this.state.item?.attributes?.link} target="_blank" className='kayfo-playnow-btn' >Jouer maintenant</Button>}
-                        {(this.state.user && !this.isSubscriptionValid()) && <Button onClick={()=>{this.gotoAccount()}} className='kayfo-playnow-btn' >S'abonner</Button>}
-                        {(!this.state.user) && <Button onClick={()=>this.gotoLogin()} className='kayfo-playnow-btn' >Jouer maintenant</Button>}
-                      </>
-                    {/* } */}
-                    {/* {!this.state.dev &&
-                      <Button onClick={()=>this.createStat("played",this.state.item?.id)} href={this.state.item?.attributes?.link} target="_blank" className='kayfo-playnow-btn' >Jouer maintenant</Button>
-                    } */}
+                    <Image  src={this.state.item?.thumbnail_file} className='kayfo-game-detail-img' width={this.state.cardWidth || 600} height={600} style={{objectFit:'cover', width:'100%', minHeight:250}} alt='' />
+
+                      <Button onClick={()=>this.gotoGame()} className='kayfo-playnow-btn' style={{fontFamily:"Righteous-Regular", fontSize:"22px"}} >Play Now</Button>
+
                   </div>
                   <Card.Body>
                     <Card.Title>
                       <Row>
-                        <Col xs={8} style={{fontWeight:'bolder'}} >{this.state.item?.attributes?.title} - {this.state.item?.attributes?.developer}</Col>
-                        <Col xs={4} style={{display:'flex', justifyContent:'flex-end'}}>
-                          {/* <Image className='kayfo-addfav' src={require("../assets/icons/add-to-favs-icon.png")} alt="" /> */}
-                        </Col>
+                        <Col style={{fontWeight:'bolder', width:'500px', overflow:'hidden'}} > ------------------------------- </Col>
+                      
                       </Row>
                     </Card.Title>
                     <Card.Text style={{fontWeight:400, fontSize:'larger'}}>
-                      {this.state.item?.attributes?.description != null ? this.state.item?.attributes?.description : 'Aucune description'} 
+                    <div className='song-detail-text'>
+                      <div className='detail'>
+                        <span className='title'>Song:</span>
+                        <span className='content'>{this.state.item.song_name}</span>
+                      </div>
+                      <div className='detail'>
+                        <span className='title'>Artist:</span>
+                        <span className='content'>{this.state.item.artist_name}</span> {/* Assuming artist information is stored in this.state.item.artist */}
+                      </div>
+                      <div className='detail'>
+                        <span className='title'>Country:</span>
+                        <span className='content'>{this.state.item.country_name}</span> {/* Assuming country information is stored in this.state.item.country */}
+                        <ReactCountryFlag 
+                          countryCode={this.state.item.country_code} // Use the appropriate country code
+                          svg
+                          style={{
+                            marginLeft:"15px",
+                            width: '1.3em',
+                            height: '1.3em',
+                          }}
+                        />
+                      </div>
+                      <div className='detail'>
+                        <span className='title'>My High Score:</span>
+                        <span className='content'>{Math.round(this.state.item.my_score)}</span> {/* Assuming high score information is stored in this.state.item.high_score */}
+                      </div>
+                    </div>
+
                     </Card.Text>
 
                     <Col style={{display:'flex', alignItems:'center'}}>

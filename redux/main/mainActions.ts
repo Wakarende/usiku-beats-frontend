@@ -37,6 +37,14 @@ export const setUser = (_payload:any): any => {
   };
 };
 
+export const setAuth = (_payload:any): any => {
+  return {
+    type: MainActionTypes.SET_AUTH,
+    payload : _payload
+  };
+};
+
+
 export const setPageOrigin = (_payload:any): any => {
   return {
     type: MainActionTypes.SET_PAGE_ORIGIN,

@@ -1,0 +1,93 @@
+{
+    "id": "276677ce-d5a6-4d1b-bd00-dc2dc93b4d02",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "CategoriesScene",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "2725b7ed-378f-449e-9613-760be9cbe270",
+            "label": "bG",
+            "components": [],
+            "texture": {
+                "key": "Collections BG"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.53,
+            "scaleY": 0.53
+        },
+        {
+            "type": "Text",
+            "id": "5ddb7aca-fc98-4746-9e93-a8bb22638095",
+            "label": "header_title",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 39,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Kamba Songs",
+            "fontFamily": "DINPro-Bold",
+            "fontSize": "25px",
+            "color": "#ffffffff",
+            "stroke": "#ffffffff"
+        },
+        {
+            "type": "Image",
+            "id": "1fdf1ff5-8db9-45a8-9e35-e6e7574ef0ad",
+            "label": "play_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button_inactive"
+            },
+            "x": 180,
+            "y": 598
+        },
+        {
+            "type": "Text",
+            "id": "ea7b310a-ec85-4417-bce2-c2e3567ec5bc",
+            "label": "play_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 598,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Play",
+            "fontFamily": "DINPro",
+            "fontSize": "22px",
+            "color": "#ffffffff",
+            "stroke": "#ffffffff"
+        },
+        {
+            "type": "Rectangle",
+            "id": "5b2d659f-5f6f-43e8-91e1-b42f895484b5",
+            "label": "rectangle_1",
+            "components": [],
+            "x": 180,
+            "y": 593.465160843466,
+            "scaleX": 3.3922952444602155,
+            "scaleY": 0.727106861820843,
+            "visible": false,
+            "isFilled": true,
+            "fillColor": "#808080",
+            "fillAlpha": 0.5,
+            "width": 128,
+            "height": 128
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

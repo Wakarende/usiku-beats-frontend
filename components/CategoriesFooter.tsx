@@ -34,7 +34,7 @@ class CategoriesFooter extends Component<any, State> {
 
       <Container className='kayfo-categories-footer'>
             <Row className='kayfo-block-header' style={{marginBottom:20}}>
-              <div className='kayfo-block-title'><span>Autres catégories</span></div>
+              <div className='kayfo-block-title'><span>Other Categories</span></div>
             </Row>
             <Row>
             <Col>

@@ -1,0 +1,205 @@
+{
+    "id": "010c787b-f096-44d6-a3a0-65f4bfddfe6d",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "GameOverScene",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "3dd31363-f59d-49bd-a0d5-776d5426e165",
+            "label": "hub_background",
+            "components": [],
+            "texture": {
+                "key": "hub_background"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Text",
+            "id": "519895df-6269-438a-b870-1b65a4b562f4",
+            "label": "current_score",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 444,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "00000",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "40px"
+        },
+        {
+            "type": "Text",
+            "id": "2de4b1a8-ae01-4d35-942e-e2d95b3d8cee",
+            "label": "song_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 66,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "song_name",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "22px"
+        },
+        {
+            "type": "Text",
+            "id": "37e53942-03aa-469f-9886-ecbf23ac08de",
+            "label": "artist_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 40,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "artist_name",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "15px"
+        },
+        {
+            "type": "Image",
+            "id": "0a363a28-7e88-4669-8fad-ee02484297dd",
+            "label": "star_empty_4",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 240,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "3c805264-e4ef-47ec-bdd2-91e51d25a37b",
+            "label": "star_empty_3",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 210,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "ade34349-c760-4795-a9cd-f67e0c479699",
+            "label": "star_empty_2",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 180,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "4a9f5dbe-7152-40e6-a27e-819b3077ee4f",
+            "label": "star_empty_1",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 150,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "1c731c1b-6932-45ac-8b74-db960b5a1945",
+            "label": "star_empty",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 120,
+            "y": 402
+        },
+        {
+            "type": "Image",
+            "id": "18431bc4-bcd2-424c-a591-bdd9d242d693",
+            "label": "retry_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button"
+            },
+            "x": 180,
+            "y": 515
+        },
+        {
+            "type": "Image",
+            "id": "06ec2508-524a-4190-97ed-379b4fbd5f44",
+            "label": "carousel",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "carousel_2"
+            },
+            "x": 180,
+            "y": 229
+        },
+        {
+            "type": "Image",
+            "id": "8fb66192-f81c-4181-947a-f924e0bb68d3",
+            "label": "continue_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button_inactive"
+            },
+            "x": 180,
+            "y": 586
+        },
+        {
+            "type": "Text",
+            "id": "f0c908a1-d23f-4ae6-a652-c341f5755ea9",
+            "label": "retrytext",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 515,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Retry",
+            "fontFamily": "DINPro",
+            "fontSize": "18px"
+        },
+        {
+            "type": "Text",
+            "id": "a71710f1-dff4-417d-8ad7-a33da552edb4",
+            "label": "continuetext",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 586,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Song Selector",
+            "fontFamily": "DINPro",
+            "fontSize": "18px"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    },
+    "lists": [
+        {
+            "id": "630b7881-9958-4764-9ef7-db7716a340a1",
+            "label": "stars",
+            "objectIds": [
+                "1c731c1b-6932-45ac-8b74-db960b5a1945",
+                "4a9f5dbe-7152-40e6-a27e-819b3077ee4f",
+                "ade34349-c760-4795-a9cd-f67e0c479699",
+                "3c805264-e4ef-47ec-bdd2-91e51d25a37b",
+                "0a363a28-7e88-4669-8fad-ee02484297dd"
+            ]
+        }
+    ]
+}

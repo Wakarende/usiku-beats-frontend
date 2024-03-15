@@ -18,6 +18,7 @@
 body
 {
   overflow-x: hidden;
+  font-family:"Righteous-Regular";
 }
 
 img
@@ -29,7 +30,7 @@ img
   background-color: var(--kayfo-violet) !important;
   --bs-navbar-padding-y: 15px;
 }
-.kayfo-logo
+.beats-logo
 {
   max-height: 50px;
 }
@@ -230,6 +231,7 @@ img
   flex-direction:'column';
   justify-content:'space-between';
   box-sizing: border-box;
+  /* margin: 5px; */
 }
 
 .kayfo-masonry-item{
@@ -237,7 +239,7 @@ img
   display:'flex';
   flex:1;
   min-width:220px;
-  margin-bottom:14px;
+  margin-bottom:8px;
   margin-top:14px;
   margin-left:7px;
   margin-right:7px;
@@ -314,7 +316,7 @@ img
   background-color: var(--kayfo-violet);
 }
 
-.kayfo-logo-footer
+.beats-logo-footer
 {
   max-height: 90px;
 }
@@ -581,4 +583,98 @@ ul li.page-item.active span
   {
     background-color: transparent;
   }
+}
+
+@font-face {
+  font-family: 'Young-Techs';
+  src: url('/assets/fonts/youngtechs.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Robot-Font';
+  src: url('/assets/fonts/Robot_Font.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'D-DIN-Bold';
+  src: url('/assets/fonts/D-DIN-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DINPro-Bold';
+  src: url('/assets/fonts/DINPro-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DINPro-Medium';
+  src: url('/assets/fonts/DINPro-Medium.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DINPro';
+  src: url('/assets/fonts/DINPro.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Misty-Cotton';
+  src: url('/assets/fonts/Misty Cotton.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'MyriadPro-Bold';
+  src: url('/assets/fonts/MyriadPro-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'MyriadPro-Regular';
+  src: url('/assets/fonts/MyriadPro-Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('/assets/fonts/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Righteous-Regular';
+  src: url('/assets/fonts/Righteous-Regular.ttf') format('truetype');
+}
+
+
+.song-info {
+  color: white;
+  font-family: 'Righteous-Regular', sans-serif;
+  line-height: 1.1;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.song-info p {
+  margin: 0;
+}
+
+
+
+.song-detail-text .detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.song-detail-text .title {
+  width: 150px; /* Set a fixed width for titles */
+  flex-shrink: 0; /* Prevents the title from shrinking */
+  margin-right: 8px;
+  font-weight: bold;
+  font-family: 'Righteous-Regular', sans-serif;
+
+}
+
+.song-detail-text .content {
+  flex-grow: 1; /* Allows the content to take up the remaining space */
+  font-family: 'DINPro', sans-serif;
+
 }

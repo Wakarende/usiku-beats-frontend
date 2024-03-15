@@ -1,0 +1,266 @@
+{
+    "id": "9a7bde81-ac9d-4b8a-b504-38804a616078",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadMethodName": "editorPreload",
+        "preloadPackFiles": [
+            "jnj-2/assets/asset-pack.json"
+        ],
+        "createMethodName": "editorCreate",
+        "sceneKey": "Preload",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "763e2f23-e806-4dc3-ab71-c7cfbdc03cd2",
+            "label": "logos_background",
+            "components": [],
+            "texture": {
+                "key": "branding_transition_background"
+            },
+            "x": 180,
+            "y": 322,
+            "visible": false
+        },
+        {
+            "type": "Image",
+            "id": "b833f09e-7a40-44fe-813e-cc5df83f5166",
+            "label": "loading",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "beat_meter_empty"
+            },
+            "x": 115,
+            "y": 593,
+            "originX": 0
+        },
+        {
+            "type": "Text",
+            "id": "922811f5-0399-4d82-8a96-f04be55109bb",
+            "label": "percentage",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 552,
+            "originX": 0.5,
+            "originY": 0.5,
+            "visible": false,
+            "text": "0%",
+            "align": "center",
+            "fontFamily": "DINPro-Medium",
+            "fontSize": "15px"
+        },
+        {
+            "type": "Text",
+            "id": "0876d0a2-87ba-4346-92f2-9066cffa4584",
+            "label": "current_asset",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 602,
+            "originX": 0.5,
+            "originY": 0.5,
+            "visible": false,
+            "text": "null",
+            "align": "center",
+            "fontSize": "13px"
+        },
+        {
+            "type": "Text",
+            "id": "a7f0cee9-a906-4168-977d-905941dd17bc",
+            "label": "loading_txt",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 570,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "LOADING",
+            "fontFamily": "DINPro",
+            "fontSize": "15px"
+        },
+        {
+            "type": "Image",
+            "id": "72757b7d-0c5f-417a-8e53-13e1700832e2",
+            "label": "beats_logo",
+            "components": [],
+            "texture": {
+                "key": "beats_logo"
+            },
+            "x": 173,
+            "y": 245,
+            "scaleX": 0.4,
+            "scaleY": 0.4,
+            "visible": false
+        },
+        {
+            "type": "Image",
+            "id": "0aea47d6-f20f-4c47-86e9-e004a402b558",
+            "label": "play_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button"
+            },
+            "x": 180,
+            "y": 593,
+            "scaleX": 0.8,
+            "scaleY": 0.8,
+            "visible": false
+        },
+        {
+            "type": "Text",
+            "id": "4e2fa6c9-8320-49c8-ba8d-21ca4b013444",
+            "label": "play_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 593,
+            "originX": 0.5,
+            "originY": 0.5,
+            "visible": false,
+            "text": "LET'S GO!",
+            "fontFamily": "DINPro",
+            "fontSize": "22px"
+        },
+        {
+            "type": "Image",
+            "id": "41dd05a9-ec29-41c1-aaa5-77be17bf7a68",
+            "label": "thumbnail_image",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "carousel_2"
+            },
+            "x": 180,
+            "y": 203
+        },
+        {
+            "type": "Text",
+            "id": "33b5e099-a858-4402-ab3b-f9a7c379cfd1",
+            "label": "text_1",
+            "components": [],
+            "x": 40,
+            "y": 362,
+            "text": "Song:",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "19px",
+            "fontStyle": "bold"
+        },
+        {
+            "type": "Text",
+            "id": "2fb6697a-33ec-4c0e-acca-7d5b71e8195d",
+            "label": "text",
+            "components": [],
+            "x": 40,
+            "y": 402,
+            "text": "Artist:",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "19px",
+            "fontStyle": "bold"
+        },
+        {
+            "type": "Text",
+            "id": "da1f2265-f513-4975-b2a1-864b11bcdfdb",
+            "label": "text_2",
+            "components": [],
+            "x": 40,
+            "y": 442,
+            "text": "Country:",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "19px",
+            "fontStyle": "bold"
+        },
+        {
+            "type": "Text",
+            "id": "5e2c4b18-32da-44b3-be0d-ead31c30eb31",
+            "label": "text_3",
+            "components": [],
+            "x": 40,
+            "y": 482,
+            "text": "My High Score:",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "19px",
+            "fontStyle": "bold"
+        },
+        {
+            "type": "Text",
+            "id": "40340168-2b13-4616-baf5-beb16d717491",
+            "label": "song_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 201,
+            "y": 364,
+            "text": "Song:",
+            "fontFamily": "DINPro",
+            "fontSize": "18px",
+            "maxLines": 1,
+            "wordWrapWidth": 200
+        },
+        {
+            "type": "Text",
+            "id": "0cc51993-1d3a-4a39-b63d-c16157ddae82",
+            "label": "artist_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 201,
+            "y": 404,
+            "text": "Song:",
+            "fontFamily": "DINPro",
+            "fontSize": "18px",
+            "maxLines": 1,
+            "wordWrapWidth": 200
+        },
+        {
+            "type": "Text",
+            "id": "24fbf452-84a4-44a0-ade7-a195cd7c4e70",
+            "label": "country",
+            "scope": "CLASS",
+            "components": [],
+            "x": 201,
+            "y": 444,
+            "text": "Song:",
+            "fontFamily": "DINPro",
+            "fontSize": "18px",
+            "maxLines": 1,
+            "wordWrapWidth": 200
+        },
+        {
+            "type": "Text",
+            "id": "77283913-0afb-4c23-946f-b5a954fdbc06",
+            "label": "my_high_score",
+            "scope": "CLASS",
+            "components": [],
+            "x": 201,
+            "y": 484,
+            "text": "Song:",
+            "fontFamily": "DINPro",
+            "fontSize": "18px",
+            "maxLines": 1,
+            "wordWrapWidth": 200
+        },
+        {
+            "type": "Image",
+            "id": "0ec9958d-be55-4895-98a5-b009c8253e8c",
+            "label": "uB_logomark",
+            "components": [],
+            "texture": {
+                "key": "UB logomark"
+            },
+            "x": 180,
+            "y": 33.449999999999996,
+            "scaleX": 0.3,
+            "scaleY": 0.3
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

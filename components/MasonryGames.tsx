@@ -12,7 +12,9 @@ import Image from 'next/image';
 import { withRouter } from 'next/router';
 import contentService from '../services/content.service';
 import { baseUrl } from '../services/apiUrl';
-
+// import axios from 'axios';
+import ReactCountryFlag from "react-country-flag";
+import {instance as axios} from '../services/axios.config';
 
 interface Props {
   title:string,
@@ -53,16 +55,37 @@ State> {
 
     var rubricId = this.props.rubricId;
 
-    contentService.getRubricGames(rubricId)
+
+    axios.get("song-list/?limit=10")
     .then((d:any)=>{
-
-      var games = d.data.attributes.games.data;
-
-      console.log('games',games);
       
+      var games = d.data
+
+      games = games.map((game) => {
+        return {
+          ...game,
+          banner_url: null,
+          banner_file: null,
+          filters: [],
+          rubrics: [],
+          tags: [
+            {
+              id: 6,
+              tag: "All",
+            },
+            {
+              id: 7,
+              tag: "Fun",
+            },
+            "All",
+          ],
+        };
+      });
+
+
       // Tags objects to array
       games.forEach(g => {
-        var tags = g.attributes.tags;
+        var tags = g.tags;
         var tagsKeys : any[] = []
         tags.forEach(t => {
           tagsKeys.push(t.tag)
@@ -73,10 +96,10 @@ State> {
       });
 
       games.forEach(g => {
-        if(!g.attributes.tags.includes("All")) g.attributes.tags.push("All")
+        if(!g.tags.includes("All")) g.tags.push("All")
       });
 
-      games = games.filter(e=>e.attributes.published != false);
+      // games = games.filter(e=>e.attributes.published != false);
       
       //games = games.sort((a,b)=>b.attributes.priority - a.attributes.priority);
 
@@ -86,7 +109,7 @@ State> {
       // console.log(games)
 
     })
-    .catch((e)=>{console.log("Error while getting games")})
+    .catch((e)=>{console.log("Error while getting games", e)})
 
   }
 
@@ -95,14 +118,20 @@ State> {
     router.push({pathname:"/games", query : {title : _title, rubricId : this.props.rubricId} })
   }
 
-  gotoGameDetail = (_game:any, _index:number)=>{
+  gotoGameDetail = (_track:any, _index:number)=>{
     const { router } = this.props;
 
-    this.props.mainActions.setGame(_game);
-    localStorage.setItem("game", JSON.stringify(_game))
-    router.push({pathname:"/gamedetail"})
+    router.push({
+      pathname: "/game",
+      query: { track: JSON.stringify(_track) } // for example
+    });
 
-    this.createStat("viewed", _game.id)
+    // let trackId = _track?.id
+
+    // router.push({
+    //   pathname: "/gamedetail",
+    //   query: { id: JSON.stringify(trackId) } // for example
+    // });
     
   }
 
@@ -173,17 +202,50 @@ State> {
                 var r = (
                 <div key={firstIndex} className='kayfo-masonry-container'>
                     <Col className='kayfo-masonry-item' style={{minWidth:'50%'}} onClick={()=>this.gotoGameDetail(element, firstIndex)}  >
-                      <Tooltip placement='top' title={element.attributes.title}>
-                        <Image src={element.attributes.icon.data.attributes.url} alt="" width={110} height={110} style={{width:110, height:'auto'}}/>
+                      <Tooltip placement='top' title={element.song_name}>
+                        <Image src={element.thumbnail_file} alt="" width={110} height={110} style={{width:110, height:'auto'}}/>
                       </Tooltip>
+
                     </Col>
+                    <div className="song-info" style={{maxWidth:"120px"}}>
+                      <div className="text-container">
+                        <p>{element.song_name}</p>
+                        <p>{element.artist_name}</p>
+                      </div>
+                      <ReactCountryFlag 
+                      countryCode={element.country_code} // Use the appropriate country code
+                      svg
+                      style={{
+                        width: '1.1em',
+                        height: '1.1em',
+                      }}
+                    />
+                    </div>
 
                     {renderSecond && 
+                    <div>
                     <Col key={secondIndex} className='kayfo-masonry-item' style={{minWidth:'50%'}} onClick={()=>this.gotoGameDetail(nextElement, secondIndex)} >
-                        <Tooltip placement='top' title={nextElement.attributes.title}>
-                          <Image src={nextElement.attributes.icon.data.attributes.url} alt="" width={110} height={110} style={{width:110, height:'auto'}}/>
+                        <Tooltip placement='top' title={nextElement.song_name}>
+                          <Image src={nextElement.thumbnail_file} alt="" width={110} height={110} style={{width:110, height:'auto'}}/>
                         </Tooltip>
-                    </Col>}
+
+                    </Col>
+                    <div className="song-info" style={{maxWidth:"120px"}}>
+                      <div className="text-container">
+                        <p>{element.song_name}</p>
+                        <p>{element.artist_name}</p>
+                      </div>
+                      <ReactCountryFlag 
+                      countryCode={element.country_code} // Use the appropriate country code
+                      svg
+                      style={{
+                        width: '1.1em',
+                        height: '1.1em',
+                      }}
+                    />
+                    </div>
+                    </div>
+                    }
                 </div>)
  
 
@@ -192,14 +254,33 @@ State> {
             }
             else
             {
-                var r = (
-                    <div  key={firstIndex} className='kayfo-masonry-container' style={{display:'flex', minHeight:234, flexDirection:'column', justifyContent:'space-between'}}>
-                        <Col className='kayfo-masonry-item' style={{minHeight:234}} onClick={()=>this.gotoGameDetail(element,firstIndex)} >
-                            <Tooltip placement='top' title={element.attributes.title}>
-                              <Image src={element.attributes.icon.data.attributes.url} alt="" width={234} height={110} style={{width:234, height:'auto'}}/>
-                            </Tooltip>
-                        </Col>
-                    </div>)
+              var r = (
+                <div key={firstIndex} className='kayfo-masonry-container' style={{ display: 'flex', minHeight: 234, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <Col className='kayfo-masonry-item' style={{ width: '100%', display: 'flex', justifyContent: 'center' }} onClick={() => this.gotoGameDetail(element, firstIndex)}>
+                    <Tooltip placement='top' title={element.song_name}>
+                      {/* Adjust the image styles here */}
+                      <Image src={element.thumbnail_file} alt="" width={250} height={250} style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} />
+                    </Tooltip>
+                  </Col>
+                  <div className="song-info" style={{maxWidth:"250px"}}>
+                      <div className="text-container">
+                        <p>{element.song_name}</p>
+                        <p>{element.artist_name}</p>
+                      </div>
+                      <ReactCountryFlag 
+                      countryCode={element.country_code} // Use the appropriate country code
+                      svg
+                      style={{
+                        marginLeft: '15px',
+                        width: '1.1em',
+                        height: '1.1em',
+                      }}
+                    />
+                    </div>
+                </div>
+              )
+              
+                
                 
                 itemI = itemI + 1;
                 patternI = patternI + 1;
@@ -217,17 +298,18 @@ State> {
    render(): React.ReactNode {
      return(
         <Container>
-            <Row className='kayfo-block-header' onClick={()=>this.gotoGames(this.props.title)}>
+            {/* <Row className='kayfo-block-header' onClick={()=>this.gotoGames(this.props.title)}> */}
+            <Row className='kayfo-block-header'>
              <div className='kayfo-block-title'><span>{this.props.title}</span></div>
-             <div className='kayfo-block-arrow' ><Image  src={require("../assets/icons/arrow.png")} alt="" /></div>
+             {/* <div className='kayfo-block-arrow' ><Image  src={require("../assets/icons/arrow.png")} alt="" /></div> */}
             </Row>
             <Row>
               <Col className='kayfo-masonry-main' style={{overflowX:'auto', overflowY:'hidden'}}>
 
-                {this.state.items.filter(item => item.attributes.tags.includes(this.props.mainState.filterTag)).length > 0 &&
+                {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length > 0 &&
                 <div style={{minWidth:"100%", display:'flex', flexDirection:'row'}}>
 
-                    {this.renderMasonry(this.state.items.filter(item => item.attributes.tags.includes(this.props.mainState.filterTag))).map((item,index)=>
+                    {this.renderMasonry(this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag))).map((item,index)=>
                       {
                         return item
                       }
@@ -235,9 +317,9 @@ State> {
 
                 </div>
                  }
-                 {this.state.items.filter(item => item.attributes.tags.includes(this.props.mainState.filterTag)).length == 0 &&
+                 {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length == 0 &&
                   <Col className='kayfo-filter-no-result-box'>
-                    {this.state.completed ? 'Aucun résultat' : 'Chargement...'}
+                    {this.state.completed ? 'No result' : 'loading...'}
                   </Col>
                   }
              </Col>

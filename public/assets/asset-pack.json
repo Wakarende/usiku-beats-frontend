@@ -1,0 +1,343 @@
+{
+    "section1": {
+        "files": [
+            {
+                "url": "assets/animations.json",
+                "type": "animation",
+                "key": "animations"
+            },
+            {
+                "url": "assets/sprites/bufferscene/Banner BG.png",
+                "type": "image",
+                "key": "Banner BG"
+            },
+            {
+                "url": [
+                    "assets/sounds/Beat2.mp3"
+                ],
+                "type": "audio",
+                "key": "Beat2"
+            },
+            {
+                "url": "assets/sprites/playscene/beats2.png",
+                "type": "image",
+                "key": "beats2"
+            },
+            {
+                "url": "assets/sprites/playscene/beats2_long.png",
+                "type": "image",
+                "key": "beats2_long"
+            },
+            {
+                "url": "assets/sprites/playscene/beats222.png",
+                "type": "image",
+                "key": "beats222"
+            },
+            {
+                "url": "assets/sprites/bufferscene/BG.png",
+                "type": "image",
+                "key": "BG"
+            },
+            {
+                "url": "assets/sprites/bufferscene/Button.png",
+                "type": "image",
+                "key": "Button"
+            },
+            {
+                "url": "assets/sprites/hubscene/carousel_1.png",
+                "type": "image",
+                "key": "carousel_1"
+            },
+            {
+                "url": "assets/sprites/hubscene/carousel_3.png",
+                "type": "image",
+                "key": "carousel_3"
+            },
+            {
+                "url": "assets/scenes/CategoriesScene.js",
+                "type": "sceneFile",
+                "key": "CategoriesScene"
+            },
+            {
+                "url": "assets/sprites/bufferscene/Collections BG.png",
+                "type": "image",
+                "key": "Collections BG"
+            },
+            {
+                "url": [
+                    "assets/sounds/countdown_sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "countdown_sfx"
+            },
+            {
+                "url": "assets/sprites/playscene/divider_1.png",
+                "type": "image",
+                "key": "divider_1"
+            },
+            {
+                "url": "assets/sprites/playscene/divider_2.png",
+                "type": "image",
+                "key": "divider_2"
+            },
+            {
+                "url": "assets/scenes/EpisodeSelect.js",
+                "type": "sceneFile",
+                "key": "EpisodeSelect"
+            },
+            {
+                "url": [
+                    "assets/scenes/components/EventComponent.js",
+                    "assets/scenes/components/AnimationKillOnComplete.js",
+                    "assets/scenes/components/CharacterMove.js",
+                    "assets/scenes/components/ControllerButton.js",
+                    "assets/scenes/components/ControllerButtonLeftRight.js",
+                    "assets/scenes/components/FixedToCamera.js",
+                    "assets/scenes/components/Physics.js",
+                    "assets/scenes/components/PhysicsBody.js",
+                    "assets/scenes/components/StartAnimation.js"
+                ],
+                "type": "scripts",
+                "key": "EventComponent"
+            },
+            {
+                "url": "assets/scenes/GameOverScene.js",
+                "type": "sceneFile",
+                "key": "GameOverScene"
+            },
+            {
+                "url": "assets/sprites/playscene/gameplay_bg.png",
+                "type": "image",
+                "key": "gameplay_bg"
+            },
+            {
+                "url": "assets/sprites/playscene/great_popup.png",
+                "type": "image",
+                "key": "great_popup"
+            },
+            {
+                "url": "assets/sprites/bufferscene/grey border.png",
+                "type": "image",
+                "key": "grey border"
+            },
+            {
+                "url": "assets/sprites/bufferscene/grey star.png",
+                "type": "image",
+                "key": "grey star"
+            },
+            {
+                "url": "assets/sprites/hubscene/hub_background.png",
+                "type": "image",
+                "key": "hub_background"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Last Countdown Beep_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Last Countdown Beep_Sfx"
+            },
+            {
+                "url": "assets/scenes/Level.js",
+                "type": "sceneFile",
+                "key": "Level"
+            },
+            {
+                "url": "assets/sprites/bufferscene/new_orange_gradient.png",
+                "type": "image",
+                "key": "new_orange_gradient"
+            },
+            {
+                "url": "assets/sprites/bufferscene/Orange gradient.png",
+                "type": "image",
+                "key": "Orange gradient"
+            },
+            {
+                "url": "assets/sprites/playscene/overlay.png",
+                "type": "image",
+                "key": "overlay"
+            },
+            {
+                "url": "assets/sprites/playscene/particle.png",
+                "type": "image",
+                "key": "particle"
+            },
+            {
+                "url": "assets/sprites/playscene/pause.png",
+                "type": "image",
+                "key": "pause"
+            },
+            {
+                "url": "assets/scenes/Pause.js",
+                "type": "sceneFile",
+                "key": "Pause"
+            },
+            {
+                "url": "assets/sprites/playscene/pause_overlay.png",
+                "type": "image",
+                "key": "pause_overlay"
+            },
+            {
+                "url": "assets/sprites/playscene/perfect_popup.png",
+                "type": "image",
+                "key": "perfect_popup"
+            },
+            {
+                "url": "assets/sprites/playscene/perfect+_popup.png",
+                "type": "image",
+                "key": "perfect+_popup"
+            },
+            {
+                "url": "assets/sprites/playscene/plain_background.png",
+                "type": "image",
+                "key": "plain_background"
+            },
+            {
+                "url": "assets/sprites/bufferscene/Play_active.png",
+                "type": "image",
+                "key": "Play_active"
+            },
+            {
+                "url": "assets/sprites/hubscene/play_button.png",
+                "type": "image",
+                "key": "play_button"
+            },
+            {
+                "url": "assets/sprites/hubscene/play_button_embedded.png",
+                "type": "image",
+                "key": "play_button_embedded"
+            },
+            {
+                "url": "assets/sprites/playscene/play_button_inactive.png",
+                "type": "image",
+                "key": "play_button_inactive"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Pop_Sfx_1.mp3"
+                ],
+                "type": "audio",
+                "key": "Pop_Sfx_1"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Pop_Sfx_2.mp3"
+                ],
+                "type": "audio",
+                "key": "Pop_Sfx_2"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Pop_Sfx_3.mp3"
+                ],
+                "type": "audio",
+                "key": "Pop_Sfx_3"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Pop_Sfx_4.mp3"
+                ],
+                "type": "audio",
+                "key": "Pop_Sfx_4"
+            },
+            {
+                "url": "assets/sprites/bufferscene/Rectangle_854.png",
+                "type": "image",
+                "key": "Rectangle_854"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Score_Counter_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Score_Counter_Sfx"
+            },
+            {
+                "url": "assets/sprites/hubscene/star_empty.png",
+                "type": "image",
+                "key": "star_empty"
+            },
+            {
+                "url": "assets/sprites/hubscene/star_full.png",
+                "type": "image",
+                "key": "star_full"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Star_Reward_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Star_Reward_Sfx"
+            },
+            {
+                "url": "assets/sprites/playscene/streak_overlay.png",
+                "type": "image",
+                "key": "streak_overlay"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_down.png",
+                "type": "image",
+                "key": "swipe_down"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_left.png",
+                "type": "image",
+                "key": "swipe_left"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_right.png",
+                "type": "image",
+                "key": "swipe_right"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_up.png",
+                "type": "image",
+                "key": "swipe_up"
+            },
+            {
+                "url": "assets/sprites/playscene/tap_zone_area.png",
+                "type": "image",
+                "key": "tap_zone_area"
+            },
+            {
+                "url": "assets/sprites/playscene/tapZone.png",
+                "type": "image",
+                "key": "tapZone"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Thumbnail_Screen Swipe_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Thumbnail_Screen Swipe_Sfx"
+            },
+            {
+                "url": "assets/sprites/playscene/tile_active.png",
+                "type": "image",
+                "key": "tile_active"
+            },
+            {
+                "url": "assets/sprites/playscene/too_early_popup.png",
+                "type": "image",
+                "key": "too_early_popup"
+            },
+            {
+                "url": "assets/sprites/playscene/too_late_popup.png",
+                "type": "image",
+                "key": "too_late_popup"
+            },
+            {
+                "url": "assets/sprites/playscene/top_banner.png",
+                "type": "image",
+                "key": "top_banner"
+            }
+        ]
+    },
+    "meta": {
+        "app": "Phaser Editor 2D - Asset Pack Editor",
+        "contentType": "phasereditor2d.pack.core.AssetContentType",
+        "url": "https://phasereditor2d.com",
+        "version": 2,
+        "showAllFilesInBlocks": false
+    }
+}

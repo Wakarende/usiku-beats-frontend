@@ -1,0 +1,341 @@
+{
+    "id": "01aefa93-6044-4159-8358-7e91310aa05f",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "Level",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "c87c0ece-39ac-43f2-9fc6-0d629075f673",
+            "label": "gameplay_bg",
+            "components": [],
+            "texture": {
+                "key": "plain_background"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Image",
+            "id": "66c9979e-16ec-4623-b0c5-ea839a77358f",
+            "label": "top_banner",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "top_banner"
+            },
+            "x": 180,
+            "y": 175.5
+        },
+        {
+            "type": "Text",
+            "id": "bd56f0ea-006f-48fe-95a8-7e69f6bb2734",
+            "label": "artist_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 33,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "artist",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "7.5px",
+            "color": "#666363ff",
+            "stroke": "#666363ff"
+        },
+        {
+            "type": "Text",
+            "id": "5e6aa4d2-41d2-43ca-b214-f57af72b601e",
+            "label": "song_name_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 45,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "song",
+            "align": "center",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "15px",
+            "color": "#666363ff",
+            "stroke": "#666363ff"
+        },
+        {
+            "type": "Text",
+            "id": "133ec661-739d-412f-94e4-6a32fedbec52",
+            "label": "score_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 82,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "000",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "55px",
+            "color": "#666363ff",
+            "stroke": "#666363ff"
+        },
+        {
+            "type": "Image",
+            "id": "c44cf776-0eeb-4f2a-94b8-46e0f7cae7be",
+            "label": "pause_btn",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "pause"
+            },
+            "x": 39,
+            "y": 39
+        },
+        {
+            "type": "Text",
+            "id": "f669c805-a5d3-4459-8f19-b6132df8c0e5",
+            "label": "multiplier_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 116.91874449363797,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "x1",
+            "align": "center",
+            "fontFamily": "DINPro",
+            "fontSize": "15px",
+            "color": "#666363ff",
+            "stroke": "#666363ff"
+        },
+        {
+            "type": "Image",
+            "id": "5da96080-b645-4af0-9e9a-27c58bbdacb6",
+            "label": "tap_zone_area",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "tap_zone_area"
+            },
+            "x": 181,
+            "y": 525
+        },
+        {
+            "type": "Image",
+            "id": "dae65aeb-27bc-47ac-b953-f90123027832",
+            "label": "divider_1",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "divider_2"
+            },
+            "x": 121.5,
+            "y": 321
+        },
+        {
+            "type": "Image",
+            "id": "2b0cb512-33a6-41ab-9cb1-2d8d4a0fd8e8",
+            "label": "divider_2",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "divider_2"
+            },
+            "x": 238,
+            "y": 320
+        },
+        {
+            "type": "Image",
+            "id": "5afb10a3-9e41-4d55-8945-7259ed0d84b4",
+            "label": "feedback_text",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "perfect_popup"
+            },
+            "x": 180,
+            "y": 303,
+            "scaleX": 0.7,
+            "scaleY": 0.7,
+            "visible": false
+        },
+        {
+            "type": "Image",
+            "id": "fd36bcba-489b-490c-86b4-bb57229af077",
+            "label": "overlay",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "overlay"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Layer",
+            "id": "46d657c6-5cd5-4d5d-92e3-9640eaf4506e",
+            "label": "song_complete_text",
+            "scope": "CLASS",
+            "components": [],
+            "visible": false,
+            "list": [
+                {
+                    "type": "Text",
+                    "id": "4e56a4af-9e4b-465d-9e7c-f77eb51a0ce6",
+                    "label": "song",
+                    "components": [],
+                    "x": 180,
+                    "y": 252,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "SONG",
+                    "align": "center",
+                    "fontFamily": "DINPro",
+                    "fontSize": "18px",
+                    "color": "#fe500b",
+                    "stroke": "#fe500b"
+                },
+                {
+                    "type": "Text",
+                    "id": "f9fc3ddd-1d99-4f87-9fd7-611089046220",
+                    "label": "complete",
+                    "components": [],
+                    "x": 180,
+                    "y": 287,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "COMPLETE",
+                    "fontFamily": "Righteous-Regular",
+                    "fontSize": "50px",
+                    "color": "#fe500b",
+                    "stroke": "#fe500b"
+                }
+            ]
+        },
+        {
+            "type": "Layer",
+            "id": "ec3eb967-53d2-4abe-9614-20e4250c61f7",
+            "label": "beat_missed_text",
+            "scope": "CLASS",
+            "components": [],
+            "visible": false,
+            "list": [
+                {
+                    "type": "Text",
+                    "id": "1a913280-bd7a-487f-9713-f8d17cafa357",
+                    "label": "beat",
+                    "components": [],
+                    "x": 180,
+                    "y": 252,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "BEAT",
+                    "align": "center",
+                    "fontFamily": "DINPro",
+                    "fontSize": "18px",
+                    "color": "#666363ff",
+                    "stroke": "#666363ff"
+                },
+                {
+                    "type": "Text",
+                    "id": "9d4eccc3-4e42-478d-a35c-0ceace671521",
+                    "label": "missed",
+                    "components": [],
+                    "x": 180,
+                    "y": 287,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "MISSED",
+                    "fontFamily": "Righteous-Regular",
+                    "fontSize": "50px",
+                    "color": "#666363ff",
+                    "stroke": "#666363ff"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "id": "875df81b-8376-4d3a-87de-741ae8683e7b",
+            "label": "streak_popup",
+            "scope": "CLASS",
+            "components": [],
+            "visible": false,
+            "list": [
+                {
+                    "type": "Image",
+                    "id": "c43e6c54-c5f1-4847-a5bc-9732e0c3195d",
+                    "label": "streak_overlay",
+                    "components": [],
+                    "texture": {
+                        "key": "streak_overlay"
+                    },
+                    "x": 180,
+                    "y": 352
+                },
+                {
+                    "type": "Text",
+                    "id": "85d1ace4-00b9-4f32-80e8-8d804eaa4dc7",
+                    "label": "streak_text",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 353,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "10 STREAK",
+                    "align": "center",
+                    "fontFamily": "DINPro",
+                    "fontSize": "15px",
+                    "color": "#666363ff",
+                    "stroke": "#666363ff"
+                }
+            ]
+        },
+        {
+            "type": "Sprite",
+            "id": "a547cfee-7f59-4841-a1b8-7a98eb1d9ce8",
+            "label": "sprite_1",
+            "components": [],
+            "texture": {},
+            "x": 181,
+            "y": 522,
+            "visible": false
+        },
+        {
+            "type": "Image",
+            "id": "6c0a7624-cc30-4ee3-89cc-0df38bbb7166",
+            "label": "beats2",
+            "components": [],
+            "texture": {
+                "key": "tile_active"
+            },
+            "x": 6,
+            "y": 325,
+            "originX": -0.02,
+            "originY": 0,
+            "visible": false
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    },
+    "lists": [
+        {
+            "id": "4ca6eee5-c34c-4b12-bcb7-ec37e49f489b",
+            "label": "ui_layer",
+            "objectIds": [
+                "f669c805-a5d3-4459-8f19-b6132df8c0e5",
+                "133ec661-739d-412f-94e4-6a32fedbec52",
+                "5e6aa4d2-41d2-43ca-b214-f57af72b601e",
+                "bd56f0ea-006f-48fe-95a8-7e69f6bb2734",
+                "66c9979e-16ec-4623-b0c5-ea839a77358f"
+            ]
+        }
+    ]
+}

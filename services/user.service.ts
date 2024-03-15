@@ -4,14 +4,14 @@ const userService = {
  
  
   createUser,
-  authUser,
+  loginUser,
   updateUser,
   getUser,
   getUserByMail,
   getUserByToken,
 };
 
-const resource = "";
+const resource = "https://api.usiku.games/";
 
  
 /**
@@ -21,7 +21,7 @@ const resource = "";
  * @returns
  */
 function createUser(payload) {
-  return api.postData(resource + "/auth/local/register", payload);
+  return api.postData(resource + "signup/", payload);
 }
 
 
@@ -32,8 +32,8 @@ function createUser(payload) {
  * @param {Object} payload
  * @returns
  */
-function authUser(payload) {
-  return api.postData(resource + "/auth/local", payload);
+function loginUser(payload) {
+  return api.postData(resource + "login/", payload);
 }
 
 
