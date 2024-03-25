@@ -266,17 +266,18 @@ class Level extends Phaser.Scene {
     this.drumColums = [];
     this.randomDrumCol = [];
 
-    this.drumGroup = null;
+    this.tileGroup = null;
     this.tileClicked = false;
 
     this.score = 0;
+    this.scoreDisplay = 0;
 
     // Drum time control
     // Time it takes to get from the creation point to the target. This can be altered during the level
     // to increase the speed of the tiles to add a difficulty level aspect if required
-    this.drumDuration = 2;
+    this.tileDuration = 4;
     // This is used to multiply the screen height to get the position the drum tile is heading towards
-    this.drumTarget = 0.7; 
+    this.tileTarget = 0.82; 
 
     this.playSong = false;
     this.matchedMarkerTracker = [];
@@ -285,7 +286,9 @@ class Level extends Phaser.Scene {
     this.maxSongScore = 100000;
     this.multiplier = 1;
     this.progress_bar = 1;
-    // this.frameTime = 0;
+
+    this.frameTime = 0;
+    this.fps;
 
     /** Screen width, height, and Center x, y */
     this.artist = this.track.artist_name;
@@ -300,6 +303,7 @@ class Level extends Phaser.Scene {
 
     this.midi.tracks.forEach((track) => {
       /** Drum trigger notes array from midi - filter out other notes just in case **/
+      // Currently set to octave 2 as the sg_test audio is using the different midi standard
       const notes = track.notes;
       notes.forEach((note, idx) => {
         if (note.name == "F#2" | note.name == "G#2" | note.name == "A#2")
@@ -317,34 +321,23 @@ class Level extends Phaser.Scene {
 
     this.beatScore = this.maxSongScore / this.soundMarkers.length;
 
-    this.createTapZone();
-
     this.countDown();
 
-    // this.sound.once("decodedall", () => {
-    //   this._assetsLoaded = true;
-    //   console.log("decoded sound", this._assetsLoaded);
-    // });
-
     this.events.on("resume", () => {
-      this.themeDrum.resume();
+      this.music.resume();
     });
 
     this.song_name_text.setText(this.songItem);
 
-    // this.top_banner.setDepth(1)
     this.artist_text.setText(this.artist.toUpperCase());
 
     this.pause_btn.on("pointerup", () => {
-      this.themeDrum.pause();
+      this.music.pause();
       this.scene.pause();
       this.scene.launch("Pause");
     });
 
-    // this.tapZone2 = this.add
-    // .image(this.tapZone.x, this.tapZone.y, "tap_zone_area")
-    // .setOrigin(0.5)
-    // .setDepth(1);
+    this.tapZone = this.add.image(this.screenCenterX, this.screenHeight * this.tileTarget, "tapZone").setOrigin(0.5);
 
     this.ui_layer.forEach((asset) => {
       asset.setDepth(4);
@@ -355,13 +348,13 @@ class Level extends Phaser.Scene {
 
     this.path = this.add
       .rectangle(0, 0, this.screenWidth / 3, this.screenHeight, 0x90ee90)
-      .setOrigin(0)
+      .setOrigin(0.5, 0)
       .setAlpha(0.5)
       .setVisible(false);
 
     this.score_emitter = this.add
       .particles(this.score_text.x, this.score_text.y, "Play_active", {
-        lifespan: 1000,
+        lifespan: 750,
         speed: { min: 100, max: 150 },
         scale: { start: 0.5, end: 0 },
         // gravityY: 150,
@@ -376,7 +369,7 @@ class Level extends Phaser.Scene {
         this.multiplier_text.y,
         "Play_active",
         {
-          lifespan: 1000,
+          lifespan: 750,
           speed: { min: 50, max: 100 },
           scale: { start: 0.5, end: 0 },
           // gravityY: 150,
@@ -387,34 +380,70 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
       // TODO debug line, please disable
-      let rect = this.add.rectangle(this.screenCenterX, this.screenHeight * this.drumTarget, this.screenWidth, 2, 0x00f000, 1).setDepth(100);
+      let rect = this.add.rectangle(this.screenCenterX, this.screenHeight * this.tileTarget, this.screenWidth, 2, 0x00f000, 1).setDepth(100);
+      this.fps_text = this.add.text(this.screenWidth - 20, 20, "", {});
+
+      this.fps_text.setOrigin(1, 0).setDepth(100);
+      this.fps_text.text = "artist";
+      this.fps_text.setStyle({
+        color: "#666363ff",
+        fontFamily: "Righteous-Regular",
+        fontSize: "13px",
+        stroke: "#666363ff",
+      });
+
+      
 
   } 
 
   update(time, delta) {
-    let seek = this.themeDrum?.seek;
+    // Smoothed frame time + fps conversion for performance throttles
+    this.frameTime = (this.frameTime * 0.99) + (delta * 0.01);
+    this.fps = (1/this.frameTime * 1000).toFixed(1)
+    this.fps_text.text = this.fps
+    this.lowFpsMode = this.fps < 30 ? true : false;
 
-    if (seek >= 0) {
+    // seek is the position in the track, tile position is locked to this
+    let seek = this.music?.seek;
+
+    if (Math.abs(this.scoreDisplay - this.score) > 1) {
+      if (this.lowFpsMode) {
+        this.scoreDisplay = this.score;
+      } else {
+        this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
+      }
+
+      this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
+    }
+
+    if (seek >= 0) { 
       // create next "drum" far enough in advance to get to the target on the beat
-      if (seek + this.drumDuration >= this.soundMarkers[0].start) {
+      if (seek + this.tileDuration >= this.soundMarkers[0].start) {
+        // pop off next marker in the array and make a tile ready for lerping
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
 
-      this.drumGroup.getChildren().forEach((drum) => {
+      this.tileGroup.getChildren().forEach((tile) => {
+        if (tile.swiped) return // use return not continue in a foreach lambda
         // lerp tiles downwards from 0 towards the "percentage of screen height" target.
         // at 1 this will be bang on the target and will continue down past the target and off the screen as
         // the lerp goes over 1.
-        drum.setY(Phaser.Math.Linear(
-          0, this.screenHeight * this.drumTarget, 
-          Math.max(0, ((seek - drum.start + this.drumDuration) / this.drumDuration)) 
+
+        tile.lerp = Math.max(0, ((seek - tile.start + this.tileDuration) / this.tileDuration));
+
+        tile.setY(Phaser.Math.Linear(
+          0, this.screenHeight * this.tileTarget, 
+          tile.lerp
         ));
 
-        // This is a debug to give a visual clue when the drum tiles are at / past the target
-        if (drum.y > this.screenHeight * this.drumTarget) drum.setAlpha(1);
+        // The Math.max up there ^ is so we can debug tile creation timing. The tile creation and 
+        // it's position are completely uncoupled now
 
-        if (drum.y > this.screenHeight * this.drumTarget) {
-          this.checkOverlap(drum);
+        tile.setAlpha(tile.lerp);
+
+        if (tile.y > this.screenHeight * this.tileTarget) {
+          this.checkOverlap(tile);
         }
       });
     }
@@ -422,72 +451,77 @@ class Level extends Phaser.Scene {
 
   creatOneDrum(marker) {
     let tilePath = marker.path;
-    /** Create a tile / drum */
+    /** Create a tile / drum **/
 
-    let drum = this.drumGroup
+    let tile = this.tileGroup
       .create(0, 0, "beats2")
-      .setOrigin(-0.02, 0)
+      .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(.2)
-      .setDepth(3);
+      .setDepth(4);
 
-    drum.start = marker.start;
-    drum.body.immovable = true;
-    this.placeDrum(drum, tilePath);
+    tile.start = marker.start;
+    tile.body.immovable = true;
+    this.placeTile(tile, tilePath);
   }
 
-  placeDrum(drum, tilePath) {
-    let left = 0;
-    let middle = 120;
-    let right = 240;
+  placeTile(tile, tilePath) {
+    let left = (this.screenWidth / 6) * 1;
+    let middle = (this.screenWidth / 6) * 3;
+    let right = (this.screenWidth / 6) * 5;
 
     let swipeConfig = {
       velocityThreshold: 500,
     };
 
+    // Currently set to octave 2 as the sg_test audio is using the different midi standard
     let position;
     switch (tilePath) {
-      case "A#2":
+      case "A#2": 
         position = "left";
-        drum.setX(left);
+        tile.setX(left);
         break;
       case "G#2":
         position = "middle";
-        drum.setX(middle);
+        tile.setX(middle);
         break;
       case "F#2":
         position = "right";
-        drum.setX(right);
+        tile.setX(right);
         break;
       default:
         // Handle default case if necessary
         break;
     }
 
+    tile.laneX = tile.x;
+
+    tile.swiped = false;
+
     let random = Phaser.Math.Between(1, 10);
     if (random === 10) {
       // Assign a random swipe texture based on the lane
       const swipeTextures = this.getSwipeTextures(position);
       const randomTexture = Phaser.Utils.Array.GetRandom(swipeTextures);
-      drum.setTexture(randomTexture);
+      tile.setTexture(randomTexture);
 
-      let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
+      let swipe = this.rexGestures.add.swipe(tile, swipeConfig);
       swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-        this.handleSwipe(drum, swipe);
+        this.handleSwipe(tile, swipe);
       });
     } else {
-      drum.on("pointerup", () => {
+      tile.on("pointerup", () => {
         this.tileClicked = false;
       });
-      drum.on("pointerdown", () => {
-        this.onClickInstrument(drum);
+      tile.on("pointerdown", () => {
+        this.onClickInstrument(tile);
       });
     }
   }
 
-  checkOverlap(drum) {
-    if (drum.y >= this.screenHeight) {
-      drum.destroy();
+  checkOverlap(tile) {
+    if (tile.y >= this.screenHeight) {
+      tile.destroy();
 
       // let children = this.drumGroup.getChildren();
       // children.forEach((tile) => {
@@ -505,20 +539,20 @@ class Level extends Phaser.Scene {
     }
   }
 
-  createDrumGroup() {
-    this.drumGroup = this.physics.add.staticGroup();
+  createTileGroup() {
+    this.tileGroup = this.physics.add.staticGroup();
   }
 
-  createBgMusic() {
-    this.themeDrum = this.sound.add(`${this.songItem}`, { volume: 1 });
+  createMusic() {
+    this.music = this.sound.add(`${this.songItem}`, { volume: 1 });
 
-    this.themeDrum.play({delay: 0.5});
+    this.music.play({delay: 0.5});
 
-    this.themeDrum.on("play", () => {
+    this.music.on("play", () => {
       this.isSoundPlaying = true;
     });
 
-    this.themeDrum.on("complete", () => {
+    this.music.on("complete", () => {
       /** Stop the sound 2 */
       this.matchedMarkerTracker = [];
 
@@ -529,7 +563,7 @@ class Level extends Phaser.Scene {
         this.overlay.setVisible(false);
         this.song_complete_text.setVisible(false);
 
-        this.themeDrum.stop();
+        this.music.stop();
         this.matchedMarkerTracker = [];
         clearInterval(this.globalInterval);
 
@@ -550,256 +584,6 @@ class Level extends Phaser.Scene {
     });
   }
 
-  // creatOneTile(path, duration, delta) {
-  //   let tilePath = path;
-  //   /** Create a tile*/
-
-  //   this.drum = this.drumGroup
-  //     .create(0, 0, "beats2")
-  //     .setOrigin(-0.02, 0)
-  //     .setInteractive()
-  //     .setAlpha(1)
-  //     .setDepth(3);
-
-  //   this.drum.body.immovable = true;
-  //   this.placeDrum(this.drum, tilePath, duration);
-
-  //   /** Tween the tile*/
-  //   // this.createTween(this.drum, delta);
-  // }
-
-  // createTween(tile, delta) {
-  //   let self = this;
-
-  //   console.log(delta);
-
-  //   this.tweens.add({
-  //     targets: tile,
-  //     y: this.screenHeight,
-  //     alpha: 6,
-  //     offset: 0,
-  //     duration: this.tweenDuration,
-  //     ease: "Linear",
-  //     onUpdate: function (tween, target, param) {
-  //       // console.log("param", param);
-  //       // console.log("target", target);
-  //       // if (target.y >= 479 && target.y <= 482) {
-  //       //   self.createContinue();
-  //       // }
-  //     },
-  //     onStart: function (tween, target, param) {
-  //       let timeout = setTimeout(() => {
-  //         // self.createContinue();
-  //       }, 2400);
-  //     },
-  //   });
-  // }
-
-  // placeDrum(drum, tilePath, duration) {
-  //   let left = 0;
-  //   let middle = 120;
-  //   let right = 240;
-
-  //   // Place tile in path determined in midi
-  //   // "A#2" left,"G#2"-middle, "F#2"right
-  //   console.log(tilePath);
-
-  //   let swipeConfig = {
-  //     velocityThreshold: 500,
-  //   };
-
-  //   switch (tilePath) {
-  //     case "A#3":
-  //       drum.setX(left);
-  //       break;
-  //     case "G#3":
-  //       drum.setX(middle);
-  //       break;
-  //     case "F#3":
-  //       drum.setX(right);
-
-  //       // let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
-  //       // swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-  //       //   console.log("swiped", swipe);
-
-  //       //   this.tweens.add({
-  //       //     targets: drum,
-  //       //     x: -drum.width, // assuming the sprite will move off screen to the left
-  //       //     angle: 360, // assuming a full rotation
-  //       //     ease: "Power1",
-  //       //     duration: 2000, // this is in milliseconds, so it's 2 seconds
-  //       //     repeat: 0, // repeat the animation 0 times, change this if you want it to repeat
-  //       //     yoyo: false, // don't return the sprite back after the tween
-  //       //     onComplete: function () {
-  //       //       // this function will run after the tween completes
-  //       //       drum.destroy(); // we remove the sprite after the tween completes
-  //       //     },
-  //       //   });
-  //       // });
-
-  //       break;
-
-  //     default:
-  //       // drum.setX(right);
-  //       break;
-  //   }
-  //   let random = Phaser.Math.Between(1, 10);
-
-  //   if (random === 10) {
-  //     // Assign a random swipe texture
-  //     const swipeTextures = [
-  //       "swipe_up",
-  //       // "swipe_down",
-  //       "swipe_left",
-  //       "swipe_right",
-  //     ];
-  //     const randomTexture = Phaser.Utils.Array.GetRandom(swipeTextures);
-  //     drum.setTexture(randomTexture);
-
-  //     // Create a swipe event for the drum
-  //     let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
-  //     swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-  //       console.log("swiped", swipe);
-
-  //       let movementDistance = 35; // the distance you want the drum to move
-
-  //       let tweenConfig = {
-  //         duration: 200, // duration of movement animation
-  //         ease: "Power1", // easing function
-  //         onComplete: () => {
-  //           // Call the onClickInstrument function after the animation is finished
-  //           this.onClickInstrument(drum);
-  //         },
-  //       };
-
-  //       switch (drum.texture.key) {
-  //         case "swipe_up":
-  //           this.tweens.add({
-  //             targets: drum,
-  //             y: drum.y - movementDistance, // move drum upwards
-  //             ...tweenConfig,
-  //           });
-  //           break;
-  //         case "swipe_down":
-  //           this.tweens.add({
-  //             targets: drum,
-  //             y: drum.y + movementDistance, // move drum downwards
-  //             ...tweenConfig,
-  //           });
-  //           break;
-  //         case "swipe_left":
-  //           this.tweens.add({
-  //             targets: drum,
-  //             x: drum.x - movementDistance, // move drum to the left
-  //             ...tweenConfig,
-  //           });
-  //           break;
-  //         case "swipe_right":
-  //           this.tweens.add({
-  //             targets: drum,
-  //             x: drum.x + movementDistance, // move drum to the right
-  //             ...tweenConfig,
-  //           });
-  //           break;
-  //       }
-
-  //       // if(swipe.right) {
-  //       //   this.tweens.add({
-  //       //     targets: drum,
-  //       //     x: drum.x + movementDistance, // move drum to the right
-  //       //     duration: 200, // duration of movement animation
-  //       //     ease: 'Power1', // easing function
-  //       //   });
-  //       // } else if(swipe.left) {
-  //       //   this.tweens.add({
-  //       //     targets: drum,
-  //       //     x: drum.x - movementDistance, // move drum to the left
-  //       //     duration: 200, // duration of movement animation
-  //       //     ease: 'Power1', // easing function
-  //       //   });
-  //       // } else if(swipe.up) {
-  //       //   this.tweens.add({
-  //       //     targets: drum,
-  //       //     y: drum.y - movementDistance, // move drum upwards
-  //       //     duration: 200, // duration of movement animation
-  //       //     ease: 'Power1', // easing function
-  //       //   });
-  //       // } else if(swipe.down) {
-  //       //   this.tweens.add({
-  //       //     targets: drum,
-  //       //     y: drum.y + movementDistance, // move drum downwards
-  //       //     duration: 200, // duration of movement animation
-  //       //     ease: 'Power1', // easing function
-  //       //   });
-  //       // }
-  //       // ...
-  //       // this.onClickInstrument(drum);
-  //     });
-  //   } else {
-  //     drum.on("pointerup", () => {
-  //       this.tileClicked = false;
-  //     });
-  //     drum.on("pointerdown", () => {
-  //       this.onClickInstrument(drum);
-  //     });
-  //   }
-
-  //   // if (duration > 0.75){
-  //   // drum.setTexture('beats2_long')
-  //   // }
-  // }
-
-  // placeDrum(drum, tilePath, duration) {
-  //   let left = 0;
-  //   let middle = 120;
-  //   let right = 240;
-
-  //   console.log(tilePath);
-
-  //   let swipeConfig = {
-  //     velocityThreshold: 500,
-  //   };
-
-  //   let position;
-  //   switch (tilePath) {
-  //     case "A#3":
-  //       position = "left";
-  //       drum.setX(left);
-  //       break;
-  //     case "G#3":
-  //       position = "middle";
-  //       drum.setX(middle);
-  //       break;
-  //     case "F#3":
-  //       position = "right";
-  //       drum.setX(right);
-  //       break;
-  //     default:
-  //       // Handle default case if necessary
-  //       break;
-  //   }
-
-  //   let random = Phaser.Math.Between(1, 10);
-  //   if (random === 10) {
-  //     // Assign a random swipe texture based on the lane
-  //     const swipeTextures = this.getSwipeTextures(position);
-  //     const randomTexture = Phaser.Utils.Array.GetRandom(swipeTextures);
-  //     drum.setTexture(randomTexture);
-
-  //     let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
-  //     swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-  //       this.handleSwipe(drum, swipe);
-  //     });
-  //   } else {
-  //     drum.on("pointerup", () => {
-  //       this.tileClicked = false;
-  //     });
-  //     drum.on("pointerdown", () => {
-  //       this.onClickInstrument(drum);
-  //     });
-  //   }
-  // }
-
   getSwipeTextures(position) {
     if (position === "middle") {
       return ["swipe_left", "swipe_right"];
@@ -808,101 +592,75 @@ class Level extends Phaser.Scene {
     }
   }
 
-  handleSwipe(drum, swipe) {
+  handleSwipe(tile, swipe) {
     console.log("swiped", swipe);
 
-    // let movementDistance = 35;
+    tile.swiped = true;
 
-    let movementDistance = 5;
+    // run the clicked function now, not after the tween to make it feel more responsive
+    this.onClickInstrument(tile, true);
 
-    let tweenConfig = {
-      duration: 200,
-      ease: "Power1",
-      onComplete: () => {
-        this.onClickInstrument(drum);
-      },
-    };
-
-    if (swipe.up) {
-      this.tweens.add({
-        targets: drum,
-        y: drum.y - movementDistance,
-        ...tweenConfig,
-      });
-    } else if (swipe.down) {
-      this.tweens.add({
-        targets: drum,
-        y: drum.y + movementDistance,
-        ...tweenConfig,
-      });
-    } else if (swipe.left) {
-      this.tweens.add({
-        targets: drum,
-        x: drum.x - movementDistance,
-        ...tweenConfig,
-      });
-    } else if (swipe.right) {
-      this.tweens.add({
-        targets: drum,
-        x: drum.x + movementDistance,
-        ...tweenConfig,
-      });
-    }
-  }
-
-  // Helper function to animate score increment
-  animateScoreIncrement(oldScore, newScore) {
-    const scoreChange = newScore - oldScore;
-    const scoreIncrement = scoreChange / 60; // assume we want to animate over 60 frames (1 second at 60 FPS)
-    let animatedScore = oldScore;
-
-    // Start a loop that runs once per frame
-    this.time.addEvent({
-      delay: 1000 / 60, // Run at 60 FPS
-      callback: () => {
-        // Increment the animated score
-        animatedScore += scoreIncrement;
-
-        // If the animated score exceeds the new score, clamp it to the new score
-        if (animatedScore > newScore) {
-          animatedScore = newScore;
-        }
-
-        // Update the score text
-        this.score_text.setText(`${Math.trunc(animatedScore)}`);
-
-        // If the animated score equals the new score, stop the loop
-        if (animatedScore >= newScore) {
-          return false; // This will stop the event
-        }
-      },
-      callbackScope: this,
-      loop: true,
-    });
-  }
-
-  onClickInstrument(tile) {
-    // this.increaseScore();
+    let movementDistance = 25;
 
     if (navigator.vibrate) {
       // Vibration pattern: vibrate for 200ms
       navigator.vibrate(100);
     }
 
-    this.tileClicked = true;
-    let perfect_plus = false;
+    let tweenConfig = {
+      duration: 150,
+      ease: "Power1",
+      onComplete: ()=> {
+        tile.destroy();
+      }
+    };
 
-    if (this.progress_bar >= 10) {
-      this.streak_text.setText(`${10 * this.multiplier} STREAK`);
+    if (swipe.up) {
+      this.tweens.add({
+        targets: tile,
+        y: tile.y - movementDistance * 2,
+        ...tweenConfig,
+      });
+    } else if (swipe.down) {
+      this.tweens.add({
+        targets: tile,
+        y: tile.y + movementDistance * 4,
+        ...tweenConfig,
+      });
+    } else if (swipe.left) {
+      this.tweens.add({
+        targets: tile,
+        x: tile.x - movementDistance,
+        ...tweenConfig,
+      });
+    } else if (swipe.right) {
+      this.tweens.add({
+        targets: tile,
+        x: tile.x + movementDistance,
+        ...tweenConfig,
+      });
+    }
+  }
 
-      this.progress_bar = 1;
-      this.multiplier += 1;
-      this.multiplier_emitter.explode(20);
 
-      // this.streak_popup.setVisible(true).setDepth(6);
+  resetStreak() {
+    console.log("Reset Streak")
+    if (this.multiplier >= 2) {
+      this.streak_text.setText("STREAK LOST");
+      this.streak_popup.setVisible(true).setDepth(6);
+      setTimeout(() => {
+        this.streak_popup.setVisible(false);
+      }, 700);
+    }
+  };
+
+  streakDisplay() {
+
       // setTimeout(() => {
       //   this.streak_popup.setVisible(false);
       // }, 700);
+
+      this.multiplier_emitter.explode(this.lowFpsMode ? 10 : 20);
 
       // initial position outside of screen to the left
       this.streak_popup.x = -180;
@@ -933,144 +691,132 @@ class Level extends Phaser.Scene {
           }, 700); // visible for 700 ms
         },
       });
+  }
+
+  beatMissedDisplay() {
+    this.overlay.setVisible(true);
+    this.beat_missed_text.setVisible(true).setDepth(6);
+    setTimeout(() => {
+      this.overlay.setVisible(false);
+      this.beat_missed_text.setVisible(false);
+    }, 500);
+  }
+
+  onClickInstrument(tile, swiped = false) {
+
+    let accuracy = Math.abs(tile.lerp - 1);
+
+    console.log(accuracy);
+
+    if (navigator.vibrate) {
+      // Vibration pattern: vibrate for 200ms
+      navigator.vibrate(100);
+    }
+
+    this.tileClicked = true;
+    let perfect_plus = false;
+    var tile_score;
+
+    // If a score is going to be awarded pop the particles, saves repeating it in the swtich
+    if (accuracy <= 0.055) {
+      this.score_emitter.explode(this.lowFpsMode ? 20 : 50);
+    }
+
+    // Base reaction to click on how accurate the timing was. 0 = best
+    switch(true) {
+      case accuracy < 0.01:
+        console.log("perfect_plus");
+        perfect_plus = true;
+        tile_score = (this.beatScore / 5) * this.multiplier;
+        this.score += tile_score;
+        this.progress_bar += 1;
+        this.feebackText("perfect+");
+        this.highlightPath(tile.x, "green");        
+        break;
+      case accuracy < 0.02:
+        console.log("perfect");
+        tile_score = (this.beatScore / 5) * this.multiplier;
+        this.score += tile_score * 0.7;
+        this.progress_bar += 1;
+        this.feebackText("perfect");
+        this.highlightPath(tile.x, "green");
+        break;
+      case accuracy < 0.03:
+        console.log("great");
+        this.resetStreak();
+        tile_score = (this.beatScore / 5) * this.multiplier;
+        this.score += tile_score * 0.4;
+        this.progress_bar = 1;
+        this.multiplier = 1;
+        this.feebackText("great");
+        this.highlightPath(tile.x, "green");
+        break;
+      default:
+        this.resetStreak();
+        this.highlightPath(tile.x, "red");
+        if (tile.lerp < 1) {
+          this.feebackText("too-early");
+        } else {
+          this.beatMissedDisplay();
+        }
+        this.resetStreak();
+        this.highlightPath(tile.x, "red");
+    }
+
+    if (this.progress_bar >= 10) {
+      this.streak_text.setText(`${10 * this.multiplier} STREAK`);
+
+      this.streakDisplay();
+
+      this.progress_bar = 1;
+      this.multiplier += 1;
 
       if (this.multiplier >= 5) {
         this.multiplier = 5;
       }
     }
 
-    const resetStreak = () => {
-      if (this.multiplier >= 2) {
-        this.streak_text.setText("STREAK LOST");
-        this.streak_popup.setVisible(true).setDepth(6);
-        setTimeout(() => {
-          this.streak_popup.setVisible(false);
-        }, 700);
-      }
-    };
-
-    let tile_score;
-    let y_tile = tile.y;
-    let oldScore = this.score;
-    // console.log(tile.y);
-    if (y_tile < 325) {
-      // console.log("too early");
-
-      resetStreak();
-      this.feebackText("too-early");
-      this.highlightPath(tile.x, "red");
-    } else if (y_tile >= 440 && y_tile <= 470) {
-      // console.log("perfect +");
-      perfect_plus = true;
-
-      this.feebackText("perfect+");
-      this.highlightPath(tile.x, "green");
-
-      tile_score = (this.beatScore / 5) * this.multiplier;
-      this.score += tile_score;
-      this.progress_bar += 1;
-    } else if (y_tile >= 415 && y_tile <= 490) {
-      // console.log("perfect");
-
-      this.feebackText("perfect");
-      this.highlightPath(tile.x, "green");
-
-      tile_score = (this.beatScore / 5) * this.multiplier;
-      this.score += tile_score * 0.7;
-      this.progress_bar += 1;
-    } else if (y_tile >= 325 && y_tile <= 585) {
-      // console.log("great");
-
-      resetStreak();
-      this.feebackText("great");
-      this.highlightPath(tile.x, "green");
-
-      tile_score = (this.beatScore / 5) * this.multiplier;
-
-      this.score += tile_score * 0.4;
-      this.progress_bar = 1;
-      this.multiplier = 1;
-    } else if (y_tile > 585) {
-      // console.log("missed");
-      resetStreak();
-      this.overlay.setVisible(true);
-      // Initial settings: invisible and minimum scale
-      this.beat_missed_text.setScale(0);
-      this.beat_missed_text.setAlpha(0);
-      this.beat_missed_text.setVisible(true).setDepth(6);
-
-      // Fade in and scale up
-      this.tweens.add({
-        targets: this.beat_missed_text,
-        alpha: { from: 0, to: 1 }, // Fade in
-        scale: { from: 0, to: 1 }, // Scale up
-        ease: "Power1", // Use 'Power1' easing function (change as needed)
-        duration: 500, // Duration of the animation
-      });
-
-      // After a delay, fade out and scale down
-      setTimeout(() => {
-        this.tweens.add({
-          targets: this.beat_missed_text,
-          alpha: { from: 1, to: 0 }, // Fade out
-          scale: { from: 1, to: 0 }, // Scale down
-          ease: "Power1", // Use 'Power1' easing function (change as needed)
-          duration: 500, // Duration of the animation
-          onComplete: () => {
-            // Callback to execute once the animation is complete
-            this.beat_missed_text.setVisible(false);
-            this.overlay.setVisible(false);
-          },
-        });
-      }, 500);
-
-      this.gameOver();
-    }
-
-    // console.log(this.score);
-    // this.score_text.setText(`${Math.trunc(this.score)}`);
-
-    this.score_emitter.explode(50);
-
-    this.animateScoreIncrement(oldScore, this.score);
-
     this.multiplier_text.setText(`x${this.multiplier}`);
 
-    var tile_active;
-    perfect_plus
-      ? (tile_active = this.add
-          .image(
-            tile.x,
-            this.tap_zone_area.y - this.tap_zone_area.height / 2,
-            "tile_active"
-          )
-          .setOrigin(-0.02, 0)
-          .setDepth(5))
-      : (tile_active = this.add
-          .image(tile.x, tile.y, "tile_active")
-          .setOrigin(-0.02, 0)
-          .setDepth(5));
+    // show white background ghost of tile when tapped
 
-    setTimeout(() => {
-      tile_active.destroy();
-      perfect_plus = false;
-    }, 500);
-    // tile active setvisible
+    // this.tileActiveFlash(tile, perfect_plus);
 
-    tile.destroy();
+    // add in scale up for juice but only if it's not already been swiped
+    if (!swiped) {
+      this.tweens.add({
+        targets: tile,
+        scaleX: 1.1,
+        scaleY: 1.1,
+        duration: 75,
+        ease: "Power1",
+        onComplete: () => {
+          tile.destroy();
+        }
+      });
+    }
   }
 
-  createTapZone() {
-    this.tapZone = this.physics.add
-      .image(0, this.screenHeight * 0.75, "tapZone")
-      .setOrigin(0)
-      .setDepth(2);
-    this.tapZone.width = this.screenWidth;
-    this.tapZone.body.collideWorldBounds = true;
-    this.tapZone.body.setVelocityX(0);
-    this.tapZone.body.immovable = true;
-    this.tapZone.body.allowGravity = false;
-    this.tapZone.setBodySize(this.tapZone.width, this.tap_zone_area.height);
+  tileActiveFlash(tile, perfect_plus) {
+    var tile_active = this.add.image(tile.x, 0, "tile_active").setDepth(3)
+
+    if (perfect_plus) {
+      tile_active.setY(this.screenHeight * this.tileTarget);
+    } else {
+      tile_active.setY(tile.y);
+    }
+
+    this.tweens.add({
+      targets: tile_active,
+      alpha: 0,
+      duration: perfect_plus ? 1000 : 250,
+      ease: "Bounce",
+      onComplete: () => {
+        tile_active.destroy();
+      }
+    });
+
+
   }
 
   feebackText(str) {
@@ -1083,14 +829,16 @@ class Level extends Phaser.Scene {
         // console.log("too early popup");
         this.feedback_text.setTexture("too_early_popup");
         break;
+      case "too-late":
+        // console.log("too late popup");
+        this.feedback_text.setTexture("too_early_popup");
+        break;
       case "perfect+":
         this.feedback_text.setTexture("perfect+_popup");
         break;
-
       case "perfect":
         this.feedback_text.setTexture("perfect_popup");
         break;
-
       case "great":
         this.feedback_text.setTexture("great_popup");
         break;
@@ -1110,20 +858,6 @@ class Level extends Phaser.Scene {
       callbackScope: this,
       onComplete: function () {
         this.feedback_text.setVisible(false).setScale(0.7);
-
-        // Fade out
-        // this.tweens.add({
-        //   targets: this.feedback_text,
-        //   alpha: { from: 1, to: 0 }, // Fade out
-        //   ease: "Power1",
-        //   duration: 200,
-        //   onComplete: function () {
-        //     // Make sure the fade-out is complete before setting the text to invisible
-        //     if (this.feedback_text.alpha === 0) {
-        //     }
-        //   },
-        //   callbackScope: this,
-        // });
       },
     });
   }
@@ -1153,7 +887,7 @@ class Level extends Phaser.Scene {
     this.cameras.main.shake(1000, 0.015);
 
     setTimeout(() => {
-      this.themeDrum.stop();
+      this.music.stop();
       this.matchedMarkerTracker = [];
       clearInterval(this.globalInterval);
 
@@ -1263,8 +997,8 @@ class Level extends Phaser.Scene {
           },
         });
 
-        this.createBgMusic();
-        this.createDrumGroup();
+        this.createMusic();
+        this.createTileGroup();
         this.pause_btn.setInteractive();
         clearInterval(intervalId);
 
