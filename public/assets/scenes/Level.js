@@ -1,15 +1,9 @@
-// You can write more code here
-
-/* START OF COMPILED CODE */
-
 class Level extends Phaser.Scene {
   constructor() {
     super("Level");
-
-    /* START-USER-CTR-CODE */
-    /* END-USER-CTR-CODE */
   }
 
+//#region COMPILED CODE
   /** @returns {void} */
   editorCreate() {
     // gameplay_bg
@@ -236,9 +230,9 @@ class Level extends Phaser.Scene {
   /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
   ui_layer;
 
-  /* START-USER-CODE */
+//#endregion
 
-  // Write more your code here
+//#region USER CODE
 
   init(data) {
     this.midi = data.midi;
@@ -277,7 +271,13 @@ class Level extends Phaser.Scene {
 
     this.score = 0;
 
-    this.tweenDuration = 2400;
+    // Drum time control
+    // Time it takes to get from the creation point to the target. This can be altered during the level
+    // to increase the speed of the tiles to add a difficulty level aspect if required
+    this.drumDuration = 2;
+    // This is used to multiply the screen height to get the position the drum tile is heading towards
+    this.drumTarget = 0.7; 
+
     this.playSong = false;
     this.matchedMarkerTracker = [];
     this.tileTracker = [];
@@ -285,7 +285,7 @@ class Level extends Phaser.Scene {
     this.maxSongScore = 100000;
     this.multiplier = 1;
     this.progress_bar = 1;
-    this.frameTime = 0;
+    // this.frameTime = 0;
 
     /** Screen width, height, and Center x, y */
     this.artist = this.track.artist_name;
@@ -296,21 +296,24 @@ class Level extends Phaser.Scene {
     this.screenCenterY = this.cameras.main.worldView.y + this.screenHeight / 2;
 
     this.soundMarkers = [];
+    this.children = [];
 
     this.midi.tracks.forEach((track) => {
-      /** Notes  array from midi*/
+      /** Drum trigger notes array from midi - filter out other notes just in case **/
       const notes = track.notes;
       notes.forEach((note, idx) => {
+        if (note.name == "F#2" | note.name == "G#2" | note.name == "A#2")
         this.soundMarkers.push({
           name: `"marker_${idx}"`,
           start: note.time,
           path: note.name,
-          duration: note.duration,
+          duration: note.duration, // not used currently
           config: { loop: false },
         });
       });
     });
-    // console.log("markers", this.soundMarkers.length);
+
+    console.log("markers", this.soundMarkers);
 
     this.beatScore = this.maxSongScore / this.soundMarkers.length;
 
@@ -325,7 +328,6 @@ class Level extends Phaser.Scene {
 
     this.events.on("resume", () => {
       this.themeDrum.resume();
-      this.mutedSound.resume();
     });
 
     this.song_name_text.setText(this.songItem);
@@ -334,7 +336,6 @@ class Level extends Phaser.Scene {
     this.artist_text.setText(this.artist.toUpperCase());
 
     this.pause_btn.on("pointerup", () => {
-      this.mutedSound.pause();
       this.themeDrum.pause();
       this.scene.pause();
       this.scene.launch("Pause");
@@ -348,6 +349,7 @@ class Level extends Phaser.Scene {
     this.ui_layer.forEach((asset) => {
       asset.setDepth(4);
     });
+
     this.divider_1.setDepth(2.5);
     this.divider_2.setDepth(2.5);
 
@@ -383,82 +385,137 @@ class Level extends Phaser.Scene {
         }
       )
       .setDepth(10);
-  }
+
+      // TODO debug line, please disable
+      let rect = this.add.rectangle(this.screenCenterX, this.screenHeight * this.drumTarget, this.screenWidth, 2, 0x00f000, 1).setDepth(100);
+
+  } 
+
   update(time, delta) {
-    this.frameTime += delta;
-    if (this.frameTime > 16.5) {
-      // console.log("here", this.frameTime);
-      this.frameTime = 0;
-      globalThis.gameTick++;
-      // g.gameTick++;
-      // Code that relies on a consistent 60hz update
-      if (this.isSoundPlaying && this.drumGroup) {
-        if (!this.isSoundPlaying) {
-          return;
-        }
-        let seek = this.mutedSound?.seek;
+    let seek = this.themeDrum?.seek;
 
-        for (let i = 0; i < this.soundMarkers.length; i++) {
-          let marker = this.soundMarkers[i];
-          let start = marker.start;
-          let end = marker.start + marker.duration;
-          let path = marker.path;
-          let duration = marker.duration;
-
-          if (
-            seek >= start &&
-            seek < end &&
-            !this.matchedMarkerTracker.includes(start)
-          ) {
-            this.matchedMarkerTracker.push(start);
-            this.creatOneTile(path, duration, delta);
-          }
-        }
+    if (seek >= 0) {
+      // create next "drum" far enough in advance to get to the target on the beat
+      if (seek + this.drumDuration >= this.soundMarkers[0].start) {
+        var marker = this.soundMarkers.shift();
+        this.creatOneDrum(marker);
       }
 
-      if (this.drumGroup) {
-        if (!this.drumGroup.children) {
-          return;
+      this.drumGroup.getChildren().forEach((drum) => {
+        // lerp tiles downwards from 0 towards the "percentage of screen height" target.
+        // at 1 this will be bang on the target and will continue down past the target and off the screen as
+        // the lerp goes over 1.
+        drum.setY(Phaser.Math.Linear(
+          0, this.screenHeight * this.drumTarget, 
+          Math.max(0, ((seek - drum.start + this.drumDuration) / this.drumDuration)) 
+        ));
+
+        // This is a debug to give a visual clue when the drum tiles are at / past the target
+        if (drum.y > this.screenHeight * this.drumTarget) drum.setAlpha(1);
+
+        if (drum.y > this.screenHeight * this.drumTarget) {
+          this.checkOverlap(drum);
         }
-
-        var children = this.drumGroup.getChildren();
-
-        children.forEach((tile) => {
-          // if (tile?.y >= this.tapZone?.y && !this.tileTracker.includes(tile)) {
-          //   this.tileTracker.push(tile);
-          // }
-          // if (this.endZone) {
-          this.checkOverlap(tile);
-          // }
-        });
-      }
+      });
     }
+  }
+
+  creatOneDrum(marker) {
+    let tilePath = marker.path;
+    /** Create a tile / drum */
+
+    let drum = this.drumGroup
+      .create(0, 0, "beats2")
+      .setOrigin(-0.02, 0)
+      .setInteractive()
+      .setAlpha(.2)
+      .setDepth(3);
+
+    drum.start = marker.start;
+    drum.body.immovable = true;
+    this.placeDrum(drum, tilePath);
+  }
+
+  placeDrum(drum, tilePath) {
+    let left = 0;
+    let middle = 120;
+    let right = 240;
+
+    let swipeConfig = {
+      velocityThreshold: 500,
+    };
+
+    let position;
+    switch (tilePath) {
+      case "A#2":
+        position = "left";
+        drum.setX(left);
+        break;
+      case "G#2":
+        position = "middle";
+        drum.setX(middle);
+        break;
+      case "F#2":
+        position = "right";
+        drum.setX(right);
+        break;
+      default:
+        // Handle default case if necessary
+        break;
+    }
+
+    let random = Phaser.Math.Between(1, 10);
+    if (random === 10) {
+      // Assign a random swipe texture based on the lane
+      const swipeTextures = this.getSwipeTextures(position);
+      const randomTexture = Phaser.Utils.Array.GetRandom(swipeTextures);
+      drum.setTexture(randomTexture);
+
+      let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
+      swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+        this.handleSwipe(drum, swipe);
+      });
+    } else {
+      drum.on("pointerup", () => {
+        this.tileClicked = false;
+      });
+      drum.on("pointerdown", () => {
+        this.onClickInstrument(drum);
+      });
+    }
+  }
+
+  checkOverlap(drum) {
+    if (drum.y >= this.screenHeight) {
+      drum.destroy();
+
+      // let children = this.drumGroup.getChildren();
+      // children.forEach((tile) => {
+      //   tile.destroy();
+      // });
+
+      // this.overlay.setVisible(true);
+      // this.beat_missed_text.setVisible(true).setDepth(6);
+      // setTimeout(() => {
+      //   this.overlay.setVisible(false);
+      //   this.beat_missed_text.setVisible(false);
+      // }, 500);
+
+      // this.gameOver();
+    }
+  }
+
+  createDrumGroup() {
+    this.drumGroup = this.physics.add.staticGroup();
   }
 
   createBgMusic() {
     this.themeDrum = this.sound.add(`${this.songItem}`, { volume: 1 });
-    this.mutedSound = this.sound.add(`${this.songItem}`, { volume: 0 });
 
-    this.mutedSound.on("play", () => {
-      /** Update isSoundPLaying state */
+    this.themeDrum.play({delay: 0.5});
+
+    this.themeDrum.on("play", () => {
       this.isSoundPlaying = true;
-    });
-    this.mutedSound.play();
-
-    // this.themeDrum.on("play", () => {
-    //   // this.scene.pause();
-    //   // this.themeDrum.stop();
-    // });
-
-    this.songDelay = (this.tweenDuration * this.tapZone?.y) / this.screenHeight;
-    setTimeout(() => {
-      this.themeDrum.play();
-    }, this.songDelay);
-
-    this.mutedSound.on("complete", () => {
-      /** Stop the sound 1 that's ahead */
-      this.isSoundPlaying = false;
-      this.matchedMarkerTracker = [];
     });
 
     this.themeDrum.on("complete", () => {
@@ -467,12 +524,12 @@ class Level extends Phaser.Scene {
 
       this.overlay.setVisible(true);
       this.song_complete_text.setVisible(true).setDepth(6);
+
       setTimeout(() => {
         this.overlay.setVisible(false);
         this.song_complete_text.setVisible(false);
 
         this.themeDrum.stop();
-        this.mutedSound.stop();
         this.matchedMarkerTracker = [];
         clearInterval(this.globalInterval);
 
@@ -493,54 +550,50 @@ class Level extends Phaser.Scene {
     });
   }
 
-  creatOneTile(path, duration, delta) {
-    let tilePath = path;
-    /** Create a tile*/
+  // creatOneTile(path, duration, delta) {
+  //   let tilePath = path;
+  //   /** Create a tile*/
 
-    this.drum = this.drumGroup
-      .create(0, 0, "beats2")
-      .setOrigin(-0.02, 0)
-      .setInteractive()
-      .setAlpha(0.1)
-      .setDepth(3);
+  //   this.drum = this.drumGroup
+  //     .create(0, 0, "beats2")
+  //     .setOrigin(-0.02, 0)
+  //     .setInteractive()
+  //     .setAlpha(1)
+  //     .setDepth(3);
 
-    this.drum.body.immovable = true;
-    this.placeDrum(this.drum, tilePath, duration);
+  //   this.drum.body.immovable = true;
+  //   this.placeDrum(this.drum, tilePath, duration);
 
-    /** Tween the tile*/
-    this.createTween(this.drum, delta);
-  }
+  //   /** Tween the tile*/
+  //   // this.createTween(this.drum, delta);
+  // }
 
-  createTween(tile, delta) {
-    let self = this;
+  // createTween(tile, delta) {
+  //   let self = this;
 
-    console.log(delta);
+  //   console.log(delta);
 
-    this.tweens.add({
-      targets: tile,
-      y: this.screenHeight,
-      alpha: 6,
-      offset: 0,
-      duration: this.tweenDuration,
-      ease: "Linear",
-      onUpdate: function (tween, target, param) {
-        // console.log("param", param);
-        // console.log("target", target);
-        // if (target.y >= 479 && target.y <= 482) {
-        //   self.createContinue();
-        // }
-      },
-      onStart: function (tween, target, param) {
-        let timeout = setTimeout(() => {
-          // self.createContinue();
-        }, 2400);
-      },
-    });
-  }
-
-  createDrumGroup() {
-    this.drumGroup = this.physics.add.staticGroup();
-  }
+  //   this.tweens.add({
+  //     targets: tile,
+  //     y: this.screenHeight,
+  //     alpha: 6,
+  //     offset: 0,
+  //     duration: this.tweenDuration,
+  //     ease: "Linear",
+  //     onUpdate: function (tween, target, param) {
+  //       // console.log("param", param);
+  //       // console.log("target", target);
+  //       // if (target.y >= 479 && target.y <= 482) {
+  //       //   self.createContinue();
+  //       // }
+  //     },
+  //     onStart: function (tween, target, param) {
+  //       let timeout = setTimeout(() => {
+  //         // self.createContinue();
+  //       }, 2400);
+  //     },
+  //   });
+  // }
 
   // placeDrum(drum, tilePath, duration) {
   //   let left = 0;
@@ -696,56 +749,56 @@ class Level extends Phaser.Scene {
   //   // }
   // }
 
-  placeDrum(drum, tilePath, duration) {
-    let left = 0;
-    let middle = 120;
-    let right = 240;
+  // placeDrum(drum, tilePath, duration) {
+  //   let left = 0;
+  //   let middle = 120;
+  //   let right = 240;
 
-    console.log(tilePath);
+  //   console.log(tilePath);
 
-    let swipeConfig = {
-      velocityThreshold: 500,
-    };
+  //   let swipeConfig = {
+  //     velocityThreshold: 500,
+  //   };
 
-    let position;
-    switch (tilePath) {
-      case "A#3":
-        position = "left";
-        drum.setX(left);
-        break;
-      case "G#3":
-        position = "middle";
-        drum.setX(middle);
-        break;
-      case "F#3":
-        position = "right";
-        drum.setX(right);
-        break;
-      default:
-        // Handle default case if necessary
-        break;
-    }
+  //   let position;
+  //   switch (tilePath) {
+  //     case "A#3":
+  //       position = "left";
+  //       drum.setX(left);
+  //       break;
+  //     case "G#3":
+  //       position = "middle";
+  //       drum.setX(middle);
+  //       break;
+  //     case "F#3":
+  //       position = "right";
+  //       drum.setX(right);
+  //       break;
+  //     default:
+  //       // Handle default case if necessary
+  //       break;
+  //   }
 
-    let random = Phaser.Math.Between(1, 10);
-    if (random === 10) {
-      // Assign a random swipe texture based on the lane
-      const swipeTextures = this.getSwipeTextures(position);
-      const randomTexture = Phaser.Utils.Array.GetRandom(swipeTextures);
-      drum.setTexture(randomTexture);
+  //   let random = Phaser.Math.Between(1, 10);
+  //   if (random === 10) {
+  //     // Assign a random swipe texture based on the lane
+  //     const swipeTextures = this.getSwipeTextures(position);
+  //     const randomTexture = Phaser.Utils.Array.GetRandom(swipeTextures);
+  //     drum.setTexture(randomTexture);
 
-      let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
-      swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-        this.handleSwipe(drum, swipe);
-      });
-    } else {
-      drum.on("pointerup", () => {
-        this.tileClicked = false;
-      });
-      drum.on("pointerdown", () => {
-        this.onClickInstrument(drum);
-      });
-    }
-  }
+  //     let swipe = this.rexGestures.add.swipe(drum, swipeConfig);
+  //     swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+  //       this.handleSwipe(drum, swipe);
+  //     });
+  //   } else {
+  //     drum.on("pointerup", () => {
+  //       this.tileClicked = false;
+  //     });
+  //     drum.on("pointerdown", () => {
+  //       this.onClickInstrument(drum);
+  //     });
+  //   }
+  // }
 
   getSwipeTextures(position) {
     if (position === "middle") {
@@ -797,26 +850,6 @@ class Level extends Phaser.Scene {
     }
   }
 
-  checkOverlap(drum) {
-    if (drum.y >= this.screenHeight) {
-      drum.destroy();
-
-      let children = this.drumGroup.getChildren();
-      children.forEach((tile) => {
-        tile.destroy();
-      });
-
-      this.overlay.setVisible(true);
-      this.beat_missed_text.setVisible(true).setDepth(6);
-      setTimeout(() => {
-        this.overlay.setVisible(false);
-        this.beat_missed_text.setVisible(false);
-      }, 500);
-
-      this.gameOver();
-    }
-  }
-
   // Helper function to animate score increment
   animateScoreIncrement(oldScore, newScore) {
     const scoreChange = newScore - oldScore;
@@ -854,7 +887,7 @@ class Level extends Phaser.Scene {
     if (navigator.vibrate) {
       // Vibration pattern: vibrate for 200ms
       navigator.vibrate(100);
-  }
+    }
 
     this.tileClicked = true;
     let perfect_plus = false;
@@ -1121,7 +1154,6 @@ class Level extends Phaser.Scene {
 
     setTimeout(() => {
       this.themeDrum.stop();
-      this.mutedSound.stop();
       this.matchedMarkerTracker = [];
       clearInterval(this.globalInterval);
 
@@ -1269,9 +1301,6 @@ class Level extends Phaser.Scene {
     }
     return array;
   }
-  /* END-USER-CODE */
+  //#endregion
 }
 
-/* END OF COMPILED CODE */
-
-// You can write more code here
