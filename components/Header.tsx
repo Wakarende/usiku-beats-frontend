@@ -64,20 +64,28 @@ class Header extends Component<any, any> {
   }
 
   logout = ()=>{
+    const { router } = this.props;
 
-    var user = null;
+    // var user = null;
 
-    setTimeout(() => {
+    // setTimeout(() => {
       
-      const { router } = this.props;
 
-      this.props.mainActions.setUser(user);
-      localStorage.removeItem("user")
-      // router.reload()
-      router.push({pathname:"/"})
+    //   this.props.mainActions.setUser(user);
+    //   localStorage.removeItem("user")
+    //   // router.reload()
+    //   router.push({pathname:"/"})
 
 
-    }, 50);
+    // }, 50);
+
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("user_data");
+
+    router.push({ pathname: "/" }).then(() => {
+      window.location.reload();
+    });
 
   }
 
@@ -103,15 +111,15 @@ class Header extends Component<any, any> {
           <Dropdown.Toggle variant="default" style={{color:'#fff', border:'none'}} id="dropdown-basic">
             <span style={{position:'absolute', right:'150%'}}>{this.state.user_data?.user.username}</span><Avatar style={{position:'absolute', top:0, left:-5}} sx={{ bgcolor: deepOrange[500] }}></Avatar>
           </Dropdown.Toggle>
-          {/* <Dropdown.Menu >
-            <Dropdown.Item onClick={()=>this.myaccount()}>
+          <Dropdown.Menu >
+            {/* <Dropdown.Item onClick={()=>this.myaccount()}>
               My Account
-            </Dropdown.Item>
+            </Dropdown.Item> */}
             <Dropdown.Item onClick={()=>this.logout()}>
               Logout
             </Dropdown.Item>
             
-          </Dropdown.Menu> */}
+          </Dropdown.Menu>
         </Dropdown>
         }
         {/* {this.props.hidebtn &&
