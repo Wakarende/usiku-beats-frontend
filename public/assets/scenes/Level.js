@@ -403,18 +403,18 @@ class Level extends Phaser.Scene {
     this.fps_text.text = this.fps
     this.lowFpsMode = this.fps < 30 ? true : false;
 
-    // seek is the position in the track, tile position is locked to this
-    let seek = this.music?.seek;
-
+    // Lerp score when needed
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
       if (this.lowFpsMode) {
         this.scoreDisplay = this.score;
       } else {
         this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
       }
-
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
+
+    // Seek is the position in the track, tile position is locked to this
+    let seek = this.music?.seek;
 
     if (seek >= 0) { 
       // create next "drum" far enough in advance to get to the target on the beat
@@ -810,13 +810,11 @@ class Level extends Phaser.Scene {
       targets: tile_active,
       alpha: 0,
       duration: perfect_plus ? 1000 : 250,
-      ease: "Bounce",
+      ease: "Power1",
       onComplete: () => {
         tile_active.destroy();
       }
     });
-
-
   }
 
   feebackText(str) {
@@ -827,10 +825,6 @@ class Level extends Phaser.Scene {
     switch (str) {
       case "too-early":
         // console.log("too early popup");
-        this.feedback_text.setTexture("too_early_popup");
-        break;
-      case "too-late":
-        // console.log("too late popup");
         this.feedback_text.setTexture("too_early_popup");
         break;
       case "perfect+":
