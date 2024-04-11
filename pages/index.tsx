@@ -42,7 +42,7 @@ class HomePage extends Component<any, State> {
     
     this.getRubrics();
 
-    this.getSubscription();
+    // this.getSubscription();
 
     this.checkRedirect();
   }
@@ -89,7 +89,7 @@ class HomePage extends Component<any, State> {
     var currentRubrics: any[] = this.props.mainState.rubrics;
     // if(!currentRubrics.length)
 
-    let customRubics = [
+    let rubrics = [
       {
         id: 1,
         attributes: {
@@ -133,22 +133,11 @@ class HomePage extends Component<any, State> {
       },
     ];
 
-    {
-      contentService
-        .getRubrics()
-        .then((d: any) => {
-          var rubrics = d.data;
+    this.setState({ rubrics });
+    // console.log("rubrics",rubrics);
 
-          rubrics = customRubics;
-          this.setState({ rubrics });
-          // console.log("rubrics",rubrics);
+    this.props.mainActions.setRubrics(rubrics);
 
-          this.props.mainActions.setRubrics(rubrics);
-        })
-        .catch((e) => {
-          console.log("Error while getting rubrics");
-        });
-    }
   };
 
   getSubscription() {

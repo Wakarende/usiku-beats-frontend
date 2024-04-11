@@ -197,10 +197,10 @@ class Preload extends Phaser.Scene {
     // background_music.play()
     console.log(data);
     this.track = data.track;
-    // this.track.mp3_url = this.track.mp3_file;
-    // this.track.midi_url = this.track.midi_file;
-	this.track.mp3_url = "./assets/sounds/sg_test.mp3";
-    this.track.midi_url = "./assets/sounds/sg_test.mid"
+    this.track.mp3_url = this.track.mp3_file;
+    this.track.midi_url = this.track.midi_file;
+	// this.track.mp3_url = "./assets/sounds/davido.mp3";
+    // this.track.midi_url = "./assets/sounds/davido.mid"
     this.track.thumbnail =`${this.track.song_name}-thumbnail`
 
 
