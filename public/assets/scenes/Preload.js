@@ -1,17 +1,10 @@
-// You can write more code here
-
-/* START OF COMPILED CODE */
-
 class Preload extends Phaser.Scene {
 
 	constructor() {
 		super("Preload");
-
-		/* START-USER-CTR-CODE */
-    // Write your code here.
-    /* END-USER-CTR-CODE */
 	}
 
+//#region COMPILED CODE
 	/** @returns {void} */
 	editorPreload() {
 
@@ -158,9 +151,9 @@ class Preload extends Phaser.Scene {
 	/** @type {Phaser.GameObjects.Text} */
 	my_high_score;
 
-	/* START-USER-CODE */
+//#endregion
 
-  // Write your code here
+//#region USER CODE
   preload() {
 
 	this.load.image(`${this.track.song_name}-thumbnail`, this.track.thumbnail_file);
@@ -171,11 +164,6 @@ class Preload extends Phaser.Scene {
 		this.thumbnail_image.setTexture(`${this.track.song_name}-thumbnail`)
 
 	});
-
-
-
-
-
 
 	this.createGradient();
     this.editorCreate();
@@ -191,8 +179,6 @@ class Preload extends Phaser.Scene {
 	let savedScore = scores[this.track.song_name] || 0;
 	this.my_high_score.setText(Math.round(savedScore))
 
-
-
     this.load.on(Phaser.Loader.Events.PROGRESS, (p) => {
       // console.log(Math.round(p/1 * 100))
       this.percentage.setText("LOADING..." + Math.round((p / 1) * 100) + " %");
@@ -204,16 +190,17 @@ class Preload extends Phaser.Scene {
       this.track.mp3_url
     );
 
-
     this.editorPreload();
   }
 
   init(data) {
     // background_music.play()
-    // console.log(data);
+    console.log(data);
     this.track = data.track;
     this.track.mp3_url = this.track.mp3_file;
     this.track.midi_url = this.track.midi_file;
+	// this.track.mp3_url = "./assets/sounds/davido.mp3";
+    // this.track.midi_url = "./assets/sounds/davido.mid"
     this.track.thumbnail =`${this.track.song_name}-thumbnail`
 
 
@@ -238,15 +225,12 @@ class Preload extends Phaser.Scene {
     //   this.scene.start("Level", { track: this.track, midi: this.midi });
     // });
 
-
-
-
     this.play_button.setVisible(true);
     this.play_text.setVisible(true);
 
     this.play_button.setInteractive()
     this.play_button.on("pointerup", ()=>{
-      this.scale.startFullscreen();
+    //   this.scale.startFullscreen();
       this.cameras.main.fadeOut(500); // the number is the duration in ms
 
       this.cameras.main.once("camerafadeoutcomplete", () => {
@@ -255,8 +239,6 @@ class Preload extends Phaser.Scene {
       });
 
     })
-
-
   }
 
 
@@ -291,10 +273,5 @@ class Preload extends Phaser.Scene {
       .setDepth(-1);
   }
 
-
-  /* END-USER-CODE */
+ //#endregion
 }
-
-/* END OF COMPILED CODE */
-
-// You can write more code here

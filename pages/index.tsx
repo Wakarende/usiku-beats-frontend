@@ -138,22 +138,6 @@ class HomePage extends Component<any, State> {
 
     this.props.mainActions.setRubrics(rubrics);
 
-    // {
-    //   contentService
-    //     .getRubrics()
-    //     .then((d: any) => {
-    //       var rubrics = d.data;
-
-    //       rubrics = customRubics;
-    //       this.setState({ rubrics });
-    //       // console.log("rubrics",rubrics);
-
-    //       this.props.mainActions.setRubrics(rubrics);
-    //     })
-    //     .catch((e) => {
-    //       console.log("Error while getting rubrics");
-    //     });
-    // }
   };
 
   getSubscription() {
