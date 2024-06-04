@@ -54,7 +54,7 @@ State> {
     var rubricId = this.props.rubricId;
 
 
-    axios.get("song-list/?limit=10")
+    axios.get("song-list/?limit=3")
     .then((d:any)=>{
       
       var games = d.data
@@ -164,7 +164,7 @@ State> {
      return(
         <Container>
             <Row className='kayfo-block-header'>
-             <div className='kayfo-block-title'><span>{this.props.title}</span></div>
+             {/* <div className='kayfo-block-title'><span>{this.props.title}</span></div> */}
              {/* <div className='kayfo-block-arrow' ><Image src={require("../assets/icons/arrow.png")} alt="" /></div> */}
             </Row>
             <Row>
@@ -172,28 +172,30 @@ State> {
 
                 <div style={{minWidth:"100%", display:'flex', flexDirection:'row'}}>
 
-                    {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).map((item,index)=>
+                    {this.state.items.map((item,index)=>
 
                         
                         <div className='kayfo-masonry-container' key={index} style={{display:'flex', maxHeight:110, flexDirection:'column'}}>
-                            <Col className='kayfo-masonry-item' style={{maxHeight:110, minWidth:110}}  onClick={()=>this.gotoGameDetail(item,index)} >
+                            <Col className='kayfo-masonry-item' style={{maxHeight:110, minWidth:110, }}  onClick={()=>this.gotoGameDetail(item,index)} >
                               <Tooltip placement='top' title={item.song_name}>
                                 <Image src={item.thumbnail_file} alt="" width={110} height={110} style={{width:110, height:'100%', objectFit:'cover', borderRadius:6}}/>
                               </Tooltip>
                             </Col>
                             <div className="song-info" style={{maxWidth:"120px"}}>
+                              
                               <div className="text-container">
+                              <p>UNLOCKING</p>
                                 <p>{item.song_name}</p>
-                                <p>{item.artist_name}</p>
+                                {/* <p>{item.artist_name}</p> */}
                               </div>
-                              <ReactCountryFlag 
+                              {/* <ReactCountryFlag 
                               countryCode={item.country_code} // Use the appropriate country code
                               svg
                               style={{
                                 width: '1.1em',
                                 height: '1.1em',
                               }}
-                            />
+                            /> */}
                             </div>
 
                         </div>
@@ -204,7 +206,7 @@ State> {
 
                     )}
                     
-                    {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length == 0 &&
+                    {this.state.items.length == 0 &&
                       <Col className='kayfo-filter-no-result-box'>
                         {this.state.completed ? 'No result' : 'loading...'}
                       </Col>

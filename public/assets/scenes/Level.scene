@@ -228,7 +228,7 @@
                     "label": "beat",
                     "components": [],
                     "x": 180,
-                    "y": 252,
+                    "y": 177,
                     "originX": 0.5,
                     "originY": 0.5,
                     "text": "BEAT",
@@ -244,7 +244,7 @@
                     "label": "missed",
                     "components": [],
                     "x": 180,
-                    "y": 287,
+                    "y": 212,
                     "originX": 0.5,
                     "originY": 0.5,
                     "text": "MISSED",
@@ -252,6 +252,62 @@
                     "fontSize": "50px",
                     "color": "#666363ff",
                     "stroke": "#666363ff"
+                },
+                {
+                    "type": "Image",
+                    "id": "e9879bf3-d096-4183-9a96-fb099117c87f",
+                    "label": "continue_button",
+                    "scope": "CLASS",
+                    "components": [],
+                    "texture": {
+                        "key": "play_button"
+                    },
+                    "x": 180,
+                    "y": 397,
+                    "scaleX": 0.8,
+                    "scaleY": 0.8
+                },
+                {
+                    "type": "Text",
+                    "id": "172fa5ca-1350-4751-b64a-1bfc70379a60",
+                    "label": "continue_text",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 397,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "CONTINUE",
+                    "fontFamily": "DINPro",
+                    "fontSize": "22px"
+                },
+                {
+                    "type": "Image",
+                    "id": "ace29546-73d5-43e3-a556-3ddf00687dc0",
+                    "label": "quit_button",
+                    "scope": "CLASS",
+                    "components": [],
+                    "texture": {
+                        "key": "play_button"
+                    },
+                    "x": 180,
+                    "y": 317,
+                    "scaleX": 0.8,
+                    "scaleY": 0.8
+                },
+                {
+                    "type": "Text",
+                    "id": "a343ecfd-353b-485c-813f-aeef04eaff3b",
+                    "label": "quit_text",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 317,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "QUIT",
+                    "fontFamily": "DINPro",
+                    "fontSize": "22px"
                 }
             ]
         },

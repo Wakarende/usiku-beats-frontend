@@ -306,18 +306,19 @@ State> {
             <Row>
               <Col className='kayfo-masonry-main' style={{overflowX:'auto', overflowY:'hidden'}}>
 
-                {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length > 0 &&
+                {this.state.items.length > 0 &&
                 <div style={{minWidth:"100%", display:'flex', flexDirection:'row'}}>
 
-                    {this.renderMasonry(this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag))).map((item,index)=>
+                    {this.renderMasonry(this.state.items.map((item,index)=>
                       {
                         return item
                       }
-                    )}
+                    ))
+                    }
 
                 </div>
                  }
-                 {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length == 0 &&
+                 {this.state.items.length == 0 &&
                   <Col className='kayfo-filter-no-result-box'>
                     {this.state.completed ? 'No result' : 'loading...'}
                   </Col>

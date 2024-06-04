@@ -37,7 +37,7 @@ class CategoriesFooter extends Component<any, State> {
               <div className='kayfo-block-title'><span>Other Categories</span></div>
             </Row>
             <Row>
-            <Col>
+            {/* <Col>
 
                 <div style={{display:'flex', flexDirection:'row', flexWrap:'wrap'}}>
 
@@ -49,7 +49,7 @@ class CategoriesFooter extends Component<any, State> {
                   )}
 
                 </div>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
 

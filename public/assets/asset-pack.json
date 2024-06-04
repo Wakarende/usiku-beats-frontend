@@ -19,6 +19,11 @@
                 "key": "Beat2"
             },
             {
+                "url": "assets/scenes/BeatMissed.js",
+                "type": "sceneFile",
+                "key": "BeatMissed"
+            },
+            {
                 "url": "assets/sprites/playscene/beats2.png",
                 "type": "image",
                 "key": "beats2"
@@ -109,6 +114,11 @@
                 "url": "assets/sprites/playscene/gameplay_bg.png",
                 "type": "image",
                 "key": "gameplay_bg"
+            },
+            {
+                "url": "assets/sprites/playscene/gem.png",
+                "type": "image",
+                "key": "gem"
             },
             {
                 "url": "assets/sprites/playscene/great_popup.png",

@@ -14,6 +14,10 @@
   background-color: #2d1b35;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 body
 {

@@ -282,7 +282,7 @@ any> {
      return(
         <div className="cmd-page">
           
-            <Header hidebtn={true} />
+            {/* <Header hidebtn={true} /> */}
             <div className='kayfo-body-content'>
 
              <div className='kayfo-block-title' style={{textAlign:'center', marginTop:15, textTransform:'uppercase'}}><span>Mon compte</span></div>

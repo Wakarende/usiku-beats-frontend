@@ -1,0 +1,145 @@
+{
+    "id": "b416082d-0628-4660-af36-6ce5099fafeb",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "BeatMissed",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "6bd51e95-2b42-4f51-aa2f-95d153d83491",
+            "label": "overlay",
+            "components": [],
+            "texture": {
+                "key": "overlay"
+            },
+            "x": 180,
+            "y": 320
+        },
+        {
+            "type": "Image",
+            "id": "c7f7f33d-37a9-4cbb-8eb2-6812e1a588b0",
+            "label": "quit_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button"
+            },
+            "x": 180,
+            "y": 349.32517808240533,
+            "scaleX": 0.8,
+            "scaleY": 0.8
+        },
+        {
+            "type": "Text",
+            "id": "2dd7115c-9a8d-40ef-96f1-88620b2b482e",
+            "label": "quit_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 349.32517808240533,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "QUIT",
+            "fontFamily": "DINPro",
+            "fontSize": "22px"
+        },
+        {
+            "type": "Image",
+            "id": "70bff7bf-ac77-44d4-9ae2-41550c5e642c",
+            "label": "continue_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "play_button"
+            },
+            "x": 180,
+            "y": 429.3251780824053,
+            "scaleX": 0.8,
+            "scaleY": 0.8
+        },
+        {
+            "type": "Text",
+            "id": "457cf2b1-3aa6-47ef-af79-c11b5e2367cd",
+            "label": "continue_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 207,
+            "y": 429.3251780824053,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "CONTINUE",
+            "fontFamily": "DINPro",
+            "fontSize": "12px"
+        },
+        {
+            "type": "Text",
+            "id": "c30051a9-c41a-4a35-b96a-7996061c1df2",
+            "label": "missed",
+            "components": [],
+            "x": 180,
+            "y": 244.32517808240533,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "MISSED",
+            "fontFamily": "Righteous-Regular",
+            "fontSize": "50px",
+            "color": "#666363ff",
+            "stroke": "#666363ff"
+        },
+        {
+            "type": "Text",
+            "id": "a8d4698c-ca6b-407c-8106-8a70ab27e66f",
+            "label": "beat",
+            "components": [],
+            "x": 181,
+            "y": 209.32517808240533,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "BEAT",
+            "align": "center",
+            "fontFamily": "DINPro",
+            "fontSize": "18px",
+            "color": "#666363ff",
+            "stroke": "#666363ff"
+        },
+        {
+            "type": "Image",
+            "id": "1d8268f2-d9e0-4ec6-af51-8f198628f95c",
+            "label": "gem",
+            "components": [],
+            "texture": {
+                "key": "gem"
+            },
+            "x": 122,
+            "y": 430,
+            "scaleX": 0.05,
+            "scaleY": 0.05
+        },
+        {
+            "type": "Text",
+            "id": "22189f46-237f-45fa-a043-d9c04cf744e4",
+            "label": "gem_count",
+            "scope": "CLASS",
+            "components": [],
+            "x": 142,
+            "y": 429,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "5",
+            "fontFamily": "DINPro",
+            "fontSize": "12px"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

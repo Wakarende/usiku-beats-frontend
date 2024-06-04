@@ -2,7 +2,8 @@ import React, { useRef, useEffect } from "react";
 import Phaser from "phaser";
 import { useRouter } from "next/router";
 import WebFont from "webfontloader";
-
+import { useDispatch } from "react-redux";
+import { updateUser } from "../redux/main/authActions";
 class Boot extends Phaser.Scene {
   preload() {
     this.load.pack("pack", "assets/preload-pack.json");
@@ -35,7 +36,13 @@ const PhaserGame: React.FC = () => {
   const gameRef = useRef<Phaser.Game | null>(null); // Ref to store the game instance
 
   const router = useRouter();
+  const dispatch = useDispatch();
   const { track } = router.query;
+
+  const updateUserEventListener = (data) => {
+    console.log(data);
+    dispatch(updateUser(data));
+  };
 
   useEffect(() => {
     WebFont.load({
@@ -97,17 +104,22 @@ const PhaserGame: React.FC = () => {
             }
           }
           gameRef.current.registry.set("trackData", trackData);
-          
-          
+
           //   if (scene && typeof scene === 'string') {
           //     startScene(gameRef.current, scene);
           //   }
           // };
           // gameRef.current.events.on('scenesLoaded', scenesLoadedListener);
+          gameRef.current.events.on("updateUserEvent", updateUserEventListener);
 
           return () => {
             if (gameRef.current) {
               // gameRef.current.events.off('scenesLoaded', scenesLoadedListener);
+
+              gameRef.current.events.off(
+                "updateUserEvent",
+                updateUserEventListener
+              );
 
               gameRef.current.destroy(true);
               gameRef.current = null; // Reset the ref to null after destroying the game

@@ -111,12 +111,11 @@ State> {
     router.push({pathname:"/games", query : {title : _title, rubricId : this.props.rubricId} })
   }
 
-  gotoGameDetail = (_game:any, _index:number)=>{
+  gotoGameDetail = ()=>{
     const { router } = this.props;
 
     router.push({
-      pathname: "/game",
-      query: { track: JSON.stringify(_game) } // for example
+      pathname: "/",
     });
 
   }
@@ -141,35 +140,40 @@ State> {
 
    render(): React.ReactNode {
      return(
-        <Container>
-            <Row className='kayfo-block-header'>
-             <div className='kayfo-block-title'><span>{this.props.title}</span></div>
-             {/* <div className='kayfo-block-arrow' ><Image src={require("../assets/icons/arrow.png")} alt="" /></div> */}
-            </Row>
-            <Row>
-             <Col className='kayfo-masonry-main' style={{overflowX:'auto', overflowY:'hidden'}}>
-
-                <div style={{minWidth:"100%", display:'flex', flexDirection:'row'}}>
-
-                    {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).map((item,index)=>
-                        <div className='kayfo-masonry-container' key={index} style={{display:'flex', maxHeight:110, minHeight:130, flexDirection:'column', justifyContent:'space-between'}}>
-                            <Col className='kayfo-masonry-item' style={{maxHeight:110}}  onClick={()=>this.gotoGameDetail(item, index)}  >
-                              <Tooltip placement='top' title={item.song_name}>
-                                <Image src={item.thumbnail_file} alt="" width={234} height={110} style={{width:234, height:'100%', objectFit:'cover', borderRadius:6}}/>
-                              </Tooltip>
-                            </Col>
+<Container>
+    <Row className='kayfo-block-header'>
+        <div className='kayfo-block-title'><span>{this.props.title}</span></div>
+        {/* Code for the arrow icon, if needed */}
+    </Row>
+    <Row>
+        <Col className='kayfo-masonry-main' style={{ width: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+                <div className='kayfo-masonry-container' style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Col className='kayfo-masonry-item' style={{ width: '100%' }} onClick={() => this.gotoGameDetail()}>
+                        <div style={{
+                            width: '100%', // Changed to 100% to span the entire screen width
+                            height: 110,
+                            backgroundColor: 'yourColor',
+                            borderRadius: 6,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <span style={{
+                                color: 'white',
+                                fontSize: '20px',
+                                fontWeight: 'bold'
+                            }}>Go to all songs</span>
                         </div>
-                    )}
-                    {this.state.items.filter(item => item.tags.includes(this.props.mainState.filterTag)).length == 0 &&
-                      <Col className='kayfo-filter-no-result-box'>
-                        {this.state.completed ? 'No result' : 'loading...'}
-                      </Col>
-                    }
-
+                    </Col>
                 </div>
-             </Col>
-            </Row>
-        </Container>
+            </div>
+        </Col>
+    </Row>
+</Container>
+
+
+
     )
   };
 };

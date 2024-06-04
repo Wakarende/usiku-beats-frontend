@@ -22,7 +22,16 @@
                     ]
                 }
             ]
-        }
+        },
+        // async redirects() {
+        //     return [
+        //       {
+        //         source: '/',
+        //         destination: '/hub', // Change '/new-homepage' to your desired path
+        //         permanent: true,
+        //       },
+        //     ]
+        //   },
     }
 
     module.exports = nextConfig

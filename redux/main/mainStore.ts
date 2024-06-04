@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import mainReducer from './mainReducer';
+import authReducer from './authReducer';
 // import { createWrapper } from  "next-redux-wrapper";
 
 
 const mainStore = configureStore({
   reducer: {
-    mainReducer: mainReducer,
+    auth : authReducer
+    // mainReducer: mainReducer,
   },
 });
 
