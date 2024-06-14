@@ -39,8 +39,10 @@ const PhaserGame: React.FC = () => {
   const dispatch = useDispatch();
   const { track } = router.query;
 
-  const updateUserEventListener = (data) => {
-    console.log(data);
+  const updateUserEventListener = ({ data, new_level}) => {
+    // console.log(data);
+    // console.log(new_level);
+    
     dispatch(updateUser(data));
   };
 

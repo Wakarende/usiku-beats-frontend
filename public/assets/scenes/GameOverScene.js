@@ -3,111 +3,118 @@
 /* START OF COMPILED CODE */
 
 class GameOverScene extends Phaser.Scene {
+  constructor() {
+    super("GameOverScene");
 
-	constructor() {
-		super("GameOverScene");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // hub_background
+    this.add.image(180, 320, "hub_background");
 
-		// hub_background
-		this.add.image(180, 320, "hub_background");
+    // current_score
+    const current_score = this.add.text(180, 444, "", {});
+    current_score.setOrigin(0.5, 0.5);
+    current_score.text = "00000";
+    current_score.setStyle({
+      fontFamily: "Righteous-Regular",
+      fontSize: "40px",
+    });
 
-		// current_score
-		const current_score = this.add.text(180, 444, "", {});
-		current_score.setOrigin(0.5, 0.5);
-		current_score.text = "00000";
-		current_score.setStyle({ "fontFamily": "Righteous-Regular", "fontSize": "40px" });
+    // song_name
+    const song_name = this.add.text(180, 66, "", {});
+    song_name.setOrigin(0.5, 0.5);
+    song_name.text = "song_name";
+    song_name.setStyle({ fontFamily: "Righteous-Regular", fontSize: "22px" });
 
-		// song_name
-		const song_name = this.add.text(180, 66, "", {});
-		song_name.setOrigin(0.5, 0.5);
-		song_name.text = "song_name";
-		song_name.setStyle({ "fontFamily": "Righteous-Regular", "fontSize": "22px" });
+    // artist_name
+    const artist_name = this.add.text(180, 40, "", {});
+    artist_name.setOrigin(0.5, 0.5);
+    artist_name.text = "artist_name";
+    artist_name.setStyle({ fontFamily: "Righteous-Regular", fontSize: "15px" });
 
-		// artist_name
-		const artist_name = this.add.text(180, 40, "", {});
-		artist_name.setOrigin(0.5, 0.5);
-		artist_name.text = "artist_name";
-		artist_name.setStyle({ "fontFamily": "Righteous-Regular", "fontSize": "15px" });
+    // star_empty_4
+    const star_empty_4 = this.add.image(240, 402, "star_empty");
 
-		// star_empty_4
-		const star_empty_4 = this.add.image(240, 402, "star_empty");
+    // star_empty_3
+    const star_empty_3 = this.add.image(210, 402, "star_empty");
 
-		// star_empty_3
-		const star_empty_3 = this.add.image(210, 402, "star_empty");
+    // star_empty_2
+    const star_empty_2 = this.add.image(180, 402, "star_empty");
 
-		// star_empty_2
-		const star_empty_2 = this.add.image(180, 402, "star_empty");
+    // star_empty_1
+    const star_empty_1 = this.add.image(150, 402, "star_empty");
 
-		// star_empty_1
-		const star_empty_1 = this.add.image(150, 402, "star_empty");
+    // star_empty
+    const star_empty = this.add.image(120, 402, "star_empty");
 
-		// star_empty
-		const star_empty = this.add.image(120, 402, "star_empty");
+    // retry_button
+    const retry_button = this.add.image(180, 515, "play_button");
 
-		// retry_button
-		const retry_button = this.add.image(180, 515, "play_button");
+    // carousel
+    const carousel = this.add.image(180, 229, "carousel_2");
 
-		// carousel
-		const carousel = this.add.image(180, 229, "carousel_2");
+    // continue_button
+    const continue_button = this.add.image(180, 586, "play_button_inactive");
 
-		// continue_button
-		const continue_button = this.add.image(180, 586, "play_button_inactive");
+    // retrytext
+    const retrytext = this.add.text(180, 515, "", {});
+    retrytext.setOrigin(0.5, 0.5);
+    retrytext.text = "Retry";
+    retrytext.setStyle({ fontFamily: "DINPro", fontSize: "18px" });
 
-		// retrytext
-		const retrytext = this.add.text(180, 515, "", {});
-		retrytext.setOrigin(0.5, 0.5);
-		retrytext.text = "Retry";
-		retrytext.setStyle({ "fontFamily": "DINPro", "fontSize": "18px" });
+    // continuetext
+    const continuetext = this.add.text(180, 586, "", {});
+    continuetext.setOrigin(0.5, 0.5);
+    continuetext.text = "Song Selector";
+    continuetext.setStyle({ fontFamily: "DINPro", fontSize: "18px" });
 
-		// continuetext
-		const continuetext = this.add.text(180, 586, "", {});
-		continuetext.setOrigin(0.5, 0.5);
-		continuetext.text = "Song Selector";
-		continuetext.setStyle({ "fontFamily": "DINPro", "fontSize": "18px" });
+    // lists
+    const stars = [
+      star_empty,
+      star_empty_1,
+      star_empty_2,
+      star_empty_3,
+      star_empty_4,
+    ];
 
-		// lists
-		const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
+    this.current_score = current_score;
+    this.song_name = song_name;
+    this.artist_name = artist_name;
+    this.retry_button = retry_button;
+    this.carousel = carousel;
+    this.continue_button = continue_button;
+    this.retrytext = retrytext;
+    this.continuetext = continuetext;
+    this.stars = stars;
 
-		this.current_score = current_score;
-		this.song_name = song_name;
-		this.artist_name = artist_name;
-		this.retry_button = retry_button;
-		this.carousel = carousel;
-		this.continue_button = continue_button;
-		this.retrytext = retrytext;
-		this.continuetext = continuetext;
-		this.stars = stars;
+    this.events.emit("scene-awake");
+  }
 
-		this.events.emit("scene-awake");
-	}
+  /** @type {Phaser.GameObjects.Text} */
+  current_score;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_name;
+  /** @type {Phaser.GameObjects.Image} */
+  retry_button;
+  /** @type {Phaser.GameObjects.Image} */
+  carousel;
+  /** @type {Phaser.GameObjects.Image} */
+  continue_button;
+  /** @type {Phaser.GameObjects.Text} */
+  retrytext;
+  /** @type {Phaser.GameObjects.Text} */
+  continuetext;
+  /** @type {Phaser.GameObjects.Image[]} */
+  stars;
 
-	/** @type {Phaser.GameObjects.Text} */
-	current_score;
-	/** @type {Phaser.GameObjects.Text} */
-	song_name;
-	/** @type {Phaser.GameObjects.Text} */
-	artist_name;
-	/** @type {Phaser.GameObjects.Image} */
-	retry_button;
-	/** @type {Phaser.GameObjects.Image} */
-	carousel;
-	/** @type {Phaser.GameObjects.Image} */
-	continue_button;
-	/** @type {Phaser.GameObjects.Text} */
-	retrytext;
-	/** @type {Phaser.GameObjects.Text} */
-	continuetext;
-	/** @type {Phaser.GameObjects.Image[]} */
-	stars;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
   init(data) {
@@ -124,7 +131,7 @@ class GameOverScene extends Phaser.Scene {
     console.log("GameOverScene.js create()");
 
     this.editorCreate();
-    const router = this.registry.get('router');
+    const router = this.registry.get("router");
 
     // this.cameras.main.fadeIn(500);
 
@@ -138,7 +145,7 @@ class GameOverScene extends Phaser.Scene {
     this.retry_button.setInteractive();
     this.retry_button.on("pointerup", () => {
       // start_sfx.play();
-      this.current_track.stop()
+      this.current_track.stop();
       this.scoreTickSound.stop();
       // background_music.stop()
       this.scene.stop("GameOverScene");
@@ -148,10 +155,10 @@ class GameOverScene extends Phaser.Scene {
     this.continue_button.setInteractive();
     this.continue_button.on("pointerup", () => {
       // start_sfx.play();
-      this.current_track.stop()
+      this.current_track.stop();
       this.scoreTickSound.stop();
       this.scene.stop("GameOverScene");
-      router.push('/')
+      router.push("/");
 
       // this.scene.start("BufferScene", { prime: this.track.prime });
     });
@@ -167,9 +174,8 @@ class GameOverScene extends Phaser.Scene {
     let targetScore = Math.trunc(this.track.current_score);
 
     // Load the sound effect
-    this.scoreTickSound = this.sound.add('Score_Counter_Sfx');
+    this.scoreTickSound = this.sound.add("Score_Counter_Sfx");
     this.scoreTickSound.setLoop(false); // If you want to loop the sound
-
 
     this.scoreTickSound.play();
     // create a tween that updates the scoreText
@@ -183,7 +189,6 @@ class GameOverScene extends Phaser.Scene {
         this.current_score.setText(Math.round(tween.getValue()));
       },
       onComplete: () => {
-
         // Stop the sound effect
         this.scoreTickSound.stop();
 
@@ -265,24 +270,24 @@ class GameOverScene extends Phaser.Scene {
   }
 
   setStars(score) {
-    let fullStarsCount = 0;
+    // let this.fullStarsCount = 0;
 
     if (score < 20000) {
-      fullStarsCount = 1;
+      this.fullStarsCount = 1;
     } else if (score >= 20000 && score < 50000) {
-      fullStarsCount = 2;
+      this.fullStarsCount = 2;
     } else if (score >= 50000 && score < 80000) {
-      fullStarsCount = 3;
+      this.fullStarsCount = 3;
     } else if (score >= 80000 && score < 95000) {
-      fullStarsCount = 4;
+      this.fullStarsCount = 4;
     } else if (score > 95000) {
-      fullStarsCount = 5;
+      this.fullStarsCount = 5;
     }
 
-    let starSound = this.sound.add('Star_Reward_Sfx');
+    let starSound = this.sound.add("Star_Reward_Sfx");
 
     this.stars.forEach((star, index) => {
-      if (index < fullStarsCount) {
+      if (index < this.fullStarsCount) {
         this.tweens.add({
           targets: star,
           delay: index * 200, // delay based on index to make stars appear one by one
@@ -314,6 +319,85 @@ class GameOverScene extends Phaser.Scene {
         star.setTexture("star_empty");
       }
     });
+
+    this.updateData();
+  }
+
+  getStarsFromScore(score) {
+    let starsCount;
+
+    if (score < 20000) {
+      starsCount = 1;
+    } else if (score >= 20000 && score < 50000) {
+      starsCount = 2;
+    } else if (score >= 50000 && score < 80000) {
+      starsCount = 3;
+    } else if (score >= 80000 && score < 95000) {
+      starsCount = 4;
+    } else if (score >= 95000) {
+      starsCount = 5;
+    } else {
+      starsCount = 0; // Consider handling unexpected cases
+    }
+
+    return starsCount;
+  }
+
+  updateData() {
+    let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+
+    const songInstance =
+      updatedUserData.profile.player.player_song_instances.find(
+        (instance) => instance.song.id === this.track.id
+      );
+    if (songInstance) {
+      let prevStarCount = 0;
+      if (songInstance.no_of_plays !== 0) {
+        prevStarCount = this.getStarsFromScore(songInstance.high_score);
+      }
+
+      // Update the high score if the current score is higher
+      songInstance.high_score = Math.max(
+        songInstance.high_score,
+        this.track.current_score
+      );
+
+      // If it's the first play or if the current stars exceed the stars from the highest score
+      if (
+        songInstance.no_of_plays === 0 ||
+        this.fullStarsCount > prevStarCount
+      ) {
+        // Update total stars only if current stars are greater
+        updatedUserData.profile.player.total_stars +=
+          this.fullStarsCount - (prevStarCount || 0);
+      }
+
+      songInstance.no_of_plays++;
+
+      // Calculate and update player level based on the new total stars
+      const totalStars = updatedUserData.profile.player.total_stars;
+      const currentLevel = updatedUserData.profile.player.level;
+      let newLevel = currentLevel;
+      if (totalStars >= 20 && currentLevel < 5) {
+        newLevel = 5;
+      } else if (totalStars >= 15 && currentLevel < 4) {
+        newLevel = 4;
+      } else if (totalStars >= 10 && currentLevel < 3) {
+        newLevel = 3;
+      } else if (totalStars >= 5 && currentLevel < 2) {
+        newLevel = 2;
+      }
+
+      let newLevelAchieved = false;
+      // Check if a new level has been achieved
+      if (newLevel > currentLevel) {
+        updatedUserData.profile.player.level = newLevel;
+        newLevelAchieved = true; // Set the flag to true if new level is reached
+      }
+
+      // Emit the event with the flag indicating whether a new level has been achieved
+      this.game.events.emit("updateUserEvent", {data: updatedUserData, new_level: newLevelAchieved})
+    }
   }
 
   /* END-USER-CODE */

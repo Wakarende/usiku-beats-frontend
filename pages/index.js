@@ -28,6 +28,7 @@ import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 import { Tooltip } from "@mui/material";
 import { updateUser } from "../redux/main/authActions";
 import { useDispatch } from "react-redux";
+import DiscFull from "@mui/icons-material/DiscFull";
 
 let _rubrics = [
   {
@@ -80,7 +81,6 @@ const HubScreen = () => {
   useEffect(() => {
     checkAnon();
     checkRedirect();
-    getSongs();
     checkFirstLoginOfDay();
   }, [user_data]);
 
@@ -109,26 +109,47 @@ const HubScreen = () => {
     }
   };
 
-  const checkAnon = () => {
-
+  const checkAnon = async () => {
     if (!user_data) {
-      console.log('setting ftue');
-      // FTUE 
-      let anonUserObject = {
-        profile: {
-          id: Math.floor(100000 + Math.random() * 900000).toString(),
-          player: {
-            level: 1,
-            total_discs: 0,
-            total_gems: 20,
-            total_stars: 0,
-            data: null,
-          },
-        },
-      };
-      dispatch(updateUser(anonUserObject))
-    }
+      console.log("setting ftue");
+      setLoading(true);
 
+      try {
+        let response = await axios.get(
+          `${BASE_URL}initial-song-list/?ids=14&ids=12&ids=13`
+        );
+
+        // FTUE
+        let anonUserObject = {
+          profile: {
+            id: Math.floor(100000 + Math.random() * 900000).toString(),
+            player: {
+              level: 1,
+              total_discs: 0,
+              total_gems: 20,
+              total_stars: 0,
+              player_song_instances: response.data,
+              data: null,
+            },
+          },
+        };
+        dispatch(updateUser(anonUserObject));
+
+        const songList = response.data.map((item) => item.song);
+
+        setSongs(songList);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("error getting initial songs", error);
+      }
+    } else {
+      setSongs(
+        user_data?.profile?.player?.player_song_instances?.map(
+          (item) => item.song
+        )
+      );
+    }
   };
 
   const getSongs = async () => {
@@ -188,7 +209,7 @@ const HubScreen = () => {
 
   return (
     <div className="cmd-page">
-      <Header/>
+      <Header />
 
       <Container>
         <Row className="kayfo-block-header">
@@ -201,7 +222,7 @@ const HubScreen = () => {
             className="kayfo-masonry-main"
             style={{ overflowX: "auto", overflowY: "hidden" }}
           >
-            {songs.length > 0 ? (
+            {songs?.length > 0 ? (
               <div
                 style={{
                   minWidth: "100%",
@@ -209,7 +230,7 @@ const HubScreen = () => {
                   flexDirection: "row",
                 }}
               >
-                {songs.map((item, index) => {
+                {songs?.map((item, index) => {
                   return (
                     <div
                       key={index}
@@ -285,7 +306,7 @@ const HubScreen = () => {
               flexDirection: "row",
             }}
           >
-            {songs.slice(-3).map((item, index) => (
+            {songs?.slice(-3).map((item, index) => (
               <div
                 className="kayfo-masonry-container"
                 key={index}
@@ -326,7 +347,31 @@ const HubScreen = () => {
               </div>
             ))}
 
-            {songs.length == 0 && (
+{/* <div
+                className="kayfo-masonry-container"
+                style={{
+                  display: "flex",
+                  maxHeight: 110,
+                  flexDirection: "column",
+                }}
+              >
+                <Col
+                  className="kayfo-masonry-item flex flex-col justify-center items-center"
+                  style={{ maxHeight: 110, minWidth: 110, color: "white", }}
+                >
+                    <p className="text-2xl"> <DiscFull className="text-blue-500 text-6xl" /> 30 </p>
+                    <p className="text-2xl">discs</p>
+
+                </Col>
+                <div className="song-info" style={{ maxWidth: "120px" }}>
+                  <div className="text-container">
+                    <p>Earn 30 more discs to unlock your next song</p>
+                  </div>
+                </div>
+
+              </div> */}
+
+            {songs?.length == 0 && (
               <Col className="kayfo-filter-no-result-box">
                 {!loading ? "No result" : "loading..."}
               </Col>
