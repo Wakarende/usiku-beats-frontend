@@ -49,7 +49,8 @@ const Header = () => {
   // }, []);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary kayfo-header">
+    <Navbar expand="lg" className="bg-body-tertiary kayfo-header" style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: '#fff' }}>
+
       <Container fluid className="flex items-center">
         {/* <Navbar.Brand href="/">
             <Image

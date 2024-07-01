@@ -306,7 +306,7 @@ const HubScreen = () => {
               flexDirection: "row",
             }}
           >
-            {songs?.slice(-3).map((item, index) => (
+            {songs?.slice(-2).map((item, index) => (
               <div
                 className="kayfo-masonry-container"
                 key={index}
@@ -347,29 +347,30 @@ const HubScreen = () => {
               </div>
             ))}
 
-{/* <div
-                className="kayfo-masonry-container"
-                style={{
-                  display: "flex",
-                  maxHeight: 110,
-                  flexDirection: "column",
-                }}
+            <div
+              className="kayfo-masonry-container"
+              style={{
+                display: "flex",
+                maxHeight: 110,
+                flexDirection: "column",
+              }}
+            >
+              <Col
+                className="kayfo-masonry-item flex flex-col justify-center items-center"
+                style={{ maxHeight: 110, minWidth: 110, color: "white" }}
               >
-                <Col
-                  className="kayfo-masonry-item flex flex-col justify-center items-center"
-                  style={{ maxHeight: 110, minWidth: 110, color: "white", }}
-                >
-                    <p className="text-2xl"> <DiscFull className="text-blue-500 text-6xl" /> 30 </p>
-                    <p className="text-2xl">discs</p>
-
-                </Col>
-                <div className="song-info" style={{ maxWidth: "120px" }}>
-                  <div className="text-container">
-                    <p>Earn 30 more discs to unlock your next song</p>
-                  </div>
+                <p className="text-2xl">
+                  {" "}
+                  {/* <DiscFull className="text-blue-500 text-6xl" /> {user_data?.profile?.player?.total_discs || 0} */}
+                </p>
+                <p className="text-2xl">discs</p>
+              </Col>
+              <div className="song-info" style={{ maxWidth: "120px" }}>
+                <div className="text-container">
+                  <p>Earn 30 more discs to unlock your next song</p>
                 </div>
-
-              </div> */}
+              </div>
+            </div>
 
             {songs?.length == 0 && (
               <Col className="kayfo-filter-no-result-box">
@@ -407,7 +408,7 @@ const HubScreen = () => {
                 <Col
                   className="kayfo-masonry-item"
                   style={{ width: "100%" }}
-                  onClick={() => console.log("full lib")}
+                  onClick={() => router.push("/library")}
                 >
                   <div
                     style={{

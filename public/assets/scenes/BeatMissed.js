@@ -132,10 +132,7 @@ class BeatMissed extends Phaser.Scene {
   subtractGems(amount) {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     user_data.profile.player.total_gems -= amount;
-    // localStorage.setItem('user_data', JSON.stringify(user_data));
-
-    // Emit an event to update the user data in the Redux store
-    this.game.events.emit("updateUserEvent", user_data);
+    this.game.events.emit("updateUserEvent", { data: user_data });
   }
 
   /* END-USER-CODE */
