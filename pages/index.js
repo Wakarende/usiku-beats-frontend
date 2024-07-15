@@ -29,6 +29,7 @@ import { Tooltip } from "@mui/material";
 import { updateUser } from "../redux/main/authActions";
 import { useDispatch } from "react-redux";
 import DiscFull from "@mui/icons-material/DiscFull";
+import { OverlayCard, ArtistImage } from "../components/OverlayCard";
 
 let _rubrics = [
   {
@@ -73,6 +74,12 @@ const HubScreen = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   //   const navigate = useNavigate();
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [selectedArtist, setSelectedArtist] = useState({
+    artistName: "",
+    bio: "",
+    socialMedia: [],
+  });
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -207,6 +214,50 @@ const HubScreen = () => {
     }
   };
 
+  const closeLevelUpPopup = () => {
+    setIsLevelUpPopupOpen(false);
+  };
+
+  {
+    /* Arrist Overlay card logic */
+  }
+  const openOverlay = async (artistId) => {
+    console.log("Opening overlay for artistId:", artistId);
+    setIsOverlayOpen(true);
+    try {
+      const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
+      let artist = response.data;
+      setSelectedArtist({
+        artistName: artist.name,
+        bio: artist.bio,
+        socialMedia: {
+          spotify: artist.spotify_link,
+          twitter: artist.twitter_link,
+          youtube: artist.youtube_link,
+          instagram: artist.instagram_link,
+          website: artist.website_link,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching artist details:", error);
+      setIsOverlayOpen(false);
+    }
+  };
+
+  //debugging
+  useEffect(() => {
+    console.log("Selected artist updated:", selectedArtist);
+  }, [selectedArtist]);
+
+  const closeOverlay = () => {
+    setIsOverlayOpen(false);
+  };
+
+  const handleArtistClick = (e, artistId) => {
+    console.log("Artist clicked", artistId);
+    openOverlay(artistId);
+  };
+
   return (
     <div className="cmd-page">
       <Header />
@@ -232,56 +283,12 @@ const HubScreen = () => {
               >
                 {songs?.map((item, index) => {
                   return (
-                    <div
+                    <ArtistImage
                       key={index}
-                      className="kayfo-masonry-container"
-                      style={{
-                        display: "flex",
-                        minHeight: 234,
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        margin: "10px",
-                      }}
-                    >
-                      <Col
-                        className="kayfo-masonry-item"
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                        onClick={() => gotoGameDetail(item, index)}
-                      >
-                        <Tooltip placement="top" title={item.song_name}>
-                          {/* Adjust the image styles here */}
-                          <Image
-                            src={item.thumbnail_file}
-                            alt=""
-                            width={250}
-                            height={250}
-                            style={{
-                              maxWidth: "100%",
-                              height: "auto",
-                              objectFit: "contain",
-                            }}
-                          />
-                        </Tooltip>
-                      </Col>
-
-                      <Button
-                        variant="default"
-                        style={{
-                          backgroundColor: "orange",
-                          color: "white",
-                          width: "200px",
-                        }}
-                        size="lg"
-                        onClick={() => gotoGameDetail(item, index)}
-                      >
-                        Play
-                      </Button>
-                    </div>
+                      artist={item}
+                      onArtistClick={handleArtistClick}
+                      onPlayClick={() => gotoGameDetail(item, index)}
+                    />
                   );
                 })}
               </div>
@@ -437,6 +444,15 @@ const HubScreen = () => {
           </Col>
         </Row>
       </Container>
+
+      {/* Artist info card */}
+      <OverlayCard
+        isOpen={isOverlayOpen}
+        onClose={closeOverlay}
+        artistName={selectedArtist.artistName}
+        bio={selectedArtist.bio}
+        socialMedia={selectedArtist.socialMedia}
+      />
 
       <Popup isOpen={isPopupOpen} closePopup={togglePopup}>
         <h2>Welcome Back</h2>
