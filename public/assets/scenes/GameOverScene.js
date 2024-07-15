@@ -133,6 +133,8 @@ class GameOverScene extends Phaser.Scene {
     this.editorCreate();
     const router = this.registry.get("router");
 
+    this.newLevelAchieved = false;
+
     // this.cameras.main.fadeIn(500);
 
     this.artist_name.setText(this.track.artist_name);
@@ -158,9 +160,10 @@ class GameOverScene extends Phaser.Scene {
       this.current_track.stop();
       this.scoreTickSound.stop();
       this.scene.stop("GameOverScene");
-      router.push("/");
-
-      // this.scene.start("BufferScene", { prime: this.track.prime });
+      router.push({
+        pathname: "/",
+        query: { newLevelAchieved: this.newLevelAchieved },
+      });
     });
 
     this.buildScreen();
@@ -388,15 +391,15 @@ class GameOverScene extends Phaser.Scene {
         newLevel = 2;
       }
 
-      let newLevelAchieved = false;
+      // let newLevelAchieved = false;
       // Check if a new level has been achieved
       if (newLevel > currentLevel) {
         updatedUserData.profile.player.level = newLevel;
-        newLevelAchieved = true; // Set the flag to true if new level is reached
+        this.newLevelAchieved = true; // Set the flag to true if new level is reached
       }
 
       // Emit the event with the flag indicating whether a new level has been achieved
-      this.game.events.emit("updateUserEvent", {data: updatedUserData, new_level: newLevelAchieved})
+      this.game.events.emit("updateUserEvent", {data: updatedUserData})
     }
   }
 
