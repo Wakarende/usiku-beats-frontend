@@ -161,11 +161,14 @@ class GameOverScene extends Phaser.Scene {
       this.scoreTickSound.stop();
       this.scene.stop("GameOverScene");
 
-      const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
-      const newLevel = updatedUserData.profile.player.level;
+      // const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+      // const newLevel = updatedUserData.profile.player.level;
+      // router.push({
+      //   pathname: "/",
+      //   query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       router.push({
         pathname: "/",
-        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+        query: { newLevelAchieved: this.newLevelAchieved },
       });
     });
 
@@ -399,8 +402,6 @@ class GameOverScene extends Phaser.Scene {
       if (newLevel > currentLevel) {
         updatedUserData.profile.player.level = newLevel;
         this.newLevelAchieved = true; // Set the flag to true if new level is reached
-
-        this.game.events.emit("levelUp", newLevel);
       }
 
       // Emit the event with the flag indicating whether a new level has been achieved
