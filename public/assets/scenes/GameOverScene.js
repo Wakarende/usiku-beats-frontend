@@ -161,14 +161,14 @@ class GameOverScene extends Phaser.Scene {
       this.scoreTickSound.stop();
       this.scene.stop("GameOverScene");
 
-      // const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
-      // const newLevel = updatedUserData.profile.player.level;
+      const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+      const newLevel = updatedUserData.profile.player.level;
       // router.push({
       //   pathname: "/",
       //   query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       router.push({
         pathname: "/",
-        query: { newLevelAchieved: this.newLevelAchieved },
+        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
     });
 
