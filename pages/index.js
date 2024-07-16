@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CategoriesCards from "../components/CategoriesBanner";
@@ -10,26 +10,16 @@ import RectGamesList from "../components/RectGamesList";
 import BoxGamesList from "../components/BoxGamesList";
 import BottomTabNav from "../components/BottomTabNav";
 import CategoriesFooter from "../components/CategoriesFooter";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as mainActions from "../redux/main/mainActions";
-import storyGames from "../services/mocks/storyGames";
-import featuredGames from "../services/mocks/featuredGames";
-import contentService from "../services/content.service";
-import utils from "../services/common/utils";
-import { withRouter } from "next/router";
-import Popup from "../components/Popup";
 import { useRouter } from "next/router";
+import Popup from "../components/Popup";
 import { instance as axios } from "../services/axios.config";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { BASE_URL } from "../services/config";
 import Image from "next/image";
-import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
-import { Tooltip } from "@mui/material";
+import { Container, Row, Col, Tooltip } from "react-bootstrap";
 import { updateUser } from "../redux/main/authActions";
-import { useDispatch } from "react-redux";
-import DiscFull from "@mui/icons-material/DiscFull";
 import { OverlayCard, ArtistImage } from "../components/OverlayCard";
+import LevelUpPopup from "../components/LevelUpPopup";
 
 let _rubrics = [
   {
@@ -73,7 +63,6 @@ const HubScreen = () => {
   const { user_data, isAuthenticated } = auth;
   const dispatch = useDispatch();
   const router = useRouter();
-  //   const navigate = useNavigate();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState({
     artistName: "",
@@ -85,18 +74,28 @@ const HubScreen = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
+  const [isLevelUpPopupOpen, setIsLevelUpPopupOpen] = useState(false);
+  const [newLevel, setNewLevel] = useState();
+
   useEffect(() => {
+    const checkNewLevel = () => {
+      if (router.query.newLevelAchieved === "true") {
+        const level = parseInt(router.query.newLevel, 10);
+        setNewLevel(level);
+        setIsLevelUpPopupOpen(true);
+      }
+    };
     checkAnon();
     checkRedirect();
     checkFirstLoginOfDay();
-  }, [user_data]);
+    checkNewLevel();
+  }, [router.query, user_data]);
 
   const checkFirstLoginOfDay = () => {
     const lastLoginDate = localStorage.getItem("lastLoginDate");
     const today = new Date().toISOString().split("T")[0];
 
     if (lastLoginDate !== today) {
-      // Update the user's total_gems count
       if (user_data && user_data.profile && user_data.profile.player) {
         const updatedUser = {
           ...user_data,
@@ -118,7 +117,6 @@ const HubScreen = () => {
 
   const checkAnon = async () => {
     if (!user_data) {
-      console.log("setting ftue");
       setLoading(true);
 
       try {
@@ -126,7 +124,6 @@ const HubScreen = () => {
           `${BASE_URL}initial-song-list/?ids=14&ids=12&ids=13`
         );
 
-        // FTUE
         let anonUserObject = {
           profile: {
             id: Math.floor(100000 + Math.random() * 900000).toString(),
@@ -159,27 +156,21 @@ const HubScreen = () => {
     }
   };
 
-  const getSongs = async () => {
-    try {
-      let response = await axios.get(`${BASE_URL}song-list/`);
-
-      setSongs(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.log("error getting songs", error);
-    }
+  const checkNewLevel = () => {
+    const { newLevelAchieved } = router.query;
+    console.log("newLevelAchieved", newLevelAchieved);
   };
 
   const gotoGameDetail = (track, index) => {
     router.push({
       pathname: "/game",
-      query: { track: JSON.stringify(track) }, // for example
+      query: { track: JSON.stringify(track) },
     });
   };
 
   const checkRedirect = () => {
     const params = new URLSearchParams(window.location.search);
-    const trackParam = params.get("track"); // Get the 'track' parameter
+    const trackParam = params.get("track");
 
     const trackId = params.get("id");
 
@@ -189,11 +180,8 @@ const HubScreen = () => {
 
         router.push({
           pathname: "/game",
-          query: { track: JSON.stringify(trackObject) }, // for example
+          query: { track: JSON.stringify(trackObject) },
         });
-        //   navigate(
-        //     `/game?track=${encodeURIComponent(JSON.stringify(trackObject))}`
-        //   );
       });
     }
 
@@ -203,11 +191,8 @@ const HubScreen = () => {
 
         router.push({
           pathname: "/game",
-          query: { track: JSON.stringify(trackObject) }, // for example
+          query: { track: JSON.stringify(trackObject) },
         });
-        // navigate(
-        //   `/game?track=${encodeURIComponent(JSON.stringify(trackObject))}`
-        // );
       } catch (error) {
         console.error("Error parsing track JSON:", error);
       }
@@ -216,13 +201,17 @@ const HubScreen = () => {
 
   const closeLevelUpPopup = () => {
     setIsLevelUpPopupOpen(false);
+    const currentPath = router.pathname;
+    const currentQuery = { ...router.query };
+    delete currentQuery.newLevelAchieved;
+    delete currentQuery.newLevel;
+    router.replace({
+      pathname: currentPath,
+      query: currentQuery,
+    });
   };
 
-  {
-    /* Arrist Overlay card logic */
-  }
   const openOverlay = async (artistId) => {
-    console.log("Opening overlay for artistId:", artistId);
     setIsOverlayOpen(true);
     try {
       const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
@@ -244,7 +233,6 @@ const HubScreen = () => {
     }
   };
 
-  //debugging
   useEffect(() => {
     console.log("Selected artist updated:", selectedArtist);
   }, [selectedArtist]);
@@ -254,14 +242,14 @@ const HubScreen = () => {
   };
 
   const handleArtistClick = (e, artistId) => {
-    console.log("Artist clicked", artistId);
     openOverlay(artistId);
   };
+
+  const level = user_data?.profile?.player?.level || 1; // Directly fetching the level from user_data
 
   return (
     <div className="cmd-page">
       <Header />
-
       <Container>
         <Row className="kayfo-block-header">
           <div className="kayfo-block-title">
@@ -300,7 +288,6 @@ const HubScreen = () => {
           </Col>
         </Row>
       </Container>
-
       <Container>
         <Col
           className="kayfo-masonry-main ml-5"
@@ -329,6 +316,7 @@ const HubScreen = () => {
                   onClick={() => gotoGameDetail(item, index)}
                 >
                   <Tooltip placement="top" title={item.song_name}>
+                    {/* Adjust the image styles here */}
                     <Image
                       src={
                         "https://www.freeiconspng.com/thumbs/gift-box-icon/yellow-gift-box-icon-20.jpg"
@@ -337,10 +325,9 @@ const HubScreen = () => {
                       width={110}
                       height={110}
                       style={{
-                        width: 110,
-                        height: "100%",
-                        objectFit: "cover",
-                        borderRadius: 6,
+                        maxWidth: "100%",
+                        height: "auto",
+                        objectFit: "contain",
                       }}
                     />
                   </Tooltip>
@@ -387,13 +374,11 @@ const HubScreen = () => {
           </div>
         </Col>
       </Container>
-
       <Container>
         <Row className="kayfo-block-header">
           <div className="kayfo-block-title">
             <span>All Songs</span>
           </div>
-          {/* Code for the arrow icon, if needed */}
         </Row>
         <Row>
           <Col
@@ -419,7 +404,7 @@ const HubScreen = () => {
                 >
                   <div
                     style={{
-                      width: "100%", // Changed to 100% to span the entire screen width
+                      width: "100%",
                       height: 110,
                       backgroundColor: "yourColor",
                       borderRadius: 6,
@@ -444,7 +429,6 @@ const HubScreen = () => {
           </Col>
         </Row>
       </Container>
-
       {/* Artist info card */}
       <OverlayCard
         isOpen={isOverlayOpen}
@@ -453,7 +437,11 @@ const HubScreen = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-
+      <LevelUpPopup
+        isOpen={isLevelUpPopupOpen}
+        closePopup={closeLevelUpPopup}
+        newLevel={newLevel}
+      />
       <Popup isOpen={isPopupOpen} closePopup={togglePopup}>
         <h2>Welcome Back</h2>
         <h1 className="mt-2">Your daily login gift is:</h1>
@@ -465,7 +453,6 @@ const HubScreen = () => {
           Claim daily gift
         </button>
       </Popup>
-
       <BottomTabNav />
     </div>
   );
