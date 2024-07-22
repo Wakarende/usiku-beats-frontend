@@ -13,7 +13,7 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import moment from "moment-timezone";
+import moment from 'moment-timezone';
 import { useSelector } from "react-redux";
 import Popup from "../components/Popup";
 import countries from "../services/mocks/countries.json";
@@ -59,9 +59,9 @@ const Library = () => {
   const handleSongUnlock = (song) => {
     setUnlockedSong(song);
     setIsPopupOpen(true);
-
-    let unlockTime = moment().add(120, "minutes").toISOString(); // Set unlock time 120 minutes into the future
-
+  
+    let unlockTime = moment().add(120, 'minutes').toISOString(); // Set unlock time 120 minutes into the future
+  
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     let newSongInstance = {
       date_added: new Date().toISOString(),
@@ -74,7 +74,7 @@ const Library = () => {
       unlocked: false,
       song,
     };
-
+  
     newUserdata.profile.player.player_song_instances.push(newSongInstance);
     newUserdata.profile.player.total_discs -= 30;
     dispatch(updateUser(newUserdata));

@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const Popup = ({ isOpen, closePopup, children }) => {
   if (!isOpen) return null;
 
@@ -33,7 +32,5 @@ const Popup = ({ isOpen, closePopup, children }) => {
     </div>
   );
 };
-
-
 
 export default Popup;

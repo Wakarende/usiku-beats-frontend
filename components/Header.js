@@ -26,13 +26,15 @@ const Header = () => {
   const { user_data, isAuthenticated } = auth;
   const [stars, setStars] = useState(0);
   const [gems, setGems] = useState(0);
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(1)
+  
 
   useEffect(() => {
     console.log("updating header", user_data);
     setStars(user_data?.profile.player.total_stars || 0);
     setGems(user_data?.profile.player.total_gems || 0);
     setLevel(user_data?.profile.player.level || 1);
+
   }, [user_data]);
 
   // useEffect(() => {
@@ -47,16 +49,8 @@ const Header = () => {
   // }, []);
 
   return (
-    <Navbar
-      expand="lg"
-      className="bg-body-tertiary kayfo-header"
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
-        backgroundColor: "#fff",
-      }}
-    >
+    <Navbar expand="lg" className="bg-body-tertiary kayfo-header" style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: '#fff' }}>
+
       <Container fluid className="flex items-center">
         {/* <Navbar.Brand href="/">
             <Image
@@ -83,24 +77,21 @@ const Header = () => {
               <Button variant="default kayfo-connexion-btn" size='lg' onClick={this.gotoLogin} >Login</Button>
             }
           </> */}
-        <Link href={"/levelinfo"}>
-          <div className="relative flex items-center justify-center flex-grow">
-            <StarIcon
-              className="text-red-500 text-6xl"
-              style={{ position: "absolute" }}
-            />
-            <span className="absolute text-white text-2xl font-bold">
-              {level}
-            </span>
-          </div>
-        </Link>
+        <div className="relative flex items-center justify-center flex-grow">
+          <StarIcon
+            className="text-red-500 text-6xl"
+            style={{ position: "absolute" }}
+          />
+          <span className="absolute text-white text-2xl font-bold">{level}</span>
+        </div>
         <div className="header-icons">
           <EmojiEventsIcon
             style={{ fontSize: "36px", color: "gold", marginRight: "10px" }}
           />
-          <Link href={"/login"}>
-            <SettingsIcon style={{ fontSize: "36px", color: "white" }} />
+          <Link href={'/login'}>
+          <SettingsIcon style={{ fontSize: "36px", color: "white" }} />
           </Link>
+          
         </div>
 
         {/* {isAuthenticated && (
