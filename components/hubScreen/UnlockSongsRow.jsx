@@ -1,11 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 import DiscFull from "@mui/icons-material/DiscFull";
+import { updateUser } from "../../redux/main/authActions";
+import DiamondIcon from "@mui/icons-material/Diamond";
+import moment from "moment";
 
 const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const discsRequiredToUnlockSong = 30;
+  const gemsRequiredToUnlockSong = 20;
+
+  const dispatch = useDispatch();
 
   const CountdownTimer = ({ unlockTime }) => {
     const [timeLeft, setTimeLeft] = useState(
@@ -60,24 +67,39 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   };
 
   const addToLibrary = (song) => {
-    // Clone the user_data object to avoid direct state mutations
+
     const newUserdata = JSON.parse(JSON.stringify(user_data));
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+    if (songInstance) {
+      songInstance.unlocked = true;
+    } else {
+      console.error("Song not found in song instances", song.id);
+      return;
+    }
+    dispatch(updateUser(newUserdata));
+  };
 
-    console.log(song);
 
-    // Locate the song instance in the user data
+  const handleGemClick = (song) => {
+    let newUserdata = JSON.parse(JSON.stringify(user_data));
+    newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
+
     const songInstance = newUserdata.profile.player.player_song_instances.find(
       (instance) => instance.song.id === song.id
     );
 
-    if (songInstance) {
-      songInstance.unlocked = true; // Set unlocked to true
-    } else {
-      console.error("Song not found in song instances", song.id);
-      return; // Exit the function if song not found
+    if (songInstance && songInstance.unlock_time) {
+      const unlockTime = moment(songInstance.unlock_time);
+      const now = moment();
+      const timeDiff = unlockTime.diff(now);
+      const percentageReduction = 0.50;
+      const reducedTime = timeDiff * (1 - percentageReduction);
+      const newUnlockTime = moment(now.valueOf() + reducedTime).toISOString();
+      songInstance.unlock_time = newUnlockTime;
+      console.log(songInstance.unlock_time);
     }
-
-    // Dispatch the updated user data to the Redux store
     dispatch(updateUser(newUserdata));
   };
 
@@ -85,7 +107,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     <Container>
       <Col
         className="kayfo-masonry-main ml-5"
-        style={{ overflowX: "auto", overflowY: "hidden", maxHeight: 160 }}
+        style={{ overflowX: "auto", overflowY: "hidden", maxHeight: 180 }}
       >
         <div
           style={{
@@ -111,8 +133,8 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                   style={{ maxHeight: 110, minWidth: 110, color: "white" }}
                 >
                   <div className="song-info" style={{ maxWidth: "120px" }}>
-                    <div className="text-container">
-                      <p style={{ fontSize: "20px", marginBottom: "10px" }}>
+                    <div className="text-container" style={{ maxWidth: "120px" }}>
+                      <p style={{ fontSize: "18px", marginBottom: "10px", maxWidth: "110px", overflow: "hidden"}}>
                         {item.song.song_name}
                       </p>
                       <p>
@@ -131,6 +153,32 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     </div>
                   </div>
                 </Col>
+
+                {!isUnlockTimePassed(item.unlock_time) && (
+                  <div
+                    className="song-info flex items-center"
+                    style={{ maxWidth: "120px" }}
+                  >
+                    <div className="flex items-center">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        disabled={
+                          user_data?.profile?.player?.total_gems <
+                          gemsRequiredToUnlockSong
+                        }
+                        onClick={() => handleGemClick(item.song)}
+                      >
+                        <div className="flex items-center">
+                          <DiamondIcon className="text-black text-sm" />
+                          <span className="text-base text-white ml-2">
+                            {gemsRequiredToUnlockSong} gems
+                          </span>
+                        </div>
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
 

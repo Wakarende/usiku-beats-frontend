@@ -1,16 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as mainActions from "../redux/main/mainActions";
-import { loginSuccess } from "../redux/main/authActions";
-import { withRouter } from "next/router";
 import {
   Button,
-  Col,
-  Container,
-  Dropdown,
-  Form,
-  Row,
   Spinner,
 } from "react-bootstrap";
 import moment from 'moment-timezone';

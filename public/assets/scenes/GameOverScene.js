@@ -329,15 +329,15 @@ class GameOverScene extends Phaser.Scene {
   getStarsFromScore(score) {
     let starsCount;
 
-    if (score < 20000) {
+    if (score < 5000) {
       starsCount = 1;
-    } else if (score >= 20000 && score < 50000) {
+    } else if (score >= 5000 && score < 10000) {
       starsCount = 2;
-    } else if (score >= 50000 && score < 80000) {
+    } else if (score >= 10000 && score < 15000) {
       starsCount = 3;
-    } else if (score >= 80000 && score < 95000) {
+    } else if (score >= 15000 && score < 20000) {
       starsCount = 4;
-    } else if (score >= 95000) {
+    } else if (score >= 25000) {
       starsCount = 5;
     } else {
       starsCount = 0; // Consider handling unexpected cases

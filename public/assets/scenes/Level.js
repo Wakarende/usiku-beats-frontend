@@ -741,8 +741,8 @@ class Level extends Phaser.Scene {
 		  //   tile.destroy();
 		  // });
 
-		//   this.beatMissedDisplay()
-		  this.songComplete()
+		  this.beatMissedDisplay()
+		//   this.songComplete()
 
 		//   this.gameOver();
 		}
