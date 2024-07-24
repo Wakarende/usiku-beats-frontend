@@ -7,6 +7,11 @@
                 "key": "animations"
             },
             {
+                "url": "assets/sprites/playscene/arrow.png",
+                "type": "image",
+                "key": "arrow"
+            },
+            {
                 "url": "assets/sprites/bufferscene/Banner BG.png",
                 "type": "image",
                 "key": "Banner BG"
