@@ -38,7 +38,7 @@ const Library = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${BASE_URL}/song-list/?limit=10`).then((res) => {
+    axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65`).then((res) => {
       setSongs(res.data);
       setLoading(false);
     });

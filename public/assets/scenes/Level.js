@@ -926,6 +926,11 @@ class Level extends Phaser.Scene {
 		this.music.pause();
 		this.scene.pause();
 
+		// Delete the last 2 tiles
+		let children = this.tileGroup.getChildren();
+		let tilesToRemove = children.slice(0,3);
+		tilesToRemove.forEach(tile => tile.destroy());
+
 		this.scene.bringToTop("BeatMissed")
 		this.scene.launch("BeatMissed");
 

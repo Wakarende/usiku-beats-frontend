@@ -73,7 +73,7 @@ const HubScreen = () => {
 
       try {
         let response = await axios.get(
-          `${BASE_URL}initial-song-list/?ids=14&ids=54&ids=56&ids=65`
+          `${BASE_URL}initial-song-list/?ids=56`
         );
 
         let anonUserObject = {
@@ -82,7 +82,7 @@ const HubScreen = () => {
             player: {
               level: 1,
               total_discs: 0,
-              total_gems: 20,
+              total_gems: 30,
               total_stars: 0,
               player_song_instances: response.data,
               data: null,
