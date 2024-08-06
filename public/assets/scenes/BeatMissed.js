@@ -16,7 +16,7 @@ class BeatMissed extends Phaser.Scene {
 	editorCreate() {
 
 		// overlay
-		this.add.image(180, 320, "overlay");
+		const overlay = this.add.image(180, 320, "overlay");
 
 		// quit_button
 		const quit_button = this.add.image(180, 349.32517808240533, "play_button");
@@ -63,15 +63,22 @@ class BeatMissed extends Phaser.Scene {
 		gem_count.text = "5";
 		gem_count.setStyle({ "fontFamily": "DINPro", "fontSize": "12px" });
 
+		// lists
+		const ui_layer = [gem_count, gem, beat, missed, continue_text, continue_button, quit_text, quit_button];
+
+		this.overlay = overlay;
 		this.quit_button = quit_button;
 		this.quit_text = quit_text;
 		this.continue_button = continue_button;
 		this.continue_text = continue_text;
 		this.gem_count = gem_count;
+		this.ui_layer = ui_layer;
 
 		this.events.emit("scene-awake");
 	}
 
+	/** @type {Phaser.GameObjects.Image} */
+	overlay;
 	/** @type {Phaser.GameObjects.Image} */
 	quit_button;
 	/** @type {Phaser.GameObjects.Text} */
@@ -82,6 +89,8 @@ class BeatMissed extends Phaser.Scene {
 	continue_text;
 	/** @type {Phaser.GameObjects.Text} */
 	gem_count;
+	/** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
+	ui_layer;
 
 	/* START-USER-CODE */
 
@@ -123,8 +132,9 @@ class BeatMissed extends Phaser.Scene {
       this.continue_text.setText("CONTINUE");
       this.continue_button.on("pointerup", () => {
         this.subtractGems(5);
-        this.scene.stop();
-        this.scene.resume("Level");
+		this.countDown()
+        // this.scene.stop();
+        // this.scene.resume("Level");
       });
     }
   }
@@ -133,6 +143,115 @@ class BeatMissed extends Phaser.Scene {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     user_data.profile.player.total_gems -= amount;
     this.game.events.emit("updateUserEvent", { data: user_data });
+  }
+
+  countDown() {
+	this.screenWidth = this.cameras.main.width;
+	this.screenHeight = this.cameras.main.height;
+	this.screenCenterX = this.cameras.main.worldView.x + this.screenWidth / 2;
+	this.screenCenterY = this.cameras.main.worldView.y + this.screenHeight / 2;
+	let countdown_sfx = this.sound.add("countdown_sfx", {
+	  volume: 0.7,
+	  loop: false,
+	});
+
+	this.ui_layer.forEach((child) => {
+	  child.setAlpha(0);
+	  child.setScale(0);
+	});
+
+	// this.overlay.setDepth(5);
+
+	this.initialTime = 3;
+	this.continuing_text = this.add
+	.text(this.screenCenterX, this.screenCenterY - 50, "Continuing In: ", {
+	  fontFamily: "DINPro",
+	  fontSize: "20px",
+	  fill: "#fe500b",
+	})
+	.setOrigin(0.5, 1)
+	.setDepth(6)
+	.setScale(0)
+	.setAlpha(0);
+
+	this.tweens.add({
+		targets: this.continuing_text,
+		scale: 1,
+		alpha: 1,
+		ease: "Linear",
+		duration: 100,
+	  });
+
+	this.countDownText = this.add
+	  .text(this.screenCenterX, this.screenCenterY + 20, this.initialTime, {
+		fontFamily: "Righteous-Regular",
+		fontSize: "65px",
+		fill: "#fe500b",
+	  })
+	  .setOrigin(0.5, 0.5)
+	  .setDepth(6)
+	  .setScale(1)
+	  .setAlpha(1);
+
+	this.tweens.add({
+	  targets: [this.countDownText],
+	  scaleX: 2,
+	  scaleY: 2,
+	  alpha: 0.1,
+	  duration: 250, // Reduced duration for faster animation
+	  yoyo: true,
+	  ease: "Power2",
+	});
+
+	countdown_sfx.play();
+
+	const intervalId = setInterval(() => {
+	  this.initialTime--;
+	  this.countDownText.setText(this.initialTime);
+
+	  if (this.initialTime === 0) {
+		this.sound.play("Last Countdown Beep_Sfx", { volume: 1, loop: false });
+	  } else {
+		countdown_sfx.play();
+	  }
+
+	  this.tweens.add({
+		targets: [this.countDownText],
+		scaleX: 2,
+		scaleY: 2,
+		alpha: 0.1,
+		duration: 250, // Reduced duration for faster animation
+		yoyo: true,
+		ease: "Power2",
+	  });
+
+	  if (this.initialTime <= 0) {
+		this.countDownText.destroy();
+		this.continuing_text.destroy();
+
+		this.tweens.add({
+		  targets: this.overlay,
+		  alpha: 0,
+		  ease: "Linear",
+		  duration: 250, // Reduced duration for faster fade out
+		  onComplete: () => {
+			this.overlay.setVisible(false);
+			this.overlay.setAlpha(1);
+		  },
+		});
+
+		// this.createMusic();
+		// this.createTileGroup();
+		// this.pause_btn.setInteractive().setDepth(50);
+		// clearInterval(intervalId);
+
+		this.scene.stop();
+        this.scene.resume("Level");
+		clearInterval(intervalId);
+
+
+	  }
+	}, 1000); // Reduced interval for faster countdown
   }
 
   /* END-USER-CODE */

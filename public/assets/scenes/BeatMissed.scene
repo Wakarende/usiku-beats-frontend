@@ -13,6 +13,7 @@
             "type": "Image",
             "id": "6bd51e95-2b42-4f51-aa2f-95d153d83491",
             "label": "overlay",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "overlay"
@@ -141,5 +142,21 @@
         "url": "https://phasereditor2d.com",
         "contentType": "phasereditor2d.core.scene.SceneContentType",
         "version": 3
-    }
+    },
+    "lists": [
+        {
+            "id": "a1137bd3-9826-4c61-a248-eeba0ef902f6",
+            "label": "ui_layer",
+            "objectIds": [
+                "22189f46-237f-45fa-a043-d9c04cf744e4",
+                "1d8268f2-d9e0-4ec6-af51-8f198628f95c",
+                "a8d4698c-ca6b-407c-8106-8a70ab27e66f",
+                "c30051a9-c41a-4a35-b96a-7996061c1df2",
+                "457cf2b1-3aa6-47ef-af79-c11b5e2367cd",
+                "70bff7bf-ac77-44d4-9ae2-41550c5e642c",
+                "2dd7115c-9a8d-40ef-96f1-88620b2b482e",
+                "c7f7f33d-37a9-4cbb-8eb2-6812e1a588b0"
+            ]
+        }
+    ]
 }

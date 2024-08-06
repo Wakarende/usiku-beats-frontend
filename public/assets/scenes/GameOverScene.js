@@ -278,16 +278,18 @@ class GameOverScene extends Phaser.Scene {
   setStars(score) {
     // let this.fullStarsCount = 0;
 
-    if (score < 20000) {
+    if (score < 5000) {
       this.fullStarsCount = 1;
-    } else if (score >= 20000 && score < 50000) {
+    } else if (score >= 5000 && score < 10000) {
       this.fullStarsCount = 2;
-    } else if (score >= 50000 && score < 80000) {
+    } else if (score >= 10000 && score < 15000) {
       this.fullStarsCount = 3;
-    } else if (score >= 80000 && score < 95000) {
+    } else if (score >= 15000 && score < 20000) {
       this.fullStarsCount = 4;
-    } else if (score > 95000) {
+    } else if (score >= 25000) {
       this.fullStarsCount = 5;
+    } else {
+      this.fullStarsCount = 1;
     }
 
     let starSound = this.sound.add("Star_Reward_Sfx");
@@ -330,6 +332,7 @@ class GameOverScene extends Phaser.Scene {
   }
 
   getStarsFromScore(score) {
+    console.log("score", score);
     let starsCount;
 
     if (score < 5000) {
@@ -378,6 +381,7 @@ class GameOverScene extends Phaser.Scene {
           this.fullStarsCount - (prevStarCount || 0);
       }
 
+      console.log(this.fullStarsCount);
       songInstance.no_of_plays++;
 
       // Calculate and update player level based on the new total stars
