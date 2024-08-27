@@ -230,7 +230,7 @@ class Preload extends Phaser.Scene {
 
     this.play_button.setInteractive()
     this.play_button.on("pointerup", ()=>{
-    //   this.scale.startFullscreen();
+      this.scale.startFullscreen();
       this.cameras.main.fadeOut(500); // the number is the duration in ms
 
       this.cameras.main.once("camerafadeoutcomplete", () => {
