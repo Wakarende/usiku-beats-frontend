@@ -7,12 +7,14 @@ import DiscFull from "@mui/icons-material/DiscFull";
 import { updateUser } from "../../redux/main/authActions";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const discsRequiredToUnlockSong = 30;
   const gemsRequiredToUnlockSong = 20;
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const CountdownTimer = ({ unlockTime }) => {
     const [timeLeft, setTimeLeft] = useState(
@@ -98,7 +100,27 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       const reducedTime = timeDiff * (1 - percentageReduction);
       const newUnlockTime = moment(now.valueOf() + reducedTime).toISOString();
       songInstance.unlock_time = newUnlockTime;
-      console.log(songInstance.unlock_time);
+    }
+    dispatch(updateUser(newUserdata));
+  };
+
+  const unlockSongWithGems = (song) => {
+    let newUserdata = JSON.parse(JSON.stringify(user_data));
+
+    if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
+      console.error("Not enough gems to unlock the song");
+      return;
+    }
+    newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+    if (songInstance) {
+      songInstance.unlocked = true;
+      songInstance.unlock_time = null;
+    } else {
+      console.error("Song not found in song instances", song.id);
+      return;
     }
     dispatch(updateUser(newUserdata));
   };
@@ -167,7 +189,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                           user_data?.profile?.player?.total_gems <
                           gemsRequiredToUnlockSong
                         }
-                        onClick={() => handleGemClick(item.song)}
+                        onClick={() => unlockSongWithGems(item.song)}
                       >
                         <div className="flex items-center">
                           <DiamondIcon className="text-black text-sm" />
@@ -189,6 +211,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               maxHeight: 110,
               flexDirection: "column",
             }}
+            onClick={() => router.push("/library")}
           >
             <Col
               className="kayfo-masonry-item flex flex-col justify-center items-center"

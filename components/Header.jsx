@@ -1,24 +1,13 @@
-import { Avatar } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
-import Image from "next/image";
-import { withRouter } from "next/router";
 import React, { Component, useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as mainActions from "../redux/main/mainActions";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import userService from "../services/user.service";
 import SettingsIcon from "@mui/icons-material/Settings";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import StarIcon from "@mui/icons-material/Star";
 import DiamondIcon from "@mui/icons-material/Diamond";
-import { useSelector } from "react-redux";
 import Link from "next/link";
+import { updateUser } from "../redux/main/authActions";
+import { useSelector, useDispatch } from "react-redux";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
@@ -26,6 +15,7 @@ const Header = () => {
   const [stars, setStars] = useState(0);
   const [gems, setGems] = useState(0);
   const [level, setLevel] = useState(1);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log("updating header", user_data);
@@ -33,6 +23,21 @@ const Header = () => {
     setGems(user_data?.profile.player.total_gems || 0);
     setLevel(user_data?.profile.player.level || 1);
   }, [user_data]);
+
+  const addGems = () =>{
+    const updatedUser = {
+      ...user_data,
+      profile: {
+        ...user_data.profile,
+        player: {
+          ...user_data.profile.player,
+          total_gems: user_data.profile.player.total_gems + 20,
+        },
+      },
+    };
+    dispatch(updateUser(updatedUser));
+  }
+  
 
   return (
     <Navbar
@@ -78,8 +83,10 @@ const Header = () => {
         </Link>
         <div className="header-icons">
           <EmojiEventsIcon
+            onClick={addGems}
             style={{ fontSize: "36px", color: "gold", marginRight: "10px" }}
           />
+
           <Link href={"/login"}>
             <SettingsIcon style={{ fontSize: "36px", color: "white" }} />
           </Link>

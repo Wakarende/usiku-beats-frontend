@@ -178,6 +178,11 @@
                 "key": "particle"
             },
             {
+                "url": "assets/sprites/playscene/particle_1.png",
+                "type": "image",
+                "key": "particle_1"
+            },
+            {
                 "url": "assets/sprites/playscene/pause.png",
                 "type": "image",
                 "key": "pause"
@@ -268,16 +273,6 @@
                 "key": "Score_Counter_Sfx"
             },
             {
-                "url": "assets/sprites/hubscene/star_empty.png",
-                "type": "image",
-                "key": "star_empty"
-            },
-            {
-                "url": "assets/sprites/hubscene/star_full.png",
-                "type": "image",
-                "key": "star_full"
-            },
-            {
                 "url": [
                     "assets/sounds/SoundScape/Star_Reward_Sfx.mp3"
                 ],
@@ -295,6 +290,16 @@
                 "key": "swipe_down"
             },
             {
+                "url": "assets/sprites/playscene/swipe_down_left.png",
+                "type": "image",
+                "key": "swipe_down_left"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_down_right.png",
+                "type": "image",
+                "key": "swipe_down_right"
+            },
+            {
                 "url": "assets/sprites/playscene/swipe_left.png",
                 "type": "image",
                 "key": "swipe_left"
@@ -308,6 +313,16 @@
                 "url": "assets/sprites/playscene/swipe_up.png",
                 "type": "image",
                 "key": "swipe_up"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_up_left.png",
+                "type": "image",
+                "key": "swipe_up_left"
+            },
+            {
+                "url": "assets/sprites/playscene/swipe_up_right.png",
+                "type": "image",
+                "key": "swipe_up_right"
             },
             {
                 "url": "assets/sprites/playscene/tap_zone_area.png",

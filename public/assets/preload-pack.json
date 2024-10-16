@@ -44,6 +44,16 @@
                 "key": "Preload"
             },
             {
+                "url": "assets/sprites/hubscene/star_empty.png",
+                "type": "image",
+                "key": "star_empty"
+            },
+            {
+                "url": "assets/sprites/hubscene/star_full.png",
+                "type": "image",
+                "key": "star_full"
+            },
+            {
                 "url": [
                     "assets/sounds/start_sfx.mp3"
                 ],

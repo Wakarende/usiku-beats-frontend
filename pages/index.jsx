@@ -72,9 +72,7 @@ const HubScreen = () => {
       setLoading(true);
 
       try {
-        let response = await axios.get(
-          `${BASE_URL}initial-song-list/?ids=56`
-        );
+        let response = await axios.get(`${BASE_URL}initial-song-list/?ids=56`);
 
         let anonUserObject = {
           profile: {
@@ -91,7 +89,7 @@ const HubScreen = () => {
         };
         dispatch(updateUser(anonUserObject));
 
-        const songList = response.data.map((item) => item.song);
+        const songList = response.data.map(({ song, ...rest }) => ({ ...song, ...rest }));
 
         setSongs(songList);
         setLoading(false);
@@ -103,7 +101,7 @@ const HubScreen = () => {
       setSongs(
         user_data?.profile?.player?.player_song_instances
           ?.filter((item) => item.unlocked)
-          .map((item) => item.song)
+          .map(({ song, ...rest }) => ({ ...song, ...rest }))
       );
     }
   };
@@ -166,6 +164,7 @@ const HubScreen = () => {
 
   const openOverlay = async (artistId) => {
     setIsOverlayOpen(true);
+
     try {
       const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
       let artist = response.data;
@@ -186,16 +185,12 @@ const HubScreen = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("Selected artist updated:", selectedArtist);
-  }, [selectedArtist]);
-
   const closeOverlay = () => {
     setIsOverlayOpen(false);
   };
 
-  const handleArtistClick = (e, artistId) => {
-    openOverlay(artistId);
+  const handleArtistClick = (e, artist) => {
+    openOverlay(artist.id);
   };
 
   const level = user_data?.profile?.player?.level || 1; // Directly fetching the level from user_data
@@ -210,10 +205,7 @@ const HubScreen = () => {
           </div>
         </Row>
         <Row>
-          <Col
-            className="kayfo-masonry-main"
-            style={{ overflowX: "auto", overflowY: "hidden" }}
-          >
+          <Col className="kayfo-masonry-main" style={{ overflowX: "auto", overflowY: "hidden" }}>
             {songs?.length > 0 ? (
               <div
                 style={{
@@ -225,7 +217,7 @@ const HubScreen = () => {
                 {songs?.map((item, index) => (
                   <ArtistImage
                     key={index}
-                    artist={item}
+                    song={item}
                     onArtistClick={handleArtistClick}
                     onPlayClick={() => gotoGameDetail(item, index)}
                   />
@@ -253,9 +245,7 @@ const HubScreen = () => {
             className="kayfo-masonry-main"
             style={{ width: "100%", overflowX: "auto", overflowY: "hidden" }}
           >
-            <div
-              style={{ width: "100%", display: "flex", flexDirection: "row" }}
-            >
+            <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
               <div
                 className="kayfo-masonry-container"
                 style={{
@@ -320,7 +310,6 @@ const HubScreen = () => {
           Claim daily gift
         </button>
       </Popup>
-      <BottomTabNav />
     </div>
   );
 };

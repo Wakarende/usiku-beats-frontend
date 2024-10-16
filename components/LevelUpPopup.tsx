@@ -36,12 +36,12 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
           >
             See More
           </button>
-          <button
+          {/* <button
             onClick={closePopup}
             className="px-6 py-3 bg-gray-500 text-white font-semibold text-xl rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50"
           >
             Close
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

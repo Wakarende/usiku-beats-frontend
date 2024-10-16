@@ -22,10 +22,12 @@ class BeatMissed extends Phaser.Scene {
 		const quit_button = this.add.image(180, 349.32517808240533, "play_button");
 		quit_button.scaleX = 0.8;
 		quit_button.scaleY = 0.8;
+		quit_button.visible = false;
 
 		// quit_text
 		const quit_text = this.add.text(180, 349.32517808240533, "", {});
 		quit_text.setOrigin(0.5, 0.5);
+		quit_text.visible = false;
 		quit_text.text = "QUIT";
 		quit_text.setStyle({ "fontFamily": "DINPro", "fontSize": "22px" });
 
@@ -35,7 +37,7 @@ class BeatMissed extends Phaser.Scene {
 		continue_button.scaleY = 0.8;
 
 		// continue_text
-		const continue_text = this.add.text(207, 429.3251780824053, "", {});
+		const continue_text = this.add.text(195, 429.3251780824053, "", {});
 		continue_text.setOrigin(0.5, 0.5);
 		continue_text.text = "CONTINUE";
 		continue_text.setStyle({ "fontFamily": "DINPro", "fontSize": "12px" });
@@ -63,6 +65,12 @@ class BeatMissed extends Phaser.Scene {
 		gem_count.text = "5";
 		gem_count.setStyle({ "fontFamily": "DINPro", "fontSize": "12px" });
 
+		// timer_text
+		const timer_text = this.add.text(243, 429, "", {});
+		timer_text.setOrigin(0.5, 0.5);
+		timer_text.text = "5";
+		timer_text.setStyle({ "fontFamily": "DINPro", "fontSize": "12px" });
+
 		// lists
 		const ui_layer = [gem_count, gem, beat, missed, continue_text, continue_button, quit_text, quit_button];
 
@@ -72,6 +80,7 @@ class BeatMissed extends Phaser.Scene {
 		this.continue_button = continue_button;
 		this.continue_text = continue_text;
 		this.gem_count = gem_count;
+		this.timer_text = timer_text;
 		this.ui_layer = ui_layer;
 
 		this.events.emit("scene-awake");
@@ -89,6 +98,8 @@ class BeatMissed extends Phaser.Scene {
 	continue_text;
 	/** @type {Phaser.GameObjects.Text} */
 	gem_count;
+	/** @type {Phaser.GameObjects.Text} */
+	timer_text;
 	/** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
 	ui_layer;
 
@@ -110,13 +121,40 @@ class BeatMissed extends Phaser.Scene {
     // 	this.scene.resume("Level");
 
     // })
-    this.quit_button.setInteractive();
-    this.quit_button.on("pointerup", () => {
-      this.scene.stop();
-      const levelScene = this.scene.get("Level");
-      levelScene.gameOver(); // clean-up Level scene
-      // this.scene.stop("Level");
+
+	this.startAutoQuitTimer();
+
+    // this.quit_button.setInteractive();
+    // this.quit_button.on("pointerup", () => {
+    //   this.scene.stop();
+    //   const levelScene = this.scene.get("Level");
+    //   levelScene.gameOver(); // clean-up Level scene
+    //   // this.scene.stop("Level");
+    // });
+  }
+
+  startAutoQuitTimer() {
+    let timeLeft = 5;
+    this.timer_text.setText(timeLeft);
+
+    this.autoQuitTimer = this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        timeLeft--;
+        this.timer_text.setText(timeLeft);
+
+        if (timeLeft <= 0) {
+          this.autoQuit();
+        }
+      },
+      repeat: 4
     });
+  }
+
+  autoQuit() {
+    this.scene.stop();
+    const levelScene = this.scene.get("Level");
+    levelScene.gameOver(); // clean-up Level scene
   }
 
   checkGems() {
@@ -146,6 +184,10 @@ class BeatMissed extends Phaser.Scene {
   }
 
   countDown() {
+	if (this.autoQuitTimer) {
+		this.autoQuitTimer.remove();
+	}
+	  
 	this.screenWidth = this.cameras.main.width;
 	this.screenHeight = this.cameras.main.height;
 	this.screenCenterX = this.cameras.main.worldView.x + this.screenWidth / 2;

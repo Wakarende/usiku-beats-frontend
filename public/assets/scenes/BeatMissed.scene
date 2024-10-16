@@ -33,7 +33,8 @@
             "x": 180,
             "y": 349.32517808240533,
             "scaleX": 0.8,
-            "scaleY": 0.8
+            "scaleY": 0.8,
+            "visible": false
         },
         {
             "type": "Text",
@@ -45,6 +46,7 @@
             "y": 349.32517808240533,
             "originX": 0.5,
             "originY": 0.5,
+            "visible": false,
             "text": "QUIT",
             "fontFamily": "DINPro",
             "fontSize": "22px"
@@ -69,7 +71,7 @@
             "label": "continue_text",
             "scope": "CLASS",
             "components": [],
-            "x": 207,
+            "x": 195,
             "y": 429.3251780824053,
             "originX": 0.5,
             "originY": 0.5,
@@ -128,6 +130,20 @@
             "scope": "CLASS",
             "components": [],
             "x": 142,
+            "y": 429,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "5",
+            "fontFamily": "DINPro",
+            "fontSize": "12px"
+        },
+        {
+            "type": "Text",
+            "id": "c95b29b3-8dc3-4c53-a6a5-0ea026eddc56",
+            "label": "timer_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 243,
             "y": 429,
             "originX": 0.5,
             "originY": 0.5,

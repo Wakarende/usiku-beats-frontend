@@ -278,19 +278,20 @@ class GameOverScene extends Phaser.Scene {
   setStars(score) {
     // let this.fullStarsCount = 0;
 
-    if (score < 3000) {
-      this.fullStarsCount = 1;
-    } else if (score >= 3000 && score < 6000) {
-      this.fullStarsCount = 2;
-    } else if (score >= 6000 && score < 9000) {
-      this.fullStarsCount = 3;
-    } else if (score >= 9000 && score < 15000) {
-      this.fullStarsCount = 4;
-    } else if (score >= 15000) {
-      this.fullStarsCount = 5;
-    } else {
-      this.fullStarsCount = 1;
-    }
+    // if (score < 3000) {
+    //   this.fullStarsCount = 1;
+    // } else if (score >= 3000 && score < 6000) {
+    //   this.fullStarsCount = 2;
+    // } else if (score >= 6000 && score < 9000) {
+    //   this.fullStarsCount = 3;
+    // } else if (score >= 9000 && score < 15000) {
+    //   this.fullStarsCount = 4;
+    // } else if (score >= 15000) {
+    //   this.fullStarsCount = 5;
+    // } else {
+    //   this.fullStarsCount = 1;
+    // }
+    this.fullStarsCount = this.getStarsFromScore(score);
 
     let starSound = this.sound.add("Star_Reward_Sfx");
 
@@ -332,18 +333,17 @@ class GameOverScene extends Phaser.Scene {
   }
 
   getStarsFromScore(score) {
-    console.log("score", score);
     let starsCount;
 
-    if (score < 3000) {
+    if (score < 5000) {
       starsCount = 1;
-    } else if (score >= 3000 && score < 6000) {
+    } else if (score >= 5000 && score < 10000) {
       starsCount = 2;
-    } else if (score >= 6000 && score < 9000) {
+    } else if (score >= 10000 && score < 15000) {
       starsCount = 3;
-    } else if (score >= 9000 && score < 15000) {
+    } else if (score >= 15000 && score < 20000) {
       starsCount = 4;
-    } else if (score >= 15000) {
+    } else if (score >= 20000) {
       starsCount = 5;
     } else {
       starsCount = 0; // Consider handling unexpected cases
@@ -404,6 +404,9 @@ class GameOverScene extends Phaser.Scene {
         updatedUserData.profile.player.level = newLevel;
         this.newLevelAchieved = true; // Set the flag to true if new level is reached
       }
+
+      // let’s give the player 2 Gems for every star they get
+      updatedUserData.profile.player.total_gems += this.fullStarsCount * 2;
 
       // Emit the event with the flag indicating whether a new level has been achieved
       this.game.events.emit("updateUserEvent", { data: updatedUserData });

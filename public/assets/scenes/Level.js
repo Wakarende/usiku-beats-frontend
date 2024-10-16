@@ -238,13 +238,7 @@ class Level extends Phaser.Scene {
     beats2.visible = false;
 
     // lists
-    const ui_layer = [
-      multiplier_text,
-      score_text,
-      song_name_text,
-      artist_text,
-      top_banner,
-    ];
+    const ui_layer = [multiplier_text, score_text, song_name_text, artist_text, top_banner];
 
     this.top_banner = top_banner;
     this.artist_text = artist_text;
@@ -447,30 +441,35 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
     this.multiplier_emitter = this.add
-      .particles(
-        this.multiplier_text.x,
-        this.multiplier_text.y,
-        "Play_active",
-        {
-          lifespan: 750,
-          speed: { min: 50, max: 100 },
-          scale: { start: 0.5, end: 0 },
-          blendMode: "ADD",
-          emitting: false,
-        }
-      )
+      .particles(this.multiplier_text.x, this.multiplier_text.y, "Play_active", {
+        lifespan: 750,
+        speed: { min: 50, max: 100 },
+        scale: { start: 0.5, end: 0 },
+        blendMode: "ADD",
+        emitting: false,
+      })
       .setDepth(10);
 
-    let rect = this.add
-      .rectangle(
-        this.screenCenterX,
-        this.screenHeight * this.tileTarget,
-        this.screenWidth,
-        2,
-        0x00f000,
-        1
-      )
-      .setDepth(100);
+    this.tileEmitter = this.add.particles(0, 0, "particle_1", {
+      speed: { min: 50, max: 200 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 1, end: 0 },
+      blendMode: "ADD",
+      lifespan: 400,
+      gravityY: 300,
+      emitting: false,
+    });
+
+    // let rect = this.add
+    //   .rectangle(
+    //     this.screenCenterX,
+    //     this.screenHeight * this.tileTarget,
+    //     this.screenWidth,
+    //     2,
+    //     0x00f000,
+    //     1
+    //   )
+    //   .setDepth(100);
     this.fps_text = this.add.text(this.screenWidth - 20, 20, "", {});
 
     this.fps_text.setOrigin(1, 0).setDepth(100);
@@ -481,6 +480,143 @@ class Level extends Phaser.Scene {
       fontSize: "13px",
       stroke: "#666363ff",
     });
+
+    this.addProgressBar();
+    this.initializeVisualizer();
+  }
+
+  addProgressBar() {
+    this.progressBar = this.add.rectangle(0, 0, 0, 5, 0xfe500b);
+    this.progressBar.setOrigin(0, 0);
+    this.progressBarBg = this.add.rectangle(0, 0, this.screenWidth, 5, 0x666363);
+    this.progressBarBg.setOrigin(0, 0);
+    this.progressBar.setDepth(50);
+    this.progressBarBg.setDepth(40);
+  }
+
+  initializeVisualizer() {
+    const gameWidth = this.sys.game.config.width;
+    // const gameHeight = this.sys.game.config.height;
+
+    // Determine positions
+    const scoreY = this.score_text.y;
+    const multiplierY = this.multiplier_text.y;
+    const visualizerYPosition = (scoreY + multiplierY) / 2 - 20;
+
+    // Calculate visualizer size based on text dimensions
+    const textWidth = Math.max(this.score_text.width, this.multiplier_text.width);
+    const textHeight =
+      this.multiplier_text.y +
+      this.multiplier_text.height / 2 -
+      (this.score_text.y - this.score_text.height / 2);
+    const padding = 20;
+    // const visualizerSize = Math.max(textWidth, textHeight) + padding * 2;
+
+    // Fixed visualizer
+    const visualizerSize = 250; // Adjust size as needed
+
+    // Calculate radius for the inner circle
+    // const innerRadius = (textWidth / 2) / (visualizerSize / 2);
+    // const radius = Phaser.Math.Clamp(innerRadius, 0, 1);
+    const radius = 0.5;
+
+    // Get the device pixel ratio
+    const pixelRatio = window.devicePixelRatio || 1;
+    // Ensure audio context is running
+    if (this.sound.context.state === "suspended") {
+      this.sound.context.resume();
+    }
+
+    // Create an offscreen canvas with adjusted dimensions
+    const canvasWidth = visualizerSize * pixelRatio;
+    const canvasHeight = visualizerSize * pixelRatio;
+
+    // Create an offscreen canvas with square dimensions
+    const offscreenCanvas = document.createElement("canvas");
+    offscreenCanvas.width = canvasWidth;
+    offscreenCanvas.height = canvasHeight;
+
+    // Create the AudioMotion Analyzer instance with the offscreen canvas
+    this.audioMotion = new AudioMotionAnalyzer(null, {
+      canvas: offscreenCanvas,
+      audioCtx: this.sound.context,
+      useCanvas: true,
+      mode: 1, // Polar (circular) mode
+      radial: true,
+      radialInvert: true,
+      radialSpeed: true, //distribute frequencies evenly in radial mode
+      lineMode: 2, //Extra smooth curves for fluid lines
+      radius: radius, // Increase or Decrease size of visualizer
+      responsive: false, // Disable responsive resizing
+      width: visualizerSize, // Match canvas width
+      height: visualizerSize, // Match canvas height
+      pixelRatio: pixelRatio, // Set pixel ratio to 1
+      showScaleY: false,
+      showScaleX: false,
+      showPeaks: false,
+      showFPS: false,
+      minDecibels: -100,
+      maxDecibels: -40,
+      gradient: "prism",
+      linearAmplitude: false,
+      linearBoost: 1.4, // Increase to make bars taller
+      bgAlpha: 0, // Fully transparent background
+      barSpace: 0.01,
+      fillAlpha: 0,
+      lineWidth: 1.5,
+      reflexRatio: 0,
+      reflexAlpha: 0,
+      lumiBars: false,
+      maxFreq: 16000,
+      minFreq: 10,
+      smoothing: 0.6,
+      // Give visualizer transparent background
+      overlay: true,
+      showBgColor: false,
+      channelLayout: "dual-vertical",
+      frequencyScale: "bark",
+      outlineBars: true,
+      fftSize: 8192,
+    });
+
+    // Store references for later use
+    this.visualizerCanvas = offscreenCanvas;
+    // this.visualizerSize = visualizerSize;
+    this.visualizerSize = 250; // Set to a size that should be clearly visible
+
+    // Create a Phaser CanvasTexture with the same dimensions
+    this.visualizerTexture = this.textures.createCanvas(
+      "visualizerTexture",
+      visualizerSize,
+      visualizerSize
+    );
+
+    // Position the visualizer at the calculated Y position
+    this.visualizerImage = this.add.image(gameWidth / 2, visualizerYPosition, "visualizerTexture");
+    this.visualizerImage.setDisplaySize(visualizerSize, visualizerSize);
+    this.visualizerImage.setOrigin(0.5, 0.5);
+    this.visualizerImage.setDepth(4); // Set depth lower than text
+    this.visualizerImage.setAlpha(1);
+
+    // Update the onCanvasDraw function
+    this.audioMotion.onCanvasDraw = () => {
+      let visualizerTexture = this.visualizerTexture;
+      visualizerTexture.context.clearRect(0, 0, visualizerTexture.width, visualizerTexture.height);
+      visualizerTexture.context.globalCompositeOperation = "copy";
+      visualizerTexture.context.drawImage(
+        this.visualizerCanvas,
+        0,
+        0,
+        this.visualizerCanvas.width,
+        this.visualizerCanvas.height,
+        0,
+        0,
+        visualizerTexture.width,
+        visualizerTexture.height
+      );
+      visualizerTexture.context.globalCompositeOperation = "source-over";
+      visualizerTexture.refresh();
+    };
   }
 
   update(time, delta) {
@@ -493,21 +629,14 @@ class Level extends Phaser.Scene {
     this.lowFpsMode = this.fps < 30 ? true : false;
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
-      this.scoreDisplay = Phaser.Math.Linear(
-        this.scoreDisplay,
-        this.score,
-        0.1
-      );
+      this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
 
     let seek = this.music?.seek;
 
     if (seek >= 0) {
-      if (
-        this.soundMarkers.length > 0 &&
-        seek + this.tileDuration >= this.soundMarkers[0].start
-      ) {
+      if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
@@ -515,14 +644,9 @@ class Level extends Phaser.Scene {
       this.tileGroup.getChildren().forEach((tile) => {
         if (tile.swiped || tile.held) return;
 
-        tile.lerp = Math.max(
-          0,
-          (seek - tile.start + this.tileDuration) / this.tileDuration
-        );
+        tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
 
-        tile.setY(
-          Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp)
-        );
+        tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
 
         tile.setAlpha(tile.lerp);
 
@@ -530,6 +654,12 @@ class Level extends Phaser.Scene {
           this.checkOverlap(tile);
         }
       });
+    }
+
+    // Update progress bar
+    if (this.music && this.music.isPlaying) {
+      const progress = this.music.seek / this.music.duration;
+      this.progressBar.width = this.screenWidth * progress;
     }
   }
 
@@ -621,6 +751,43 @@ class Level extends Phaser.Scene {
           }
         });
         break;
+
+      case 0.7874015748031497:
+        tile.setTexture("swipe_up_left");
+
+        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+          if (swipe.up) {
+            this.handleSwipe(tile, swipe);
+          }
+        });
+        break;
+      case 0.31496062992125984:
+        tile.setTexture("swipe_up_right");
+
+        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+          if (swipe.up) {
+            this.handleSwipe(tile, swipe);
+          }
+        });
+        break;
+      case 0.6299212598425197:
+        tile.setTexture("swipe_down_left");
+
+        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+          if (swipe.down) {
+            this.handleSwipe(tile, swipe);
+          }
+        });
+        break;
+      case 0.47244094488188976:
+        tile.setTexture("swipe_down_right");
+
+        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+          if (swipe.down) {
+            this.handleSwipe(tile, swipe);
+          }
+        });
+        break;
       case 0.007874015748031496:
         this.handleHeldTile(tile, duration);
         break;
@@ -642,54 +809,75 @@ class Level extends Phaser.Scene {
 
     let normalizationFactor = slope * tileDuration + intercept;
 
-    let heldTileScaleFactor =
-      1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
+    let heldTileScaleFactor = 1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
     return heldTileScaleFactor;
   }
 
   handleHeldTile(tile, duration) {
-    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(
-      duration,
-      this.tileDuration
+    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
+    let initialHeight = heldTileScaleFactor * duration * tile.height;
+
+    // Create nineslice tile
+    let ninesliceTile = this.add.nineslice(
+      tile.x,
+      0, // x, y
+      "beats2", // texture key
+      null, // frame (null if not using a spritesheet)
+      tile.width,
+      initialHeight, // width, height
+      20,
+      20, // leftWidth, rightWidth (adjust as needed)
+      20,
+      20 // topHeight, bottomHeight (adjust as needed)
     );
 
-    let initialScaleY = heldTileScaleFactor * duration;
+    ninesliceTile.setOrigin(0.5, 1);
+    ninesliceTile.start = tile.start;
+    ninesliceTile.duration = duration;
+    ninesliceTile.initialHeight = initialHeight;
 
-    tile.setScale(1, initialScaleY);
+    // Replace the original tile with the nineslice tile in the tileGroup
+    this.tileGroup.remove(tile);
+    this.tileGroup.add(ninesliceTile);
+    tile.destroy();
 
-    let originalHeight = tile.height;
-    let scaledHeight = tile.displayHeight;
-    let originalOriginY = tile.originY;
-
-    let newOriginY = (originalOriginY * originalHeight) / scaledHeight;
-
-    newOriginY = 1 - newOriginY;
-    tile.setOrigin(0.5, newOriginY);
-
-    let initialHeight = tile.displayHeight;
     let clicked = false;
+    let tween = null;
 
-    tile.on("pointerdown", () => {
-      tile.held = true;
-
-      this.tweens.add({
-        targets: tile,
-        scaleY: 1,
+    ninesliceTile.setInteractive();
+    ninesliceTile.on("pointerdown", () => {
+      ninesliceTile.held = true;
+      if (tween) {
+        tween.stop();
+      }
+      tween = this.tweens.add({
+        targets: ninesliceTile,
+        height: ninesliceTile.height / heldTileScaleFactor,
         ease: "Linear",
         duration: duration * 1000,
         onComplete: () => {
           if (!clicked) {
             clicked = true;
-            this.onClickInstrument(tile, false, true);
+            this.onClickInstrument(ninesliceTile, false, true);
           }
         },
       });
     });
 
-    tile.on("pointerup", () => {
+    ninesliceTile.on("pointerup", () => {
+      if (tween) {
+        tween.stop();
+      }
       if (!clicked) {
         clicked = true;
-        this.onClickInstrument(tile, false, true);
+        this.onClickInstrument(ninesliceTile, false, true);
+      }
+    });
+
+    // Add this to handle tile destruction
+    ninesliceTile.on("destroy", () => {
+      if (tween) {
+        tween.stop();
       }
     });
   }
@@ -708,11 +896,14 @@ class Level extends Phaser.Scene {
   createMusic() {
     this.music = this.sound.add(`${this.songItem}`, { volume: 1 });
 
-    this.music.play({ delay: 0.5 });
-
     this.music.on("play", () => {
       this.isSoundPlaying = true;
+      this.analyserNode = this.sound.context.createAnalyser();
+      this.music.volumeNode.connect(this.analyserNode);
+      this.audioMotion.connectInput(this.analyserNode);
     });
+
+    this.music.play({ delay: 0.5 });
 
     this.music.on("complete", () => {
       this.songComplete();
@@ -743,7 +934,6 @@ class Level extends Phaser.Scene {
 
   handleSwipe(tile, swipe) {
     tile.swiped = true;
-
     this.onClickInstrument(tile, true);
 
     let movementDistance = 25;
@@ -757,9 +947,45 @@ class Level extends Phaser.Scene {
     };
 
     tile.setTexture("arrow");
-    if (swipe.up) {
-      tile.angle -= 90;
 
+    if (swipe.up && swipe.right) {
+      // Up-right diagonal swipe
+      tile.angle -= 45;
+      this.tweens.add({
+        targets: tile,
+        x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
+        y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+        ...tweenConfig,
+      });
+    } else if (swipe.up && swipe.left) {
+      // Up-left diagonal swipe
+      tile.angle -= 135;
+      this.tweens.add({
+        targets: tile,
+        x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
+        y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+        ...tweenConfig,
+      });
+    } else if (swipe.down && swipe.right) {
+      // Down-right diagonal swipe
+      tile.angle += 45;
+      this.tweens.add({
+        targets: tile,
+        x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
+        y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+        ...tweenConfig,
+      });
+    } else if (swipe.down && swipe.left) {
+      // Down-left diagonal swipe
+      tile.angle += 135;
+      this.tweens.add({
+        targets: tile,
+        x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
+        y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+        ...tweenConfig,
+      });
+    } else if (swipe.up) {
+      tile.angle -= 90;
       this.tweens.add({
         targets: tile,
         y: tile.y - movementDistance * 2,
@@ -895,9 +1121,7 @@ class Level extends Phaser.Scene {
     }
 
     if (this.progress >= this.streakThreshold) {
-      this.streak_text.setText(
-        `${this.streakThreshold * this.currentMultiplier} STREAK`
-      );
+      this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
       this.streakDisplay();
       this.progress = 0;
       this.currentMultiplier += 1;
@@ -920,6 +1144,11 @@ class Level extends Phaser.Scene {
           tile.destroy();
         },
       });
+    }
+
+    if (!swiped && !held) {
+      this.tileEmitter.setPosition(tile.x, tile.y);
+      this.tileEmitter.explode(10);
     }
   }
 
@@ -999,6 +1228,20 @@ class Level extends Phaser.Scene {
     this.time.removeAllEvents();
     this.tweens.killAll();
     this.sound.stopAll();
+
+    if (this.audioMotion) {
+      if (this.analyzerNode) {
+        this.audioMotion.disconnectInput(this.analyserNode);
+      }
+      this.audioMotion.destroy();
+      this.visualizerTexture.destroy();
+    }
+
+    if (this.music) {
+      this.music.stop();
+      this.music = null;
+    }
+    this.scene.stop("Level");
   }
 
   gameOver() {

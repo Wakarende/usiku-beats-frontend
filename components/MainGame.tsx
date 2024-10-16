@@ -39,10 +39,10 @@ const PhaserGame: React.FC = () => {
   const dispatch = useDispatch();
   const { track } = router.query;
 
-  const updateUserEventListener = ({ data, new_level}) => {
+  const updateUserEventListener = ({ data, new_level }) => {
     // console.log(data);
     // console.log(new_level);
-    
+
     dispatch(updateUser(data));
   };
 
@@ -118,10 +118,7 @@ const PhaserGame: React.FC = () => {
             if (gameRef.current) {
               // gameRef.current.events.off('scenesLoaded', scenesLoadedListener);
 
-              gameRef.current.events.off(
-                "updateUserEvent",
-                updateUserEventListener
-              );
+              gameRef.current.events.off("updateUserEvent", updateUserEventListener);
 
               gameRef.current.destroy(true);
               gameRef.current = null; // Reset the ref to null after destroying the game
@@ -136,12 +133,40 @@ const PhaserGame: React.FC = () => {
     <div
       ref={phaserGameRef}
       style={{
-        width: "100%", // match the game's width
-        height: "100%", // match the game's height
-        position: "relative", // necessary for Phaser's autoCenter
-        margin: "0 auto",
+        width: "100%",
+        height: "100%",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
-    />
+    >
+      <style jsx global>{`
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          position: fixed;
+          width: 100%;
+          height: 100%;
+        }
+        canvas {
+          display: block;
+          touch-action: none;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          outline: none;
+          -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        }
+      `}</style>
+    </div>
   );
 };
 

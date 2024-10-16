@@ -136,51 +136,19 @@
                 "key": "carousel_2"
             },
             "x": 180,
-            "y": 203
-        },
-        {
-            "type": "Text",
-            "id": "33b5e099-a858-4402-ab3b-f9a7c379cfd1",
-            "label": "text_1",
-            "components": [],
-            "x": 40,
-            "y": 362,
-            "text": "Song:",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "19px",
-            "fontStyle": "bold"
-        },
-        {
-            "type": "Text",
-            "id": "2fb6697a-33ec-4c0e-acca-7d5b71e8195d",
-            "label": "text",
-            "components": [],
-            "x": 40,
-            "y": 402,
-            "text": "Artist:",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "19px",
-            "fontStyle": "bold"
-        },
-        {
-            "type": "Text",
-            "id": "da1f2265-f513-4975-b2a1-864b11bcdfdb",
-            "label": "text_2",
-            "components": [],
-            "x": 40,
-            "y": 442,
-            "text": "Country:",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "19px",
-            "fontStyle": "bold"
+            "y": 203,
+            "scaleX": 0.8,
+            "scaleY": 0.8
         },
         {
             "type": "Text",
             "id": "5e2c4b18-32da-44b3-be0d-ead31c30eb31",
-            "label": "text_3",
+            "label": "highScoreText",
             "components": [],
-            "x": 40,
-            "y": 482,
+            "x": 148,
+            "y": 370,
+            "originX": 0.5,
+            "originY": 0.5,
             "text": "My High Score:",
             "fontFamily": "Righteous-Regular",
             "fontSize": "19px",
@@ -192,9 +160,11 @@
             "label": "song_name",
             "scope": "CLASS",
             "components": [],
-            "x": 201,
-            "y": 364,
-            "text": "Song:",
+            "x": 180,
+            "y": 31,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Song Name",
             "fontFamily": "DINPro",
             "fontSize": "18px",
             "maxLines": 1,
@@ -206,23 +176,11 @@
             "label": "artist_name",
             "scope": "CLASS",
             "components": [],
-            "x": 201,
-            "y": 404,
-            "text": "Song:",
-            "fontFamily": "DINPro",
-            "fontSize": "18px",
-            "maxLines": 1,
-            "wordWrapWidth": 200
-        },
-        {
-            "type": "Text",
-            "id": "24fbf452-84a4-44a0-ade7-a195cd7c4e70",
-            "label": "country",
-            "scope": "CLASS",
-            "components": [],
-            "x": 201,
-            "y": 444,
-            "text": "Song:",
+            "x": 180,
+            "y": 57,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Artist Name",
             "fontFamily": "DINPro",
             "fontSize": "18px",
             "maxLines": 1,
@@ -234,9 +192,11 @@
             "label": "my_high_score",
             "scope": "CLASS",
             "components": [],
-            "x": 201,
-            "y": 484,
-            "text": "Song:",
+            "x": 257,
+            "y": 370,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Score",
             "fontFamily": "DINPro",
             "fontSize": "18px",
             "maxLines": 1,
@@ -244,16 +204,91 @@
         },
         {
             "type": "Image",
-            "id": "0ec9958d-be55-4895-98a5-b009c8253e8c",
-            "label": "uB_logomark",
+            "id": "d7b5b091-fa2b-4e36-8437-73c8890ca122",
+            "label": "star_empty",
             "components": [],
             "texture": {
-                "key": "UB logomark"
+                "key": "star_empty"
             },
+            "x": 125,
+            "y": 329
+        },
+        {
+            "type": "Image",
+            "id": "57a601a1-26b0-4ac2-9a76-15c1e1896e38",
+            "label": "star_empty_1",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 155,
+            "y": 329
+        },
+        {
+            "type": "Image",
+            "id": "2b4037ca-429a-4a1c-9bef-70eb0fe7b222",
+            "label": "star_empty_2",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 185,
+            "y": 329
+        },
+        {
+            "type": "Image",
+            "id": "b911e5cc-5192-43a0-a8be-952fe307d1ad",
+            "label": "star_empty_3",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 215,
+            "y": 329
+        },
+        {
+            "type": "Image",
+            "id": "dbc0f09a-9370-40b4-b092-4114b272dc58",
+            "label": "star_empty_4",
+            "components": [],
+            "texture": {
+                "key": "star_empty"
+            },
+            "x": 245,
+            "y": 329
+        },
+        {
+            "type": "Text",
+            "id": "ad0fc638-b54f-4663-b78b-5f8d29903a6e",
+            "label": "difficulty_text",
+            "scope": "CLASS",
+            "components": [],
             "x": 180,
-            "y": 33.449999999999996,
-            "scaleX": 0.3,
-            "scaleY": 0.3
+            "y": 87,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Medium Difficulty",
+            "fontFamily": "DINPro",
+            "fontSize": "12px",
+            "maxLines": 1,
+            "wordWrapWidth": 200
+        },
+        {
+            "type": "Text",
+            "id": "e121c028-0333-4e3c-859c-205527efd15e",
+            "label": "bio_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 464.6298301164408,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Bio Text",
+            "align": "center",
+            "fontFamily": "DINPro",
+            "fontSize": "12px",
+            "maxLines": 10,
+            "wordWrapWidth": 200
         }
     ],
     "plainObjects": [],
@@ -262,5 +297,18 @@
         "url": "https://phasereditor2d.com",
         "contentType": "phasereditor2d.core.scene.SceneContentType",
         "version": 3
-    }
+    },
+    "lists": [
+        {
+            "id": "a2f7905d-6bc5-4ac8-af52-3ffdaa5ab84c",
+            "label": "stars",
+            "objectIds": [
+                "d7b5b091-fa2b-4e36-8437-73c8890ca122",
+                "57a601a1-26b0-4ac2-9a76-15c1e1896e38",
+                "2b4037ca-429a-4a1c-9bef-70eb0fe7b222",
+                "b911e5cc-5192-43a0-a8be-952fe307d1ad",
+                "dbc0f09a-9370-40b4-b092-4114b272dc58"
+            ]
+        }
+    ]
 }
