@@ -33,7 +33,7 @@ export default function Document() {
       <script defer src="https://unpkg.com/@tonejs/midi">
         const Midi = new Midi()
       </script>
-      <script src="https://unpkg.com/audiomotion-analyzer/dist"></script>
+      <script defer src="https://unpkg.com/audiomotion-analyzer/dist"></script>
     </Html>
   );
 }

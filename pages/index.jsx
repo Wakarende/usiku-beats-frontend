@@ -11,7 +11,7 @@ import { BASE_URL } from "../services/config";
 import Image from "next/image";
 import { Container, Row, Col, Tooltip, Button } from "react-bootstrap";
 import { updateUser } from "../redux/main/authActions";
-import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
+import UnlockSongsRow from "../components/HubScreen/UnlockSongsRow";
 import { OverlayCard, ArtistImage } from "../components/OverlayCard";
 import LevelUpPopup from "../components/LevelUpPopup";
 
