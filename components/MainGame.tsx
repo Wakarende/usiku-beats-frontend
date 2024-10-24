@@ -61,6 +61,11 @@ const PhaserGame: React.FC = () => {
           "MyriadPro-Regular",
           "Roboto-Regular",
           "Righteous-Regular",
+          "Afolkalips",
+          "Carlito-Bold",
+          "Carlito-BoldItalic",
+          "Carlito-Italic",
+          "Carlito-Regular",
         ], // Add your font names here
       },
       active: () => {

@@ -49,6 +49,11 @@
                 "key": "BG"
             },
             {
+                "url": "assets/sprites/playscene/BG.png",
+                "type": "image",
+                "key": "BG_1"
+            },
+            {
                 "url": "assets/sprites/bufferscene/Button.png",
                 "type": "image",
                 "key": "Button"
@@ -72,6 +77,11 @@
                 "url": "assets/sprites/bufferscene/Collections BG.png",
                 "type": "image",
                 "key": "Collections BG"
+            },
+            {
+                "url": "assets/sprites/playscene/Colour highlight.png",
+                "type": "image",
+                "key": "Colour highlight"
             },
             {
                 "url": [
@@ -124,6 +134,11 @@
                 "url": "assets/sprites/playscene/gem.png",
                 "type": "image",
                 "key": "gem"
+            },
+            {
+                "url": "assets/sprites/playscene/great.png",
+                "type": "image",
+                "key": "great"
             },
             {
                 "url": "assets/sprites/playscene/great_popup.png",
@@ -183,6 +198,11 @@
                 "key": "particle_1"
             },
             {
+                "url": "assets/sprites/playscene/Pattern.png",
+                "type": "image",
+                "key": "Pattern"
+            },
+            {
                 "url": "assets/sprites/playscene/pause.png",
                 "type": "image",
                 "key": "pause"
@@ -193,14 +213,49 @@
                 "key": "Pause"
             },
             {
+                "url": "assets/sprites/playscene/Pause 2.png",
+                "type": "image",
+                "key": "Pause 2"
+            },
+            {
                 "url": "assets/sprites/playscene/pause_overlay.png",
                 "type": "image",
                 "key": "pause_overlay"
             },
             {
+                "url": "assets/sprites/playscene/perfect.png",
+                "type": "image",
+                "key": "perfect"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_1.png",
+                "type": "image",
+                "key": "Perfect_1"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_2.png",
+                "type": "image",
+                "key": "Perfect_2"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_3.png",
+                "type": "image",
+                "key": "Perfect_3"
+            },
+            {
                 "url": "assets/sprites/playscene/perfect_popup.png",
                 "type": "image",
                 "key": "perfect_popup"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_Zone_Divider 2.png",
+                "type": "image",
+                "key": "Perfect_Zone_Divider 2"
+            },
+            {
+                "url": "assets/sprites/playscene/perfect+.png",
+                "type": "image",
+                "key": "perfect+"
             },
             {
                 "url": "assets/sprites/playscene/perfect+_popup.png",
@@ -347,6 +402,11 @@
                 "key": "tile_active"
             },
             {
+                "url": "assets/sprites/playscene/too_early.png",
+                "type": "image",
+                "key": "too_early"
+            },
+            {
                 "url": "assets/sprites/playscene/too_early_popup.png",
                 "type": "image",
                 "key": "too_early_popup"
@@ -360,6 +420,11 @@
                 "url": "assets/sprites/playscene/top_banner.png",
                 "type": "image",
                 "key": "top_banner"
+            },
+            {
+                "url": "assets/sprites/playscene/Vignette.png",
+                "type": "image",
+                "key": "Vignette"
             }
         ]
     },
