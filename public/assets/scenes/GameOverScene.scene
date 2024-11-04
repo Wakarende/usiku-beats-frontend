@@ -15,10 +15,51 @@
             "label": "hub_background",
             "components": [],
             "texture": {
-                "key": "hub_background"
+                "key": "summary_BG"
             },
             "x": 180,
-            "y": 320
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "54943591-7154-4fd4-a462-d329731d8e9e",
+            "label": "bottom_banner",
+            "components": [],
+            "texture": {
+                "key": "Bottom banner"
+            },
+            "x": 180,
+            "y": 606.5033500000001,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "1bc3583d-f2ae-45fc-bb4f-c371e3640cb7",
+            "label": "top_banner",
+            "components": [],
+            "texture": {
+                "key": "Top banner"
+            },
+            "x": 180,
+            "y": 27.497249999999998,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "6f71b3d8-11b9-4b4c-baf6-0dc74bba2689",
+            "label": "round_Frame",
+            "components": [],
+            "texture": {
+                "key": "Round Frame"
+            },
+            "x": 180,
+            "y": 238,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Text",
@@ -27,12 +68,14 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 444,
+            "y": 440,
             "originX": 0.5,
             "originY": 0.5,
             "text": "00000",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "40px"
+            "fontFamily": "Afolkalips",
+            "fontSize": "60px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
         },
         {
             "type": "Text",
@@ -41,12 +84,14 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 66,
+            "y": 98,
             "originX": 0.5,
             "originY": 0.5,
             "text": "song_name",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "22px"
+            "fontFamily": "Afolkalips",
+            "fontSize": "30px",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
         },
         {
             "type": "Text",
@@ -55,12 +100,14 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 40,
+            "y": 74,
             "originX": 0.5,
             "originY": 0.5,
             "text": "artist_name",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "15px"
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "15px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
         },
         {
             "type": "Image",
@@ -68,10 +115,12 @@
             "label": "star_empty_4",
             "components": [],
             "texture": {
-                "key": "star_empty"
+                "key": "Star_Inactive"
             },
-            "x": 240,
-            "y": 402
+            "x": 260,
+            "y": 384,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
@@ -79,10 +128,12 @@
             "label": "star_empty_3",
             "components": [],
             "texture": {
-                "key": "star_empty"
+                "key": "Star_Inactive"
             },
-            "x": 210,
-            "y": 402
+            "x": 220,
+            "y": 383,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
@@ -90,10 +141,12 @@
             "label": "star_empty_2",
             "components": [],
             "texture": {
-                "key": "star_empty"
+                "key": "Star_Inactive"
             },
             "x": 180,
-            "y": 402
+            "y": 383,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
@@ -101,10 +154,12 @@
             "label": "star_empty_1",
             "components": [],
             "texture": {
-                "key": "star_empty"
+                "key": "Star_Inactive"
             },
-            "x": 150,
-            "y": 402
+            "x": 140,
+            "y": 383,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
@@ -112,10 +167,12 @@
             "label": "star_empty",
             "components": [],
             "texture": {
-                "key": "star_empty"
+                "key": "Star_Inactive"
             },
-            "x": 120,
-            "y": 402
+            "x": 100,
+            "y": 383,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
@@ -124,10 +181,12 @@
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "play_button"
+                "key": "Retry button"
             },
             "x": 180,
-            "y": 515
+            "y": 586,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
@@ -139,7 +198,9 @@
                 "key": "carousel_2"
             },
             "x": 180,
-            "y": 229
+            "y": 238,
+            "scaleX": 0.6,
+            "scaleY": 0.6
         },
         {
             "type": "Image",
@@ -148,38 +209,57 @@
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "play_button_inactive"
+                "key": "Continue"
             },
             "x": 180,
-            "y": 586
-        },
-        {
-            "type": "Text",
-            "id": "f0c908a1-d23f-4ae6-a652-c341f5755ea9",
-            "label": "retrytext",
-            "scope": "CLASS",
-            "components": [],
-            "x": 180,
             "y": 515,
-            "originX": 0.5,
-            "originY": 0.5,
-            "text": "Retry",
-            "fontFamily": "DINPro",
-            "fontSize": "18px"
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "104462f3-5efb-43ae-a07e-7e79260a1aaa",
+            "label": "no_of_stars",
+            "components": [],
+            "texture": {
+                "key": "No of stars"
+            },
+            "x": 53,
+            "y": 22,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Text",
-            "id": "a71710f1-dff4-417d-8ad7-a33da552edb4",
-            "label": "continuetext",
+            "id": "695885ba-1ef8-42b1-ac1c-fdd487e13087",
+            "label": "difficulty_text",
             "scope": "CLASS",
             "components": [],
-            "x": 180,
-            "y": 586,
+            "x": 323,
+            "y": 21,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "Song Selector",
-            "fontFamily": "DINPro",
-            "fontSize": "18px"
+            "text": "MEDIUM",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "12px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "14e9dd1b-0923-4c94-b33b-8d9fd9a6142d",
+            "label": "total_stars_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 47,
+            "y": 22,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "000",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "15px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
         }
     ],
     "plainObjects": [],

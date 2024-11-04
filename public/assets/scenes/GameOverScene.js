@@ -14,73 +14,127 @@ class GameOverScene extends Phaser.Scene {
   /** @returns {void} */
   editorCreate() {
     // hub_background
-    this.add.image(180, 320, "hub_background");
+    const hub_background = this.add.image(180, 320, "summary_BG");
+    hub_background.scaleX = 0.3333;
+    hub_background.scaleY = 0.3333;
+
+    // bottom_banner
+    const bottom_banner = this.add.image(180, 606.5033500000001, "Bottom banner");
+    bottom_banner.scaleX = 0.3333;
+    bottom_banner.scaleY = 0.3333;
+
+    // top_banner
+    const top_banner = this.add.image(180, 27.497249999999998, "Top banner");
+    top_banner.scaleX = 0.3333;
+    top_banner.scaleY = 0.3333;
+
+    // round_Frame
+    const round_Frame = this.add.image(180, 238, "Round Frame");
+    round_Frame.scaleX = 0.3333;
+    round_Frame.scaleY = 0.3333;
 
     // current_score
-    const current_score = this.add.text(180, 444, "", {});
+    const current_score = this.add.text(180, 440, "", {});
     current_score.setOrigin(0.5, 0.5);
     current_score.text = "00000";
     current_score.setStyle({
-      fontFamily: "Righteous-Regular",
-      fontSize: "40px",
+      color: "#faf05e",
+      fontFamily: "Afolkalips",
+      fontSize: "60px",
+      stroke: "#faf05e",
     });
 
     // song_name
-    const song_name = this.add.text(180, 66, "", {});
+    const song_name = this.add.text(180, 98, "", {});
     song_name.setOrigin(0.5, 0.5);
     song_name.text = "song_name";
-    song_name.setStyle({ fontFamily: "Righteous-Regular", fontSize: "22px" });
+    song_name.setStyle({
+      color: "#ff6a00",
+      fontFamily: "Afolkalips",
+      fontSize: "30px",
+      stroke: "#ff6a00",
+    });
 
     // artist_name
-    const artist_name = this.add.text(180, 40, "", {});
+    const artist_name = this.add.text(180, 74, "", {});
     artist_name.setOrigin(0.5, 0.5);
     artist_name.text = "artist_name";
-    artist_name.setStyle({ fontFamily: "Righteous-Regular", fontSize: "15px" });
+    artist_name.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "15px",
+      stroke: "#faf05e",
+    });
 
     // star_empty_4
-    const star_empty_4 = this.add.image(240, 402, "star_empty");
+    const star_empty_4 = this.add.image(260, 384, "Star_Inactive");
+    star_empty_4.scaleX = 0.3333;
+    star_empty_4.scaleY = 0.3333;
 
     // star_empty_3
-    const star_empty_3 = this.add.image(210, 402, "star_empty");
+    const star_empty_3 = this.add.image(220, 383, "Star_Inactive");
+    star_empty_3.scaleX = 0.3333;
+    star_empty_3.scaleY = 0.3333;
 
     // star_empty_2
-    const star_empty_2 = this.add.image(180, 402, "star_empty");
+    const star_empty_2 = this.add.image(180, 383, "Star_Inactive");
+    star_empty_2.scaleX = 0.3333;
+    star_empty_2.scaleY = 0.3333;
 
     // star_empty_1
-    const star_empty_1 = this.add.image(150, 402, "star_empty");
+    const star_empty_1 = this.add.image(140, 383, "Star_Inactive");
+    star_empty_1.scaleX = 0.3333;
+    star_empty_1.scaleY = 0.3333;
 
     // star_empty
-    const star_empty = this.add.image(120, 402, "star_empty");
+    const star_empty = this.add.image(100, 383, "Star_Inactive");
+    star_empty.scaleX = 0.3333;
+    star_empty.scaleY = 0.3333;
 
     // retry_button
-    const retry_button = this.add.image(180, 515, "play_button");
+    const retry_button = this.add.image(180, 586, "Retry button");
+    retry_button.scaleX = 0.3333;
+    retry_button.scaleY = 0.3333;
 
     // carousel
-    const carousel = this.add.image(180, 229, "carousel_2");
+    const carousel = this.add.image(180, 238, "carousel_2");
+    carousel.scaleX = 0.6;
+    carousel.scaleY = 0.6;
 
     // continue_button
-    const continue_button = this.add.image(180, 586, "play_button_inactive");
+    const continue_button = this.add.image(180, 515, "Continue");
+    continue_button.scaleX = 0.3333;
+    continue_button.scaleY = 0.3333;
 
-    // retrytext
-    const retrytext = this.add.text(180, 515, "", {});
-    retrytext.setOrigin(0.5, 0.5);
-    retrytext.text = "Retry";
-    retrytext.setStyle({ fontFamily: "DINPro", fontSize: "18px" });
+    // no_of_stars
+    const no_of_stars = this.add.image(53, 22, "No of stars");
+    no_of_stars.scaleX = 0.3333;
+    no_of_stars.scaleY = 0.3333;
 
-    // continuetext
-    const continuetext = this.add.text(180, 586, "", {});
-    continuetext.setOrigin(0.5, 0.5);
-    continuetext.text = "Song Selector";
-    continuetext.setStyle({ fontFamily: "DINPro", fontSize: "18px" });
+    // difficulty_text
+    const difficulty_text = this.add.text(323, 21, "", {});
+    difficulty_text.setOrigin(0.5, 0.5);
+    difficulty_text.text = "MEDIUM";
+    difficulty_text.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "12px",
+      stroke: "#faf05e",
+    });
+
+    // total_stars_text
+    const total_stars_text = this.add.text(47, 22, "", {});
+    total_stars_text.setOrigin(0.5, 0.5);
+    total_stars_text.text = "000";
+    total_stars_text.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "15px",
+      stroke: "#faf05e",
+    });
 
     // lists
-    const stars = [
-      star_empty,
-      star_empty_1,
-      star_empty_2,
-      star_empty_3,
-      star_empty_4,
-    ];
+    const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
 
     this.current_score = current_score;
     this.song_name = song_name;
@@ -88,8 +142,8 @@ class GameOverScene extends Phaser.Scene {
     this.retry_button = retry_button;
     this.carousel = carousel;
     this.continue_button = continue_button;
-    this.retrytext = retrytext;
-    this.continuetext = continuetext;
+    this.difficulty_text = difficulty_text;
+    this.total_stars_text = total_stars_text;
     this.stars = stars;
 
     this.events.emit("scene-awake");
@@ -108,9 +162,9 @@ class GameOverScene extends Phaser.Scene {
   /** @type {Phaser.GameObjects.Image} */
   continue_button;
   /** @type {Phaser.GameObjects.Text} */
-  retrytext;
+  difficulty_text;
   /** @type {Phaser.GameObjects.Text} */
-  continuetext;
+  total_stars_text;
   /** @type {Phaser.GameObjects.Image[]} */
   stars;
 
@@ -137,12 +191,34 @@ class GameOverScene extends Phaser.Scene {
 
     // this.cameras.main.fadeIn(500);
 
-    this.artist_name.setText(this.track.artist_name);
+    this.artist_name.setText(this.track.artist_name.toUpperCase());
     this.song_name.setText(this.track.song_name);
     // this.current_score.setText(Math.trunc(this.track.current_score))
     this.setStars(this.track.current_score);
 
+    // Create circular mask for carousel
+    const maskGraphics = this.add.graphics();
+    // Set the graphics position to match carousel
+    maskGraphics.clear();
+    maskGraphics.fillStyle(0xffffff);
+    maskGraphics.beginPath();
+    maskGraphics.arc(180, 238, 100, 0, Math.PI * 2);
+    maskGraphics.closePath();
+    maskGraphics.fill();
+
+    // Set carousel texture first
     this.carousel.setTexture(this.track.thumbnail);
+
+    // Create and apply the mask
+    const mask = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
+    this.carousel.setMask(mask);
+
+    // Hide the mask graphics - this is crucial!
+    maskGraphics.setVisible(false);
+
+    // Store mask references for cleanup
+    this.carouselMask = mask;
+    this.maskGraphics = maskGraphics;
 
     this.retry_button.setInteractive();
     this.retry_button.on("pointerup", () => {
@@ -206,7 +282,7 @@ class GameOverScene extends Phaser.Scene {
         this.tweens.add({
           targets: this.current_score,
           scale: { start: 1, to: 1.2 }, // adjust these values for the bounce effect
-          yoyo: true, // makes the tween automatically reverse, creating the bounce effect
+          yoyo: false, // makes the tween automatically reverse, creating the bounce effect
           duration: 500, // how long one 'bounce' should take
           ease: "Bounce.easeOut", // bounce easing function
         });
@@ -216,12 +292,9 @@ class GameOverScene extends Phaser.Scene {
 
   buildScreen() {
     this.retry_button.setDepth(2).setScale(0);
-    this.retrytext.setDepth(2).setScale(0);
     this.continue_button.setDepth(2).setScale(0);
-    this.continuetext.setDepth(2).setScale(0);
 
     this.retry_button.setScale(0);
-    this.retrytext.setScale(0);
     this.carousel.setScale(0);
 
     this.tweens.add({
@@ -239,34 +312,12 @@ class GameOverScene extends Phaser.Scene {
           },
           onComplete: () => {
             this.tweens.add({
-              targets: [
-                this.retry_button,
-                this.continue_button,
-                this.retrytext,
-                this.continuetext,
-              ],
+              targets: [this.retry_button, this.continue_button],
               scale: {
                 from: 0,
-                to: 1,
+                to: 0.3333,
                 duration: 700,
                 ease: "Bounce.easeOut",
-              },
-              onComplete: () => {
-                this.play_emitter = this.add
-                  .particles(
-                    this.retry_button.x,
-                    this.retry_button.y,
-                    "Play_active",
-                    {
-                      lifespan: 500,
-                      speed: { min: 100, max: 150 },
-                      scale: { start: 0.5, end: 0 },
-                      // gravityY: 150,
-                      blendMode: "ADD",
-                      active: true,
-                    }
-                  )
-                  .setDepth(1.5);
               },
             });
           },
@@ -301,31 +352,31 @@ class GameOverScene extends Phaser.Scene {
           targets: star,
           delay: index * 200, // delay based on index to make stars appear one by one
           onStart: () => {
-            star.setTexture("star_full");
+            star.setTexture("Star Active");
 
             starSound.play();
 
-            let star_emitter = this.add
-              .particles(star.x, star.y, "Play_active", {
-                lifespan: 700,
-                speed: { min: 100, max: 150 },
-                scale: { start: 0.5, end: 0 },
-                // gravityY: 150,
-                blendMode: "ADD",
-                emitting: false,
-              })
-              .setDepth(1);
+            // let star_emitter = this.add
+            //   .particles(star.x, star.y, "Play_active", {
+            //     lifespan: 700,
+            //     speed: { min: 100, max: 150 },
+            //     scale: { start: 0.5, end: 0 },
+            //     // gravityY: 150,
+            //     blendMode: "ADD",
+            //     emitting: false,
+            //   })
+            //   .setDepth(1);
 
-            star_emitter.explode(30);
-            star_emitter.stop();
+            // star_emitter.explode(30);
+            // star_emitter.stop();
           },
-          scaleX: { from: 2, to: 1 }, // increased start scale
-          scaleY: { from: 2, to: 1 }, // increased start scale
+          scaleX: { from: 1, to: 0.3333 }, // increased start scale
+          scaleY: { from: 1, to: 0.3333 }, // increased start scale
           duration: 2000, // increased duration
           ease: "Bounce.easeOut",
         });
       } else {
-        star.setTexture("star_empty");
+        star.setTexture("Star_Inactive");
       }
     });
 
@@ -355,10 +406,9 @@ class GameOverScene extends Phaser.Scene {
   updateData() {
     let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
 
-    const songInstance =
-      updatedUserData.profile.player.player_song_instances.find(
-        (instance) => instance.song.id === this.track.id
-      );
+    const songInstance = updatedUserData.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === this.track.id
+    );
     if (songInstance) {
       let prevStarCount = 0;
       if (songInstance.no_of_plays !== 0) {
@@ -366,19 +416,12 @@ class GameOverScene extends Phaser.Scene {
       }
 
       // Update the high score if the current score is higher
-      songInstance.high_score = Math.max(
-        songInstance.high_score,
-        this.track.current_score
-      );
+      songInstance.high_score = Math.max(songInstance.high_score, this.track.current_score);
 
       // If it's the first play or if the current stars exceed the stars from the highest score
-      if (
-        songInstance.no_of_plays === 0 ||
-        this.fullStarsCount > prevStarCount
-      ) {
+      if (songInstance.no_of_plays === 0 || this.fullStarsCount > prevStarCount) {
         // Update total stars only if current stars are greater
-        updatedUserData.profile.player.total_stars +=
-          this.fullStarsCount - (prevStarCount || 0);
+        updatedUserData.profile.player.total_stars += this.fullStarsCount - (prevStarCount || 0);
       }
 
       console.log(this.fullStarsCount);
@@ -397,6 +440,7 @@ class GameOverScene extends Phaser.Scene {
       } else if (totalStars >= 5 && currentLevel < 2) {
         newLevel = 2;
       }
+      this.total_stars_text.setText(totalStars);
 
       // let newLevelAchieved = false;
       // Check if a new level has been achieved

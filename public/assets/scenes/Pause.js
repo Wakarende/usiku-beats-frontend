@@ -3,76 +3,72 @@
 /* START OF COMPILED CODE */
 
 class Pause extends Phaser.Scene {
-  constructor() {
-    super("Pause");
 
-    /* START-USER-CTR-CODE */
+	constructor() {
+		super("Pause");
+
+		/* START-USER-CTR-CODE */
 
     /* END-USER-CTR-CODE */
-  }
+	}
 
-  /** @returns {void} */
-  editorCreate() {
-    // pause_overlay
-    this.add.image(180, 320, "pause_overlay");
+	/** @returns {void} */
+	editorCreate() {
 
-    // score_text
-    const score_text = this.add.text(180, 82, "", {});
-    score_text.setOrigin(0.5, 0.5);
-    score_text.text = "Pause";
-    score_text.setStyle({ fontFamily: "Righteous-Regular", fontSize: "55px" });
+		// pause_BG
+		const pause_BG = this.add.image(180, 320, "Pause_BG");
+		pause_BG.scaleX = 0.3333;
+		pause_BG.scaleY = 0.3333;
 
-    // continue_button
-    const continue_button = this.add.image(180, 372, "play_button_inactive");
+		// pause_text
+		const pause_text = this.add.text(180, 177, "", {});
+		pause_text.setOrigin(0.5, 0.5);
+		pause_text.text = "Paused";
+		pause_text.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "65px", "stroke": "#ff6a00" });
 
-    // continue_text
-    const continue_text = this.add.text(180, 370.0831465590536, "", {});
-    continue_text.setOrigin(0.5, 0.5);
-    continue_text.text = "Continue";
-    continue_text.setStyle({ fontFamily: "DINPro", fontSize: "25px" });
+		// continue_btn
+		const continue_btn = this.add.image(180, 527, "Continue");
+		continue_btn.scaleX = 0.3333;
+		continue_btn.scaleY = 0.3333;
 
-    // quit_text
-    const quit_text = this.add.text(180, 432.8584157011215, "", {});
-    quit_text.setOrigin(0.5, 0.5);
-    quit_text.text = "Quit";
-    quit_text.setStyle({ fontFamily: "DINPro", fontSize: "25px" });
+		// quit_btn
+		const quit_btn = this.add.image(180, 599, "Quit");
+		quit_btn.scaleX = 0.3333;
+		quit_btn.scaleY = 0.3333;
 
-    this.score_text = score_text;
-    this.continue_button = continue_button;
-    this.quit_text = quit_text;
+		this.continue_btn = continue_btn;
+		this.quit_btn = quit_btn;
 
-    this.events.emit("scene-awake");
-  }
+		this.events.emit("scene-awake");
+	}
 
-  /** @type {Phaser.GameObjects.Text} */
-  score_text;
-  /** @type {Phaser.GameObjects.Image} */
-  continue_button;
-  /** @type {Phaser.GameObjects.Text} */
-  quit_text;
+	/** @type {Phaser.GameObjects.Image} */
+	continue_btn;
+	/** @type {Phaser.GameObjects.Image} */
+	quit_btn;
 
-  /* START-USER-CODE */
+	/* START-USER-CODE */
 
   // Write your code here
 
   create() {
     this.editorCreate();
-    const router = this.registry.get('router');
+    const router = this.registry.get("router");
 
-    this.continue_button.setInteractive();
-    this.continue_button.on("pointerup", () => {
+    this.continue_btn.setInteractive();
+    this.continue_btn.on("pointerup", () => {
       // start_sfx.play();
       this.scene.stop();
       this.scene.resume("Level");
     });
 
-    this.quit_text.setInteractive();
-    this.quit_text.on("pointerup", () => {
+    this.quit_btn.setInteractive();
+    this.quit_btn.on("pointerup", () => {
       const levelScene = this.scene.get("Level");
-      levelScene.cleanUp();   // clean-up Level scene
+      levelScene.cleanUp(); // clean-up Level scene
       this.scene.stop("Level");
       // this.scene.start("BufferScene");
-      router.push('/')
+      router.push("/");
     });
   }
 

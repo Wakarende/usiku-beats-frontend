@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
-import moment from 'moment-timezone';
+import moment from "moment-timezone";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../components/Popup";
 import Image from "next/image";
@@ -26,11 +26,11 @@ const Library = () => {
   useEffect(() => {
     setLoading(true);
     axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=136`).then((res) => {
-      const songsWithUnlockStatus = res.data.map(song => ({
+      const songsWithUnlockStatus = res.data.map((song) => ({
         ...song,
         isUnlocked: user_data?.profile?.player?.player_song_instances.some(
-          instance => instance.song.id === song.id && instance.unlocked
-        )
+          (instance) => instance.song.id === song.id && instance.unlocked
+        ),
       }));
       setSongs(songsWithUnlockStatus);
       setLoading(false);
@@ -41,12 +41,12 @@ const Library = () => {
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
-    
+
     setUnlockedSong(song);
     setIsPopupOpen(true);
-  
-    let unlockTime = moment().add(2, 'minutes').toISOString();
-  
+
+    let unlockTime = moment().add(2, "minutes").toISOString();
+
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     let newSongInstance = {
       date_added: new Date().toISOString(),
@@ -56,18 +56,16 @@ const Library = () => {
       no_of_plays: 0,
       paid_for_flag: false,
       unlock_time: unlockTime,
-      unlocked: true,
+      unlocked: false,
       song,
     };
-  
+
     newUserdata.profile.player.player_song_instances.push(newSongInstance);
     newUserdata.profile.player.total_discs -= 30;
     dispatch(updateUser(newUserdata));
 
-    setSongs(prevSongs => 
-      prevSongs.map(s => 
-        s.id === song.id ? { ...s, isUnlocked: true } : s
-      )
+    setSongs((prevSongs) =>
+      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
     );
   };
 
@@ -93,12 +91,7 @@ const Library = () => {
           <div key={index} className="m-8">
             <div className="song-item">
               <div className="flex flex-row justify-between items-center">
-                <Image
-                  src={song.thumbnail_file}
-                  alt="Song Cover"
-                  width={100}
-                  height={100}
-                />
+                <Image src={song.thumbnail_file} alt="Song Cover" width={100} height={100} />
                 <div style={{ color: "white" }} className="flex-grow mx-4">
                   <p className="font-bold">{song.song_name}</p>
                   <p>{song.artist_name}</p>
@@ -121,10 +114,7 @@ const Library = () => {
           </div>
         ))}
 
-        <Popup
-          isOpen={isPopupOpen}
-          closePopup={() => setIsPopupOpen(false)}
-        >
+        <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <h1 className="mt-2">You have successfully unlocked the song:</h1>
           <b style={{ fontSize: "50px" }}>{unlockedSong?.song_name}</b>
           <button

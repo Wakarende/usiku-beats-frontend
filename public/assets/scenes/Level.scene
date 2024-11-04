@@ -49,31 +49,6 @@
             "scaleY": 0.3333
         },
         {
-            "type": "Image",
-            "id": "c87c0ece-39ac-43f2-9fc6-0d629075f673",
-            "label": "gameplay_bg",
-            "components": [],
-            "texture": {
-                "key": "plain_background"
-            },
-            "x": 180,
-            "y": 320,
-            "visible": false
-        },
-        {
-            "type": "Image",
-            "id": "66c9979e-16ec-4623-b0c5-ea839a77358f",
-            "label": "top_banner",
-            "scope": "CLASS",
-            "components": [],
-            "texture": {
-                "key": "top_banner"
-            },
-            "x": 180,
-            "y": 175.5,
-            "visible": false
-        },
-        {
             "type": "Text",
             "id": "bd56f0ea-006f-48fe-95a8-7e69f6bb2734",
             "label": "artist_text",
@@ -197,211 +172,13 @@
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "perfect_popup"
+                "key": "perfect"
             },
             "x": 180,
             "y": 303,
             "scaleX": 0.7,
             "scaleY": 0.7,
             "visible": false
-        },
-        {
-            "type": "Image",
-            "id": "fd36bcba-489b-490c-86b4-bb57229af077",
-            "label": "overlay",
-            "scope": "CLASS",
-            "components": [],
-            "texture": {
-                "key": "overlay"
-            },
-            "x": 180,
-            "y": 320,
-            "visible": false
-        },
-        {
-            "type": "Layer",
-            "id": "46d657c6-5cd5-4d5d-92e3-9640eaf4506e",
-            "label": "song_complete_text",
-            "scope": "CLASS",
-            "components": [],
-            "visible": false,
-            "list": [
-                {
-                    "type": "Text",
-                    "id": "4e56a4af-9e4b-465d-9e7c-f77eb51a0ce6",
-                    "label": "song",
-                    "components": [],
-                    "x": 180,
-                    "y": 196,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "SONG",
-                    "align": "center",
-                    "fontFamily": "DINPro",
-                    "fontSize": "18px",
-                    "color": "#fe500b",
-                    "stroke": "#fe500b"
-                },
-                {
-                    "type": "Text",
-                    "id": "f9fc3ddd-1d99-4f87-9fd7-611089046220",
-                    "label": "complete",
-                    "components": [],
-                    "x": 180,
-                    "y": 231,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "COMPLETE",
-                    "fontFamily": "Righteous-Regular",
-                    "fontSize": "50px",
-                    "color": "#fe500b",
-                    "stroke": "#fe500b"
-                },
-                {
-                    "type": "Text",
-                    "id": "b23a9d48-4e68-4029-b896-9853de0a55f5",
-                    "label": "youve_earned",
-                    "components": [],
-                    "x": 180,
-                    "y": 304,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "You've Earned ",
-                    "fontFamily": "Righteous-Regular",
-                    "fontSize": "30px",
-                    "color": "#381304ff",
-                    "stroke": "#773d26ff"
-                },
-                {
-                    "type": "Text",
-                    "id": "1357ae5e-9ec2-438a-a6de-01ce525ff1a2",
-                    "label": "disc_number_earned",
-                    "scope": "CLASS",
-                    "components": [],
-                    "x": 180,
-                    "y": 364.88365496112675,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "30",
-                    "fontFamily": "Righteous-Regular",
-                    "fontSize": "55px",
-                    "fontStyle": "bold",
-                    "color": "#381304ff",
-                    "stroke": "#773d26ff"
-                },
-                {
-                    "type": "Text",
-                    "id": "724c2b24-9ea6-41ef-8f29-12f85740282c",
-                    "label": "discs",
-                    "components": [],
-                    "x": 180,
-                    "y": 418.009920694199,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "Discs",
-                    "fontFamily": "Righteous-Regular",
-                    "fontSize": "30px",
-                    "color": "#381304ff",
-                    "stroke": "#773d26ff"
-                }
-            ]
-        },
-        {
-            "type": "Layer",
-            "id": "ec3eb967-53d2-4abe-9614-20e4250c61f7",
-            "label": "beat_missed_text",
-            "scope": "CLASS",
-            "components": [],
-            "visible": false,
-            "list": [
-                {
-                    "type": "Text",
-                    "id": "1a913280-bd7a-487f-9713-f8d17cafa357",
-                    "label": "beat",
-                    "components": [],
-                    "x": 180,
-                    "y": 177,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "BEAT",
-                    "align": "center",
-                    "fontFamily": "DINPro",
-                    "fontSize": "18px",
-                    "color": "#666363ff",
-                    "stroke": "#666363ff"
-                },
-                {
-                    "type": "Text",
-                    "id": "9d4eccc3-4e42-478d-a35c-0ceace671521",
-                    "label": "missed",
-                    "components": [],
-                    "x": 180,
-                    "y": 212,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "MISSED",
-                    "fontFamily": "Righteous-Regular",
-                    "fontSize": "50px",
-                    "color": "#666363ff",
-                    "stroke": "#666363ff"
-                },
-                {
-                    "type": "Image",
-                    "id": "e9879bf3-d096-4183-9a96-fb099117c87f",
-                    "label": "continue_button",
-                    "scope": "CLASS",
-                    "components": [],
-                    "texture": {
-                        "key": "play_button"
-                    },
-                    "x": 180,
-                    "y": 397,
-                    "scaleX": 0.8,
-                    "scaleY": 0.8
-                },
-                {
-                    "type": "Text",
-                    "id": "172fa5ca-1350-4751-b64a-1bfc70379a60",
-                    "label": "continue_text",
-                    "scope": "CLASS",
-                    "components": [],
-                    "x": 180,
-                    "y": 397,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "CONTINUE",
-                    "fontFamily": "DINPro",
-                    "fontSize": "22px"
-                },
-                {
-                    "type": "Image",
-                    "id": "ace29546-73d5-43e3-a556-3ddf00687dc0",
-                    "label": "quit_button",
-                    "scope": "CLASS",
-                    "components": [],
-                    "texture": {
-                        "key": "play_button"
-                    },
-                    "x": 180,
-                    "y": 317,
-                    "scaleX": 0.8,
-                    "scaleY": 0.8
-                },
-                {
-                    "type": "Text",
-                    "id": "a343ecfd-353b-485c-813f-aeef04eaff3b",
-                    "label": "quit_text",
-                    "scope": "CLASS",
-                    "components": [],
-                    "x": 180,
-                    "y": 317,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "QUIT",
-                    "fontFamily": "DINPro",
-                    "fontSize": "22px"
-                }
-            ]
         },
         {
             "type": "Container",
@@ -440,30 +217,6 @@
                     "stroke": "#666363ff"
                 }
             ]
-        },
-        {
-            "type": "Sprite",
-            "id": "a547cfee-7f59-4841-a1b8-7a98eb1d9ce8",
-            "label": "sprite_1",
-            "components": [],
-            "texture": {},
-            "x": 181,
-            "y": 522,
-            "visible": false
-        },
-        {
-            "type": "Image",
-            "id": "6c0a7624-cc30-4ee3-89cc-0df38bbb7166",
-            "label": "beats2",
-            "components": [],
-            "texture": {
-                "key": "tile_active"
-            },
-            "x": 6,
-            "y": 325,
-            "originX": -0.02,
-            "originY": 0,
-            "visible": false
         },
         {
             "type": "Image",
@@ -538,6 +291,191 @@
             "scaleX": 0.1,
             "scaleY": 0.09,
             "flipY": true
+        },
+        {
+            "type": "Layer",
+            "id": "46d657c6-5cd5-4d5d-92e3-9640eaf4506e",
+            "label": "song_complete_overlay",
+            "scope": "CLASS",
+            "components": [],
+            "visible": false,
+            "list": [
+                {
+                    "type": "Image",
+                    "id": "1cc8dd44-c6e9-43b2-ab38-2d343d0068da",
+                    "label": "bG",
+                    "components": [],
+                    "texture": {
+                        "key": "BG_1"
+                    },
+                    "x": 180,
+                    "y": 320,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Image",
+                    "id": "7653e60f-8950-46aa-bf72-8b60abe98c01",
+                    "label": "bottom_banner",
+                    "components": [],
+                    "texture": {
+                        "key": "Bottom banner"
+                    },
+                    "x": 180,
+                    "y": 606.5033569335938,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Text",
+                    "id": "0b5719d7-b7f8-47cc-8139-6497e49a225a",
+                    "label": "artist_name",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 19,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "artist_name",
+                    "fontFamily": "Carlito-Regular",
+                    "color": "#faf05e",
+                    "stroke": "#faf05e"
+                },
+                {
+                    "type": "Text",
+                    "id": "69f9b31e-7543-44ad-aafb-4c93dee35c6c",
+                    "label": "song_name",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 42,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "song_name",
+                    "fontFamily": "Afolkalips",
+                    "fontSize": "30px",
+                    "color": "#ff6a00",
+                    "stroke": "#ff6a00"
+                },
+                {
+                    "type": "Text",
+                    "id": "4ec5434b-3eb7-4af8-af3d-35d5368de3ec",
+                    "label": "difficulty_text",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 72.88130950927734,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "MEDIUM DIFFICULTY",
+                    "fontFamily": "Carlito-Regular",
+                    "fontSize": "12px",
+                    "color": "#faf05e",
+                    "stroke": "#faf05e"
+                },
+                {
+                    "type": "Image",
+                    "id": "ddb47008-a140-46f8-a749-c534071b919d",
+                    "label": "round_frame",
+                    "components": [],
+                    "texture": {
+                        "key": "Round Frame"
+                    },
+                    "x": 180,
+                    "y": 202,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Image",
+                    "id": "8fce03d3-96a1-4ff6-a79b-a833d67ac83c",
+                    "label": "carousel",
+                    "scope": "CLASS",
+                    "components": [],
+                    "texture": {
+                        "key": "carousel_2"
+                    },
+                    "x": 180,
+                    "y": 202,
+                    "scaleX": 0.6,
+                    "scaleY": 0.6
+                },
+                {
+                    "type": "Text",
+                    "id": "ce01de4d-54aa-4cdc-97d3-2d22271d5e90",
+                    "label": "song_complete_txt",
+                    "components": [],
+                    "x": 180,
+                    "y": 356,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "Song Complete",
+                    "fontFamily": "Afolkalips",
+                    "fontSize": "60px",
+                    "color": "#faf05e",
+                    "stroke": "#faf05e"
+                },
+                {
+                    "type": "Text",
+                    "id": "bf44b44a-5301-4d91-a6b0-cf68f1eb906e",
+                    "label": "youve_earned_txt",
+                    "components": [],
+                    "x": 180,
+                    "y": 406,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "You've earned 30 discs",
+                    "fontFamily": "Carlito-Regular",
+                    "fontSize": "20px"
+                },
+                {
+                    "type": "Image",
+                    "id": "a5f0b2bc-b8db-4c0b-8451-6517fd359672",
+                    "label": "disc",
+                    "components": [],
+                    "texture": {
+                        "key": "Disc"
+                    },
+                    "x": 180,
+                    "y": 486,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Text",
+                    "id": "1c41c89c-ef4c-45d1-9f4d-8b417067540b",
+                    "label": "plus_30",
+                    "components": [],
+                    "x": 246,
+                    "y": 457,
+                    "angle": -29,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "+30",
+                    "fontFamily": "Afolkalips",
+                    "fontSize": "57px",
+                    "color": "#faf05e",
+                    "stroke": "#faf05e"
+                },
+                {
+                    "type": "Text",
+                    "id": "c2f82e7c-2c10-4408-bcb1-e9f487f5084b",
+                    "label": "earn_text",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 180,
+                    "y": 555,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "Earn 30 more discs to unlock your next song",
+                    "align": "center",
+                    "fontFamily": "Carlito-Regular",
+                    "fontSize": "20px",
+                    "color": "#faf05e",
+                    "stroke": "#faf05e",
+                    "wordWrapWidth": 200
+                }
+            ]
         }
     ],
     "plainObjects": [],
@@ -556,7 +494,9 @@
                 "133ec661-739d-412f-94e4-6a32fedbec52",
                 "5e6aa4d2-41d2-43ca-b214-f57af72b601e",
                 "bd56f0ea-006f-48fe-95a8-7e69f6bb2734",
-                "66c9979e-16ec-4623-b0c5-ea839a77358f"
+                "297ac49a-6b37-41e1-bbf6-c3d1f52b6b30",
+                "f82c87a1-43ce-48d9-bfc9-87d66d038b51",
+                "7b7307a0-2fe7-4ce5-b439-aa28c45aa998"
             ]
         }
     ]

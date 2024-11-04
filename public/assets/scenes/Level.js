@@ -3,299 +3,320 @@
 /* START OF COMPILED CODE */
 
 class Level extends Phaser.Scene {
+  constructor() {
+    super("Level");
 
-	constructor() {
-		super("Level");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // bG_1
+    const bG_1 = this.add.image(180, 320, "BG_1");
+    bG_1.scaleX = 0.3333;
+    bG_1.scaleY = 0.3333;
 
-		// bG_1
-		const bG_1 = this.add.image(180, 320, "BG_1");
-		bG_1.scaleX = 0.3333;
-		bG_1.scaleY = 0.3333;
+    // vignette
+    const vignette = this.add.image(180, 320, "Vignette");
+    vignette.scaleX = 0.3333;
+    vignette.scaleY = 0.3333;
 
-		// vignette
-		const vignette = this.add.image(180, 320, "Vignette");
-		vignette.scaleX = 0.3333;
-		vignette.scaleY = 0.3333;
+    // pattern
+    const pattern = this.add.image(180, 320, "Pattern");
+    pattern.scaleX = 0.3333;
+    pattern.scaleY = 0.3333;
 
-		// pattern
-		const pattern = this.add.image(180, 320, "Pattern");
-		pattern.scaleX = 0.3333;
-		pattern.scaleY = 0.3333;
+    // artist_text
+    const artist_text = this.add.text(180, 44, "", {});
+    artist_text.setOrigin(0.5, 0.5);
+    artist_text.text = "artist";
+    artist_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "14px" });
 
-		// gameplay_bg
-		const gameplay_bg = this.add.image(180, 320, "plain_background");
-		gameplay_bg.visible = false;
+    // song_name_text
+    const song_name_text = this.add.text(180, 27, "", {});
+    song_name_text.setOrigin(0.5, 0.5);
+    song_name_text.text = "song";
+    song_name_text.setStyle({
+      align: "center",
+      color: "#1ba6b1",
+      fontFamily: "Carlito-Bold",
+      fontSize: "15px",
+      stroke: "#1ba6b1",
+    });
 
-		// top_banner
-		const top_banner = this.add.image(180, 175.5, "top_banner");
-		top_banner.visible = false;
+    // score_text
+    const score_text = this.add.text(180, 80, "", {});
+    score_text.setOrigin(0.5, 0.5);
+    score_text.text = "000";
+    score_text.setStyle({
+      color: "#fcb320",
+      fontFamily: "Afolkalips",
+      fontSize: "65px",
+      stroke: "#fcb320",
+    });
 
-		// artist_text
-		const artist_text = this.add.text(180, 44, "", {});
-		artist_text.setOrigin(0.5, 0.5);
-		artist_text.text = "artist";
-		artist_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "14px" });
+    // pause_btn
+    const pause_btn = this.add.image(30, 30, "Pause 2");
+    pause_btn.scaleX = 0.4;
+    pause_btn.scaleY = 0.4;
 
-		// song_name_text
-		const song_name_text = this.add.text(180, 27, "", {});
-		song_name_text.setOrigin(0.5, 0.5);
-		song_name_text.text = "song";
-		song_name_text.setStyle({ "align": "center", "color": "#1ba6b1", "fontFamily": "Carlito-Bold", "fontSize": "15px", "stroke": "#1ba6b1" });
+    // multiplier_text
+    const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
+    multiplier_text.setOrigin(0.5, 0.5);
+    multiplier_text.text = "x 1";
+    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
 
-		// score_text
-		const score_text = this.add.text(180, 80, "", {});
-		score_text.setOrigin(0.5, 0.5);
-		score_text.text = "000";
-		score_text.setStyle({ "color": "#fcb320", "fontFamily": "Afolkalips", "fontSize": "65px", "stroke": "#fcb320" });
+    // tap_zone_area
+    const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
+    tap_zone_area.visible = false;
 
-		// pause_btn
-		const pause_btn = this.add.image(30, 30, "Pause 2");
-		pause_btn.scaleX = 0.4;
-		pause_btn.scaleY = 0.4;
+    // divider_1
+    const divider_1 = this.add.image(121.5, 321, "Perfect_Zone_Divider 2");
+    divider_1.scaleX = 0.3;
+    divider_1.scaleY = 0.42;
 
-		// multiplier_text
-		const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
-		multiplier_text.setOrigin(0.5, 0.5);
-		multiplier_text.text = "x 1";
-		multiplier_text.setStyle({ "align": "center", "fontFamily": "Afolkalips", "fontSize": "25px" });
+    // divider_2
+    const divider_2 = this.add.image(238, 320, "Perfect_Zone_Divider 2");
+    divider_2.scaleX = 0.3;
+    divider_2.scaleY = 0.42;
 
-		// tap_zone_area
-		const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
-		tap_zone_area.visible = false;
+    // feedback_text
+    const feedback_text = this.add.image(180, 303, "perfect");
+    feedback_text.scaleX = 0.7;
+    feedback_text.scaleY = 0.7;
+    feedback_text.visible = false;
 
-		// divider_1
-		const divider_1 = this.add.image(121.5, 321, "Perfect_Zone_Divider 2");
-		divider_1.scaleX = 0.3;
-		divider_1.scaleY = 0.42;
+    // streak_popup
+    const streak_popup = this.add.container(0, 0);
+    streak_popup.visible = false;
 
-		// divider_2
-		const divider_2 = this.add.image(238, 320, "Perfect_Zone_Divider 2");
-		divider_2.scaleX = 0.3;
-		divider_2.scaleY = 0.42;
+    // streak_overlay
+    const streak_overlay = this.add.image(180, 352, "streak_overlay");
+    streak_popup.add(streak_overlay);
 
-		// feedback_text
-		const feedback_text = this.add.image(180, 303, "perfect_popup");
-		feedback_text.scaleX = 0.7;
-		feedback_text.scaleY = 0.7;
-		feedback_text.visible = false;
+    // streak_text
+    const streak_text = this.add.text(180, 353, "", {});
+    streak_text.setOrigin(0.5, 0.5);
+    streak_text.text = "10 STREAK";
+    streak_text.setStyle({
+      align: "center",
+      color: "#666363ff",
+      fontFamily: "DINPro",
+      fontSize: "15px",
+      stroke: "#666363ff",
+    });
+    streak_popup.add(streak_text);
 
-		// overlay
-		const overlay = this.add.image(180, 320, "overlay");
-		overlay.visible = false;
+    // perfect_1
+    const perfect_1 = this.add.image(62, 525, "Perfect_1");
 
-		// song_complete_text
-		const song_complete_text = this.add.layer();
-		song_complete_text.visible = false;
+    // perfect_2
+    const perfect_2 = this.add.image(181, 525, "Perfect_2");
 
-		// song
-		const song = this.add.text(180, 196, "", {});
-		song.setOrigin(0.5, 0.5);
-		song.text = "SONG";
-		song.setStyle({ "align": "center", "color": "#fe500b", "fontFamily": "DINPro", "fontSize": "18px", "stroke": "#fe500b" });
-		song_complete_text.add(song);
+    // perfect_3
+    const perfect_3 = this.add.image(300, 525, "Perfect_3");
 
-		// complete
-		const complete = this.add.text(180, 231, "", {});
-		complete.setOrigin(0.5, 0.5);
-		complete.text = "COMPLETE";
-		complete.setStyle({ "color": "#fe500b", "fontFamily": "Righteous-Regular", "fontSize": "50px", "stroke": "#fe500b" });
-		song_complete_text.add(complete);
+    // colour_highlight
+    const colour_highlight = this.add.image(66, 525, "Colour highlight");
+    colour_highlight.scaleX = 0.1;
+    colour_highlight.scaleY = 0.09;
 
-		// youve_earned
-		const youve_earned = this.add.text(180, 304, "", {});
-		youve_earned.setOrigin(0.5, 0.5);
-		youve_earned.text = "You've Earned ";
-		youve_earned.setStyle({ "color": "#381304ff", "fontFamily": "Righteous-Regular", "fontSize": "30px", "stroke": "#773d26ff" });
-		song_complete_text.add(youve_earned);
+    // colour_highlight_1
+    const colour_highlight_1 = this.add.image(183, 525, "Colour highlight");
+    colour_highlight_1.scaleX = 0.1;
+    colour_highlight_1.scaleY = 0.09;
+    colour_highlight_1.flipX = true;
 
-		// disc_number_earned
-		const disc_number_earned = this.add.text(180, 364.88365496112675, "", {});
-		disc_number_earned.setOrigin(0.5, 0.5);
-		disc_number_earned.text = "30";
-		disc_number_earned.setStyle({ "color": "#381304ff", "fontFamily": "Righteous-Regular", "fontSize": "55px", "fontStyle": "bold", "stroke": "#773d26ff" });
-		song_complete_text.add(disc_number_earned);
+    // colour_highlight_2
+    const colour_highlight_2 = this.add.image(301, 525, "Colour highlight");
+    colour_highlight_2.scaleX = 0.1;
+    colour_highlight_2.scaleY = 0.09;
+    colour_highlight_2.flipY = true;
 
-		// discs
-		const discs = this.add.text(180, 418.009920694199, "", {});
-		discs.setOrigin(0.5, 0.5);
-		discs.text = "Discs";
-		discs.setStyle({ "color": "#381304ff", "fontFamily": "Righteous-Regular", "fontSize": "30px", "stroke": "#773d26ff" });
-		song_complete_text.add(discs);
+    // song_complete_overlay
+    const song_complete_overlay = this.add.layer();
+    song_complete_overlay.visible = false;
 
-		// beat_missed_text
-		const beat_missed_text = this.add.layer();
-		beat_missed_text.visible = false;
+    // bG
+    const bG = this.add.image(180, 320, "BG_1");
+    bG.scaleX = 0.3333;
+    bG.scaleY = 0.3333;
+    song_complete_overlay.add(bG);
 
-		// beat
-		const beat = this.add.text(180, 177, "", {});
-		beat.setOrigin(0.5, 0.5);
-		beat.text = "BEAT";
-		beat.setStyle({ "align": "center", "color": "#666363ff", "fontFamily": "DINPro", "fontSize": "18px", "stroke": "#666363ff" });
-		beat_missed_text.add(beat);
+    // bottom_banner
+    const bottom_banner = this.add.image(180, 606.5033569335938, "Bottom banner");
+    bottom_banner.scaleX = 0.3333;
+    bottom_banner.scaleY = 0.3333;
+    song_complete_overlay.add(bottom_banner);
 
-		// missed
-		const missed = this.add.text(180, 212, "", {});
-		missed.setOrigin(0.5, 0.5);
-		missed.text = "MISSED";
-		missed.setStyle({ "color": "#666363ff", "fontFamily": "Righteous-Regular", "fontSize": "50px", "stroke": "#666363ff" });
-		beat_missed_text.add(missed);
+    // artist_name
+    const artist_name = this.add.text(180, 19, "", {});
+    artist_name.setOrigin(0.5, 0.5);
+    artist_name.text = "artist_name";
+    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
+    song_complete_overlay.add(artist_name);
 
-		// continue_button
-		const continue_button = this.add.image(180, 397, "play_button");
-		continue_button.scaleX = 0.8;
-		continue_button.scaleY = 0.8;
-		beat_missed_text.add(continue_button);
+    // song_name
+    const song_name = this.add.text(180, 42, "", {});
+    song_name.setOrigin(0.5, 0.5);
+    song_name.text = "song_name";
+    song_name.setStyle({
+      color: "#ff6a00",
+      fontFamily: "Afolkalips",
+      fontSize: "30px",
+      stroke: "#ff6a00",
+    });
+    song_complete_overlay.add(song_name);
 
-		// continue_text
-		const continue_text = this.add.text(180, 397, "", {});
-		continue_text.setOrigin(0.5, 0.5);
-		continue_text.text = "CONTINUE";
-		continue_text.setStyle({ "fontFamily": "DINPro", "fontSize": "22px" });
-		beat_missed_text.add(continue_text);
+    // difficulty_text
+    const difficulty_text = this.add.text(180, 72.88130950927734, "", {});
+    difficulty_text.setOrigin(0.5, 0.5);
+    difficulty_text.text = "MEDIUM DIFFICULTY";
+    difficulty_text.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "12px",
+      stroke: "#faf05e",
+    });
+    song_complete_overlay.add(difficulty_text);
 
-		// quit_button
-		const quit_button = this.add.image(180, 317, "play_button");
-		quit_button.scaleX = 0.8;
-		quit_button.scaleY = 0.8;
-		beat_missed_text.add(quit_button);
+    // round_frame
+    const round_frame = this.add.image(180, 202, "Round Frame");
+    round_frame.scaleX = 0.3333;
+    round_frame.scaleY = 0.3333;
+    song_complete_overlay.add(round_frame);
 
-		// quit_text
-		const quit_text = this.add.text(180, 317, "", {});
-		quit_text.setOrigin(0.5, 0.5);
-		quit_text.text = "QUIT";
-		quit_text.setStyle({ "fontFamily": "DINPro", "fontSize": "22px" });
-		beat_missed_text.add(quit_text);
+    // carousel
+    const carousel = this.add.image(180, 202, "carousel_2");
+    carousel.scaleX = 0.6;
+    carousel.scaleY = 0.6;
+    song_complete_overlay.add(carousel);
 
-		// streak_popup
-		const streak_popup = this.add.container(0, 0);
-		streak_popup.visible = false;
+    // song_complete_txt
+    const song_complete_txt = this.add.text(180, 356, "", {});
+    song_complete_txt.setOrigin(0.5, 0.5);
+    song_complete_txt.text = "Song Complete";
+    song_complete_txt.setStyle({
+      color: "#faf05e",
+      fontFamily: "Afolkalips",
+      fontSize: "60px",
+      stroke: "#faf05e",
+    });
+    song_complete_overlay.add(song_complete_txt);
 
-		// streak_overlay
-		const streak_overlay = this.add.image(180, 352, "streak_overlay");
-		streak_popup.add(streak_overlay);
+    // youve_earned_txt
+    const youve_earned_txt = this.add.text(180, 406, "", {});
+    youve_earned_txt.setOrigin(0.5, 0.5);
+    youve_earned_txt.text = "You've earned 30 discs";
+    youve_earned_txt.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
+    song_complete_overlay.add(youve_earned_txt);
 
-		// streak_text
-		const streak_text = this.add.text(180, 353, "", {});
-		streak_text.setOrigin(0.5, 0.5);
-		streak_text.text = "10 STREAK";
-		streak_text.setStyle({ "align": "center", "color": "#666363ff", "fontFamily": "DINPro", "fontSize": "15px", "stroke": "#666363ff" });
-		streak_popup.add(streak_text);
+    // disc
+    const disc = this.add.image(180, 486, "Disc");
+    disc.scaleX = 0.3333;
+    disc.scaleY = 0.3333;
+    song_complete_overlay.add(disc);
 
-		// sprite_1
-		const sprite_1 = this.add.sprite(181, 522, "_MISSING");
-		sprite_1.visible = false;
+    // plus_30
+    const plus_30 = this.add.text(246, 457, "", {});
+    plus_30.angle = -29;
+    plus_30.setOrigin(0.5, 0.5);
+    plus_30.text = "+30";
+    plus_30.setStyle({
+      color: "#faf05e",
+      fontFamily: "Afolkalips",
+      fontSize: "57px",
+      stroke: "#faf05e",
+    });
+    song_complete_overlay.add(plus_30);
 
-		// beats2
-		const beats2 = this.add.image(6, 325, "tile_active");
-		beats2.setOrigin(-0.02, 0);
-		beats2.visible = false;
+    // earn_text
+    const earn_text = this.add.text(180, 555, "", {});
+    earn_text.setOrigin(0.5, 0.5);
+    earn_text.text = "Earn 30 more discs to unlock your next song";
+    earn_text.setStyle({
+      align: "center",
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      stroke: "#faf05e",
+    });
+    earn_text.setWordWrapWidth(200);
+    song_complete_overlay.add(earn_text);
 
-		// perfect_1
-		this.add.image(62, 525, "Perfect_1");
+    // lists
+    const ui_layer = [
+      multiplier_text,
+      score_text,
+      song_name_text,
+      artist_text,
+      perfect_3,
+      perfect_2,
+      perfect_1,
+    ];
 
-		// perfect_2
-		this.add.image(181, 525, "Perfect_2");
+    this.artist_text = artist_text;
+    this.song_name_text = song_name_text;
+    this.score_text = score_text;
+    this.pause_btn = pause_btn;
+    this.multiplier_text = multiplier_text;
+    this.tap_zone_area = tap_zone_area;
+    this.divider_1 = divider_1;
+    this.divider_2 = divider_2;
+    this.feedback_text = feedback_text;
+    this.streak_popup = streak_popup;
+    this.streak_text = streak_text;
+    this.song_complete_overlay = song_complete_overlay;
+    this.artist_name = artist_name;
+    this.song_name = song_name;
+    this.difficulty_text = difficulty_text;
+    this.carousel = carousel;
+    this.earn_text = earn_text;
+    this.ui_layer = ui_layer;
 
-		// perfect_3
-		this.add.image(300, 525, "Perfect_3");
+    this.events.emit("scene-awake");
+  }
 
-		// colour_highlight
-		const colour_highlight = this.add.image(66, 525, "Colour highlight");
-		colour_highlight.scaleX = 0.1;
-		colour_highlight.scaleY = 0.09;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_text;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name_text;
+  /** @type {Phaser.GameObjects.Text} */
+  score_text;
+  /** @type {Phaser.GameObjects.Image} */
+  pause_btn;
+  /** @type {Phaser.GameObjects.Text} */
+  multiplier_text;
+  /** @type {Phaser.GameObjects.Image} */
+  tap_zone_area;
+  /** @type {Phaser.GameObjects.Image} */
+  divider_1;
+  /** @type {Phaser.GameObjects.Image} */
+  divider_2;
+  /** @type {Phaser.GameObjects.Image} */
+  feedback_text;
+  /** @type {Phaser.GameObjects.Container} */
+  streak_popup;
+  /** @type {Phaser.GameObjects.Text} */
+  streak_text;
+  /** @type {Phaser.GameObjects.Layer} */
+  song_complete_overlay;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_name;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name;
+  /** @type {Phaser.GameObjects.Text} */
+  difficulty_text;
+  /** @type {Phaser.GameObjects.Image} */
+  carousel;
+  /** @type {Phaser.GameObjects.Text} */
+  earn_text;
+  /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
+  ui_layer;
 
-		// colour_highlight_1
-		const colour_highlight_1 = this.add.image(183, 525, "Colour highlight");
-		colour_highlight_1.scaleX = 0.1;
-		colour_highlight_1.scaleY = 0.09;
-		colour_highlight_1.flipX = true;
-
-		// colour_highlight_2
-		const colour_highlight_2 = this.add.image(301, 525, "Colour highlight");
-		colour_highlight_2.scaleX = 0.1;
-		colour_highlight_2.scaleY = 0.09;
-		colour_highlight_2.flipY = true;
-
-		// lists
-		const ui_layer = [multiplier_text, score_text, song_name_text, artist_text, top_banner];
-
-		this.top_banner = top_banner;
-		this.artist_text = artist_text;
-		this.song_name_text = song_name_text;
-		this.score_text = score_text;
-		this.pause_btn = pause_btn;
-		this.multiplier_text = multiplier_text;
-		this.tap_zone_area = tap_zone_area;
-		this.divider_1 = divider_1;
-		this.divider_2 = divider_2;
-		this.feedback_text = feedback_text;
-		this.overlay = overlay;
-		this.song_complete_text = song_complete_text;
-		this.disc_number_earned = disc_number_earned;
-		this.beat_missed_text = beat_missed_text;
-		this.continue_button = continue_button;
-		this.continue_text = continue_text;
-		this.quit_button = quit_button;
-		this.quit_text = quit_text;
-		this.streak_popup = streak_popup;
-		this.streak_text = streak_text;
-		this.ui_layer = ui_layer;
-
-		this.events.emit("scene-awake");
-	}
-
-	/** @type {Phaser.GameObjects.Image} */
-	top_banner;
-	/** @type {Phaser.GameObjects.Text} */
-	artist_text;
-	/** @type {Phaser.GameObjects.Text} */
-	song_name_text;
-	/** @type {Phaser.GameObjects.Text} */
-	score_text;
-	/** @type {Phaser.GameObjects.Image} */
-	pause_btn;
-	/** @type {Phaser.GameObjects.Text} */
-	multiplier_text;
-	/** @type {Phaser.GameObjects.Image} */
-	tap_zone_area;
-	/** @type {Phaser.GameObjects.Image} */
-	divider_1;
-	/** @type {Phaser.GameObjects.Image} */
-	divider_2;
-	/** @type {Phaser.GameObjects.Image} */
-	feedback_text;
-	/** @type {Phaser.GameObjects.Image} */
-	overlay;
-	/** @type {Phaser.GameObjects.Layer} */
-	song_complete_text;
-	/** @type {Phaser.GameObjects.Text} */
-	disc_number_earned;
-	/** @type {Phaser.GameObjects.Layer} */
-	beat_missed_text;
-	/** @type {Phaser.GameObjects.Image} */
-	continue_button;
-	/** @type {Phaser.GameObjects.Text} */
-	continue_text;
-	/** @type {Phaser.GameObjects.Image} */
-	quit_button;
-	/** @type {Phaser.GameObjects.Text} */
-	quit_text;
-	/** @type {Phaser.GameObjects.Container} */
-	streak_popup;
-	/** @type {Phaser.GameObjects.Text} */
-	streak_text;
-	/** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
-	ui_layer;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
 
@@ -323,6 +344,17 @@ class Level extends Phaser.Scene {
   create() {
     console.log("Level.js create()");
     this.editorCreate();
+
+    this.baseTileTextures = [
+      "Tile 1",
+      "Tile 2",
+      "Tile 3",
+      "Tile 4", // Add your aesthetic texture keys here
+    ];
+
+    // this.baseTileTextures = [
+    //   "beats2", // Add your aesthetic texture keys here
+    // ];
 
     this.soundTracker = 0;
 
@@ -473,7 +505,7 @@ class Level extends Phaser.Scene {
   }
 
   addProgressBar() {
-    this.progressBar = this.add.rectangle(0, 0, 0, 5, 0xfe500b);
+    this.progressBar = this.add.rectangle(0, 0, 0, 5, 0xffa500);
     this.progressBar.setOrigin(0, 0);
     this.progressBarBg = this.add.rectangle(0, 0, this.screenWidth, 5, 0x666363);
     this.progressBarBg.setOrigin(0, 0);
@@ -633,12 +665,18 @@ class Level extends Phaser.Scene {
 
         tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
 
+        // Update both base and overlay positions
         tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
-
         tile.setAlpha(tile.lerp);
 
+        if (tile.overlayTile) {
+          tile.overlayTile.setY(tile.y);
+          tile.overlayTile.setAlpha(tile.lerp);
+        }
+
         if (tile.y > this.screenHeight * this.tileTarget) {
-          // this.checkOverlap(tile);
+          // Handle cleanup
+          this.checkOverlap(tile);
         }
       });
     }
@@ -655,12 +693,23 @@ class Level extends Phaser.Scene {
     let velocity = marker.velocity;
     let duration = marker.duration;
 
+    // Create base aesthetic tile with random texture
     let tile = this.tileGroup
-      .create(0, 0, "beats2")
+      .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(0.2)
       .setDepth(4);
+
+    // Create overlay swipe/default texture that moves with the base
+    let overlayTile = this.add
+      .image(0, 0, "beats2") // Will be changed in placeTile
+      .setOrigin(0.5, 0.5)
+      .setAlpha(0.2)
+      .setDepth(4.1) // Slightly higher depth than base
+      .setScale(0.3);
+    // Link the overlay to the base tile for reference
+    tile.overlayTile = overlayTile;
 
     tile.start = marker.start;
     tile.body.immovable = true;
@@ -694,99 +743,101 @@ class Level extends Phaser.Scene {
         break;
     }
 
-    tile.laneX = tile.x;
+    // Position overlay at same x coordinate
+    tile.overlayTile.setX(tile.x);
 
+    tile.laneX = tile.x;
     tile.swiped = false;
 
-    let swipe = this.rexGestures.add.swipe(tile, swipeConfig);
+    // Define swipe configurations
+    const swipeDirections = {
+      0.23622047244094488: {
+        direction: "up",
+        texture: "Right",
+        angle: -90,
+        validSwipes: ["up"],
+      },
+      0.3937007874015748: {
+        direction: "right",
+        texture: "Right",
+        angle: 0,
+        validSwipes: ["right"],
+      },
+      0.7086614173228346: {
+        direction: "left",
+        texture: "Right",
+        angle: 180,
+        validSwipes: ["left"],
+      },
+      0.5511811023622047: {
+        direction: "down",
+        texture: "Right",
+        angle: 90,
+        validSwipes: ["down"],
+      },
+      0.7874015748031497: {
+        direction: "upleft",
+        texture: "Right",
+        angle: -135,
+        validSwipes: ["up", "left"],
+      },
+      0.31496062992125984: {
+        direction: "upright",
+        texture: "Right",
+        angle: -45,
+        validSwipes: ["up", "right"],
+      },
+      0.6299212598425197: {
+        direction: "downleft",
+        texture: "Right",
+        angle: 135,
+        validSwipes: ["down", "left"],
+      },
+      0.47244094488188976: {
+        direction: "downright",
+        texture: "Right",
+        angle: 45,
+        validSwipes: ["down", "right"],
+      },
+    };
 
-    switch (velocity) {
-      case 0.23622047244094488:
-        tile.setTexture("swipe_up");
+    const swipeDirection = swipeDirections[velocity];
 
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.up) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
+    if (swipeDirection) {
+      // Set the overlay texture and angle based on swipe direction
+      tile.overlayTile.setTexture(swipeDirection.texture);
+      tile.overlayTile.setAngle(swipeDirection.angle);
 
-      case 0.3937007874015748:
-        tile.setTexture("swipe_right");
+      let swipe = this.rexGestures.add.swipe(tile, swipeConfig);
 
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.right) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
-      case 0.7086614173228346:
-        tile.setTexture("swipe_left");
+      swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+        const isValidSwipe = swipeDirection.validSwipes.every(
+          (direction) =>
+            (direction === "up" && swipe.up) ||
+            (direction === "down" && swipe.down) ||
+            (direction === "left" && swipe.left) ||
+            (direction === "right" && swipe.right)
+        );
 
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.left) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
-      case 0.5511811023622047:
-        tile.setTexture("swipe_down");
+        if (isValidSwipe) {
+          this.handleSwipe(tile, swipe);
+        }
+      });
+    } else if (velocity === 0.007874015748031496) {
+      // Set default overlay texture for held notes
+      // tile.overlayTile.setTexture("Hold");
+      this.handleHeldTile(tile, duration);
+    } else {
+      // Set default overlay texture for regular notes
+      tile.overlayTile.setTexture("Spot_icon");
 
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.down) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
+      tile.on("pointerup", () => {
+        this.tileClicked = false;
+      });
 
-      case 0.7874015748031497:
-        tile.setTexture("swipe_up_left");
-
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.up) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
-      case 0.31496062992125984:
-        tile.setTexture("swipe_up_right");
-
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.up) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
-      case 0.6299212598425197:
-        tile.setTexture("swipe_down_left");
-
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.down) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
-      case 0.47244094488188976:
-        tile.setTexture("swipe_down_right");
-
-        swipe.on("swipe", (swipe, gameObject, lastPointer) => {
-          if (swipe.down) {
-            this.handleSwipe(tile, swipe);
-          }
-        });
-        break;
-      case 0.007874015748031496:
-        this.handleHeldTile(tile, duration);
-        break;
-
-      default:
-        tile.on("pointerup", () => {
-          this.tileClicked = false;
-        });
-        tile.on("pointerdown", () => {
-          this.onClickInstrument(tile);
-        });
-        break;
+      tile.on("pointerdown", () => {
+        this.onClickInstrument(tile);
+      });
     }
   }
 
@@ -804,39 +855,46 @@ class Level extends Phaser.Scene {
     let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
-    // Create nineslice tile
+    // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
     let ninesliceTile = this.add.nineslice(
       tile.x,
       0, // x, y
-      "beats2", // texture key
-      null, // frame (null if not using a spritesheet)
+      "new_held",
+      null,
       tile.width,
-      initialHeight, // width, height
+      initialHeight,
       20,
-      20, // leftWidth, rightWidth (adjust as needed)
       20,
-      20 // topHeight, bottomHeight (adjust as needed)
+      50,
+      50
     );
 
     ninesliceTile.setOrigin(0.5, 1);
+
+    // Set properties
     ninesliceTile.start = tile.start;
     ninesliceTile.duration = duration;
     ninesliceTile.initialHeight = initialHeight;
+    ninesliceTile.setDepth(4);
 
     // Replace the original tile with the nineslice tile in the tileGroup
     this.tileGroup.remove(tile);
     this.tileGroup.add(ninesliceTile);
+
+    // Clean up original tile
     tile.destroy();
 
     let clicked = false;
     let tween = null;
 
     ninesliceTile.setInteractive();
+
     ninesliceTile.on("pointerdown", () => {
       ninesliceTile.held = true;
       if (tween) {
         tween.stop();
       }
+
       tween = this.tweens.add({
         targets: ninesliceTile,
         height: ninesliceTile.height / heldTileScaleFactor,
@@ -861,7 +919,7 @@ class Level extends Phaser.Scene {
       }
     });
 
-    // Add this to handle tile destruction
+    // Handle cleanup
     ninesliceTile.on("destroy", () => {
       if (tween) {
         tween.stop();
@@ -871,6 +929,7 @@ class Level extends Phaser.Scene {
 
   checkOverlap(tile) {
     if (tile.y >= this.screenHeight) {
+      tile.overlayTile && tile.overlayTile.destroy();
       tile.destroy();
       this.beatMissedDisplay();
     }
@@ -905,20 +964,43 @@ class Level extends Phaser.Scene {
 
     this.matchedMarkerTracker = [];
 
-    this.overlay.setVisible(true);
-    this.song_complete_text.setVisible(true).setDepth(6);
+    this.artist_name.setText(this.track.artist_name.toUpperCase());
+    this.song_name.setText(this.track.song_name);
+
+    // Create circular mask for carousel
+    const maskGraphics = this.add.graphics();
+    // Set the graphics position to match carousel
+    maskGraphics.clear();
+    maskGraphics.fillStyle(0xffffff);
+    maskGraphics.beginPath();
+    maskGraphics.arc(180, 202, 100, 0, Math.PI * 2);
+    maskGraphics.closePath();
+    maskGraphics.fill();
+
+    // Set carousel texture first
+    this.carousel.setTexture(this.track.thumbnail).setScale(1);
+
+    // Create and apply the mask
+    const mask = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
+    this.carousel.setMask(mask);
+
+    // Hide the mask graphics - this is crucial!
+    maskGraphics.setVisible(false);
+
+    // Store mask references for cleanup
+    this.carouselMask = mask;
+    this.maskGraphics = maskGraphics;
+
+    this.song_complete_overlay.setVisible(true).setDepth(100);
 
     setTimeout(() => {
-      this.overlay.setVisible(false);
-      this.song_complete_text.setVisible(false);
-
+      this.song_complete_overlay.setVisible(false);
       let user_data = JSON.parse(localStorage.getItem("user_data"));
-      console.log("here");
       user_data.profile.player.total_discs += 30;
       this.game.events.emit("updateUserEvent", { data: user_data });
 
       this.gameOver();
-    }, 4000);
+    }, 5000);
   }
 
   handleSwipe(tile, swipe) {
@@ -931,76 +1013,100 @@ class Level extends Phaser.Scene {
       duration: 150,
       ease: "Power1",
       onComplete: () => {
+        tile.overlayTile && tile.overlayTile.destroy();
         tile.destroy();
       },
     };
 
-    tile.setTexture("arrow");
+    // Create a new arrow sprite for the swipe effect
+    let arrowSprite = this.add
+      .image(tile.x, tile.y, "Right")
+      .setScale(0.3) // Match the scale used in placeTile
+      .setDepth(tile.depth + 1);
+
+    // Hide the original overlay tile
+    tile.overlayTile.setVisible(false);
 
     if (swipe.up && swipe.right) {
       // Up-right diagonal swipe
-      tile.angle -= 45;
+      arrowSprite.angle -= 45;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
         y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.up && swipe.left) {
       // Up-left diagonal swipe
-      tile.angle -= 135;
+      arrowSprite.angle -= 135;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
         y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.down && swipe.right) {
       // Down-right diagonal swipe
-      tile.angle += 45;
+      arrowSprite.angle += 45;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
         y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.down && swipe.left) {
       // Down-left diagonal swipe
-      tile.angle += 135;
+      arrowSprite.angle += 135;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
         y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.up) {
-      tile.angle -= 90;
+      arrowSprite.angle -= 90;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         y: tile.y - movementDistance * 2,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.down) {
-      tile.angle += 90;
+      arrowSprite.angle += 90;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         y: tile.y + movementDistance * 4,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.left) {
-      tile.angle -= 180;
+      arrowSprite.angle -= 180;
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         x: tile.x - movementDistance,
+        alpha: 0,
         ...tweenConfig,
       });
     } else if (swipe.right) {
       this.tweens.add({
-        targets: tile,
+        targets: arrowSprite,
         x: tile.x + movementDistance,
+        alpha: 0,
         ...tweenConfig,
       });
     }
+
+    // Fade out the base tile
+    this.tweens.add({
+      targets: tile,
+      alpha: 0,
+      duration: 150,
+      ease: "Power1",
+    });
   }
 
   resetStreak() {
@@ -1049,7 +1155,10 @@ class Level extends Phaser.Scene {
 
     let children = this.tileGroup.getChildren();
     let tilesToRemove = children.slice(0, 3);
-    tilesToRemove.forEach((tile) => tile.destroy());
+    tilesToRemove.forEach((tile) => {
+      tile.overlayTile && tile.overlayTile.destroy();
+      tile.destroy();
+    });
 
     this.scene.bringToTop("BeatMissed");
     this.scene.launch("BeatMissed");
@@ -1130,6 +1239,7 @@ class Level extends Phaser.Scene {
         duration: 75,
         ease: "Power1",
         onComplete: () => {
+          tile.overlayTile && tile.overlayTile.destroy();
           tile.destroy();
         },
       });
@@ -1230,6 +1340,14 @@ class Level extends Phaser.Scene {
       this.music.stop();
       this.music = null;
     }
+
+    if (this.carouselMask) {
+      this.carouselMask.destroy();
+    }
+    if (this.maskGraphics) {
+      this.maskGraphics.destroy();
+    }
+
     this.scene.stop("Level");
   }
 
@@ -1261,14 +1379,14 @@ class Level extends Phaser.Scene {
       child.setScale(0);
     });
 
-    this.overlay.setDepth(5);
+    // this.overlay.setDepth(5);
 
     this.initialTime = 3;
     this.get_ready_text = this.add
       .text(this.screenCenterX, this.screenCenterY - 50, "GET READY", {
-        fontFamily: "DINPro",
-        fontSize: "20px",
-        fill: "#fe500b",
+        fontFamily: "Afolkalips",
+        fontSize: "50px",
+        fill: "#fcb320",
       })
       .setOrigin(0.5, 1)
       .setDepth(5)
@@ -1285,9 +1403,9 @@ class Level extends Phaser.Scene {
 
     this.countDownText = this.add
       .text(this.screenCenterX, this.screenCenterY + 20, this.initialTime, {
-        fontFamily: "Righteous-Regular",
-        fontSize: "65px",
-        fill: "#fe500b",
+        fontFamily: "Afolkalips",
+        fontSize: "75px",
+        fill: "#fcb320",
       })
       .setOrigin(0.5, 0.5)
       .setDepth(6)
@@ -1329,16 +1447,16 @@ class Level extends Phaser.Scene {
       if (this.initialTime <= 0) {
         this.countDownText.destroy();
         this.get_ready_text.destroy();
-        this.tweens.add({
-          targets: this.overlay,
-          alpha: 0,
-          ease: "Linear",
-          duration: 250,
-          onComplete: () => {
-            this.overlay.setVisible(false);
-            this.overlay.setAlpha(1);
-          },
-        });
+        // this.tweens.add({
+        //   targets: this.overlay,
+        //   alpha: 0,
+        //   ease: "Linear",
+        //   duration: 250,
+        //   onComplete: () => {
+        //     this.overlay.setVisible(false);
+        //     this.overlay.setAlpha(1);
+        //   },
+        // });
 
         this.createMusic();
         this.createTileGroup();

@@ -9,34 +9,14 @@
                 "key": "BackGround_Music"
             },
             {
-                "url": "assets/sprites/beat_meter_empty.png",
+                "url": "assets/sprites/preloader/Button_blank.png",
                 "type": "image",
-                "key": "beat_meter_empty"
+                "key": "Button_blank"
             },
             {
-                "url": "assets/sprites/preloader/beats_logo.png",
-                "type": "image",
-                "key": "beats_logo"
-            },
-            {
-                "url": "assets/sprites/brandingtransitionscene/branding_transition_background.jpg",
-                "type": "image",
-                "key": "branding_transition_background"
-            },
-            {
-                "url": "assets/sprites/hubscene/carousel_2.png",
+                "url": "assets/sprites/preloader/carousel_2.png",
                 "type": "image",
                 "key": "carousel_2"
-            },
-            {
-                "url": "assets/sprites/playscene/logos_background.png",
-                "type": "image",
-                "key": "logos_background"
-            },
-            {
-                "url": "assets/sprites/hubscene/play_button.png",
-                "type": "image",
-                "key": "play_button"
             },
             {
                 "url": "assets/scenes/Preload.js",
@@ -44,14 +24,24 @@
                 "key": "Preload"
             },
             {
-                "url": "assets/sprites/hubscene/star_empty.png",
+                "url": "assets/sprites/preloader/preloader_bottom_banner.png",
                 "type": "image",
-                "key": "star_empty"
+                "key": "preloader_bottom_banner"
             },
             {
-                "url": "assets/sprites/hubscene/star_full.png",
+                "url": "assets/sprites/preloader/preloader_Star_Active.png",
                 "type": "image",
-                "key": "star_full"
+                "key": "preloader_Star_Active"
+            },
+            {
+                "url": "assets/sprites/preloader/preloader_Star_Inactive.png",
+                "type": "image",
+                "key": "preloader_Star_Inactive"
+            },
+            {
+                "url": "assets/sprites/preloader/preloader_Top banner.png",
+                "type": "image",
+                "key": "preloader_Top banner"
             },
             {
                 "url": [
@@ -59,11 +49,6 @@
                 ],
                 "type": "audio",
                 "key": "start_sfx"
-            },
-            {
-                "url": "assets/sprites/bufferscene/UB logomark.png",
-                "type": "image",
-                "key": "UB logomark"
             }
         ]
     },

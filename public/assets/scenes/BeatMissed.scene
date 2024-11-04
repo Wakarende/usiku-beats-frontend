@@ -11,131 +11,46 @@
     "displayList": [
         {
             "type": "Image",
-            "id": "6bd51e95-2b42-4f51-aa2f-95d153d83491",
-            "label": "overlay",
+            "id": "91da6f70-1765-4547-835f-63d07851137c",
+            "label": "black_background",
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "overlay"
+                "key": "BG_1"
             },
             "x": 180,
-            "y": 320
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Image",
-            "id": "c7f7f33d-37a9-4cbb-8eb2-6812e1a588b0",
-            "label": "quit_button",
-            "scope": "CLASS",
+            "id": "17305bd6-380e-4bc2-b79c-df5065db623d",
+            "label": "bm_BG",
             "components": [],
             "texture": {
-                "key": "play_button"
+                "key": "bm_BG"
             },
             "x": 180,
-            "y": 349.32517808240533,
-            "scaleX": 0.8,
-            "scaleY": 0.8,
-            "visible": false
-        },
-        {
-            "type": "Text",
-            "id": "2dd7115c-9a8d-40ef-96f1-88620b2b482e",
-            "label": "quit_text",
-            "scope": "CLASS",
-            "components": [],
-            "x": 180,
-            "y": 349.32517808240533,
-            "originX": 0.5,
-            "originY": 0.5,
-            "visible": false,
-            "text": "QUIT",
-            "fontFamily": "DINPro",
-            "fontSize": "22px"
-        },
-        {
-            "type": "Image",
-            "id": "70bff7bf-ac77-44d4-9ae2-41550c5e642c",
-            "label": "continue_button",
-            "scope": "CLASS",
-            "components": [],
-            "texture": {
-                "key": "play_button"
-            },
-            "x": 180,
-            "y": 429.3251780824053,
-            "scaleX": 0.8,
-            "scaleY": 0.8
-        },
-        {
-            "type": "Text",
-            "id": "457cf2b1-3aa6-47ef-af79-c11b5e2367cd",
-            "label": "continue_text",
-            "scope": "CLASS",
-            "components": [],
-            "x": 195,
-            "y": 429.3251780824053,
-            "originX": 0.5,
-            "originY": 0.5,
-            "text": "CONTINUE",
-            "fontFamily": "DINPro",
-            "fontSize": "12px"
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Text",
             "id": "c30051a9-c41a-4a35-b96a-7996061c1df2",
-            "label": "missed",
+            "label": "Beat_Missed_Text",
             "components": [],
             "x": 180,
-            "y": 244.32517808240533,
+            "y": 182,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "MISSED",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "50px",
-            "color": "#666363ff",
-            "stroke": "#666363ff"
-        },
-        {
-            "type": "Text",
-            "id": "a8d4698c-ca6b-407c-8106-8a70ab27e66f",
-            "label": "beat",
-            "components": [],
-            "x": 181,
-            "y": 209.32517808240533,
-            "originX": 0.5,
-            "originY": 0.5,
-            "text": "BEAT",
+            "text": "Missed \na Beat",
             "align": "center",
-            "fontFamily": "DINPro",
-            "fontSize": "18px",
-            "color": "#666363ff",
-            "stroke": "#666363ff"
-        },
-        {
-            "type": "Image",
-            "id": "1d8268f2-d9e0-4ec6-af51-8f198628f95c",
-            "label": "gem",
-            "components": [],
-            "texture": {
-                "key": "gem"
-            },
-            "x": 122,
-            "y": 430,
-            "scaleX": 0.05,
-            "scaleY": 0.05
-        },
-        {
-            "type": "Text",
-            "id": "22189f46-237f-45fa-a043-d9c04cf744e4",
-            "label": "gem_count",
-            "scope": "CLASS",
-            "components": [],
-            "x": 142,
-            "y": 429,
-            "originX": 0.5,
-            "originY": 0.5,
-            "text": "5",
-            "fontFamily": "DINPro",
-            "fontSize": "12px"
+            "fontFamily": "Afolkalips",
+            "fontSize": "60px",
+            "color": "#fe3400",
+            "stroke": "#fe3400"
         },
         {
             "type": "Text",
@@ -143,13 +58,85 @@
             "label": "timer_text",
             "scope": "CLASS",
             "components": [],
-            "x": 243,
-            "y": 429,
+            "x": 193,
+            "y": 471,
             "originX": 0.5,
             "originY": 0.5,
             "text": "5",
-            "fontFamily": "DINPro",
-            "fontSize": "12px"
+            "fontFamily": "Carlito-BoldItalic",
+            "fontSize": "20px",
+            "color": "#fcb320",
+            "stroke": "#fcb320"
+        },
+        {
+            "type": "Image",
+            "id": "79d5cc25-17a6-472d-8e86-772073b7edf2",
+            "label": "continue_btn",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "bm_continue"
+            },
+            "x": 180,
+            "y": 552,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "7670d71f-66aa-466c-a7d7-7aded629edf2",
+            "label": "gem_small",
+            "components": [],
+            "texture": {
+                "key": "Gem_small"
+            },
+            "x": 79,
+            "y": 549,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "22189f46-237f-45fa-a043-d9c04cf744e4",
+            "label": "gem_count",
+            "scope": "CLASS",
+            "components": [],
+            "x": 106,
+            "y": 549,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "5",
+            "fontFamily": "Afolkalips",
+            "fontSize": "30px",
+            "color": "#000",
+            "stroke": "#000"
+        },
+        {
+            "type": "Image",
+            "id": "551b3103-9c63-44c9-8524-d538193e6549",
+            "label": "timer_icon",
+            "components": [],
+            "texture": {
+                "key": "Timer_icon"
+            },
+            "x": 170,
+            "y": 471,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "a0706df7-3c7d-4a71-bf18-c5b30279e580",
+            "label": "motivation_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 184,
+            "y": 438,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "It just takes practice",
+            "fontFamily": "Carlito-Italic",
+            "fontSize": "20px"
         }
     ],
     "plainObjects": [],
@@ -165,13 +152,13 @@
             "label": "ui_layer",
             "objectIds": [
                 "22189f46-237f-45fa-a043-d9c04cf744e4",
-                "1d8268f2-d9e0-4ec6-af51-8f198628f95c",
-                "a8d4698c-ca6b-407c-8106-8a70ab27e66f",
                 "c30051a9-c41a-4a35-b96a-7996061c1df2",
-                "457cf2b1-3aa6-47ef-af79-c11b5e2367cd",
-                "70bff7bf-ac77-44d4-9ae2-41550c5e642c",
-                "2dd7115c-9a8d-40ef-96f1-88620b2b482e",
-                "c7f7f33d-37a9-4cbb-8eb2-6812e1a588b0"
+                "79d5cc25-17a6-472d-8e86-772073b7edf2",
+                "7670d71f-66aa-466c-a7d7-7aded629edf2",
+                "551b3103-9c63-44c9-8524-d538193e6549",
+                "a0706df7-3c7d-4a71-bf18-c5b30279e580",
+                "17305bd6-380e-4bc2-b79c-df5065db623d",
+                "c95b29b3-8dc3-4c53-a6a5-0ea026eddc56"
             ]
         }
     ]

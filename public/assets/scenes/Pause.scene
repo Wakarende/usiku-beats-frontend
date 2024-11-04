@@ -11,67 +11,59 @@
     "displayList": [
         {
             "type": "Image",
-            "id": "756af7bd-cf82-443e-bb46-7af1d17c713d",
-            "label": "pause_overlay",
+            "id": "aea0b243-37c1-4519-8dd4-8903d08e75c1",
+            "label": "pause_BG",
             "components": [],
             "texture": {
-                "key": "pause_overlay"
+                "key": "Pause_BG"
             },
             "x": 180,
-            "y": 320
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
             "type": "Text",
             "id": "e81cb45b-01c7-4042-8c80-dec7f9a4e568",
-            "label": "score_text",
-            "scope": "CLASS",
+            "label": "pause_text",
             "components": [],
             "x": 180,
-            "y": 82,
+            "y": 177,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "Pause",
-            "fontFamily": "Righteous-Regular",
-            "fontSize": "55px"
+            "text": "Paused",
+            "fontFamily": "Afolkalips",
+            "fontSize": "65px",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
         },
         {
             "type": "Image",
-            "id": "516aeec2-8805-4343-a697-8533f2f212a6",
-            "label": "continue_button",
+            "id": "2c14815c-30cf-4183-90c8-fe7dde316d64",
+            "label": "continue_btn",
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "play_button_inactive"
+                "key": "Continue"
             },
             "x": 180,
-            "y": 372
+            "y": 527,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         },
         {
-            "type": "Text",
-            "id": "e9335cd9-5040-4bcc-b37b-3ff9aca5985f",
-            "label": "continue_text",
-            "components": [],
-            "x": 180,
-            "y": 370.0831465590536,
-            "originX": 0.5,
-            "originY": 0.5,
-            "text": "Continue",
-            "fontFamily": "DINPro",
-            "fontSize": "25px"
-        },
-        {
-            "type": "Text",
-            "id": "d75b14aa-da00-43ac-b6f5-e1ae4798e4bf",
-            "label": "quit_text",
+            "type": "Image",
+            "id": "4dab0eb7-4cce-4b4f-b00d-7f40ffe73c26",
+            "label": "quit_btn",
             "scope": "CLASS",
             "components": [],
+            "texture": {
+                "key": "Quit"
+            },
             "x": 180,
-            "y": 432.8584157011215,
-            "originX": 0.5,
-            "originY": 0.5,
-            "text": "Quit",
-            "fontFamily": "DINPro",
-            "fontSize": "25px"
+            "y": 599,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
         }
     ],
     "plainObjects": [],
