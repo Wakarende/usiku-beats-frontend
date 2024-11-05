@@ -11,7 +11,7 @@ import { BASE_URL } from "../services/config";
 import Image from "next/image";
 import { Container, Row, Col, Tooltip, Button } from "react-bootstrap";
 import { updateUser } from "../redux/main/authActions";
-import UnlockSongsRow from "../components/HubScreen/UnlockSongsRow";
+import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import { OverlayCard, ArtistImage } from "../components/OverlayCard";
 import LevelUpPopup from "../components/LevelUpPopup";
 
@@ -89,7 +89,10 @@ const HubScreen = () => {
         };
         dispatch(updateUser(anonUserObject));
 
-        const songList = response.data.map(({ song, ...rest }) => ({ ...song, ...rest }));
+        const songList = response.data.map(({ song, ...rest }) => ({
+          ...song,
+          ...rest,
+        }));
 
         setSongs(songList);
         setLoading(false);
@@ -205,7 +208,10 @@ const HubScreen = () => {
           </div>
         </Row>
         <Row>
-          <Col className="kayfo-masonry-main" style={{ overflowX: "auto", overflowY: "hidden" }}>
+          <Col
+            className="kayfo-masonry-main"
+            style={{ overflowX: "auto", overflowY: "hidden" }}
+          >
             {songs?.length > 0 ? (
               <div
                 style={{
@@ -245,7 +251,9 @@ const HubScreen = () => {
             className="kayfo-masonry-main"
             style={{ width: "100%", overflowX: "auto", overflowY: "hidden" }}
           >
-            <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+            <div
+              style={{ width: "100%", display: "flex", flexDirection: "row" }}
+            >
               <div
                 className="kayfo-masonry-container"
                 style={{
