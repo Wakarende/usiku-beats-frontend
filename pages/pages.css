@@ -1,0 +1,88 @@
+/* HUB SCREEN  */
+.cdm-page {
+    min-height: 100vh;
+    overflow-y: hidden;
+}
+
+/* DAILY REWARD POPUP  */
+.daily-reward-content {
+    background: url('/assets/img/dailyreward/BG.png');
+    background-size: cover;
+    padding: 40px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.daily-welcome {
+    color: #ff6a00;
+    text-transform: uppercase;
+    text-shadow: 1.5px 1.5px #faf05d;
+}
+
+.daily-gift-title {
+    text-transform: uppercase;
+}
+
+.daily-gem-section {
+    position: relative;
+    padding: 0;
+    display: inline-block;
+}
+
+.gem-value {
+    letter-spacing: 2px;
+    position: absolute;
+    top: 20px;
+    right: -20px;
+    transform: rotate(-20deg);
+    font-weight: bold;
+}
+
+.daily-claim-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.daily-claim-button img {
+    transition: transform 0.3s ease;
+}
+
+.daily-claim-button:hover img {
+    transform: scale(1.05);
+}
+
+/* DAILY REWARD POPUP END  */
+
+/* LIBRARY BANNER  */
+.library-banner-footer-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: auto;
+}
+
+footer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* LIBRARY BANNER END  */
+
+/* HUBSCREEN TOP TITTLE */
+.your-songs {
+    color: #ff6a00;
+    text-shadow: 1.5px 1.5px #edd714;
+}
+
+/* TOP TITLE END  */
+
+/* HUBSCREEN END  */

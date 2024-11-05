@@ -1,28 +1,31 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
-import BottomTabNav from "../components/BottomTabNav";
-import Popup from "../components/Popup";
 import { useRouter } from "next/router";
-import { instance as axios } from "../services/axios.config";
 import { useSelector, useDispatch } from "react-redux";
-import { BASE_URL } from "../services/config";
+import moment from "moment-timezone";
 import Image from "next/image";
-import { Container, Row, Col, Tooltip, Button } from "react-bootstrap";
+
+import Header from "../components/header/Header";
+import Popup from "../components/Popup";
+import { instance as axios } from "../services/axios.config";
+import { BASE_URL } from "../services/config";
 import { updateUser } from "../redux/main/authActions";
+import { OverlayCard, ArtistImage } from "../components/artistinfo/OverlayCard";
+import LevelUpPopup from "../components/leveluppopup/LevelUpPopup";
+import Footer from "../components/footer/Footer";
+import LibraryBanner from "../components/footer/LibraryBanner";
+import "./pages.css";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
-import { OverlayCard, ArtistImage } from "../components/OverlayCard";
-import LevelUpPopup from "../components/LevelUpPopup";
 
 const HubScreen = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
+  const [isUnlockPopupOpen, setIsUnlockPopupOpen] = useState(false);
+  const [unlockedSong, setUnlockedSong] = useState(null);
   const [songs, setSongs] = useState([]);
+  const [unlockableSongs, setUnlockableSongs] = useState([]);
+  const [visibleUnlockableSongs, setVisibleUnlockableSongs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const auth = useSelector((state) => state.auth);
-  const { user_data } = auth;
-  const dispatch = useDispatch();
-  const router = useRouter();
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState({
     artistName: "",
@@ -32,15 +35,19 @@ const HubScreen = () => {
   const [isLevelUpPopupOpen, setIsLevelUpPopupOpen] = useState(false);
   const [newLevel, setNewLevel] = useState();
 
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
+  const auth = useSelector((state) => state.auth);
+  const { user_data } = auth;
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const unlockable = user_data?.profile?.player?.total_discs >= 30;
 
   useEffect(() => {
     checkAnon();
     checkRedirect();
     checkFirstLoginOfDay();
     checkNewLevel();
+    fetchUnlockableSongs();
   }, [router.query, user_data]);
 
   const checkFirstLoginOfDay = () => {
@@ -62,7 +69,7 @@ const HubScreen = () => {
         dispatch(updateUser(updatedUser));
       }
 
-      setIsPopupOpen(true);
+      setIsDailyPopupOpen(true);
       localStorage.setItem("lastLoginDate", today);
     }
   };
@@ -107,6 +114,25 @@ const HubScreen = () => {
           .map(({ song, ...rest }) => ({ ...song, ...rest }))
       );
     }
+  };
+
+  const fetchUnlockableSongs = () => {
+    axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=136`).then((res) => {
+      const songsWithUnlockStatus = res.data.map((song) => ({
+        ...song,
+        isUnlocked: user_data?.profile?.player?.player_song_instances.some(
+          (instance) => instance.song.id === song.id && instance.unlocked
+        ),
+      }));
+
+      const lockedSongs = songsWithUnlockStatus.filter(
+        (song) => !song.isUnlocked
+      );
+      setUnlockableSongs(lockedSongs);
+
+      setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
+      setLoading(false);
+    });
   };
 
   const checkNewLevel = () => {
@@ -196,30 +222,85 @@ const HubScreen = () => {
     openOverlay(artist.id);
   };
 
-  const level = user_data?.profile?.player?.level || 1; // Directly fetching the level from user_data
+  const handleSongUnlock = (song) => {
+    if (song.isUnlocked) return;
+
+    setUnlockedSong(song);
+    setIsUnlockPopupOpen(true);
+
+    let unlockTime = moment().add(2, "minutes").toISOString();
+
+    const newUserdata = JSON.parse(JSON.stringify(user_data));
+    let newSongInstance = {
+      date_added: new Date().toISOString(),
+      favourited: false,
+      high_score: 0,
+      maximum_progress: 0,
+      no_of_plays: 0,
+      paid_for_flag: false,
+      unlock_time: unlockTime,
+      unlocked: true,
+      song,
+    };
+
+    newUserdata.profile.player.player_song_instances.push(newSongInstance);
+    newUserdata.profile.player.total_discs -= 30;
+    dispatch(updateUser(newUserdata));
+
+    // Remove the unlocked song from the unlockable songs list
+    setUnlockableSongs((prevSongs) =>
+      prevSongs.filter((s) => s.id !== song.id)
+    );
+
+    // Update visible unlockable songs
+    setVisibleUnlockableSongs((prevVisibleSongs) => {
+      // Remove the unlocked song
+      let updatedVisible = prevVisibleSongs.filter((s) => s.id !== song.id);
+
+      // Add the next song from unlockableSongs if available
+      const remainingLockedSongs = unlockableSongs.filter(
+        (s) => s.id !== song.id
+      );
+      if (remainingLockedSongs.length > 0) {
+        // Add the next song to maintain two visible unlockable songs
+        updatedVisible.push(remainingLockedSongs[0]);
+      }
+
+      return updatedVisible;
+    });
+
+    // Update user's songs
+    setSongs((prevSongs) => [...prevSongs, song]);
+  };
+
+  const toggleDailyPopup = () => {
+    setIsDailyPopupOpen(!isDailyPopupOpen);
+  };
+
+  const level = user_data?.profile?.player?.level || 1;
+
+  const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
     <div className="cmd-page">
       <Header />
-      <Container>
-        <Row className="kayfo-block-header">
+      {/* Container */}
+      <div className="px-4 mx-auto max-w-7xl">
+        {/* Your Songs Section */}
+        <div className="kayfo-block-header">
           <div className="kayfo-block-title">
-            <span>My Songs</span>
+            <h1 className="your-songs text-center mt-2 mb-3 text-6xl uppercase">
+              Your Songs
+            </h1>
           </div>
-        </Row>
-        <Row>
-          <Col
-            className="kayfo-masonry-main"
-            style={{ overflowX: "auto", overflowY: "hidden" }}
+        </div>
+        <div>
+          <div
+            className="kayfo-masonry-main overflow-x-auto overflow-y-hidden"
+            style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
-              <div
-                style={{
-                  minWidth: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
+              <div className="flex flex-row">
                 {songs?.map((item, index) => (
                   <ArtistImage
                     key={index}
@@ -230,71 +311,32 @@ const HubScreen = () => {
                 ))}
               </div>
             ) : (
-              <Col className="kayfo-filter-no-result-box">
+              <div className="kayfo-filter-no-result-box">
                 {!loading ? "No result" : "loading..."}
-              </Col>
-            )}
-          </Col>
-        </Row>
-      </Container>
-
-      <UnlockSongsRow user_data={user_data} songs={songs} loading={loading} />
-
-      <Container>
-        <Row className="kayfo-block-header">
-          <div className="kayfo-block-title">
-            <span>All Songs</span>
-          </div>
-        </Row>
-        <Row>
-          <Col
-            className="kayfo-masonry-main"
-            style={{ width: "100%", overflowX: "auto", overflowY: "hidden" }}
-          >
-            <div
-              style={{ width: "100%", display: "flex", flexDirection: "row" }}
-            >
-              <div
-                className="kayfo-masonry-container"
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Col
-                  className="kayfo-masonry-item"
-                  style={{ width: "100%" }}
-                  onClick={() => router.push("/library")}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      height: 110,
-                      backgroundColor: "yourColor",
-                      borderRadius: 6,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: "white",
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Go to all songs
-                    </span>
-                  </div>
-                </Col>
               </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+            )}
+          </div>
+        </div>
+        {/* Horizontal Cards Row */}
+        <UnlockSongsRow />
+      </div>
+      {/* Popups and other components */}
+      {/* <Popup
+        isOpen={isUnlockPopupOpen}
+        closePopup={() => setIsUnlockPopupOpen(false)}
+      >
+        <h1 className="mt-2">You have successfully unlocked the song:</h1>
+        <b style={{ fontSize: "50px" }}>{unlockedSong?.song_name}</b>
+        <button
+          onClick={() => {
+            setIsUnlockPopupOpen(false);
+            router.push("/");
+          }}
+          className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none"
+        >
+          Go to my library
+        </button>
+      </Popup> */}
       <OverlayCard
         isOpen={isOverlayOpen}
         onClose={closeOverlay}
@@ -307,17 +349,42 @@ const HubScreen = () => {
         closePopup={closeLevelUpPopup}
         newLevel={newLevel}
       />
-      <Popup isOpen={isPopupOpen} closePopup={togglePopup}>
-        <h2>Welcome Back</h2>
-        <h1 className="mt-2">Your daily login gift is:</h1>
-        <b style={{ fontSize: "50px" }}>10</b> gems
-        <button
-          onClick={togglePopup}
-          className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
-        >
-          Claim daily gift
-        </button>
+      <Popup isOpen={isDailyPopupOpen} closePopup={toggleDailyPopup}>
+        {/* Daily Reward Styling */}
+        <div className="daily-reward-content">
+          <h1 className="daily-welcome uppercase text-8xl mb-4">
+            Welcome back
+          </h1>
+          <p className="daily-gift-title uppercase font-bold text-4xl text-yellow-100">
+            Your Daily Gift
+          </p>
+          <p className="daily-gift-subtext text-2xl mt-1 text-yellow-100">
+            Check in everyday to get more rewards
+          </p>
+          <div className="daily-gem-section">
+            <Image
+              src="/assets/img/dailyreward/Gem.png"
+              alt="Gem Icon"
+              width={100}
+              height={100}
+              className="daily-reward-gem"
+            />
+            <h3 className="gem-value text-yellow-100 text-5xl">+10</h3>
+          </div>
+          <button className="daily-claim-button" onClick={toggleDailyPopup}>
+            <Image
+              src="/assets/img/dailyreward/Collect button.png"
+              alt="Claim Button"
+              width={200}
+              height={80}
+            />
+          </button>
+        </div>
       </Popup>
+      <div className="library-banner-footer-wrapper relative">
+        <LibraryBanner />
+        <Footer />
+      </div>
     </div>
   );
 };

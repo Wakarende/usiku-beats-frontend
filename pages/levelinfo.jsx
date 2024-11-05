@@ -1,59 +1,121 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Container, Row, Col } from 'react-bootstrap';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import LevelInfo from '../components/LevelInfo';
-import '../components/styles.css';
-import Link from 'next/link';
-import axios from "axios";
-const LevelInfoPage = () => {
+import React, { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import Link from "next/link";
+import Image from "next/image";
 
-   const levelsData = [
-    { level: 1, bonusGems: 10, normalDifficulty: 1, multiTapTiles: 2, starsNeeded: 100, achievements: 5 },
-    { level: 2, bonusGems: 20, normalDifficulty: 2, multiTapTiles: 4, starsNeeded: 200, achievements: 10 },
-    { level: 3, bonusGems: 30, normalDifficulty: 3, multiTapTiles: 6, starsNeeded: 300, achievements: 15 },
-    { level: 4, bonusGems: 40, normalDifficulty: 4, multiTapTiles: 8, starsNeeded: 400, achievements: 20 },
-    // Add more levels as needed
+import Header from "../components/header/Header";
+import LevelInfo from "../components/levelinfo/LevelInfo";
+
+import "../components/styles.css";
+
+const LevelInfoPage = () => {
+  const levelsData = [
+    {
+      level: 1,
+      bonusGems: 10,
+      normalDifficulty: 0,
+      multiTapTiles: 2,
+      starsNeeded: 5,
+      unlockSongs: 20,
+    },
+    {
+      level: 2,
+      bonusGems: 20,
+      normalDifficulty: 2,
+      multiTapTiles: 4,
+      starsNeeded: 200,
+      unlockSongs: 20,
+    },
+    {
+      level: 3,
+      bonusGems: 30,
+      normalDifficulty: 3,
+      multiTapTiles: 6,
+      starsNeeded: 300,
+      unlockSongs: 20,
+    },
+    {
+      level: 4,
+      bonusGems: 40,
+      normalDifficulty: 4,
+      multiTapTiles: 8,
+      starsNeeded: 400,
+      unlockSongs: 20,
+    },
+    {
+      level: 5,
+      bonusGems: 40,
+      normalDifficulty: 4,
+      multiTapTiles: 8,
+      starsNeeded: 400,
+      unlockSongs: 20,
+    },
   ];
 
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const currentLevel = user_data?.profile?.player?.level || 1;
 
-  
+  const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    // Scroll to the current level on mount
+    const currentIndex = levelsData.findIndex(
+      (level) => level.level === currentLevel
+    );
+    if (scrollContainerRef.current && currentIndex !== -1) {
+      const child = scrollContainerRef.current.children[currentIndex];
+      const childWidth = child.offsetWidth;
+      const containerWidth = scrollContainerRef.current.offsetWidth;
+      const scrollPosition =
+        child.offsetLeft - containerWidth / 2 + childWidth / 2;
+      scrollContainerRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: "smooth",
+      });
+    }
+  }, [currentLevel, levelsData]);
+
   return (
-    <>
+    <div className="gradient-bg">
       <Header />
-      <Container className="mt-5">
-        <Row className="justify-content-center">
-          <Col md={8}>
-             <div className="overflow-auto" style={{ maxHeight: '80vh' }}>
-              {levelsData.map((levelInfo, index) => (
+      <div className="main-container">
+        <div className="level-info-container">
+          {/* Horizontal Scroll Container */}
+          <div ref={scrollContainerRef} className="scroll-snap-container">
+            {levelsData.map((levelInfo) => {
+              const isActive = levelInfo.level === currentLevel;
+              const isCompleted = levelInfo.level < currentLevel;
+              const isInactive = levelInfo.level > currentLevel;
+              return (
                 <LevelInfo
-                  key={index}
+                  key={levelInfo.level} // Using 'level' as a unique key
                   level={levelInfo.level}
                   bonusGems={levelInfo.bonusGems}
                   normalDifficulty={levelInfo.normalDifficulty}
                   multiTapTiles={levelInfo.multiTapTiles}
                   starsNeeded={levelInfo.starsNeeded}
-                  achievements={levelInfo.achievements}
-                  isCurrentLevel={levelInfo.level === currentLevel}
+                  achievements={levelInfo.unlockSongs}
+                  isActive={isActive}
+                  isCompleted={isCompleted}
+                  isInactive={isInactive}
                 />
-              ))}
-               <div className="text-center mt-3">
-                <Link href="/">
-                  <button className='bg-pink-500 text-white font-bold px-5 py-2 text-2xl mb-5'>
-                    Back
-                  </button>
-                </Link>
-              </div>
-            </div>  
-          </Col>
-        </Row>
-      </Container>
-      <Footer />
-    </>
+              );
+            })}
+          </div>
+          <Link href="/" passHref>
+            <div className="back-button">
+              <Image
+                src="/assets/img/levelinfo/Back_Button.png"
+                alt="Back"
+                width={200}
+                height={200}
+              />
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
