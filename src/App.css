@@ -20,24 +20,28 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Afolkalips';
-  src: url('/assets/fonts/Afolkalips.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+  font-family: "Afolkalips";
+  src: url("/assets/fonts/Afolkalips.otf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Carlito';
-  src: url('/assets/fonts/Carlito-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-family: "Carlito-Bold";
+  src: url("/assets/fonts/Carlito-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Carlito';
-  src: url('/assets/fonts/Carlito-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
+  font-family: "Carlito-BoldItalic";
+  src: url("/assets/fonts/Carlito-BoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Carlito-Italic";
+  src: url("/assets/fonts/Carlito-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Carlito-Regular";
+  src: url("/assets/fonts/Carlito-Regular.ttf") format("truetype");
 }
 
 body {
