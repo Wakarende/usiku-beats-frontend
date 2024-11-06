@@ -41,6 +41,21 @@ const HubScreen = () => {
   const router = useRouter();
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    const checkAuth = () => {
+      const auth = prompt("Please enter the password:", "");
+      if (auth === "1234") {
+        localStorage.setItem("isAuthenticated", "true");
+      } else {
+        alert("Incorrect password");
+        checkAuth();
+      }
+    };
+    if (!isAuthenticated) {
+      checkAuth();
+    }
+  }, []);
 
   useEffect(() => {
     checkAnon();
@@ -125,9 +140,7 @@ const HubScreen = () => {
         ),
       }));
 
-      const lockedSongs = songsWithUnlockStatus.filter(
-        (song) => !song.isUnlocked
-      );
+      const lockedSongs = songsWithUnlockStatus.filter((song) => !song.isUnlocked);
       setUnlockableSongs(lockedSongs);
 
       setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
@@ -248,9 +261,7 @@ const HubScreen = () => {
     dispatch(updateUser(newUserdata));
 
     // Remove the unlocked song from the unlockable songs list
-    setUnlockableSongs((prevSongs) =>
-      prevSongs.filter((s) => s.id !== song.id)
-    );
+    setUnlockableSongs((prevSongs) => prevSongs.filter((s) => s.id !== song.id));
 
     // Update visible unlockable songs
     setVisibleUnlockableSongs((prevVisibleSongs) => {
@@ -258,9 +269,7 @@ const HubScreen = () => {
       let updatedVisible = prevVisibleSongs.filter((s) => s.id !== song.id);
 
       // Add the next song from unlockableSongs if available
-      const remainingLockedSongs = unlockableSongs.filter(
-        (s) => s.id !== song.id
-      );
+      const remainingLockedSongs = unlockableSongs.filter((s) => s.id !== song.id);
       if (remainingLockedSongs.length > 0) {
         // Add the next song to maintain two visible unlockable songs
         updatedVisible.push(remainingLockedSongs[0]);
@@ -289,9 +298,7 @@ const HubScreen = () => {
         {/* Your Songs Section */}
         <div className="kayfo-block-header">
           <div className="kayfo-block-title">
-            <h1 className="your-songs text-center mt-2 mb-3 text-6xl uppercase">
-              Your Songs
-            </h1>
+            <h1 className="your-songs text-center mt-2 mb-3 text-6xl uppercase">Your Songs</h1>
           </div>
         </div>
         <div>
@@ -332,16 +339,10 @@ const HubScreen = () => {
         closePopup={closeLevelUpPopup}
         newLevel={newLevel}
       />
-      <Popup
-        isOpen={isDailyPopupOpen}
-        closePopup={toggleDailyPopup}
-        className="popup-overlay"
-      >
+      <Popup isOpen={isDailyPopupOpen} closePopup={toggleDailyPopup} className="popup-overlay">
         {/* Daily Reward Styling */}
         <div className="daily-reward-content bg-black z-10">
-          <h1 className="daily-welcome uppercase text-8xl mb-4">
-            Welcome back
-          </h1>
+          <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
           <p className="daily-gift-title uppercase font-bold text-4xl text-yellow-100">
             Your Daily Gift
           </p>
