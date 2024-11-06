@@ -338,7 +338,7 @@ const HubScreen = () => {
         className="popup-overlay"
       >
         {/* Daily Reward Styling */}
-        <div className="daily-reward-content bg-black">
+        <div className="daily-reward-content bg-black z-10">
           <h1 className="daily-welcome uppercase text-8xl mb-4">
             Welcome back
           </h1>
