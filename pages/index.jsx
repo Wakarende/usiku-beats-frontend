@@ -318,25 +318,8 @@ const HubScreen = () => {
           </div>
         </div>
         {/* Horizontal Cards Row */}
-        <UnlockSongsRow />
+        <UnlockSongsRow user_data={user_data} songs={songs} loading={loading} />
       </div>
-      {/* Popups and other components */}
-      {/* <Popup
-        isOpen={isUnlockPopupOpen}
-        closePopup={() => setIsUnlockPopupOpen(false)}
-      >
-        <h1 className="mt-2">You have successfully unlocked the song:</h1>
-        <b style={{ fontSize: "50px" }}>{unlockedSong?.song_name}</b>
-        <button
-          onClick={() => {
-            setIsUnlockPopupOpen(false);
-            router.push("/");
-          }}
-          className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none"
-        >
-          Go to my library
-        </button>
-      </Popup> */}
       <OverlayCard
         isOpen={isOverlayOpen}
         onClose={closeOverlay}

@@ -23,18 +23,15 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     useEffect(() => {
       const timer = setTimeout(() => {
         setTimeLeft(calculateTimeLeft(new Date(unlockTime)));
+        console.log("time left", timeLeft);
       }, 1000);
 
       return () => clearTimeout(timer);
     }, [timeLeft, unlockTime]);
 
     return (
-      // <p>
-      //   {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m{" "}
-      //   {timeLeft.seconds}s
-      // </p>
       <p className="text-xs timer-text">
-        {timeLeft.minutes}m:{timeLeft.seconds}s
+        {timeLeft.minutes}:{timeLeft.seconds}m
       </p>
     );
   };
@@ -183,7 +180,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     <p className="text-white font-bold text-xs">
                       {isUnlockTimePassed(item.unlock_time) ? (
                         <button onClick={() => addToLibrary(item.song)}>
-                          <p className="add-to-lib tracking-wide unlocked-text">
+                          <p className="add-to-lib tracking-wide unlocked-text text-nowrap">
                             Add to library
                           </p>
                         </button>

@@ -277,12 +277,6 @@ img {
   color: #fff;
 }
 
-/* .kayfo-bottom-nav-link img {
-  filter: grayscale(100%) brightness(1000%);
-  width: 40px;
-  padding: 5px;
-  transition: all ease-in 0.2s;
-} */
 
 .kayfo-bottom-nav-link.active {
   background-color: transparent !important;
@@ -321,13 +315,6 @@ img {
   color: #fff;
 }
 
-
-.kayfo-categories-footer {
-  /* background-color: transparent; */
-  /* max-width: 100%; */
-  /* margin-bottom: 30px; */
-}
-
 .kayfo-filter-no-result-box {
   padding: 25px 0px;
   color: #fff;
@@ -335,22 +322,6 @@ img {
   text-indent: 15px;
   margin: 15px 0px;
 }
-
-/* .kayfo-categories-footer div
-{
-  background-color: transparent;
-  border: none;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.kayfo-categories-footer div div
-{
-  margin: 10px;
-} */
-
-
 
 .kayfo-games-pagination-container {
   display: flex;
