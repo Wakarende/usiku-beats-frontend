@@ -45,7 +45,7 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
 LevelUpPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   closePopup: PropTypes.func.isRequired,
-  newLevel: PropTypes.number.isRequired,
+  newLevel: PropTypes.number,
 };
 
 export default LevelUpPopup;

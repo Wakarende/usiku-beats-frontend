@@ -1,171 +1,169 @@
 import React from "react";
 import Image from "next/image";
 import classNames from "classnames";
-import "../styles.css"; // Ensure this imports any necessary custom CSS
 
 const LevelInfo = ({
   level,
   bonusGems,
   normalDifficulty,
-  heldTiles,
   unlockSongs,
   starsNeeded,
   isActive,
   isCompleted,
   isInactive,
 }) => {
-  // Determine the background class based on the level state
-  const backgroundClass = classNames("bg-level", {
-    "bg-level-active": isActive,
-    "bg-level-completed": isCompleted,
-    "bg-level-inactive": isInactive,
-  });
+  const containerClasses = classNames(
+    "min-w-full snap-center scale-90",
+    "flex flex-col items-center justify-center"
+  );
 
-  // Define a consistent scaling factor
-  const scalingClass = isActive ? "scale-10" : "scale-10";
+  const getBackgroundImage = () => {
+    if (isActive) return "url('/assets/img/levelinfo/Tile_Active.png')";
+    if (isCompleted) return "url('/assets/img/levelinfo/Tile_completed.png')";
+    return "url('/assets/img/levelinfo/Tile_Inactive.png')";
+  };
 
-  const levelText = isActive
-    ? "Current Level"
-    : isInactive
-    ? "Next Level"
-    : "Previous Level";
+  const cardClasses = classNames(
+    " overflow-hidden relative",
+    "bg-no-repeat bg-cover bg-center",
+    "flex flex-col"
+  );
 
-  const textColorClass = isActive ? "text-yellow-300" : "text-white";
-  const youGetTextColorClass = isInactive ? "text-white" : "text-yellow-300";
+  const getLevelText = () => {
+    if (isActive) return "CURRENT LEVEL";
+    if (isInactive) return "NEXT LEVEL";
+    return "PREVIOUS LEVEL";
+  };
 
   return (
-    <div
-      className={classNames(
-        "flex-shrink-0 flex flex-col items-center justify-center snap-center",
-        {
-          "w-full sm:w-3/4 md:w-1/2 lg:w-1/1": !isActive,
-          "w-full sm:w-3/4 md:w-3/4 lg:w-2/3": isActive,
-        }
-      )}
-    >
-      <div className="text-center uppercase mb-1">
-        <p className={classNames("text-md uppercase", textColorClass)}>
-          {levelText}
-        </p>
-        <h1 className={classNames("text-5xl", textColorClass)}>
-          Level {level}
+    <div className={containerClasses}>
+      {/* Level Header */}
+      <div className="text-center mb-2">
+        <h1
+          className={classNames("text-xl tracking-wide", {
+            "text-yellow-300": isActive,
+            "text-gray-300": !isActive,
+          })}
+        >
+          {getLevelText()}
+        </h1>
+        <h1
+          className={classNames("text-6xl tracking-wide", {
+            "text-yellow-300": isActive,
+            "text-gray-300": !isActive,
+          })}
+        >
+          LEVEL {level}
         </h1>
       </div>
+
+      {/* Main Card */}
       <div
-        className={classNames(
-          "transition-transform duration-200 w-full overflow-visible px-2",
-          scalingClass
-        )}
+        className={cardClasses}
+        style={{
+          backgroundImage: getBackgroundImage(),
+          width: "387px",
+          height: "481px",
+        }}
       >
-        <div
-          className={classNames(
-            "relative bg-contain bg-center bg-no-repeat",
-            backgroundClass,
-            "aspect-w-3 aspect-h-4"
-          )}
-        >
-          <div className="absolute inset-0 flex flex-col justify-between">
-            <div className="text-white text-center px-5 pt-4">
-              <p
-                className={classNames(
-                  "text-5xl mb-4 mt-4 font-body carlito-bold",
-                  youGetTextColorClass
-                )}
-              >
-                You Get
-              </p>
-              <div className="reward-list space-y-4">
-                {/* Bonus Gems */}
-                <div className="reward-item flex items-center justify-start gap-2 w-full">
-                  <div className="icon-wrapper flex items-center justify-center">
+        {/* Card Content Container */}
+        <div className="flex-1 flex flex-col">
+          {/* Center Content Section */}
+          <div className="flex-1 flex flex-col justify-center items-center px-6">
+            {/* "YOU GET" Section */}
+            <p
+              className={classNames("text-5xl text-center mb-8", {
+                "text-yellow-300": !isInactive,
+                "text-gray-300": isInactive,
+              })}
+            >
+              YOU GET
+            </p>
+
+            {/* Rewards List */}
+            <div className="space-y-4">
+              {/* Bonus Gems */}
+              <div className="flex items-center">
+                <div className="flex items-center flex-1">
+                  <div className="w-6 h-6 relative mr-3">
                     <Image
                       src="/assets/img/levelinfo/Gem.png"
-                      alt="Gem"
-                      width={28}
-                      height={28}
+                      alt="Gems"
+                      layout="fill"
+                      objectFit="contain"
                     />
                   </div>
-                  <div className="label-wrapper flex-grow text-left">
-                    <p className="text-base font-medium">Bonus Gems</p>
-                  </div>
-                  <div className="value-wrapper text-right">
-                    <h3 className="text-3xl text-yellow-300">{bonusGems}</h3>
-                  </div>
+                  <span className="text-gray-300 text-sm">Bonus gems</span>
                 </div>
+                <span className="text-yellow-400 text-lg font-bold ml-4">
+                  {bonusGems}
+                </span>
+              </div>
 
-                {/* Normal Difficulty */}
-                <div className="reward-item flex items-center justify-start gap-2 w-full">
-                  <div className="icon-wrapper flex items-center justify-center">
-                    <Image
-                      src="/assets/img/levelinfo/Unlock.png"
-                      alt="Unlock"
-                      width={28}
-                      height={28}
-                    />
-                  </div>
-                  <div className="label-wrapper flex-grow text-left">
-                    <p className="text-base font-medium">
-                      {normalDifficulty} Normal
-                    </p>
-                  </div>
+              {/* Normal Difficulty */}
+              <div className="flex items-center">
+                <div className="w-6 h-6 relative mr-3">
+                  <Image
+                    src="/assets/img/levelinfo/Unlock.png"
+                    alt="Difficulty"
+                    layout="fill"
+                    objectFit="contain"
+                  />
                 </div>
+                <span className="text-gray-300 text-sm">Pro difficulty</span>
+              </div>
 
-                {/* Held Tiles */}
-                <div className="reward-item flex items-center justify-start gap-2 w-full">
-                  <div className="icon-wrapper flex items-center justify-center">
-                    <Image
-                      src="/assets/img/levelinfo/Unlock.png"
-                      alt="Unlock"
-                      width={28}
-                      height={28}
-                    />
-                  </div>
-                  <div className="label-wrapper flex-grow text-left">
-                    <p className="text-base font-medium">
-                      {heldTiles} Held Tiles
-                    </p>
-                  </div>
+              {/* Held Tiles */}
+              <div className="flex items-center">
+                <div className="w-6 h-6 relative mr-3">
+                  <Image
+                    src="/assets/img/levelinfo/Unlock.png"
+                    alt="Tiles"
+                    layout="fill"
+                    objectFit="contain"
+                  />
                 </div>
+                <span className="text-gray-300 text-sm">Held tiles</span>
+              </div>
 
-                {/* New Songs to Unlock */}
-                <div className="reward-item flex items-center justify-start gap-2 w-full">
-                  <div className="icon-wrapper flex items-center justify-center">
-                    <Image
-                      src="/assets/img/levelinfo/Disc.png"
-                      alt="Disc"
-                      width={28}
-                      height={28}
-                    />
-                  </div>
-                  <div className="label-wrapper flex-grow text-left">
-                    <p className="text-base font-medium">
-                      {unlockSongs} New Songs to Unlock
-                    </p>
-                  </div>
+              {/* New Songs */}
+              <div className="flex items-center">
+                <div className="w-6 h-6 relative mr-3">
+                  <Image
+                    src="/assets/img/levelinfo/Disc.png"
+                    alt="Songs"
+                    layout="fill"
+                    objectFit="contain"
+                  />
                 </div>
+                <span className="text-gray-300 text-sm">
+                  {unlockSongs} New songs to unlock
+                </span>
               </div>
             </div>
+          </div>
 
-            {/* Stars Needed Section */}
-            <div className="card-bottom-section">
-              <div className="stars-needed-container flex flex-col items-center justify-center">
-                <div className="flex items-center justify-center space-x-2 mb-1">
+          {/* Stars Needed Footer */}
+          <div className="w-full">
+            <div className=" flex flex-col items-center justify-center">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 relative">
                   <Image
                     src="/assets/img/levelinfo/Star.png"
                     alt="Star"
-                    width={25}
-                    height={25}
-                    className="p-0"
+                    layout="fill"
+                    objectFit="contain"
                   />
-                  <h2 className="text-5xl text-black">{starsNeeded}</h2>
                 </div>
-                <p className="text-yellow-200 text-xl">Stars Needed</p>
+                <h1 className="text-gray text-6xl">{starsNeeded}</h1>
               </div>
+              <p className="text-yellow-300 text-lg tracking-wide">
+                Stars needed
+              </p>
             </div>
           </div>
         </div>
       </div>
-      {/* <div className="z-0"></div> */}
     </div>
   );
 };

@@ -5,11 +5,15 @@
 }
 
 /* DAILY REWARD POPUP  */
+
 .daily-reward-content {
     background: url('/assets/img/dailyreward/BG.png');
     background-size: cover;
+    background-repeat: no-repeat;
+    background-color: transparent;
     padding: 40px;
     border-radius: 5px;
+    /* height: 90%; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,7 +49,6 @@
 .daily-claim-button {
     background: transparent;
     border: none;
-    cursor: pointer;
 }
 
 .daily-claim-button img {
@@ -80,7 +83,7 @@ footer {
 /* HUBSCREEN TOP TITTLE */
 .your-songs {
     color: #ff6a00;
-    text-shadow: 1.5px 1.5px #edd714;
+    text-shadow: 1px 1px #edd714;
 }
 
 /* TOP TITLE END  */

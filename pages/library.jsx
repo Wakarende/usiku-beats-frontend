@@ -4,7 +4,6 @@ import moment from "moment-timezone";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../components/Popup";
 import Image from "next/image";
-import { Alert, Snackbar } from "@mui/material";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { useRouter } from "next/router";

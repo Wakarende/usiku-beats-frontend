@@ -147,5 +147,4 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
     </div>
   );
 };
-
 export { OverlayCard, ArtistImage };

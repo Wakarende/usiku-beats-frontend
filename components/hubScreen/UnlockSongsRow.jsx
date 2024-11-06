@@ -1,8 +1,9 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/main/authActions";
+import moment from "moment";
+
 import { useRouter } from "next/router";
 import Image from "next/image";
 import "../styles.css";
@@ -85,6 +86,26 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     dispatch(updateUser(newUserdata));
   };
 
+  const handleGemClick = (song) => {
+    let newUserdata = JSON.parse(JSON.stringify(user_data));
+    newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
+
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+
+    if (songInstance && songInstance.unlock_time) {
+      const unlockTime = moment(songInstance.unlock_time);
+      const now = moment();
+      const timeDiff = unlockTime.diff(now);
+      const percentageReduction = 0.5;
+      const reducedTime = timeDiff * (1 - percentageReduction);
+      const newUnlockTime = moment(now.valueOf() + reducedTime).toISOString();
+      songInstance.unlock_time = newUnlockTime;
+    }
+    dispatch(updateUser(newUserdata));
+  };
+
   const unlockSongWithGems = (song) => {
     let newUserdata = JSON.parse(JSON.stringify(user_data));
 
@@ -159,9 +180,13 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       width={10}
                       height={10}
                     />
-                    <p className="text-white font-bold unlocked-text">
+                    <p className="text-white font-bold text-xs">
                       {isUnlockTimePassed(item.unlock_time) ? (
-                        "Add to Library"
+                        <button onClick={() => addToLibrary(item.song)}>
+                          <p className="add-to-lib tracking-wide unlocked-text">
+                            Add to library
+                          </p>
+                        </button>
                       ) : (
                         <CountdownTimer unlockTime={item.unlock_time} />
                       )}
@@ -170,8 +195,8 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 </div>
               </div>
               {/* Unlock Now Button Below the Card */}
-              <div className="mt-1">
-                {!isUnlockTimePassed(item.unlock_time) ? (
+              {!isUnlockTimePassed(item.unlock_time) && (
+                <div className="mt-1">
                   <button
                     className="unlock-button flex items-center justify-center relative"
                     disabled={
@@ -210,23 +235,8 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       />
                     </div>
                   </button>
-                ) : (
-                  <button
-                    onClick={() => addToLibrary(item.song)}
-                    className="unlock-button flex items-center justify-center relative w-full"
-                  >
-                    <Image
-                      src="/assets/img/hub/Button Blank.png"
-                      alt="Add to Library Button Background"
-                      width={160}
-                      height={60}
-                    />
-                    <p className="absolute inset-0 flex items-center justify-center text-white font-bold uppercase whitespace-nowrap add-to-lib">
-                      Add to Library
-                    </p>
-                  </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           ))}
         {/* Disc Indicator Card */}
@@ -247,7 +257,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           <p className="text-yellow-300 disc-text text-center font-bold">
             {totalDiscs >= discsRequiredToUnlockSong
               ? "You have enough discs to unlock a new song!"
-              : `Earn ${
+              : ` Earn ${
                   discsRequiredToUnlockSong - totalDiscs
                 } more discs to unlock your next song`}
           </p>

@@ -137,7 +137,6 @@
   background-image: url("/assets/img/hub/Disc_bg.png");
   width: 123px;
   height: 127px;
-  /* aspect-ratio: 1 / 1; */
   background-repeat: no-repeat;
   background-size: contain;
   display: flex;
@@ -325,7 +324,7 @@
 
 
 .bg-level-completed {
-  background-image: url('/assets/img/levelinfo/Tile_completed.png');
+  background-image: url('/public/assets/img/levelinfo/Tile_completed.png');
 }
 
 .bg-level-inactive {
@@ -346,7 +345,7 @@
   background-repeat: no-repeat;
 }
 
-* Scroll Snap for Horizontal Scroll */ .scroll-snap-container {
+.scroll-snap-container {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
@@ -367,14 +366,15 @@
 }
 
 .gradient-bg {
-  position: fixed;
+  /* position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: auto;
-  background: url('/assets/img/levelinfo/Gradient.png') no-repeat bottom;
+  background: url('/assets/img/levelinfo/Gradient.png');
   background-size: cover;
-  z-index: -1;
+  z-index: -1; */
+  min-height: 100vh;
 
 }
 
@@ -384,7 +384,8 @@
   justify-content: center;
   align-items: center;
   /* height: 100vh; */
-  padding-top: 5rem;
+  max-width: 1200px;
+  padding-top: 2rem;
   overflow: hidden;
 }
 
@@ -393,17 +394,17 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
   padding: 1rem;
 }
 
 .scroll-snap-container {
   display: flex;
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  overflow-x: auto;
-  width: 100%;
-  padding: 1rem 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .scroll-snap-center {
