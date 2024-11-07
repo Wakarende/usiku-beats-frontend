@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../components/Popup";
 import Image from "next/image";
+import Link from "next/link";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { useRouter } from "next/router";
@@ -90,7 +91,12 @@ const Library = () => {
           <div key={index} className="m-8">
             <div className="song-item">
               <div className="flex flex-row justify-between items-center">
-                <Image src={song.thumbnail_file} alt="Song Cover" width={100} height={100} />
+                <Image
+                  src={song.thumbnail_file}
+                  alt="Song Cover"
+                  width={100}
+                  height={100}
+                />
                 <div style={{ color: "white" }} className="flex-grow mx-4">
                   <p className="font-bold">{song.song_name}</p>
                   <p>{song.artist_name}</p>
@@ -127,7 +133,16 @@ const Library = () => {
           </button>
         </Popup>
       </div>
-      <BottomTabNav />
+      <Link href="/" passHref>
+        <div className="flex justify-center mt-5">
+          <Image
+            src="/assets/img/levelinfo/Back_Button.png"
+            alt="Back"
+            width={300}
+            height={300}
+          />
+        </div>
+      </Link>
     </div>
   );
 };
