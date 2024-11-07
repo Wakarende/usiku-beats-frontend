@@ -1,7 +1,12 @@
-/* HUB SCREEN  */
+/* INDEX PAGE  */
 .cdm-page {
     min-height: 100vh;
     overflow-y: hidden;
+}
+
+.your-songs {
+    color: #ff6a00;
+    text-shadow: 1px 1px #edd714;
 }
 
 /* DAILY REWARD POPUP  */
@@ -69,16 +74,39 @@
 /* DAILY REWARD POPUP END  */
 
 /* LIBRARY BANNER  */
-.library-banner-bg {}
 
 /* LIBRARY BANNER END  */
 
-/* HUBSCREEN TOP TITTLE */
-.your-songs {
-    color: #ff6a00;
-    text-shadow: 1px 1px #edd714;
+/* INDEX PAGE END  */
+
+
+/* LEVEL INFO PAGE  */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    max-width: 1200px;
+    padding-top: 2rem;
+    overflow: hidden;
 }
 
-/* TOP TITLE END  */
+.level-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* max-width: 400px; */
+    padding: 1rem;
+}
 
-/* HUBSCREEN END  */
+.gradient-bg {
+    background-image: url('/assets/img/levelinfo/Gradient.png');
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+/* LEVEL INFO END  */

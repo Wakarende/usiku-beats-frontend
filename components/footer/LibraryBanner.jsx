@@ -31,7 +31,7 @@ const LibraryBanner = () => {
           </div>
           {/* Right side content */}
           <div className="flex flex-col items-center gap-0 flex-shrink-0 ">
-            <p className="text-white text-sm whitespace-nowrap absolute  p-0">
+            <p className="text-white text-sm whitespace-nowrap absolute p-0">
               1 unlock ready
             </p>
             <Image

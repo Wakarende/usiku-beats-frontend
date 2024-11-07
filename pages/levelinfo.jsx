@@ -6,8 +6,8 @@ import Image from "next/image";
 import Header from "../components/header/Header";
 import LevelInfo from "../components/levelinfo/LevelInfo";
 
-import "../components/styles.css";
-
+// import "../components/styles.css";
+import "./pages.css";
 const LevelInfoPage = () => {
   const levelsData = [
     {
@@ -77,42 +77,44 @@ const LevelInfoPage = () => {
   }, [currentLevel, levelsData]);
 
   return (
-    <div className="gradient-bg">
+    <div className="gradient-bg flex flex-col">
       <Header />
-      <div className="main-container">
-        <div className="level-info-container">
-          {/* Horizontal Scroll Container */}
-          <div ref={scrollContainerRef} className="scroll-snap-container">
-            {levelsData.map((levelInfo) => {
-              const isActive = levelInfo.level === currentLevel;
-              const isCompleted = levelInfo.level < currentLevel;
-              const isInactive = levelInfo.level > currentLevel;
-              return (
-                <LevelInfo
-                  key={levelInfo.level} // Using 'level' as a unique key
-                  level={levelInfo.level}
-                  bonusGems={levelInfo.bonusGems}
-                  normalDifficulty={levelInfo.normalDifficulty}
-                  multiTapTiles={levelInfo.multiTapTiles}
-                  starsNeeded={levelInfo.starsNeeded}
-                  achievements={levelInfo.unlockSongs}
-                  isActive={isActive}
-                  isCompleted={isCompleted}
-                  isInactive={isInactive}
-                />
-              );
-            })}
-          </div>
-          <Link href="/" passHref>
-            <div className="back-button">
-              <Image
-                src="/assets/img/levelinfo/Back_Button.png"
-                alt="Back"
-                width={200}
-                height={200}
-              />
+      <div className="items-center justify-center">
+        <div className="main-container">
+          <div className="level-info-container ">
+            {/* Horizontal Scroll Container */}
+            <div ref={scrollContainerRef} className="scroll-snap-container">
+              {levelsData.map((levelInfo) => {
+                const isActive = levelInfo.level === currentLevel;
+                const isCompleted = levelInfo.level < currentLevel;
+                const isInactive = levelInfo.level > currentLevel;
+                return (
+                  <LevelInfo
+                    key={levelInfo.level} // Using 'level' as a unique key
+                    level={levelInfo.level}
+                    bonusGems={levelInfo.bonusGems}
+                    normalDifficulty={levelInfo.normalDifficulty}
+                    multiTapTiles={levelInfo.multiTapTiles}
+                    starsNeeded={levelInfo.starsNeeded}
+                    achievements={levelInfo.unlockSongs}
+                    isActive={isActive}
+                    isCompleted={isCompleted}
+                    isInactive={isInactive}
+                  />
+                );
+              })}
             </div>
-          </Link>
+            <Link href="/" passHref>
+              <div className="relative z-10">
+                <Image
+                  src="/assets/img/levelinfo/Back_Button.png"
+                  alt="Back"
+                  width={300}
+                  height={300}
+                />
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

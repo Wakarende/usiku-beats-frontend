@@ -211,7 +211,7 @@
 .frame {
   position: "relative";
   height: auto;
-  /* width: 300px; */
+
   background-image: url("/assets/img/hub/Frame.png");
   background-size: 100% 100%;
 }
@@ -386,43 +386,10 @@
 }
 
 .carlito-bold {
-  font-family: 'Carlito',
-    sans-serif;
+  font-family: 'Carlito', sans-serif;
   font-weight: bold;
 }
 
-.gradient-bg {
-  /* position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  background: url('/assets/img/levelinfo/Gradient.png');
-  background-size: cover;
-  z-index: -1; */
-  min-height: 100vh;
-
-}
-
-.main-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* height: 100vh; */
-  max-width: 1200px;
-  padding-top: 2rem;
-  overflow: hidden;
-}
-
-.level-info-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  /* max-width: 400px; */
-  padding: 1rem;
-}
 
 .scroll-snap-container {
   display: flex;
@@ -437,48 +404,6 @@
   scroll-snap-align: center;
 }
 
-.back-button {
-  align-self: center;
-
-}
-
-.card-bottom-section {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 1rem;
-}
-
-.stars-needed-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stars-needed-container p {
-  letter-spacing: 1.5px;
-}
-
-.reward-item {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  width: 100%;
-}
-
-.icon-wrapper {
-  flex-shrink: 0;
-  width: 40px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .label-wrapper {
   flex-grow: 1;

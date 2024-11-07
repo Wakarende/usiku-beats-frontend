@@ -82,7 +82,7 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="kayfo-masonry-container frame relative flex flex-col items-center p-2 mt-1 max-w-[200px]">
+    <div className="frame relative flex flex-col items-center p-2 mt-1 max-w-[200px]">
       <div className="relative w-[180px] h-[200px] rounded-lg overflow-hidden">
         <div
           className="absolute inset-0 bg-center bg-cover bg-no-repeat"
