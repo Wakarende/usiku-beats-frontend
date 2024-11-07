@@ -6,17 +6,17 @@ import "../styles.css";
 
 const LibraryBanner = () => {
   return (
-    <div className="library-banner-wrapper">
+    <div className="library-banner absolute inset-0 flex justify-center items-center">
       <Link href={"/library"}>
-        <div className="banner-container">
+        <div className="relative w-full library-banner-bg">
           <Image
             src="/assets/img/hub/Banner BG.png"
             alt="Library Banner"
-            width={1200}
+            width={1500}
             height={100}
-            className="banner-image"
+            className="banner-image w-full"
           />
-          <div className="absolute inset-0 flex justify-between items-center px-8">
+          <div className="absolute inset-0 flex justify-between items-center">
             <div className="w-24"></div>
             {/* Left side content */}
             <div className="text-center">
