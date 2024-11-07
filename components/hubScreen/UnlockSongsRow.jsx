@@ -134,7 +134,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           .map((item, index) => (
             <div
               key={index}
-              className="flex flex-col items-center m-1 unlock-card-wrapper "
+              className="flex flex-col items-center m-2 unlock-card-wrapper "
             >
               {/* Unlock Card */}
               <div
@@ -193,7 +193,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               </div>
               {/* Unlock Now Button Below the Card */}
               {!isUnlockTimePassed(item.unlock_time) && (
-                <div className="mt-1">
+                <div className="">
                   <button
                     className="unlock-button flex items-center justify-center relative"
                     disabled={
@@ -206,7 +206,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       src="/assets/img/hub/Button Blank.png"
                       alt="Unlock Button Background"
                       width={160}
-                      height={60}
+                      height={100}
                     />
                     <div className="absolute flex gem-wrapper">
                       <div className=" flex gap-0.5 btn-gem">
@@ -220,7 +220,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                           {gemsRequiredToUnlockSong}
                         </h3>
                       </div>
-                      <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center">
+                      <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
                         unlock now
                       </p>
                       <Image
@@ -238,10 +238,10 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           ))}
         {/* Disc Indicator Card */}
         <div
-          className="disc-indicator-wrapper my-2"
+          className="disc-indicator-wrapper my-1"
           onClick={() => router.push("/library")}
         >
-          <h1 className="total-discs-text text-xl text-white tracking-wider">
+          <h1 className="total-discs-text text-2xl text-white tracking-widest">
             {totalDiscs}
           </h1>
           <Image

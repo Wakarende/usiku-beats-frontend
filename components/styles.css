@@ -98,8 +98,8 @@
 
 .unlock-card {
   background-repeat: no-repeat;
-  width: 120px;
-  height: 104px;
+  width: 130px;
+  height: 110px;
 }
 
 .timer-bg {
@@ -146,13 +146,12 @@
 .disc-indicator-wrapper {
   position: relative;
   background-image: url("/assets/img/hub/Disc_bg.png");
-  width: 123px;
-  height: 127px;
+  width: 130px;
+  height: 140px;
   background-repeat: no-repeat;
   background-size: contain;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 }
 
