@@ -383,14 +383,11 @@ const HubScreen = () => {
           </button>
         </div>
       </Popup>
+
       <div>
         <Footer />
       </div>
     </div>
-    // <div className="library-banner-footer-wrapper relative">
-    //     <LibraryBanner />
-    //     <Footer />
-    //   </div>
   );
 };
 
