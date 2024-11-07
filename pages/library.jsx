@@ -24,7 +24,7 @@ const Library = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=136`).then((res) => {
+    axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=56`).then((res) => {
       const songsWithUnlockStatus = res.data.map((song) => ({
         ...song,
         isUnlocked: user_data?.profile?.player?.player_song_instances.some(
@@ -44,7 +44,7 @@ const Library = () => {
     setUnlockedSong(song);
     setIsPopupOpen(true);
 
-    let unlockTime = moment().add(10, "minutes").toISOString();
+    let unlockTime = moment().add(2, "minutes").toISOString();
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     let newSongInstance = {
@@ -90,12 +90,7 @@ const Library = () => {
           <div key={index} className="m-8">
             <div className="song-item">
               <div className="flex flex-row justify-between items-center">
-                <Image
-                  src={song.thumbnail_file}
-                  alt="Song Cover"
-                  width={100}
-                  height={100}
-                />
+                <Image src={song.thumbnail_file} alt="Song Cover" width={100} height={100} />
                 <div style={{ color: "white" }} className="flex-grow mx-4">
                   <p className="font-bold">{song.song_name}</p>
                   <p>{song.artist_name}</p>

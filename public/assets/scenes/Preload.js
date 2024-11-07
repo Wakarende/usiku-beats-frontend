@@ -3,239 +3,204 @@
 /* START OF COMPILED CODE */
 
 class Preload extends Phaser.Scene {
-  constructor() {
-    super("Preload");
 
-    /* START-USER-CTR-CODE */
+	constructor() {
+		super("Preload");
+
+		/* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-  }
+	}
 
-  /** @returns {void} */
-  editorPreload() {
-    this.load.pack("asset-pack", "assets/asset-pack.json");
-  }
+	/** @returns {void} */
+	editorPreload() {
 
-  /** @returns {void} */
-  editorCreate() {
-    // logos_background
-    const logos_background = this.add.image(180, 320, "BG_1");
-    logos_background.scaleX = 0.3333;
-    logos_background.scaleY = 0.3333;
+		this.load.pack("asset-pack", "assets/asset-pack.json");
+	}
 
-    // preloader_bottom_banner
-    const preloader_bottom_banner = this.add.image(180, 505.0135, "preloader_bottom_banner");
-    preloader_bottom_banner.scaleX = 0.3333;
-    preloader_bottom_banner.scaleY = 0.3333;
+	/** @returns {void} */
+	editorCreate() {
 
-    // preloader_Top_banner
-    const preloader_Top_banner = this.add.image(180, 41.6625, "preloader_Top banner");
-    preloader_Top_banner.scaleX = 0.3333;
-    preloader_Top_banner.scaleY = 0.3333;
+		// logos_background
+		const logos_background = this.add.image(180, 320, "BG_1");
+		logos_background.scaleX = 0.3333;
+		logos_background.scaleY = 0.3333;
 
-    // loading
-    const loading = this.add.image(115, 593, "beat_meter_empty");
-    loading.setOrigin(0, 0.5);
-    loading.visible = false;
+		// preloader_bottom_banner
+		const preloader_bottom_banner = this.add.image(180, 505.0135, "preloader_bottom_banner");
+		preloader_bottom_banner.scaleX = 0.3333;
+		preloader_bottom_banner.scaleY = 0.3333;
 
-    // percentage
-    const percentage = this.add.text(180, 552, "", {});
-    percentage.setOrigin(0.5, 0.5);
-    percentage.visible = false;
-    percentage.text = "0%";
-    percentage.setStyle({ align: "center", fontFamily: "DINPro-Medium", fontSize: "15px" });
+		// preloader_Top_banner
+		const preloader_Top_banner = this.add.image(180, 41.6625, "preloader_Top banner");
+		preloader_Top_banner.scaleX = 0.3333;
+		preloader_Top_banner.scaleY = 0.3333;
 
-    // current_asset
-    const current_asset = this.add.text(180, 602, "", {});
-    current_asset.setOrigin(0.5, 0.5);
-    current_asset.visible = false;
-    current_asset.text = "null";
-    current_asset.setStyle({ align: "center", fontSize: "13px" });
+		// loading
+		const loading = this.add.image(115, 593, "beat_meter_empty");
+		loading.setOrigin(0, 0.5);
+		loading.visible = false;
 
-    // loading_txt
-    const loading_txt = this.add.text(180, 597, "", {});
-    loading_txt.setOrigin(0.5, 0.5);
-    loading_txt.text = "LOADING...";
-    loading_txt.setStyle({ color: "#ff6a00", fontFamily: "Carlito-BoldItalic", stroke: "#ff6a00" });
+		// percentage
+		const percentage = this.add.text(180, 552, "", {});
+		percentage.setOrigin(0.5, 0.5);
+		percentage.visible = false;
+		percentage.text = "0%";
+		percentage.setStyle({ "align": "center", "fontFamily": "DINPro-Medium", "fontSize": "15px" });
 
-    // beats_logo
-    const beats_logo = this.add.image(173, 245, "beats_logo");
-    beats_logo.scaleX = 0.4;
-    beats_logo.scaleY = 0.4;
-    beats_logo.visible = false;
+		// current_asset
+		const current_asset = this.add.text(180, 602, "", {});
+		current_asset.setOrigin(0.5, 0.5);
+		current_asset.visible = false;
+		current_asset.text = "null";
+		current_asset.setStyle({ "align": "center", "fontSize": "13px" });
 
-    // play_button
-    const play_button = this.add.image(180, 593, "Button_blank");
-    play_button.scaleX = 0.4;
-    play_button.scaleY = 0.55;
-    play_button.visible = false;
+		// loading_txt
+		const loading_txt = this.add.text(180, 597, "", {});
+		loading_txt.setOrigin(0.5, 0.5);
+		loading_txt.text = "LOADING...";
+		loading_txt.setStyle({ "color": "#ff6a00", "fontFamily": "Carlito-BoldItalic", "stroke": "#ff6a00" });
 
-    // play_text
-    const play_text = this.add.text(180, 593, "", {});
-    play_text.setOrigin(0.5, 0.5);
-    play_text.visible = false;
-    play_text.text = "LET'S GO!";
-    play_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "22px" });
+		// beats_logo
+		const beats_logo = this.add.image(173, 245, "beats_logo");
+		beats_logo.scaleX = 0.4;
+		beats_logo.scaleY = 0.4;
+		beats_logo.visible = false;
 
-    // loading_thumbnail_text
-    const loading_thumbnail_text = this.add.text(180, 229, "", {});
-    loading_thumbnail_text.setOrigin(0.5, 0.5);
-    loading_thumbnail_text.text = "LOADING COVER...";
-    loading_thumbnail_text.setStyle({
-      color: "#ff6a00",
-      fontFamily: "Carlito-Italic",
-      fontSize: "13px",
-      fontStyle: "bold",
-      stroke: "#ff6a00",
-    });
+		// play_button
+		const play_button = this.add.image(180, 593, "Button_blank");
+		play_button.scaleX = 0.4;
+		play_button.scaleY = 0.55;
+		play_button.visible = false;
 
-    // thumbnail_image
-    const thumbnail_image = this.add.image(180, 229, "carousel_2");
-    thumbnail_image.visible = false;
+		// play_text
+		const play_text = this.add.text(180, 593, "", {});
+		play_text.setOrigin(0.5, 0.5);
+		play_text.visible = false;
+		play_text.text = "LET'S GO!";
+		play_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "22px" });
 
-    // highScoreText
-    const highScoreText = this.add.text(180, 416, "", {});
-    highScoreText.setOrigin(0.5, 0.5);
-    highScoreText.text = "BEST SCORE";
-    highScoreText.setStyle({
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      fontSize: "13px",
-      fontStyle: "bold",
-      stroke: "#faf05e",
-    });
+		// loading_thumbnail_text
+		const loading_thumbnail_text = this.add.text(180, 229, "", {});
+		loading_thumbnail_text.setOrigin(0.5, 0.5);
+		loading_thumbnail_text.text = "LOADING COVER...";
+		loading_thumbnail_text.setStyle({ "color": "#ff6a00", "fontFamily": "Carlito-Italic", "fontSize": "13px", "fontStyle": "bold", "stroke": "#ff6a00" });
 
-    // my_high_score
-    const my_high_score = this.add.text(180, 452, "", {});
-    my_high_score.setOrigin(0.5, 0.5);
-    my_high_score.text = "Score";
-    my_high_score.setStyle({
-      color: "#ff6a00",
-      fontFamily: "Afolkalips",
-      fontSize: "65px",
-      maxLines: 1,
-      stroke: "#ff6a00",
-    });
-    my_high_score.setWordWrapWidth(200);
+		// thumbnail_image
+		const thumbnail_image = this.add.image(180, 229, "carousel_2");
+		thumbnail_image.visible = false;
 
-    // star_empty
-    const star_empty = this.add.image(104, 378, "preloader_Star_Inactive");
-    star_empty.scaleX = 0.3333;
-    star_empty.scaleY = 0.3333;
+		// highScoreText
+		const highScoreText = this.add.text(180, 416, "", {});
+		highScoreText.setOrigin(0.5, 0.5);
+		highScoreText.text = "BEST SCORE";
+		highScoreText.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "13px", "fontStyle": "bold", "stroke": "#faf05e" });
 
-    // star_empty_1
-    const star_empty_1 = this.add.image(142, 378, "preloader_Star_Inactive");
-    star_empty_1.scaleX = 0.3333;
-    star_empty_1.scaleY = 0.3333;
+		// my_high_score
+		const my_high_score = this.add.text(180, 452, "", {});
+		my_high_score.setOrigin(0.5, 0.5);
+		my_high_score.text = "Score";
+		my_high_score.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "65px", "maxLines":1,"stroke": "#ff6a00" });
+		my_high_score.setWordWrapWidth(200);
 
-    // star_empty_2
-    const star_empty_2 = this.add.image(180, 378, "preloader_Star_Inactive");
-    star_empty_2.scaleX = 0.3333;
-    star_empty_2.scaleY = 0.3333;
+		// star_empty
+		const star_empty = this.add.image(104, 378, "preloader_Star_Inactive");
+		star_empty.scaleX = 0.3333;
+		star_empty.scaleY = 0.3333;
 
-    // star_empty_3
-    const star_empty_3 = this.add.image(218, 378, "preloader_Star_Inactive");
-    star_empty_3.scaleX = 0.3333;
-    star_empty_3.scaleY = 0.3333;
+		// star_empty_1
+		const star_empty_1 = this.add.image(142, 378, "preloader_Star_Inactive");
+		star_empty_1.scaleX = 0.3333;
+		star_empty_1.scaleY = 0.3333;
 
-    // star_empty_4
-    const star_empty_4 = this.add.image(256, 378, "preloader_Star_Inactive");
-    star_empty_4.scaleX = 0.3333;
-    star_empty_4.scaleY = 0.3333;
+		// star_empty_2
+		const star_empty_2 = this.add.image(180, 378, "preloader_Star_Inactive");
+		star_empty_2.scaleX = 0.3333;
+		star_empty_2.scaleY = 0.3333;
 
-    // bio_text
-    const bio_text = this.add.text(180, 529, "", {});
-    bio_text.setOrigin(0.5, 0.5);
-    bio_text.text = "Bio Text";
-    bio_text.setStyle({
-      align: "center",
-      fontFamily: "Carlito-Regular",
-      fontSize: "12px",
-      maxLines: 10,
-    });
-    bio_text.setWordWrapWidth(300);
+		// star_empty_3
+		const star_empty_3 = this.add.image(218, 378, "preloader_Star_Inactive");
+		star_empty_3.scaleX = 0.3333;
+		star_empty_3.scaleY = 0.3333;
 
-    // artist_name
-    const artist_name = this.add.text(180, 11, "", {});
-    artist_name.setOrigin(0.5, 0.5);
-    artist_name.text = "artist_name";
-    artist_name.setStyle({
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      fontSize: "14px",
-      stroke: "#faf05e",
-    });
+		// star_empty_4
+		const star_empty_4 = this.add.image(256, 378, "preloader_Star_Inactive");
+		star_empty_4.scaleX = 0.3333;
+		star_empty_4.scaleY = 0.3333;
 
-    // song_name
-    const song_name = this.add.text(180, 34, "", {});
-    song_name.setOrigin(0.5, 0.5);
-    song_name.text = "song_name";
-    song_name.setStyle({
-      color: "#ff6a00",
-      fontFamily: "Afolkalips",
-      fontSize: "30px",
-      stroke: "#ff6a00",
-    });
+		// bio_text
+		const bio_text = this.add.text(180, 526, "", {});
+		bio_text.setOrigin(0.5, 0.5);
+		bio_text.text = "Bio Text";
+		bio_text.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "12px", "maxLines":10});
+		bio_text.setWordWrapWidth(350);
 
-    // difficulty_text
-    const difficulty_text = this.add.text(180, 62, "", {});
-    difficulty_text.setOrigin(0.5, 0.5);
-    difficulty_text.text = "MEDIUM DIFFICULTY";
-    difficulty_text.setStyle({
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      fontSize: "12px",
-      stroke: "#faf05e",
-    });
+		// artist_name
+		const artist_name = this.add.text(180, 11, "", {});
+		artist_name.setOrigin(0.5, 0.5);
+		artist_name.text = "artist_name";
+		artist_name.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "14px", "stroke": "#faf05e" });
 
-    // lists
-    const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
+		// song_name
+		const song_name = this.add.text(180, 34, "", {});
+		song_name.setOrigin(0.5, 0.5);
+		song_name.text = "song_name";
+		song_name.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#ff6a00" });
 
-    this.loading = loading;
-    this.percentage = percentage;
-    this.current_asset = current_asset;
-    this.loading_txt = loading_txt;
-    this.play_button = play_button;
-    this.play_text = play_text;
-    this.thumbnail_image = thumbnail_image;
-    this.my_high_score = my_high_score;
-    this.bio_text = bio_text;
-    this.artist_name = artist_name;
-    this.song_name = song_name;
-    this.difficulty_text = difficulty_text;
-    this.stars = stars;
+		// difficulty_text
+		const difficulty_text = this.add.text(180, 62, "", {});
+		difficulty_text.setOrigin(0.5, 0.5);
+		difficulty_text.text = "MEDIUM DIFFICULTY";
+		difficulty_text.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "12px", "stroke": "#faf05e" });
 
-    this.events.emit("scene-awake");
-  }
+		// lists
+		const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
 
-  /** @type {Phaser.GameObjects.Image} */
-  loading;
-  /** @type {Phaser.GameObjects.Text} */
-  percentage;
-  /** @type {Phaser.GameObjects.Text} */
-  current_asset;
-  /** @type {Phaser.GameObjects.Text} */
-  loading_txt;
-  /** @type {Phaser.GameObjects.Image} */
-  play_button;
-  /** @type {Phaser.GameObjects.Text} */
-  play_text;
-  /** @type {Phaser.GameObjects.Image} */
-  thumbnail_image;
-  /** @type {Phaser.GameObjects.Text} */
-  my_high_score;
-  /** @type {Phaser.GameObjects.Text} */
-  bio_text;
-  /** @type {Phaser.GameObjects.Text} */
-  artist_name;
-  /** @type {Phaser.GameObjects.Text} */
-  song_name;
-  /** @type {Phaser.GameObjects.Text} */
-  difficulty_text;
-  /** @type {Phaser.GameObjects.Image[]} */
-  stars;
+		this.loading = loading;
+		this.percentage = percentage;
+		this.current_asset = current_asset;
+		this.loading_txt = loading_txt;
+		this.play_button = play_button;
+		this.play_text = play_text;
+		this.thumbnail_image = thumbnail_image;
+		this.my_high_score = my_high_score;
+		this.bio_text = bio_text;
+		this.artist_name = artist_name;
+		this.song_name = song_name;
+		this.difficulty_text = difficulty_text;
+		this.stars = stars;
 
-  /* START-USER-CODE */
+		this.events.emit("scene-awake");
+	}
+
+	/** @type {Phaser.GameObjects.Image} */
+	loading;
+	/** @type {Phaser.GameObjects.Text} */
+	percentage;
+	/** @type {Phaser.GameObjects.Text} */
+	current_asset;
+	/** @type {Phaser.GameObjects.Text} */
+	loading_txt;
+	/** @type {Phaser.GameObjects.Image} */
+	play_button;
+	/** @type {Phaser.GameObjects.Text} */
+	play_text;
+	/** @type {Phaser.GameObjects.Image} */
+	thumbnail_image;
+	/** @type {Phaser.GameObjects.Text} */
+	my_high_score;
+	/** @type {Phaser.GameObjects.Text} */
+	bio_text;
+	/** @type {Phaser.GameObjects.Text} */
+	artist_name;
+	/** @type {Phaser.GameObjects.Text} */
+	song_name;
+	/** @type {Phaser.GameObjects.Text} */
+	difficulty_text;
+	/** @type {Phaser.GameObjects.Image[]} */
+	stars;
+
+	/* START-USER-CODE */
 
   // Write your code here
   preload() {

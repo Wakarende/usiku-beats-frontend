@@ -41,6 +41,21 @@ const HubScreen = () => {
   const router = useRouter();
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    const checkAuth = () => {
+      const auth = prompt("Please enter the password:", "");
+      if (auth === "1234") {
+        localStorage.setItem("isAuthenticated", "true");
+      } else {
+        alert("Incorrect password");
+        checkAuth();
+      }
+    };
+    if (!isAuthenticated) {
+      checkAuth();
+    }
+  }, []);
 
   useEffect(() => {
     checkAnon();
@@ -79,7 +94,7 @@ const HubScreen = () => {
       setLoading(true);
 
       try {
-        let response = await axios.get(`${BASE_URL}initial-song-list/?ids=56`);
+        let response = await axios.get(`${BASE_URL}initial-song-list/?ids=136`);
 
         let anonUserObject = {
           profile: {
