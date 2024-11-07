@@ -301,7 +301,7 @@ const HubScreen = () => {
     <div className="cmd-page">
       <Header />
       {/* Container */}
-      <div className="px-4 mx-auto max-w-7xl">
+      <div className="px-1 mx-auto max-w-7xl">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
           <h1 className="your-songs text-center mt-2 mb-2 text-6xl uppercase tracking-wider">
