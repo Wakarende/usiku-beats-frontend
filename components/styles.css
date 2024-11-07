@@ -6,25 +6,15 @@
 
 /* DAILY REWARD POPUP */
 .popup-background {
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 0; */
-  /* right: 0; */
-  /* bottom: 0; */
-  /* height: 90%; */
   max-width: 100%;
   max-height: 100%;
   width: auto;
   height: auto;
-  /* object-fit: cover; */
-  /* z-index: -1; */
 }
 
 /* END DAILY REWARD POPUP  */
 
 .popup-content {
-  /* padding: 20px; */
-  /* background: transparent; */
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -71,10 +61,6 @@
 .header-level {
   top: 25px;
 }
-
-/* .text-info {
-  left: 10px;
-} */
 
 .header-level {
   display: flex;
@@ -209,8 +195,6 @@
 /* ARTIST INFO OVERLAY  */
 .frame {
   position: "relative";
-  height: auto;
-
   background-image: url("/assets/img/hub/Frame.png");
   background-size: 100% 100%;
 }

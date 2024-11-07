@@ -7,7 +7,7 @@ import moment from "moment-timezone";
 import Image from "next/image";
 
 import Header from "../components/header/Header";
-import Popup from "../components/Popup";
+import Popup from "../components/dailyreward/DailyPopup";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { updateUser } from "../redux/main/authActions";
@@ -17,6 +17,7 @@ import Footer from "../components/footer/Footer";
 import LibraryBanner from "../components/footer/LibraryBanner";
 import "./pages.css";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
+import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -302,12 +303,10 @@ const HubScreen = () => {
       {/* Container */}
       <div className="px-4 mx-auto max-w-7xl">
         {/* Your Songs Section */}
-        <div className="kayfo-block-header">
-          <div className="kayfo-block-title">
-            <h1 className="your-songs text-center mt-2 mb-3 text-6xl uppercase">
-              Your Songs
-            </h1>
-          </div>
+        <div className="flex align-center justify-center">
+          <h1 className="your-songs text-center mt-2 mb-2 text-6xl uppercase tracking-wider">
+            Your Songs
+          </h1>
         </div>
         <div>
           <div
@@ -347,7 +346,7 @@ const HubScreen = () => {
         closePopup={closeLevelUpPopup}
         newLevel={newLevel}
       />
-      <Popup
+      <DailyRewardPopup
         isOpen={isDailyPopupOpen}
         closePopup={toggleDailyPopup}
         className="popup-overlay"
@@ -382,7 +381,7 @@ const HubScreen = () => {
             />
           </button>
         </div>
-      </Popup>
+      </DailyRewardPopup>
 
       <div>
         <Footer />

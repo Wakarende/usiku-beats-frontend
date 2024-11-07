@@ -82,17 +82,24 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-center p-2 mt-1 max-w-[200px]">
-      <div className="relative w-[180px] h-[200px] rounded-lg overflow-hidden">
-        <div
+    <div className="frame relative flex flex-col items-center p-2 mt-1 w-[250px] h-[400px] overflow-hidden">
+      <div className="relative w-full h-[260px] rounded-sm overflow-hidden flex-shrink-0">
+        {/* <div
           className="absolute inset-0 bg-center bg-cover bg-no-repeat"
           style={{
             backgroundImage: `url(${song.thumbnail_file})`,
           }}
+        /> */}
+        <Image
+          src={song.thumbnail_file}
+          alt={song.song_name}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-sm"
         />
-        <div className="absolute top-2 w-full flex justify-center">
+        <div className=" absolute top-1 left-1/2 transform -translate-x-1/2 flex">
           {[...Array(5)].map((_, index) => (
-            <div key={index} className="w-4 h-4 relative">
+            <div key={index} className="relative w-6 h-6">
               <Image
                 src={
                   starCount > 0 && index < starCount
@@ -108,38 +115,40 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
           ))}
         </div>
       </div>
-
-      <div className="flex flex-col w-full max-w-[200px]">
-        <div className="flex flex-col items-center font-bold text-lg mt-2">
+      {/* Card Body  */}
+      <div className="flex flex-col w-full max-w-[300px] flex-grow overflow-hidden">
+        <div className="flex flex-col items-center text-xl tracking-wide">
           <p className="text-yellow-300">{song.song_name}</p>
           <p
             onClick={(e) => onArtistClick(e, song.artist)}
-            className="text-white uppercase text-xs"
+            className="text-white uppercase text-sm tracking-wide"
           >
             {song.artist_name}
           </p>
         </div>
         <div className="flex justify-between mb-1">
           <p className="text-yellow-300 uppercase text-xs">Kenya</p>
-          <div className="flex gap-x-1">
+          <div className="flex">
             <Image
               src="/assets/img/hub/Extreme.png"
               alt="difficulty"
-              width={20}
-              height={20}
+              width={25}
+              height={25}
             />
-            <p className="text-yellow-300 uppercase text-xs">Medium</p>
+            <p className="text-yellow-300 uppercase text-xs justify-end align-end flex">
+              Medium
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-center w-full max-w-[180px]">
+      <div className="flex justify-center w-full max-w-[250px]">
         <button variant="default" onClick={onPlayClick} className="mt-1 w-full">
           <Image
             src="/assets/img/hub/Play_now.png"
-            width={180}
+            width={200}
             height={40}
-            alt="play"
+            alt="play-now-btn"
             className="w-full h-auto"
           />
         </button>

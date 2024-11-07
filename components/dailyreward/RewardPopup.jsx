@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-import Popup from "../Popup";
+import DailyRewardPopup from "./DailyPopup";
 import "./style.css";
 
 const RewardPopup = () => {

@@ -79,7 +79,7 @@ const Header = () => {
               height={110}
               className="star-levels"
             />
-            <h3 className="level-text text-white text-4xl font-bold tracking-widest">
+            <h3 className="level-text text-white text-5xl  tracking-widest">
               0{level}
             </h3>
           </div>
