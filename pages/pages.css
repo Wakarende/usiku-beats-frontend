@@ -9,21 +9,17 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 9999;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Optional: semi-transparent background */
-    z-index: 999;
-    /* Ensure it appears above other elements */
 }
 
 .daily-reward-content {
-    background: url('/assets/img/dailyreward/BG.png') no-repeat center center;
-    background-size: contain;
-    /* Adjusted to maintain aspect ratio */
     padding: 40px;
     border-radius: 5px;
     display: flex;
@@ -31,7 +27,6 @@
     align-items: center;
     text-align: center;
 }
-
 
 .daily-welcome {
     color: #ff6a00;

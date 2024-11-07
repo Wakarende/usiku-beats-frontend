@@ -4,9 +4,35 @@
   padding: 0;
 }
 
+/* DAILY REWARD POPUP */
+.popup-background {
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 0; */
+  /* right: 0; */
+  /* bottom: 0; */
+  /* height: 90%; */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  /* object-fit: cover; */
+  /* z-index: -1; */
+}
+
+/* END DAILY REWARD POPUP  */
+
+.popup-content {
+  /* padding: 20px; */
+  /* background: transparent; */
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+}
 
 /* HEADER  */
-
 .navbar {
   position: sticky;
   top: 0;
