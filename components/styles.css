@@ -88,8 +88,8 @@
 
 .unlock-card-wrapper {
   flex: 0 0 auto;
-  margin: 0 10px;
-  width: 120px;
+  margin: 0 1px;
+  width: 130px;
 }
 
 .title-text {
@@ -98,26 +98,30 @@
 
 .unlock-card {
   background-repeat: no-repeat;
-  width: 130px;
-  height: 110px;
+  width: 140px;
+  height: 115px;
 }
 
 .timer-bg {
   background: url("/assets/img/hub/Timer bar.png");
   background-position: center;
   background-size: cover;
-  width: 50px;
+  width: auto;
+  flex-grow: inherit;
   /* height: 36px; */
-  padding: 0;
-
+  padding-right: 4px;
+  padding-left: 4px;
 }
 
 .timer-text {
-  font-size: 8px;
+  font-size: 9px;
 }
 
+
 .gems-required-text {
-  font-size: 10px;
+  font-size: 14px;
+  align-items: center;
+  line-height: 1;
 }
 
 .gem-wrapper {
@@ -128,25 +132,33 @@
   position: absolute;
   left: 0;
   margin-left: 4px;
+  font-size: 0;
+  align-items: center;
+}
+
+.gem-icon {
+  width: 12px;
+  height: 10px;
+  display: inline-block;
 }
 
 .unlock-icon {
   position: absolute;
   right: 0;
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
 .unlock-now-text,
 .add-to-lib,
 .unlocked-text {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 
 .disc-indicator-wrapper {
   position: relative;
   background-image: url("/assets/img/hub/Disc_bg.png");
-  width: 130px;
+  width: 140px;
   height: 140px;
   background-repeat: no-repeat;
   background-size: contain;

@@ -127,14 +127,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
-    <div className="kayfo-masonry-main mt-2">
-      <div className="flex flex-row justify-center item-start overflow-x-auto">
+    <div className="kayfo-masonry-main">
+      <div className="flex flex-wrap justify-start items-start overflow-x-auto">
         {user_data?.profile?.player?.player_song_instances
           ?.filter((item) => !item.unlocked)
           .map((item, index) => (
             <div
               key={index}
-              className="flex flex-col items-center m-2 unlock-card-wrapper "
+              className="flex flex-col items-center mx-[0.5px] unlock-card-wrapper w-1/3"
             >
               {/* Unlock Card */}
               <div
@@ -158,7 +158,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
                 {/* "Unlocks in" Text */}
                 <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center justify-center">
-                  <h3 className="text-white text-lg tracking-wide uppercase">
+                  <h3 className="text-white text-2xl tracking-wide uppercase">
                     unlocks in
                   </h3>
                 </div>
@@ -170,18 +170,18 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     layout="fill"
                     objectFit="cover"
                   />
-                  <div className="flex items-center timer-bg z-10 justify-center rounded ">
+                  <div className="flex items-center timer-bg z-10 justify-center rounded">
                     <Image
                       src="/assets/img/hub/Timer.png"
                       alt="Timer Icon"
                       width={10}
                       height={10}
                     />
-                    <p className="text-white font-bold text-xs">
+                    <p className="text-white font-bold text-xs m-0.5">
                       {isUnlockTimePassed(item.unlock_time) ? (
                         <button onClick={() => addToLibrary(item.song)}>
                           <p className="add-to-lib tracking-wide unlocked-text text-nowrap">
-                            Add to library
+                            Unlocked
                           </p>
                         </button>
                       ) : (
@@ -195,7 +195,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               {!isUnlockTimePassed(item.unlock_time) && (
                 <div className="">
                   <button
-                    className="unlock-button flex items-center justify-center relative"
+                    className="unlock-button flex items-center justify-center"
                     disabled={
                       user_data?.profile?.player?.total_gems <
                       gemsRequiredToUnlockSong
@@ -208,17 +208,20 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       width={160}
                       height={100}
                     />
-                    <div className="absolute flex gem-wrapper">
+                    <div className="absolute gem-wrapper">
                       <div className=" flex gap-0.5 btn-gem">
                         <Image
                           src="/assets/img/hub/Gem.png"
                           alt="Gem Icon"
-                          width={10}
+                          width={12}
                           height={10}
+                          className="flex-shrink-0 gem-icon"
                         />
-                        <h3 className="text-yellow-300 tracking-wide gems-required-text">
-                          {gemsRequiredToUnlockSong}
-                        </h3>
+                        <div className="">
+                          <h3 className="text-yellow-300 tracking-wide gems-required-text">
+                            {gemsRequiredToUnlockSong}
+                          </h3>
+                        </div>
                       </div>
                       <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
                         unlock now
@@ -226,7 +229,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       <Image
                         src="/assets/img/hub/Unlock.png"
                         alt="Unlock Icon"
-                        width={15}
+                        width={12}
                         height={15}
                         className="unlock-icon"
                       />
@@ -238,7 +241,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           ))}
         {/* Disc Indicator Card */}
         <div
-          className="disc-indicator-wrapper my-1"
+          className="disc-indicator-wrapper w-1/3"
           onClick={() => router.push("/library")}
         >
           <h1 className="total-discs-text text-2xl text-white tracking-widest">
