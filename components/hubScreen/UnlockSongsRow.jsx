@@ -192,7 +192,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 </div>
               </div>
               {/* Unlock Now Button Below the Card */}
-              {!isUnlockTimePassed(item.unlock_time) && (
+              {/* {!isUnlockTimePassed(item.unlock_time) && (
                 <div className="">
                   <button
                     className="unlock-button flex items-center justify-center"
@@ -236,6 +236,67 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     </div>
                   </button>
                 </div>
+              )} */}
+              {!isUnlockTimePassed(item.unlock_time) ? (
+                <div className="">
+                  <button
+                    className="unlock-button flex items-center justify-center"
+                    disabled={
+                      user_data?.profile?.player?.total_gems <
+                      gemsRequiredToUnlockSong
+                    }
+                    onClick={() => unlockSongWithGems(item.song)}
+                  >
+                    <Image
+                      src="/assets/img/hub/Button Blank.png"
+                      alt="Unlock Button Background"
+                      width={160}
+                      height={100}
+                    />
+                    <div className="absolute gem-wrapper">
+                      <div className=" flex gap-0.5 btn-gem">
+                        <Image
+                          src="/assets/img/hub/Gem.png"
+                          alt="Gem Icon"
+                          width={12}
+                          height={10}
+                          className="flex-shrink-0 gem-icon"
+                        />
+                        <div className="">
+                          <h3 className="text-yellow-300 tracking-wide gems-required-text">
+                            {gemsRequiredToUnlockSong}
+                          </h3>
+                        </div>
+                      </div>
+                      <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
+                        unlock now
+                      </p>
+                      <Image
+                        src="/assets/img/hub/Unlock.png"
+                        alt="Unlock Icon"
+                        width={12}
+                        height={15}
+                        className="unlock-icon"
+                      />
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <button className="unlock-button flex items-center justify-center">
+                  <Image
+                    src="/assets/img/hub/Button Blank.png"
+                    alt="Unlock Button Background"
+                    width={160}
+                    height={100}
+                  />
+                  <div className="absolute gem-wrapper">
+                    <button onClick={() => addToLibrary(item.song)}>
+                      <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
+                        Add to Library
+                      </p>
+                    </button>
+                  </div>
+                </button>
               )}
             </div>
           ))}
