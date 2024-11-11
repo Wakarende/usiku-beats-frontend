@@ -14,6 +14,7 @@ import { updateUser } from "../redux/main/authActions";
 import { OverlayCard, ArtistImage } from "../components/artistinfo/OverlayCard";
 import LevelUpPopup from "../components/leveluppopup/LevelUpPopup";
 import Footer from "../components/footer/Footer";
+import LibraryFooter from "../components/footer/Footer";
 import LibraryBanner from "../components/footer/LibraryBanner";
 import "./pages.css";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
@@ -384,7 +385,7 @@ const HubScreen = () => {
       </DailyRewardPopup>
 
       <div>
-        <Footer />
+        <LibraryFooter />
       </div>
     </div>
   );
