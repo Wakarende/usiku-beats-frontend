@@ -86,46 +86,44 @@
   overflow: hidden;
 }
 
-.unlock-card-wrapper {
-  flex: 0 0 auto;
-  margin: 0 1px;
-  width: 130px;
-}
-
 .title-text {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .unlock-card {
   background-repeat: no-repeat;
-  width: 140px;
-  height: 115px;
+  width: 137px;
+  height: 124px;
+  aspect-ratio: 140/115;
+  background-size: cover;
+  background-position: center;
+  /* height: 115px; */
+}
+
+.unlocks-in-text {
+  text-shadow: 1.536px 1.573px #000;
 }
 
 .timer-bg {
   background: url("/assets/img/hub/Timer bar.png");
   background-position: center;
   background-size: cover;
-  width: auto;
-  flex-grow: inherit;
-  /* height: 36px; */
-  padding-right: 4px;
-  padding-left: 4px;
+  width: 100%;
 }
 
 .timer-text {
   font-size: 9px;
 }
 
-
 .gems-required-text {
-  font-size: 14px;
+  font-size: 11px;
   align-items: center;
   line-height: 1;
-}
-
-.gem-wrapper {
-  padding: 0;
+  /* font-family: 'Afolkalips', sans-serif; */
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }
 
 .btn-gem {
@@ -158,13 +156,15 @@
 .disc-indicator-wrapper {
   position: relative;
   background-image: url("/assets/img/hub/Disc_bg.png");
-  width: 140px;
-  height: 140px;
+  width: 137px;
+  height: 160px;
+  aspect-ratio: 1/1;
   background-repeat: no-repeat;
   background-size: contain;
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 .disc-indicator-wrapper img,
@@ -175,10 +175,11 @@
 
 .total-discs-text {
   position: absolute;
-  top: 2%;
-  right: 15%;
+  top: 0;
+  right: 12%;
   margin: 0;
   padding: 0;
+  z-index: 2;
 }
 
 .disc-image-wrapper {
@@ -189,17 +190,17 @@
 
 .disc-icon {
   position: absolute;
-  top: 10px;
+  top: 8px;
 }
 
 .disc-text {
   margin-top: 0;
   padding: 0;
   text-align: center;
-  font-size: 8px;
-  width: 100px;
+  font-size: 9px;
+  width: 90px;
   position: absolute;
-  top: 65%;
+  top: 60%;
 }
 
 /* UNLOCK ROW SONGS END  */

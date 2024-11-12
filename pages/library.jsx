@@ -45,7 +45,7 @@ const Library = () => {
     setUnlockedSong(song);
     setIsPopupOpen(true);
 
-    let unlockTime = moment().add(1, "minute").toISOString();
+    let unlockTime = moment().add(30, "minutes").toISOString();
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     let newSongInstance = {

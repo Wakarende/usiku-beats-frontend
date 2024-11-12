@@ -127,57 +127,57 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
-    <div className="kayfo-masonry-main">
-      <div className="flex flex-wrap justify-start items-start overflow-x-auto">
+    <div className="w-full">
+      <div className="grid grid-cols-3 w-full gap-x-1">
         {user_data?.profile?.player?.player_song_instances
           ?.filter((item) => !item.unlocked)
           .map((item, index) => (
             <div
               key={index}
-              className="flex flex-col items-center mx-[0.5px] unlock-card-wrapper w-1/3"
+              className="flex flex-col items-center unlock-card-wrapper"
             >
               {/* Unlock Card */}
               <div
-                className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded"
+                className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg"
                 style={{
                   backgroundImage: `url(${item.song.thumbnail_file})`,
                 }}
               >
                 {/* Top Banner with Song Name */}
-                <div className="absolute top-0 left-0 right-0 h-4">
+                <div className="relative flex justify-center items-center top-0 left-0 right-0 h-4">
                   <Image
                     src="/assets/img/hub/Title bar.png"
                     alt="Title Bar"
                     layout="fill"
                     objectFit="cover"
                   />
-                  <p className="absolute inset-0 text-yellow-300 text-center title-text tracking-wider">
+                  <p className="text-yellow-300 text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
                     {item.song.song_name}
                   </p>
                 </div>
 
                 {/* "Unlocks in" Text */}
-                <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center justify-center">
-                  <h3 className="text-white text-2xl tracking-wide uppercase">
+                <div className="absolute bottom-7 left-0 right-0 flex flex-col items-center justify-center">
+                  <h3 className="text-white text-2xl tracking-wide uppercase unlocks-in-text">
                     unlocks in
                   </h3>
                 </div>
                 {/* Gradient Overlay with Timer */}
-                <div className="gradient-overlay absolute bottom-0 left-0 right-0 h-8 flex items-center justify-center">
+                <div className="absolute bottom-0 left-0 right-0 h-8 flex items-center justify-center">
                   <Image
                     src="/assets/img/hub/Gradient.png"
                     alt="Gradient Overlay"
                     layout="fill"
                     objectFit="cover"
                   />
-                  <div className="flex items-center timer-bg z-10 justify-center rounded">
+                  <div className="flex items-center timer-bg  justify-center rounded z-1 w-full">
                     <Image
                       src="/assets/img/hub/Timer.png"
                       alt="Timer Icon"
                       width={10}
                       height={10}
                     />
-                    <p className="text-white font-bold text-xs m-0.5">
+                    <p className="text-white font-bold text-xs m-1">
                       {isUnlockTimePassed(item.unlock_time) ? (
                         <button onClick={() => addToLibrary(item.song)}>
                           <p className="add-to-lib tracking-wide unlocked-text text-nowrap">
@@ -238,9 +238,9 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 </div>
               )} */}
               {!isUnlockTimePassed(item.unlock_time) ? (
-                <div className="">
+                <div className="relative mt-0.5">
                   <button
-                    className="unlock-button flex items-center justify-center"
+                    className="w-full relative"
                     disabled={
                       user_data?.profile?.player?.total_gems <
                       gemsRequiredToUnlockSong
@@ -249,40 +249,42 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                   >
                     <Image
                       src="/assets/img/hub/Button Blank.png"
-                      alt="Unlock Button Background"
+                      alt="Button"
                       width={160}
-                      height={100}
+                      height={40}
+                      layout="responsive"
                     />
-                    <div className="absolute gem-wrapper">
-                      <div className=" flex gap-0.5 btn-gem">
+                    <div className="absolute inset-0 flex items-center justify-between px-1">
+                      <div className="flex items-center gap-0.5">
                         <Image
                           src="/assets/img/hub/Gem.png"
-                          alt="Gem Icon"
-                          width={12}
-                          height={10}
-                          className="flex-shrink-0 gem-icon"
+                          alt="Gem"
+                          width={16}
+                          height={16}
                         />
-                        <div className="">
-                          <h3 className="text-yellow-300 tracking-wide gems-required-text">
+                        <div className="flex items-center">
+                          <span className="text-yellow-300 gems-required-text">
                             {gemsRequiredToUnlockSong}
-                          </h3>
+                          </span>
                         </div>
+                        {/* <span className="text-yellow-300 gems-required-text">
+                          {gemsRequiredToUnlockSong}
+                        </span> */}
                       </div>
-                      <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
+                      <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text">
                         unlock now
                       </p>
                       <Image
                         src="/assets/img/hub/Unlock.png"
-                        alt="Unlock Icon"
-                        width={12}
-                        height={15}
-                        className="unlock-icon"
+                        alt="Unlock"
+                        width={16}
+                        height={16}
                       />
                     </div>
                   </button>
                 </div>
               ) : (
-                <button className="unlock-button flex items-center justify-center">
+                <button className="unlock-button flex items-center justify-center mt-0.5">
                   <Image
                     src="/assets/img/hub/Button Blank.png"
                     alt="Unlock Button Background"
@@ -305,15 +307,15 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           className="disc-indicator-wrapper w-1/3"
           onClick={() => router.push("/library")}
         >
-          <h1 className="total-discs-text text-2xl text-white tracking-widest">
+          <h1 className="total-discs-text text-3xl text-white tracking-widest">
             {totalDiscs}
           </h1>
           <Image
             src="/assets/img/hub/Disc.png"
             className="disc-icon"
             alt="Disc Icon"
-            width={80}
-            height={80}
+            width={90}
+            height={90}
           />
           <p className="text-yellow-300 disc-text text-center font-bold">
             {totalDiscs >= discsRequiredToUnlockSong

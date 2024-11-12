@@ -27,7 +27,7 @@ import Link from "next/link";
 
 const LibraryFooter = () => {
   return (
-    <footer className="fixed bottom-0 left-0 w-full h-32 md:h-52">
+    <footer className="fixed bottom-0 left-0 w-full h-32 md:h-52 z-2">
       {/* Background pattern */}
       <div className="absolute inset-0 w-full h-full">
         <Image

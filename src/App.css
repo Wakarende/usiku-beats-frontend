@@ -7,10 +7,10 @@
 }
 
 .App {
-  /* background-image: url('/assets/img/BG.png'); */
+  background-image: url('/assets/img/BG.png');
   /* Debugging  */
-  background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
-    url('/assets/img/BG.png');
+  /* background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+    url('/assets/img/BG.png'); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
