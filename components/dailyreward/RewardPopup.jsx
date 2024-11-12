@@ -1,30 +1,84 @@
-"use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import DailyRewardPopup from "./DailyPopup"; // Adjust the path if necessary
+import { updateUser } from "../../redux/main/authActions";
+import "../styles.css";
 
-import DailyRewardPopup from "./DailyPopup";
-import "./style.css";
+const DailyReward = () => {
+  const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const { user_data } = auth;
 
-const RewardPopup = () => {
-  const [isLevelUpPopupOpen, setIsLevelUpPopupOpen] = useState(false);
-  const [newLevel, setNewLevel] = useState();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  useEffect(() => {
+    checkFirstLoginOfDay();
+  }, []);
 
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
+  const checkFirstLoginOfDay = () => {
+    const lastLoginDate = localStorage.getItem("lastLoginDate");
+    const today = new Date().toISOString().split("T")[0];
+
+    if (lastLoginDate !== today) {
+      if (user_data && user_data.profile && user_data.profile.player) {
+        const updatedUser = {
+          ...user_data,
+          profile: {
+            ...user_data.profile,
+            player: {
+              ...user_data.profile.player,
+              total_gems: user_data.profile.player.total_gems + 10,
+            },
+          },
+        };
+        dispatch(updateUser(updatedUser));
+      }
+
+      setIsDailyPopupOpen(true);
+      localStorage.setItem("lastLoginDate", today);
+    }
+  };
+
+  const toggleDailyPopup = () => {
+    setIsDailyPopupOpen(!isDailyPopupOpen);
   };
 
   return (
-    <Popup isOpen={isPopupOpen} closePopup={togglePopup}>
-      <h1 className="uppercase block">Welcome Back</h1>
-      <h2 className=" uppercase">Your daily login gift</h2>
-      <p className="text-2xl">10</p> gems
-      <button
-        onClick={togglePopup}
-        className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
-      >
-        Claim daily gift
-      </button>
-    </Popup>
+    <DailyRewardPopup
+      isOpen={isDailyPopupOpen}
+      closePopup={toggleDailyPopup}
+      className="popup-overlay"
+    >
+      {/* Daily Reward Styling */}
+      <div className="daily-reward-content mt-5">
+        <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
+        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow-300">
+          Your Daily Gift
+        </p>
+        <p className="daily-gift-subtext text-xl mt-1 text-yellow-300">
+          Check in everyday to get more rewards
+        </p>
+        <div className="daily-gem-section">
+          <Image
+            src="/assets/img/dailyreward/Gem.png"
+            alt="Gem Icon"
+            width={100}
+            height={100}
+            className="daily-reward-gem"
+          />
+          <h3 className="gem-value text-yellow-300 text-5xl">+10</h3>
+        </div>
+        <button className="daily-claim-button" onClick={toggleDailyPopup}>
+          <Image
+            src="/assets/img/dailyreward/Collect button.png"
+            alt="Claim Button"
+            width={220}
+            height={100}
+          />
+        </button>
+      </div>
+    </DailyRewardPopup>
   );
 };
+
+export default DailyReward;

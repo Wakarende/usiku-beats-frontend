@@ -370,7 +370,9 @@ const HubScreen = () => {
               height={100}
               className="daily-reward-gem"
             />
-            <h3 className="gem-value text-yellow-300 text-5xl">+10</h3>
+            <h3 className="gem-value text-yellow-300 text-6xl tracking-wider">
+              +10
+            </h3>
           </div>
           <button className="daily-claim-button" onClick={toggleDailyPopup}>
             <Image
