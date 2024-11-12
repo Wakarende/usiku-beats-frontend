@@ -82,14 +82,14 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-center p-2 w-[250px] h-[400px] overflow-hidden mx-0.5">
-      <div className="relative w-full h-[260px] rounded-sm overflow-hidden flex-shrink-0">
+    <div className="frame relative flex flex-col items-stretch p-2 w-[280px] overflow-hidden mx-0.5">
+      <div className="relative w-full h-[310px] overflow-hidden">
         <Image
           src={song.thumbnail_file}
           alt={song.song_name}
           layout="fill"
           objectFit="cover"
-          className="rounded-sm"
+          className="rounded-t-lg"
         />
         <div className=" absolute top-1 left-1/2 transform -translate-x-1/2 flex">
           {[...Array(5)].map((_, index) => (
@@ -120,23 +120,25 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
             {song.artist_name}
           </p>
         </div>
-        <div className="flex justify-between mb-1">
+        <div className="flex justify-between mb-1 items-end">
           <p className="text-yellow-300 uppercase text-xs">Kenya</p>
-          <div className="flex">
+          <div className="flex gap-x-0.5">
             <Image
               src="/assets/img/hub/Extreme.png"
               alt="difficulty"
-              width={25}
-              height={25}
+              width={35}
+              height={35}
             />
-            <p className="text-yellow-300 uppercase text-xs justify-end align-end flex">
-              Medium
-            </p>
+            <div className="flex flex-col justify-end">
+              <p className="text-yellow-300 uppercase text-xs  difficulty-text p-0">
+                Medium
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-center w-full max-w-[250px]">
+      <div className="flex justify-center w-full">
         <button variant="default" onClick={onPlayClick} className="mt-1 w-full">
           <Image
             src="/assets/img/hub/Play_now.png"

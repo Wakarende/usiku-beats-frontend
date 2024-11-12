@@ -97,7 +97,6 @@
   aspect-ratio: 140/115;
   background-size: cover;
   background-position: center;
-  /* height: 115px; */
 }
 
 .unlocks-in-text {
@@ -151,7 +150,6 @@
 .unlocked-text {
   font-size: 10px;
 }
-
 
 .disc-indicator-wrapper {
   position: relative;
@@ -249,8 +247,6 @@
   position: relative;
 }
 
-
-
 .artist {
   font-size: 60px;
   font-weight: bold;
@@ -304,10 +300,6 @@
   border-radius: 4px;
   cursor: pointer;
 }
-
-/* .overlay-close-btn:hover {
-  background: #ff1493;
-} */
 
 .artist-name {
   position: absolute;
@@ -489,7 +481,6 @@
 
 /* LEVEL UP POPUP END  */
 
-/*FOOTER  */
-
-
-/*  FOOTER END  */
+.difficulty-text {
+  /* font-size: 10px; */
+}
