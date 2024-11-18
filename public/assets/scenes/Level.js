@@ -521,7 +521,7 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    this.initializeVisualizer();
+    // this.initializeVisualizer();
   }
 
   addProgressBar() {
@@ -539,151 +539,151 @@ class Level extends Phaser.Scene {
     this.progressBarBg.setDepth(40);
   }
 
-  initializeVisualizer() {
-    const gameWidth = this.sys.game.config.width;
-    // const gameHeight = this.sys.game.config.height;
+  // initializeVisualizer() {
+  //   const gameWidth = this.sys.game.config.width;
+  //   // const gameHeight = this.sys.game.config.height;
 
-    // Determine positions
-    const scoreY = this.score_text.y;
-    const multiplierY = this.multiplier_text.y;
-    const visualizerYPosition = (scoreY + multiplierY) / 2 - 20;
+  //   // Determine positions
+  //   const scoreY = this.score_text.y;
+  //   const multiplierY = this.multiplier_text.y;
+  //   const visualizerYPosition = (scoreY + multiplierY) / 2 - 20;
 
-    // Calculate visualizer size based on text dimensions
-    const textWidth = Math.max(
-      this.score_text.width,
-      this.multiplier_text.width
-    );
-    const textHeight =
-      this.multiplier_text.y +
-      this.multiplier_text.height / 2 -
-      (this.score_text.y - this.score_text.height / 2);
-    const padding = 20;
-    // const visualizerSize = Math.max(textWidth, textHeight) + padding * 2;
+  //   // Calculate visualizer size based on text dimensions
+  //   const textWidth = Math.max(
+  //     this.score_text.width,
+  //     this.multiplier_text.width
+  //   );
+  //   const textHeight =
+  //     this.multiplier_text.y +
+  //     this.multiplier_text.height / 2 -
+  //     (this.score_text.y - this.score_text.height / 2);
+  //   const padding = 20;
+  //   // const visualizerSize = Math.max(textWidth, textHeight) + padding * 2;
 
-    // Fixed visualizer
-    const visualizerSize = 250; // Adjust size as needed
+  //   // Fixed visualizer
+  //   const visualizerSize = 250; // Adjust size as needed
 
-    // Calculate radius for the inner circle
-    // const innerRadius = (textWidth / 2) / (visualizerSize / 2);
-    // const radius = Phaser.Math.Clamp(innerRadius, 0, 1);
-    const radius = 0.5;
+  //   // Calculate radius for the inner circle
+  //   // const innerRadius = (textWidth / 2) / (visualizerSize / 2);
+  //   // const radius = Phaser.Math.Clamp(innerRadius, 0, 1);
+  //   const radius = 0.5;
 
-    const maxPixelRatio = 2;
+  //   const maxPixelRatio = 2;
 
-    // Get the device pixel ratio
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+  //   // Get the device pixel ratio
+  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
 
-    // Ensure audio context is running
-    if (this.sound.context.state === "suspended") {
-      this.sound.context.resume();
-    }
+  //   // Ensure audio context is running
+  //   if (this.sound.context.state === "suspended") {
+  //     this.sound.context.resume();
+  //   }
 
-    // Create an offscreen canvas with adjusted dimensions
-    const canvasWidth = visualizerSize * pixelRatio;
-    const canvasHeight = visualizerSize * pixelRatio;
+  //   // Create an offscreen canvas with adjusted dimensions
+  //   const canvasWidth = visualizerSize * pixelRatio;
+  //   const canvasHeight = visualizerSize * pixelRatio;
 
-    // Create an offscreen canvas with square dimensions
-    const offscreenCanvas = document.createElement("canvas");
-    offscreenCanvas.width = canvasWidth;
-    offscreenCanvas.height = canvasHeight;
+  //   // Create an offscreen canvas with square dimensions
+  //   const offscreenCanvas = document.createElement("canvas");
+  //   offscreenCanvas.width = canvasWidth;
+  //   offscreenCanvas.height = canvasHeight;
 
-    // Create the AudioMotion Analyzer instance with the offscreen canvas
-    this.audioMotion = new AudioMotionAnalyzer(null, {
-      canvas: offscreenCanvas,
-      audioCtx: this.sound.context,
-      useCanvas: true,
-      mode: 1, // Polar (circular) mode
-      radial: true,
-      radialInvert: true,
-      radialSpeed: true, //distribute frequencies evenly in radial mode
-      lineMode: 2, //Extra smooth curves for fluid lines
-      radius: radius, // Increase or Decrease size of visualizer
-      responsive: false, // Disable responsive resizing
-      width: visualizerSize, // Match canvas width
-      height: visualizerSize, // Match canvas height
-      pixelRatio: pixelRatio, // Set pixel ratio to 1
-      showScaleY: false,
-      showScaleX: false,
-      showPeaks: false,
-      showFPS: false,
-      minDecibels: -100,
-      maxDecibels: -40,
-      gradient: "prism",
-      linearAmplitude: false,
-      linearBoost: 1.4, // Increase to make bars taller
-      bgAlpha: 0, // Fully transparent background
-      barSpace: 0.01,
-      fillAlpha: 0,
-      lineWidth: 1.5,
-      reflexRatio: 0,
-      reflexAlpha: 0,
-      lumiBars: false,
-      maxFreq: 16000,
-      minFreq: 10,
-      smoothing: 0.5,
-      overlay: true,
-      showBgColor: false,
-      channelLayout: "dual-vertical",
-      frequencyScale: "bark",
-      outlineBars: true,
-      fftSize: 256, //reduce fft quality
-    });
+  //   // Create the AudioMotion Analyzer instance with the offscreen canvas
+  //   this.audioMotion = new AudioMotionAnalyzer(null, {
+  //     canvas: offscreenCanvas,
+  //     audioCtx: this.sound.context,
+  //     useCanvas: true,
+  //     mode: 1, // Polar (circular) mode
+  //     radial: true,
+  //     radialInvert: true,
+  //     radialSpeed: true, //distribute frequencies evenly in radial mode
+  //     lineMode: 2, //Extra smooth curves for fluid lines
+  //     radius: radius, // Increase or Decrease size of visualizer
+  //     responsive: false, // Disable responsive resizing
+  //     width: visualizerSize, // Match canvas width
+  //     height: visualizerSize, // Match canvas height
+  //     pixelRatio: pixelRatio, // Set pixel ratio to 1
+  //     showScaleY: false,
+  //     showScaleX: false,
+  //     showPeaks: false,
+  //     showFPS: false,
+  //     minDecibels: -100,
+  //     maxDecibels: -40,
+  //     gradient: "prism",
+  //     linearAmplitude: false,
+  //     linearBoost: 1.4, // Increase to make bars taller
+  //     bgAlpha: 0, // Fully transparent background
+  //     barSpace: 0.01,
+  //     fillAlpha: 0,
+  //     lineWidth: 1.5,
+  //     reflexRatio: 0,
+  //     reflexAlpha: 0,
+  //     lumiBars: false,
+  //     maxFreq: 16000,
+  //     minFreq: 10,
+  //     smoothing: 0.5,
+  //     overlay: true,
+  //     showBgColor: false,
+  //     channelLayout: "dual-vertical",
+  //     frequencyScale: "bark",
+  //     outlineBars: true,
+  //     fftSize: 256, //reduce fft quality
+  //   });
 
-    // Store references for later use
-    this.visualizerCanvas = offscreenCanvas;
-    // this.visualizerSize = visualizerSize;
-    this.visualizerSize = 250; // Set to a size that should be clearly visible
+  //   // Store references for later use
+  //   this.visualizerCanvas = offscreenCanvas;
+  //   // this.visualizerSize = visualizerSize;
+  //   this.visualizerSize = 250; // Set to a size that should be clearly visible
 
-    // Create a Phaser CanvasTexture with the same dimensions
-    this.visualizerTexture = this.textures.createCanvas(
-      "visualizerTexture",
-      visualizerSize,
-      visualizerSize
-    );
+  //   // Create a Phaser CanvasTexture with the same dimensions
+  //   this.visualizerTexture = this.textures.createCanvas(
+  //     "visualizerTexture",
+  //     visualizerSize,
+  //     visualizerSize
+  //   );
 
-    // Position the visualizer at the calculated Y position
-    this.visualizerImage = this.add.image(
-      gameWidth / 2,
-      visualizerYPosition,
-      "visualizerTexture"
-    );
-    this.visualizerImage.setDisplaySize(visualizerSize, visualizerSize);
-    this.visualizerImage.setOrigin(0.5, 0.5);
-    this.visualizerImage.setDepth(4); // Set depth lower than text
-    this.visualizerImage.setAlpha(1);
+  //   // Position the visualizer at the calculated Y position
+  //   this.visualizerImage = this.add.image(
+  //     gameWidth / 2,
+  //     visualizerYPosition,
+  //     "visualizerTexture"
+  //   );
+  //   this.visualizerImage.setDisplaySize(visualizerSize, visualizerSize);
+  //   this.visualizerImage.setOrigin(0.5, 0.5);
+  //   this.visualizerImage.setDepth(4); // Set depth lower than text
+  //   this.visualizerImage.setAlpha(1);
 
-    let lastVisualizerUpdate = 0;
-    const visualizerUpdateInterval = 50;
+  //   let lastVisualizerUpdate = 0;
+  //   const visualizerUpdateInterval = 50;
 
-    // Update the onCanvasDraw function
-    this.audioMotion.onCanvasDraw = () => {
-      const now = performance.now();
-      if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
-        lastVisualizerUpdate = now;
-        let visualizerTexture = this.visualizerTexture;
-        visualizerTexture.context.clearRect(
-          0,
-          0,
-          visualizerTexture.width,
-          visualizerTexture.height
-        );
-        visualizerTexture.context.globalCompositeOperation = "copy";
-        visualizerTexture.context.drawImage(
-          this.visualizerCanvas,
-          0,
-          0,
-          this.visualizerCanvas.width,
-          this.visualizerCanvas.height,
-          0,
-          0,
-          visualizerTexture.width,
-          visualizerTexture.height
-        );
-        visualizerTexture.context.globalCompositeOperation = "source-over";
-        visualizerTexture.refresh();
-      }
-    };
-  }
+  //   // Update the onCanvasDraw function
+  //   this.audioMotion.onCanvasDraw = () => {
+  //     const now = performance.now();
+  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
+  //       lastVisualizerUpdate = now;
+  //       let visualizerTexture = this.visualizerTexture;
+  //       visualizerTexture.context.clearRect(
+  //         0,
+  //         0,
+  //         visualizerTexture.width,
+  //         visualizerTexture.height
+  //       );
+  //       visualizerTexture.context.globalCompositeOperation = "copy";
+  //       visualizerTexture.context.drawImage(
+  //         this.visualizerCanvas,
+  //         0,
+  //         0,
+  //         this.visualizerCanvas.width,
+  //         this.visualizerCanvas.height,
+  //         0,
+  //         0,
+  //         visualizerTexture.width,
+  //         visualizerTexture.height
+  //       );
+  //       visualizerTexture.context.globalCompositeOperation = "source-over";
+  //       visualizerTexture.refresh();
+  //     }
+  //   };
+  // }
 
   update(time, delta) {
     if (!this.tileGroup) {
