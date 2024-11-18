@@ -51,7 +51,7 @@ const Header = () => {
               width={100}
               height={100}
             />
-            <p className="absolute text-yellow-300 text-lg star-gem-text ml-2">
+            <p className="absolute text-yellow-300 text-lg star-gem-text">
               {stars}
             </p>
           </div>
@@ -64,7 +64,7 @@ const Header = () => {
               height={100}
               className="header-gem"
             />
-            <p className="absolute text-yellow-300 text-lg star-gem-text ml-2">
+            <p className="absolute text-yellow-300 text-lg star-gem-text">
               {gems}
             </p>
           </div>
