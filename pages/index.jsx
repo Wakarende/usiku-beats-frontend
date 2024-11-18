@@ -315,7 +315,11 @@ const HubScreen = () => {
             style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
-              <div className="flex flex-row">
+              <div
+                className={`flex flex-row ${
+                  songs.length === 1 ? "mx-auto" : ""
+                }`}
+              >
                 {songs?.map((item, index) => (
                   <ArtistImage
                     key={index}

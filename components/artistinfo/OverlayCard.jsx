@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+// import { Card, CardContent } from "@/components/ui/card";
+import { Star } from "lucide-react";
 
 import { Button } from "react-bootstrap";
 
@@ -82,31 +84,33 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-stretch p-2 w-[280px] overflow-hidden mx-0.5">
-      <div className="relative w-full h-[310px] overflow-hidden">
+    <div className="frame relative flex flex-col items-stretch py-2 w-[275px] overflow-hidden mx-0.5">
+      <div className="relative w-full h-[305px] overflow-hidden">
         <Image
           src={song.thumbnail_file}
           alt={song.song_name}
           layout="fill"
           objectFit="cover"
-          className="rounded-t-lg"
+          className="rounded-t-sm"
         />
-        <div className=" absolute top-1 left-1/2 transform -translate-x-1/2 flex">
-          {[...Array(5)].map((_, index) => (
-            <div key={index} className="relative w-6 h-6">
-              <Image
-                src={
-                  starCount > 0 && index < starCount
-                    ? "/assets/img/hub/Star Active.png"
-                    : "/assets/img/hub/Star_Inactive.png"
-                }
-                alt="star"
-                width={16}
-                height={16}
-                className="stars"
-              />
-            </div>
-          ))}
+        <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent">
+          <div className=" absolute top-1 left-1/2 transform -translate-x-1/2 flex">
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className="relative w-6 h-6">
+                <Image
+                  src={
+                    starCount > 0 && index < starCount
+                      ? "/assets/img/hub/Star Active.png"
+                      : "/assets/img/hub/Star_Inactive.png"
+                  }
+                  alt="star"
+                  width={16}
+                  height={16}
+                  className="stars"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       {/* Card Body  */}

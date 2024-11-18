@@ -42,31 +42,36 @@ const Header = () => {
     <Navbar expand="lg" className="navbar">
       <Container fluid className="flex items-center justify-between">
         {/* Stars and Gems Section */}
-        <div className="header-left flex flex-col items-center gap-x-4 gap-y-1">
+        <div className="header-left flex flex-col items-center gap-x-">
           {/* Number of stars */}
-          <div className=" relative flex items-center">
+          <div className="relative flex items-center mb-1">
             <Image
               src="/assets/img/header/No_of_stars.png"
               alt="Number of stars"
-              width={100}
+              width={120}
               height={100}
+              className="value-bg"
             />
-            <p className="absolute text-yellow-300 text-lg star-gem-text">
-              {stars}
-            </p>
+            <div className="absolute inset-0 flex items-center justify-center pl-8">
+              <p className="text-yellow-300 text-lg whitespace-nowrap">
+                {stars}
+              </p>
+            </div>
           </div>
           {/* Number of gems */}
           <div className="relative flex items-center">
             <Image
               src="/assets/img/header/No_of_gems.png"
               alt="Number of gems"
-              width={100}
+              width={120}
               height={100}
               className="header-gem"
             />
-            <p className="absolute text-yellow-300 text-lg star-gem-text">
-              {gems}
-            </p>
+            <div className="absolute inset-0 flex items-center justify-center pl-8">
+              <p className="text-yellow-300 text-lg whitespace-nowrap">
+                {gems}
+              </p>
+            </div>
           </div>
         </div>
         {/* Level Info Section */}
@@ -79,12 +84,12 @@ const Header = () => {
               height={110}
               className="star-levels"
             />
-            <h3 className="level-text text-white text-5xl">0{level}</h3>
+            <h3 className="level-text text-white text-4xl">{level}</h3>
           </div>
         </Link>
         {/* Header Icons Section */}
-        <div className="header-right flex items-center gap-x-2">
-          <Link href={"#"}>
+        <div className="header-right flex items-center gap-x-2 h-full">
+          <Link href={"#"} className="flex items-center">
             <Image
               src="/assets/img/header/Leaderboard_icon.png"
               alt="Leaderboard"
@@ -92,7 +97,7 @@ const Header = () => {
               height={50}
             />
           </Link>
-          <Link href={"/login"}>
+          <Link href={"/login"} className="flex items-center">
             <Image
               src="/assets/img/header/Settings.png"
               alt="Settings"

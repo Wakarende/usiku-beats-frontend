@@ -45,6 +45,12 @@
   margin-top: -15px;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .header-left .relative {
   position: relative;
   display: inline-flex;
@@ -52,7 +58,7 @@
 
 .star-gem-text {
   position: absolute;
-  left: 40%;
+  left: 30%;
   top: 50%;
   transform: translate(-50%, -50%);
   font-size: 16px;
@@ -75,6 +81,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.value-bg {}
 
 /* END HEADER  */
 
@@ -203,10 +211,21 @@
 
 /* UNLOCK ROW SONGS END  */
 /* ARTIST INFO OVERLAY  */
-.frame {
+/* .frame {
   position: "relative";
   background-image: url("/assets/img/hub/Frame.png");
   background-size: 100% 100%;
+} */
+
+/* Experiment  */
+.frame {
+  position: relative;
+  background-image: url("/assets/img/hub/Frame.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .thumbnail {
