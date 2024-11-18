@@ -127,6 +127,7 @@ const HubScreen = () => {
       setSongs(
         user_data?.profile?.player?.player_song_instances
           ?.filter((item) => item.unlocked)
+          .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
           .map(({ song, ...rest }) => ({ ...song, ...rest }))
       );
     }
@@ -384,7 +385,6 @@ const HubScreen = () => {
           </button>
         </div>
       </DailyRewardPopup>
-
       <div>
         <LibraryFooter />
       </div>
