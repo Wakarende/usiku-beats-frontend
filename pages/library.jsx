@@ -25,16 +25,18 @@ const Library = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=56`).then((res) => {
-      const songsWithUnlockStatus = res.data.map((song) => ({
-        ...song,
-        isUnlocked: user_data?.profile?.player?.player_song_instances.some(
-          (instance) => instance.song.id === song.id && instance.unlocked
-        ),
-      }));
-      setSongs(songsWithUnlockStatus);
-      setLoading(false);
-    });
+    axios
+      .get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=56&ids=143&ids=144&ids=119`)
+      .then((res) => {
+        const songsWithUnlockStatus = res.data.map((song) => ({
+          ...song,
+          isUnlocked: user_data?.profile?.player?.player_song_instances.some(
+            (instance) => instance.song.id === song.id && instance.unlocked
+          ),
+        }));
+        setSongs(songsWithUnlockStatus);
+        setLoading(false);
+      });
   }, [user_data]);
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
