@@ -1,9 +1,6 @@
 import React from "react";
 import Image from "next/image";
 // import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
-
-import { Button } from "react-bootstrap";
 
 import "../styles.css";
 
@@ -17,13 +14,7 @@ const getStarsFromScore = (score) => {
   return 0; // For unexpected cases
 };
 
-const OverlayCard = ({
-  isOpen,
-  onClose,
-  artistName,
-  bio,
-  socialMedia = {},
-}) => {
+const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => {
   if (!isOpen) return null;
 
   const socialIcons = {
@@ -127,16 +118,9 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
         <div className="flex justify-between mb-1 items-end">
           <p className="text-yellow-300 uppercase text-xs">Kenya</p>
           <div className="flex gap-x-0.5">
-            <Image
-              src="/assets/img/hub/Extreme.png"
-              alt="difficulty"
-              width={35}
-              height={35}
-            />
+            <Image src="/assets/img/hub/Extreme.png" alt="difficulty" width={35} height={35} />
             <div className="flex flex-col justify-end">
-              <p className="text-yellow-300 uppercase text-xs  difficulty-text p-0">
-                Medium
-              </p>
+              <p className="text-yellow-300 uppercase text-xs  difficulty-text p-0">Medium</p>
             </div>
           </div>
         </div>
