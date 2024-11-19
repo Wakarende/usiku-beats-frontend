@@ -100,7 +100,7 @@
 
 .unlock-card {
   background-repeat: no-repeat;
-  width: 137px;
+  max-width: 137px;
   height: 124px;
   aspect-ratio: 140/115;
   background-size: cover;
@@ -185,7 +185,7 @@
   right: 12%;
   margin: 0;
   padding: 0;
-  z-index: 2;
+  /* z-index: 0; */
 }
 
 .disc-image-wrapper {
@@ -436,7 +436,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 0 1rem;
-  z-index: 10;
+  /* z-index: 10; */
 }
 
 .banner-container {

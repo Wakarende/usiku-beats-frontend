@@ -80,14 +80,14 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-stretch py-2 w-[275px] overflow-hidden mx-0.5">
-      <div className="relative w-full h-[305px] overflow-hidden">
+    <div className="frame relative flex flex-col items-stretch py-2 w-[200px] overflow-hidden mx-0.5 min-h-[250px]">
+      <div className="relative w-full h-[235px] overflow-hidden flex-shrink-0">
         <Image
           src={song.thumbnail_file}
           alt={song.song_name}
           layout="fill"
-          objectFit="cover"
-          className="rounded-t-sm"
+          objectFit="center top"
+          className="rounded-t-sm transform scale-[1.3] translate-y-[15px]"
         />
         <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent">
           <div className=" absolute top-1 left-1/2 transform -translate-x-1/2 flex">
@@ -111,11 +111,11 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
       </div>
       {/* Card Body  */}
       <div className="flex flex-col w-full max-w-[300px] flex-grow overflow-hidden">
-        <div className="flex flex-col items-center text-xl tracking-wide">
+        <div className="flex flex-col items-center tracking-wide">
           <p className="text-yellow-300">{song.song_name}</p>
           <p
             onClick={(e) => onArtistClick(e, song.artist)}
-            className="text-white uppercase text-sm tracking-wide"
+            className="text-white uppercase text-xs tracking-wide"
           >
             {song.artist_name}
           </p>
@@ -152,4 +152,5 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
     </div>
   );
 };
+
 export { OverlayCard, ArtistImage };

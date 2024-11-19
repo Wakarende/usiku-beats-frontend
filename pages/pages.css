@@ -2,6 +2,8 @@
 .cdm-page {
     min-height: 100vh;
     overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .your-songs {
