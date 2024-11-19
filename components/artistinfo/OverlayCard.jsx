@@ -1,9 +1,5 @@
 import React from "react";
 import Image from "next/image";
-// import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
-
-import { Button } from "react-bootstrap";
 
 import "../styles.css";
 
