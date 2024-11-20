@@ -80,98 +80,85 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="relative w-64 h-[365px]">
-      {/* Frame image */}
-      <Image
-        src="/assets/img/hub/Frame.png"
-        alt="Card Frame"
-        fill
-        className="object-contain"
-      />
-      <div className="absolute inset-0 flex flex-col">
-        {/* Image container */}
-        <div className="relative w-[225px] h-[255px] mt-[7px]">
-          <Image
-            src={song.thumbnail_file}
-            alt="Thumbnail"
-            fill
-            className="object-cover rounded-t-lg"
-            priority
-          />
-          {/* Stars overlay */}
-          <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent">
-            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 flex">
-              {[...Array(5)].map((_, index) => (
-                <div key={index} className="relative w-6 h-6">
-                  <Image
-                    src={
-                      starCount > 0 && index < starCount
-                        ? "/assets/img/hub/Star Active.png"
-                        : "/assets/img/hub/Star_Inactive.png"
-                    }
-                    alt="star"
-                    width={16}
-                    height={16}
-                    className="stars"
-                  />
-                </div>
-              ))}
-            </div>
+    <div className="frame relative flex flex-col items-stretch w-[260px] h-[370px] overflow-hidden mx-1">
+      <div className="relative w-full h-[250px] overflow-hidden">
+        <Image
+          src={song.thumbnail_file}
+          alt={song.song_name}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-t-md"
+        />
+        {/* Star rating at the top */}
+        <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent">
+          <div className="absolute top-1 left-1/2 transform -translate-x-1/2 flex">
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className="relative w-6 h-6">
+                <Image
+                  src={
+                    starCount > 0 && index < starCount
+                      ? "/assets/img/hub/Star Active.png"
+                      : "/assets/img/hub/Star_Inactive.png"
+                  }
+                  alt="star"
+                  width={16}
+                  height={16}
+                  className="stars"
+                />
+              </div>
+            ))}
           </div>
-          {/* Country and difficulty info to bottom of image */}
-          <div className="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/60 to-transparent">
-            <div className="flex justify-between items-end w-full absolute left-0">
-              <p className=" uppercase text-yellow-300 absolute bottom-[-3px] left-[-25px] country-text tracking-tighter">
-                Kenya
-              </p>
+        </div>
 
-              <div className="flex gap-x-0.5 items-end absolute bottom-0 right-3">
-                <div className="relative">
-                  <Image
-                    src="/assets/img/hub/Extreme.png"
-                    alt="difficulty"
-                    width={35}
-                    height={35}
-                    className=""
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-yellow-300 uppercase text-xs difficulty-text p-0 absolute bottom-[-3px] tracking-tighter">
-                    Medium
-                  </p>
-                </div>
+        {/* Bottom gradient and content */}
+        <div className="absolute bottom-0 left-0 p-2 w-full h-16 bg-gradient-to-t from-black/90 to-transparent">
+          <div className="flex justify-between items-end w-full absolute left-0 bottom-1">
+            <p className="uppercase text-yellow-300 tracking-tighter country-text absolute bottom-0 left-[-20px] ">
+              Kenya
+            </p>
+
+            <div className="flex gap-x-0.5 items-end absolute bottom-1 right-[20px]">
+              <div className="relative">
+                <Image
+                  src="/assets/img/hub/Extreme.png"
+                  alt="difficulty"
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-yellow-300 uppercase tracking-tighter difficulty-text absolute bottom-[-3px] right-[-40px]">
+                  Medium
+                </p>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Card body content */}
-        <div className="flex flex-col w-[240px] overflow-hidden">
-          <div className="flex flex-col items-center tracking-wide">
-            <p className="text-yellow-300">{song.song_name}</p>
-            <p
-              onClick={(e) => onArtistClick(e, song.artist)}
-              className="text-white uppercase text-xs tracking-wide cursor-pointer"
-            >
-              {song.artist_name}
-            </p>
-          </div>
-        </div>
-        <div className="mb-2.5">
-          <button
-            variant="default"
-            onClick={onPlayClick}
-            className="w-full flex justify-center items-center"
+      {/* Card Body */}
+      <div className="flex flex-col w-full max-w-[300px] flex-grow overflow-hidden">
+        <div className="flex flex-col items-center text-xl tracking-wide">
+          <p className="text-yellow-300">{song.song_name}</p>
+          <p
+            onClick={(e) => onArtistClick(e, song.artist)}
+            className="text-white uppercase text-sm tracking-wide cursor-pointer"
           >
-            <Image
-              src="/assets/img/hub/Play_now.png"
-              alt="play-now-btn"
-              width={250}
-              height={50}
-              className="max-w-[230px]"
-            />
-          </button>
+            {song.artist_name}
+          </p>
         </div>
+      </div>
+
+      <div className="flex justify-center w-full">
+        <button variant="default" onClick={onPlayClick} className="mt-1 w-full">
+          <Image
+            src="/assets/img/hub/Play_now.png"
+            width={200}
+            height={40}
+            alt="play-now-btn"
+            className="w-full h-auto"
+          />
+        </button>
       </div>
     </div>
   );
