@@ -105,7 +105,7 @@ const LevelInfoPage = () => {
               })}
             </div>
             <Link href="/" passHref>
-              <div className="relative z-10">
+              <div className="relative">
                 <Image
                   src="/assets/img/levelinfo/Back_Button.png"
                   alt="Back"

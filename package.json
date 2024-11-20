@@ -30,6 +30,7 @@
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
     "cors": "^2.8.5",
+    "framer-motion": "^11.11.17",
     "gh-pages": "^6.0.0",
     "immer": "^10.0.3",
     "isotope-layout": "^3.0.6",
