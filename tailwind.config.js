@@ -4,8 +4,6 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-
-}
-
+  plugins: [require("@designbycode/tailwindcss-text-stroke")],
+  purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+};

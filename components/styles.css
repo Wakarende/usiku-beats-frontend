@@ -500,6 +500,7 @@
 
 /* LEVEL UP POPUP END  */
 
-.difficulty-text {
+.difficulty-text,
+.country-text {
   font-size: 10px;
 }

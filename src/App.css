@@ -22,6 +22,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @font-face {
   font-family: "Afolkalips";
   src: url("/assets/fonts/Afolkalips.otf") format("truetype");
