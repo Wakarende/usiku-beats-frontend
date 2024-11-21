@@ -75,7 +75,7 @@ const PhaserGame: React.FC = () => {
             parent: phaserGameRef.current,
             width: 360,
             height: 640,
-            backgroundColor: "#242424",
+            backgroundColor: "#000000",
             scale: {
               mode: Phaser.Scale.FIT,
               autoCenter: Phaser.Scale.CENTER_BOTH,

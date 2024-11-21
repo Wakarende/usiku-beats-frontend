@@ -20,12 +20,18 @@
             "x": 180,
             "y": 320,
             "scaleX": 0.3333,
-            "scaleY": 0.3333
+            "scaleY": 0.3333,
+            "alpha": 0.45,
+            "alphaTopLeft": 0.45,
+            "alphaTopRight": 0.45,
+            "alphaBottomLeft": 0.45,
+            "alphaBottomRight": 0.45
         },
         {
             "type": "Image",
             "id": "84fe11f7-9e8c-496c-93a4-5916f1f81b0a",
             "label": "vignette",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "Vignette"
@@ -39,6 +45,7 @@
             "type": "Image",
             "id": "17fbd801-ff9b-4bec-a7df-d771dea10286",
             "label": "pattern",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "Pattern"
@@ -197,7 +204,8 @@
                         "key": "streak_overlay"
                     },
                     "x": 180,
-                    "y": 352
+                    "y": 352,
+                    "visible": false
                 },
                 {
                     "type": "Text",
@@ -211,10 +219,8 @@
                     "originY": 0.5,
                     "text": "10 STREAK",
                     "align": "center",
-                    "fontFamily": "DINPro",
-                    "fontSize": "15px",
-                    "color": "#666363ff",
-                    "stroke": "#666363ff"
+                    "fontFamily": "Carlito-Regular",
+                    "fontSize": "15px"
                 }
             ]
         },
@@ -226,8 +232,13 @@
             "texture": {
                 "key": "Perfect_1"
             },
-            "x": 62,
-            "y": 525
+            "x": 60,
+            "y": 525,
+            "alpha": 0.5,
+            "alphaTopLeft": 0.5,
+            "alphaTopRight": 0.5,
+            "alphaBottomLeft": 0.5,
+            "alphaBottomRight": 0.5
         },
         {
             "type": "Image",
@@ -238,7 +249,12 @@
                 "key": "Perfect_2"
             },
             "x": 181,
-            "y": 525
+            "y": 525,
+            "alpha": 0.5,
+            "alphaTopLeft": 0.5,
+            "alphaTopRight": 0.5,
+            "alphaBottomLeft": 0.5,
+            "alphaBottomRight": 0.5
         },
         {
             "type": "Image",
@@ -249,7 +265,12 @@
                 "key": "Perfect_3"
             },
             "x": 300,
-            "y": 525
+            "y": 525,
+            "alpha": 0.5,
+            "alphaTopLeft": 0.5,
+            "alphaTopRight": 0.5,
+            "alphaBottomLeft": 0.5,
+            "alphaBottomRight": 0.5
         },
         {
             "type": "Image",
@@ -259,7 +280,7 @@
             "texture": {
                 "key": "Colour highlight"
             },
-            "x": 66,
+            "x": 61,
             "y": 525,
             "scaleX": 0.1,
             "scaleY": 0.09

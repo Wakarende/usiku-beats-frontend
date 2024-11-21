@@ -302,6 +302,11 @@
                 "key": "Tile 4"
             },
             {
+                "url": "assets/sprites/playscene/tile_active.png",
+                "type": "image",
+                "key": "tile_active"
+            },
+            {
                 "url": "assets/sprites/beatmissedscene/Timer_icon.png",
                 "type": "image",
                 "key": "Timer_icon"

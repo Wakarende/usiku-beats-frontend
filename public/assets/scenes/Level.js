@@ -17,6 +17,11 @@ class Level extends Phaser.Scene {
     const bG_1 = this.add.image(180, 320, "BG_1");
     bG_1.scaleX = 0.3333;
     bG_1.scaleY = 0.3333;
+    bG_1.alpha = 0.45;
+    bG_1.alphaTopLeft = 0.45;
+    bG_1.alphaTopRight = 0.45;
+    bG_1.alphaBottomLeft = 0.45;
+    bG_1.alphaBottomRight = 0.45;
 
     // vignette
     const vignette = this.add.image(180, 320, "Vignette");
@@ -66,11 +71,7 @@ class Level extends Phaser.Scene {
     const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
     multiplier_text.setOrigin(0.5, 0.5);
     multiplier_text.text = "x 1";
-    multiplier_text.setStyle({
-      align: "center",
-      fontFamily: "Afolkalips",
-      fontSize: "25px",
-    });
+    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
 
     // tap_zone_area
     const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
@@ -98,32 +99,42 @@ class Level extends Phaser.Scene {
 
     // streak_overlay
     const streak_overlay = this.add.image(180, 352, "streak_overlay");
+    streak_overlay.visible = false;
     streak_popup.add(streak_overlay);
 
     // streak_text
     const streak_text = this.add.text(180, 353, "", {});
     streak_text.setOrigin(0.5, 0.5);
     streak_text.text = "10 STREAK";
-    streak_text.setStyle({
-      align: "center",
-      color: "#666363ff",
-      fontFamily: "DINPro",
-      fontSize: "15px",
-      stroke: "#666363ff",
-    });
+    streak_text.setStyle({ align: "center", fontFamily: "Carlito-Regular", fontSize: "15px" });
     streak_popup.add(streak_text);
 
     // perfect_1
-    const perfect_1 = this.add.image(62, 525, "Perfect_1");
+    const perfect_1 = this.add.image(60, 525, "Perfect_1");
+    perfect_1.alpha = 0.5;
+    perfect_1.alphaTopLeft = 0.5;
+    perfect_1.alphaTopRight = 0.5;
+    perfect_1.alphaBottomLeft = 0.5;
+    perfect_1.alphaBottomRight = 0.5;
 
     // perfect_2
     const perfect_2 = this.add.image(181, 525, "Perfect_2");
+    perfect_2.alpha = 0.5;
+    perfect_2.alphaTopLeft = 0.5;
+    perfect_2.alphaTopRight = 0.5;
+    perfect_2.alphaBottomLeft = 0.5;
+    perfect_2.alphaBottomRight = 0.5;
 
     // perfect_3
     const perfect_3 = this.add.image(300, 525, "Perfect_3");
+    perfect_3.alpha = 0.5;
+    perfect_3.alphaTopLeft = 0.5;
+    perfect_3.alphaTopRight = 0.5;
+    perfect_3.alphaBottomLeft = 0.5;
+    perfect_3.alphaBottomRight = 0.5;
 
     // colour_highlight
-    const colour_highlight = this.add.image(66, 525, "Colour highlight");
+    const colour_highlight = this.add.image(61, 525, "Colour highlight");
     colour_highlight.scaleX = 0.1;
     colour_highlight.scaleY = 0.09;
 
@@ -150,11 +161,7 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(bG);
 
     // bottom_banner
-    const bottom_banner = this.add.image(
-      180,
-      606.5033569335938,
-      "Bottom banner"
-    );
+    const bottom_banner = this.add.image(180, 606.5033569335938, "Bottom banner");
     bottom_banner.scaleX = 0.3333;
     bottom_banner.scaleY = 0.3333;
     song_complete_overlay.add(bottom_banner);
@@ -163,11 +170,7 @@ class Level extends Phaser.Scene {
     const artist_name = this.add.text(180, 19, "", {});
     artist_name.setOrigin(0.5, 0.5);
     artist_name.text = "artist_name";
-    artist_name.setStyle({
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      stroke: "#faf05e",
-    });
+    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
     song_complete_overlay.add(artist_name);
 
     // song_name
@@ -222,10 +225,7 @@ class Level extends Phaser.Scene {
     const youve_earned_txt = this.add.text(180, 406, "", {});
     youve_earned_txt.setOrigin(0.5, 0.5);
     youve_earned_txt.text = "You've earned 30 discs";
-    youve_earned_txt.setStyle({
-      fontFamily: "Carlito-Regular",
-      fontSize: "20px",
-    });
+    youve_earned_txt.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
     song_complete_overlay.add(youve_earned_txt);
 
     // disc
@@ -272,6 +272,8 @@ class Level extends Phaser.Scene {
       perfect_1,
     ];
 
+    this.vignette = vignette;
+    this.pattern = pattern;
     this.artist_text = artist_text;
     this.song_name_text = song_name_text;
     this.score_text = score_text;
@@ -294,6 +296,10 @@ class Level extends Phaser.Scene {
     this.events.emit("scene-awake");
   }
 
+  /** @type {Phaser.GameObjects.Image} */
+  vignette;
+  /** @type {Phaser.GameObjects.Image} */
+  pattern;
   /** @type {Phaser.GameObjects.Text} */
   artist_text;
   /** @type {Phaser.GameObjects.Text} */
@@ -452,7 +458,7 @@ class Level extends Phaser.Scene {
     //   .setOrigin(0.5);
 
     this.ui_layer.forEach((asset) => {
-      asset.setDepth(4);
+      asset.setDepth(3);
     });
 
     this.divider_1.setDepth(2.5);
@@ -462,6 +468,7 @@ class Level extends Phaser.Scene {
       .rectangle(0, 0, this.screenWidth / 3, this.screenHeight, 0x90ee90)
       .setOrigin(0.5, 0)
       .setAlpha(0.5)
+      .setDepth(0)
       .setVisible(false);
 
     this.score_emitter = this.add
@@ -475,29 +482,26 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
     this.multiplier_emitter = this.add
-      .particles(
-        this.multiplier_text.x,
-        this.multiplier_text.y,
-        "Play_active",
-        {
-          lifespan: 750,
-          speed: { min: 50, max: 100 },
-          scale: { start: 0.5, end: 0 },
-          blendMode: "ADD",
-          emitting: false,
-        }
-      )
+      .particles(this.multiplier_text.x, this.multiplier_text.y, "Play_active", {
+        lifespan: 750,
+        speed: { min: 50, max: 100 },
+        scale: { start: 0.5, end: 0 },
+        blendMode: "ADD",
+        emitting: false,
+      })
       .setDepth(10);
 
-    this.tileEmitter = this.add.particles(0, 0, "particle_1", {
-      speed: { min: 50, max: 200 },
-      angle: { min: 0, max: 360 },
-      scale: { start: 1, end: 0 },
-      blendMode: "ADD",
-      lifespan: 400,
-      gravityY: 300,
-      emitting: false,
-    });
+    this.tileEmitter = this.add
+      .particles(0, 0, "particle_1", {
+        speed: { min: 50, max: 250 },
+        angle: { min: 0, max: 360 },
+        scale: { start: 1.2, end: 0 },
+        blendMode: "ADD",
+        lifespan: 500,
+        gravityY: 300,
+        emitting: false,
+      })
+      .setDepth(10);
 
     // let rect = this.add
     //   .rectangle(
@@ -512,7 +516,7 @@ class Level extends Phaser.Scene {
     this.fps_text = this.add.text(this.screenWidth - 20, 20, "", {});
 
     this.fps_text.setOrigin(1, 0).setDepth(100);
-    this.fps_text.text = "artist";
+    this.fps_text.text = "";
     this.fps_text.setStyle({
       color: "#666363ff",
       fontFamily: "Righteous-Regular",
@@ -522,19 +526,15 @@ class Level extends Phaser.Scene {
 
     this.addProgressBar();
     // this.initializeVisualizer();
+    this.vignette.setDepth(2);
+    // this.pattern.setDepth(2);
   }
 
   addProgressBar() {
-    this.progressBar = this.add.rectangle(0, 0, 0, 5, 0xffa500);
-    this.progressBar.setOrigin(0, 0);
-    this.progressBarBg = this.add.rectangle(
-      0,
-      0,
-      this.screenWidth,
-      5,
-      0x666363
-    );
-    this.progressBarBg.setOrigin(0, 0);
+    this.progressBar = this.add.rectangle(0, 640, 0, 5, 0xffa500);
+    this.progressBar.setOrigin(0, 1);
+    this.progressBarBg = this.add.rectangle(0, 640, this.screenWidth, 5, 0x000);
+    this.progressBarBg.setOrigin(0, 1);
     this.progressBar.setDepth(50);
     this.progressBarBg.setDepth(40);
   }
@@ -695,21 +695,14 @@ class Level extends Phaser.Scene {
     this.lowFpsMode = this.fps < 30 ? true : false;
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
-      this.scoreDisplay = Phaser.Math.Linear(
-        this.scoreDisplay,
-        this.score,
-        0.1
-      );
+      this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
 
     let seek = this.music?.seek;
 
     if (seek >= 0) {
-      if (
-        this.soundMarkers.length > 0 &&
-        seek + this.tileDuration >= this.soundMarkers[0].start
-      ) {
+      if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
@@ -717,15 +710,10 @@ class Level extends Phaser.Scene {
       this.tileGroup.getChildren().forEach((tile) => {
         if (tile.swiped || tile.held) return;
 
-        tile.lerp = Math.max(
-          0,
-          (seek - tile.start + this.tileDuration) / this.tileDuration
-        );
+        tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
 
         // Update both base and overlay positions
-        tile.setY(
-          Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp)
-        );
+        tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
         tile.setAlpha(tile.lerp);
 
         if (tile.overlayTile) {
@@ -754,13 +742,7 @@ class Level extends Phaser.Scene {
 
     // Create base aesthetic tile with random texture
     let tile = this.tileGroup
-      .create(
-        0,
-        0,
-        this.baseTileTextures[
-          Math.floor(Math.random() * this.baseTileTextures.length)
-        ]
-      )
+      .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(0.2)
@@ -912,16 +894,12 @@ class Level extends Phaser.Scene {
 
     let normalizationFactor = slope * tileDuration + intercept;
 
-    let heldTileScaleFactor =
-      1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
+    let heldTileScaleFactor = 1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
     return heldTileScaleFactor;
   }
 
   handleHeldTile(tile, duration) {
-    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(
-      duration,
-      this.tileDuration
-    );
+    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
     // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
@@ -1181,7 +1159,7 @@ class Level extends Phaser.Scene {
   resetStreak() {
     if (this.currentMultiplier >= 2) {
       this.streak_text.setText("STREAK LOST");
-      this.streak_popup.setVisible(true).setDepth(6);
+      this.streak_popup.setVisible(true).setDepth(3.9);
       setTimeout(() => {
         this.streak_popup.setVisible(false);
       }, 700);
@@ -1194,7 +1172,7 @@ class Level extends Phaser.Scene {
     this.multiplier_emitter.explode(this.lowFpsMode ? 10 : 20);
 
     this.streak_popup.x = -180;
-    this.streak_popup.setVisible(true).setDepth(6);
+    this.streak_popup.setVisible(true).setDepth(3.9);
     this.tweens.killTweensOf(this.streak_popup);
     var tweenIn = this.tweens.add({
       targets: this.streak_popup,
@@ -1287,10 +1265,10 @@ class Level extends Phaser.Scene {
         this.highlightPath(tile.x, "red");
     }
 
+    // this.tileActiveFlash(tile, true);
+
     if (this.progress >= this.streakThreshold) {
-      this.streak_text.setText(
-        `${this.streakThreshold * this.currentMultiplier} STREAK`
-      );
+      this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
       this.streakDisplay();
       this.progress = 0;
       this.currentMultiplier += 1;
@@ -1323,7 +1301,8 @@ class Level extends Phaser.Scene {
   }
 
   tileActiveFlash(tile, perfect_plus) {
-    var tile_active = this.add.image(tile.x, 0, "tile_active").setDepth(3);
+    var tile_active = this.add.image(tile.x, 0, "tile_active").setScale(0.3333).setDepth(10);
+    console.log("here");
 
     if (perfect_plus) {
       tile_active.setY(this.screenHeight * this.tileTarget);
@@ -1382,15 +1361,23 @@ class Level extends Phaser.Scene {
 
   highlightPath(x, str) {
     if (str === "green") {
-      this.path.setFillStyle(0x90ee90).x = x;
+      this.path.setFillStyle(0x5dfe7b, 0.52).x = x;
     } else {
-      this.path.setFillStyle(0xffa500).x = x;
+      this.path.setFillStyle(0xfed85d, 0.52).x = x;
     }
 
-    this.path.setVisible(true);
-    setTimeout(() => {
-      this.path.setVisible(false);
-    }, 200);
+    // Reset alpha and make visible
+    this.path.setAlpha(1).setVisible(true);
+
+    // Create a tween to fade out
+    this.tweens.add({
+      targets: this.path,
+      alpha: 0,
+      duration: 200,
+      onComplete: () => {
+        this.path.setVisible(false);
+      },
+    });
   }
 
   cleanUp() {
@@ -1445,10 +1432,10 @@ class Level extends Phaser.Scene {
       loop: false,
     });
 
-    this.ui_layer.forEach((child) => {
-      child.setAlpha(0);
-      child.setScale(0);
-    });
+    // this.ui_layer.forEach((child) => {
+    //   child.setAlpha(0);
+    //   child.setScale(0);
+    // });
 
     // this.overlay.setDepth(5);
 
@@ -1534,16 +1521,16 @@ class Level extends Phaser.Scene {
         this.pause_btn.setInteractive().setDepth(50);
         clearInterval(intervalId);
 
-        this.ui_layer.forEach((child) => {
-          this.tweens.add({
-            targets: child,
-            alpha: { from: 0, to: 1 },
-            scaleX: { from: 0, to: 1 },
-            scaleY: { from: 0, to: 1 },
-            ease: "Power1",
-            duration: 250,
-          });
-        });
+        // this.ui_layer.forEach((child) => {
+        //   this.tweens.add({
+        //     targets: child,
+        //     alpha: { from: 0, to: 1 },
+        //     scaleX: { from: 0, to: 1 },
+        //     scaleY: { from: 0, to: 1 },
+        //     ease: "Power1",
+        //     duration: 250,
+        //   });
+        // });
       }
     }, 1000);
   }

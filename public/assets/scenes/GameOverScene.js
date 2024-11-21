@@ -28,10 +28,10 @@ class GameOverScene extends Phaser.Scene {
     top_banner.scaleX = 0.3333;
     top_banner.scaleY = 0.3333;
 
-    // round_Frame
-    const round_Frame = this.add.image(180, 238, "Round Frame");
-    round_Frame.scaleX = 0.3333;
-    round_Frame.scaleY = 0.3333;
+    // round_frame
+    const round_frame = this.add.image(180, 238, "Round Frame");
+    round_frame.scaleX = 0.3333;
+    round_frame.scaleY = 0.3333;
 
     // current_score
     const current_score = this.add.text(180, 440, "", {});
@@ -136,6 +136,7 @@ class GameOverScene extends Phaser.Scene {
     // lists
     const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
 
+    this.round_frame = round_frame;
     this.current_score = current_score;
     this.song_name = song_name;
     this.artist_name = artist_name;
@@ -149,6 +150,8 @@ class GameOverScene extends Phaser.Scene {
     this.events.emit("scene-awake");
   }
 
+  /** @type {Phaser.GameObjects.Image} */
+  round_frame;
   /** @type {Phaser.GameObjects.Text} */
   current_score;
   /** @type {Phaser.GameObjects.Text} */
@@ -195,7 +198,9 @@ class GameOverScene extends Phaser.Scene {
     this.song_name.setText(this.track.song_name);
     // this.current_score.setText(Math.trunc(this.track.current_score))
     this.setStars(this.track.current_score);
-
+    this.stars.forEach((star) => {
+      star.setDepth(2);
+    });
     // Create circular mask for carousel
     const maskGraphics = this.add.graphics();
     // Set the graphics position to match carousel
@@ -295,7 +300,7 @@ class GameOverScene extends Phaser.Scene {
     this.continue_button.setDepth(2).setScale(0);
 
     this.retry_button.setScale(0);
-    this.carousel.setScale(0);
+    this.carousel.setScale(1);
 
     this.tweens.add({
       targets: [this.artist_name, this.song_name],
@@ -303,23 +308,12 @@ class GameOverScene extends Phaser.Scene {
 
       onComplete: () => {
         this.tweens.add({
-          targets: [this.carousel],
+          targets: [this.retry_button, this.continue_button],
           scale: {
             from: 0,
-            to: 1,
+            to: 0.3333,
             duration: 700,
             ease: "Bounce.easeOut",
-          },
-          onComplete: () => {
-            this.tweens.add({
-              targets: [this.retry_button, this.continue_button],
-              scale: {
-                from: 0,
-                to: 0.3333,
-                duration: 700,
-                ease: "Bounce.easeOut",
-              },
-            });
           },
         });
       },
@@ -327,52 +321,57 @@ class GameOverScene extends Phaser.Scene {
   }
 
   setStars(score) {
-    // let this.fullStarsCount = 0;
-
-    // if (score < 3000) {
-    //   this.fullStarsCount = 1;
-    // } else if (score >= 3000 && score < 6000) {
-    //   this.fullStarsCount = 2;
-    // } else if (score >= 6000 && score < 9000) {
-    //   this.fullStarsCount = 3;
-    // } else if (score >= 9000 && score < 15000) {
-    //   this.fullStarsCount = 4;
-    // } else if (score >= 15000) {
-    //   this.fullStarsCount = 5;
-    // } else {
-    //   this.fullStarsCount = 1;
-    // }
     this.fullStarsCount = this.getStarsFromScore(score);
-
     let starSound = this.sound.add("Star_Reward_Sfx");
+
+    // Remove existing yellow bar if it exists
+    if (this.yellowBar) {
+      this.yellowBar.destroy();
+    }
+
+    // Create yellow bar
+    this.yellowBar = this.add.graphics();
+    // this.yellowBar.setDepth(0);
+
+    let activatedStars = 0;
 
     this.stars.forEach((star, index) => {
       if (index < this.fullStarsCount) {
         this.tweens.add({
           targets: star,
-          delay: index * 200, // delay based on index to make stars appear one by one
+          delay: index * 200,
           onStart: () => {
             star.setTexture("Star Active");
-
             starSound.play();
+            activatedStars++;
 
-            // let star_emitter = this.add
-            //   .particles(star.x, star.y, "Play_active", {
-            //     lifespan: 700,
-            //     speed: { min: 100, max: 150 },
-            //     scale: { start: 0.5, end: 0 },
-            //     // gravityY: 150,
-            //     blendMode: "ADD",
-            //     emitting: false,
-            //   })
-            //   .setDepth(1);
+            // Animate yellow bar
+            if (activatedStars > 1) {
+              this.tweens.addCounter({
+                from: 0,
+                to: 100,
+                duration: 200,
+                onUpdate: (tween) => {
+                  this.yellowBar.clear();
+                  this.yellowBar.lineStyle(5, 0xfaf05e, 1);
+                  this.yellowBar.beginPath();
+                  this.yellowBar.moveTo(this.stars[0].x, this.stars[0].y);
 
-            // star_emitter.explode(30);
-            // star_emitter.stop();
+                  for (let i = 1; i < activatedStars; i++) {
+                    let progress = i === activatedStars - 1 ? tween.getValue() / 100 : 1;
+                    let x = Phaser.Math.Linear(this.stars[i - 1].x, this.stars[i].x, progress);
+                    let y = Phaser.Math.Linear(this.stars[i - 1].y, this.stars[i].y, progress);
+                    this.yellowBar.lineTo(x, y);
+                  }
+
+                  this.yellowBar.strokePath();
+                },
+              });
+            }
           },
-          scaleX: { from: 1, to: 0.3333 }, // increased start scale
-          scaleY: { from: 1, to: 0.3333 }, // increased start scale
-          duration: 2000, // increased duration
+          scaleX: { from: 1, to: 0.3333 },
+          scaleY: { from: 1, to: 0.3333 },
+          duration: 2000,
           ease: "Bounce.easeOut",
         });
       } else {

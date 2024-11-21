@@ -51,7 +51,8 @@
         {
             "type": "Image",
             "id": "6f71b3d8-11b9-4b4c-baf6-0dc74bba2689",
-            "label": "round_Frame",
+            "label": "round_frame",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "Round Frame"
