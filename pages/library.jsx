@@ -26,7 +26,9 @@ const Library = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=56&ids=143&ids=144&ids=119`)
+      .get(
+        `${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=56&ids=143&ids=144&ids=119`
+      )
       .then((res) => {
         const songsWithUnlockStatus = res.data.map((song) => ({
           ...song,
@@ -127,7 +129,7 @@ const Library = () => {
           <button
             onClick={() => {
               setIsPopupOpen(false);
-              router.push("/");
+              router.push("/hub");
             }}
             className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
           >
@@ -135,7 +137,7 @@ const Library = () => {
           </button>
         </Popup>
       </div>
-      <Link href="/" passHref>
+      <Link href="/hub" passHref>
         <div className="flex justify-center mt-5">
           <Image
             src="/assets/img/levelinfo/Back_Button.png"

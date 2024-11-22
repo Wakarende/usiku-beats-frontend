@@ -104,7 +104,7 @@ const LevelInfoPage = () => {
                 );
               })}
             </div>
-            <Link href="/" passHref>
+            <Link href="/hub" passHref>
               <div className="relative">
                 <Image
                   src="/assets/img/levelinfo/Back_Button.png"
