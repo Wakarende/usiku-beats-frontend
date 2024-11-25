@@ -42,12 +42,12 @@ export default function TitleScreen() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      <div>
-        <div>
+      <div className="flex justify-center relative z-1">
+        <div CclassName="absolute top-[60px]">
           <Image
-            src="/assets/img/start/Group 5.png"
-            width={100}
-            height={100}
+            src="/assets/img/start/LogoTail.png"
+            width={250}
+            height={200}
             alt="logo"
           />
         </div>
