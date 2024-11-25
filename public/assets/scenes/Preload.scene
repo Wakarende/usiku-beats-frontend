@@ -113,20 +113,6 @@
         },
         {
             "type": "Image",
-            "id": "72757b7d-0c5f-417a-8e53-13e1700832e2",
-            "label": "beats_logo",
-            "components": [],
-            "texture": {
-                "key": "beats_logo"
-            },
-            "x": 173,
-            "y": 245,
-            "scaleX": 0.4,
-            "scaleY": 0.4,
-            "visible": false
-        },
-        {
-            "type": "Image",
             "id": "0aea47d6-f20f-4c47-86e9-e004a402b558",
             "label": "play_button",
             "scope": "CLASS",

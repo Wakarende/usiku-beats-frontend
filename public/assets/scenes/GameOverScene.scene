@@ -69,12 +69,12 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 440,
+            "y": 434,
             "originX": 0.5,
             "originY": 0.5,
             "text": "00000",
             "fontFamily": "Afolkalips",
-            "fontSize": "60px",
+            "fontSize": "45px",
             "color": "#faf05e",
             "stroke": "#faf05e"
         },
@@ -85,7 +85,7 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 98,
+            "y": 99,
             "originX": 0.5,
             "originY": 0.5,
             "text": "song_name",
@@ -101,12 +101,12 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 74,
+            "y": 68,
             "originX": 0.5,
             "originY": 0.5,
             "text": "artist_name",
             "fontFamily": "Carlito-Regular",
-            "fontSize": "15px",
+            "fontSize": "8px",
             "color": "#faf05e",
             "stroke": "#faf05e"
         },
@@ -119,7 +119,7 @@
                 "key": "Star_Inactive"
             },
             "x": 260,
-            "y": 384,
+            "y": 376,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -132,7 +132,7 @@
                 "key": "Star_Inactive"
             },
             "x": 220,
-            "y": 383,
+            "y": 375,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -145,7 +145,7 @@
                 "key": "Star_Inactive"
             },
             "x": 180,
-            "y": 383,
+            "y": 375,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -158,7 +158,7 @@
                 "key": "Star_Inactive"
             },
             "x": 140,
-            "y": 383,
+            "y": 375,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -171,7 +171,7 @@
                 "key": "Star_Inactive"
             },
             "x": 100,
-            "y": 383,
+            "y": 375,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },

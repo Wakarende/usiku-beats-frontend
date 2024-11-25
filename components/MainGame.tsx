@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import WebFont from "webfontloader";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/main/authActions";
+import ViewportCoordinatePlugin from "phaser3-rex-plugins/plugins/viewportcoordinate-plugin.js";
+import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
+
 class Boot extends Phaser.Scene {
   preload() {
     this.load.pack("pack", "assets/preload-pack.json");
@@ -73,12 +76,28 @@ const PhaserGame: React.FC = () => {
           const config: Phaser.Types.Core.GameConfig = {
             type: Phaser.AUTO,
             parent: phaserGameRef.current,
-            width: 360,
-            height: 640,
+            width: 720,
+            height: 1280,
             backgroundColor: "#000000",
             scale: {
               mode: Phaser.Scale.FIT,
               autoCenter: Phaser.Scale.CENTER_BOTH,
+            },
+            plugins: {
+              global: [
+                {
+                  key: "rexViewportCoordinate",
+                  plugin: ViewportCoordinatePlugin,
+                  start: true,
+                },
+              ],
+              scene: [
+                {
+                  key: "rexScaleOuter",
+                  plugin: ScaleOuterPlugin,
+                  mapping: "rexScaleOuter",
+                },
+              ],
             },
             physics: {
               default: "arcade",

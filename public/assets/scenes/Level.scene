@@ -248,7 +248,7 @@
             "texture": {
                 "key": "Perfect_2"
             },
-            "x": 181,
+            "x": 180,
             "y": 525,
             "alpha": 0.5,
             "alphaTopLeft": 0.5,
@@ -293,7 +293,7 @@
             "texture": {
                 "key": "Colour highlight"
             },
-            "x": 183,
+            "x": 181,
             "y": 525,
             "scaleX": 0.1,
             "scaleY": 0.09,

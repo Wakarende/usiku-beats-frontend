@@ -118,7 +118,7 @@ class Level extends Phaser.Scene {
     perfect_1.alphaBottomRight = 0.5;
 
     // perfect_2
-    const perfect_2 = this.add.image(181, 525, "Perfect_2");
+    const perfect_2 = this.add.image(180, 525, "Perfect_2");
     perfect_2.alpha = 0.5;
     perfect_2.alphaTopLeft = 0.5;
     perfect_2.alphaTopRight = 0.5;
@@ -139,7 +139,7 @@ class Level extends Phaser.Scene {
     colour_highlight.scaleY = 0.09;
 
     // colour_highlight_1
-    const colour_highlight_1 = this.add.image(183, 525, "Colour highlight");
+    const colour_highlight_1 = this.add.image(181, 525, "Colour highlight");
     colour_highlight_1.scaleX = 0.1;
     colour_highlight_1.scaleY = 0.09;
     colour_highlight_1.flipX = true;
@@ -364,8 +364,10 @@ class Level extends Phaser.Scene {
 
   create() {
     console.log("Level.js create()");
-    this.editorCreate();
 
+    this.editorCreate();
+    this.adjustViewport();
+    // this.scale.setGameSize(360, 640);
     this.baseTileTextures = [
       "Tile 1",
       "Tile 2",
@@ -404,8 +406,8 @@ class Level extends Phaser.Scene {
 
     this.artist = this.track.artist_name;
     this.songItem = this.track.song_name;
-    this.screenWidth = this.cameras.main.width;
-    this.screenHeight = this.cameras.main.height;
+    this.screenWidth = 360; //this.cameras.main.width;
+    this.screenHeight = 640;
     this.screenCenterX = this.cameras.main.worldView.x + this.screenWidth / 2;
     this.screenCenterY = this.cameras.main.worldView.y + this.screenHeight / 2;
 
@@ -530,6 +532,80 @@ class Level extends Phaser.Scene {
     // this.pattern.setDepth(2);
   }
 
+  adjustViewport() {
+    this.rexScaleOuter.scale();
+    const baseWidth = 360;
+    const baseHeight = 640;
+    const targetWidth = 720;
+    const targetHeight = 1280;
+
+    var viewport = new Phaser.Geom.Rectangle();
+
+    var UpdateViewport = function () {
+      var innerViewport = this.rexScaleOuter.innerViewport;
+      var scaleX = targetWidth / baseWidth;
+      var scaleY = targetHeight / baseHeight;
+      var scale = Math.min(scaleX, scaleY);
+
+      var newWidth = baseWidth * scale;
+      var newHeight = baseHeight * scale;
+      var x = (targetWidth - newWidth) / 2;
+      var y = (targetHeight - newHeight) / 2;
+
+      viewport.setTo(x, y, newWidth, newHeight);
+      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+      this.cameras.main.setZoom(scale);
+      this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
+
+      this.adjustTextProperties(scale);
+    }.bind(this);
+
+    // this.scale.on("resize", UpdateViewport);
+    UpdateViewport();
+  }
+
+  adjustTextProperties(scale) {
+    this.children.list.forEach((child) => {
+      if (child instanceof Phaser.GameObjects.Text) {
+        // Font size adjustment
+        if (!child.originalFontSize) {
+          child.originalFontSize = parseInt(child.style.fontSize);
+        }
+        const newSize = Math.round(child.originalFontSize * scale);
+        child.setScale(0.5).setFontSize(`${newSize}px`);
+
+        // Word wrap width adjustment
+        if (child.style.wordWrapWidth) {
+          if (!child.originalWordWrapWidth) {
+            child.originalWordWrapWidth = child.style.wordWrapWidth;
+          }
+          const newWrapWidth = Math.round(child.originalWordWrapWidth * scale);
+          child.setWordWrapWidth(newWrapWidth);
+        }
+
+        // Padding adjustment
+        if (child.padding) {
+          if (!child.originalPadding) {
+            child.originalPadding = { ...child.padding };
+          }
+          child.setPadding({
+            left: Math.round(child.originalPadding.left * scale),
+            right: Math.round(child.originalPadding.right * scale),
+            top: Math.round(child.originalPadding.top * scale),
+            bottom: Math.round(child.originalPadding.bottom * scale),
+          });
+        }
+
+        // Line spacing adjustment
+        if (child.lineSpacing !== undefined) {
+          if (child.originalLineSpacing === undefined) {
+            child.originalLineSpacing = child.lineSpacing;
+          }
+          child.setLineSpacing(Math.round(child.originalLineSpacing * scale));
+        }
+      }
+    });
+  }
   addProgressBar() {
     this.progressBar = this.add.rectangle(0, 640, 0, 5, 0xffa500);
     this.progressBar.setOrigin(0, 1);
@@ -1218,9 +1294,9 @@ class Level extends Phaser.Scene {
       accuracy -= 0.04;
     }
 
-    if (navigator.vibrate) {
-      navigator.vibrate(100);
-    }
+    // if (navigator.vibrate) {
+    //   navigator.vibrate(100);
+    // }
 
     this.tileClicked = true;
     let perfect_plus = false;
@@ -1265,8 +1341,6 @@ class Level extends Phaser.Scene {
         this.highlightPath(tile.x, "red");
     }
 
-    // this.tileActiveFlash(tile, true);
-
     if (this.progress >= this.streakThreshold) {
       this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
       this.streakDisplay();
@@ -1295,13 +1369,14 @@ class Level extends Phaser.Scene {
     }
 
     if (!swiped && !held) {
+      this.tileActiveFlash(tile, accuracy < 0.02);
       this.tileEmitter.setPosition(tile.x, tile.y);
       this.tileEmitter.explode(10);
     }
   }
 
   tileActiveFlash(tile, perfect_plus) {
-    var tile_active = this.add.image(tile.x, 0, "tile_active").setScale(0.3333).setDepth(10);
+    var tile_active = this.add.image(tile.x, 0, "tile_active").setDepth(10);
     console.log("here");
 
     if (perfect_plus) {
