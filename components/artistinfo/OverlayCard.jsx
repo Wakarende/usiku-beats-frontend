@@ -80,7 +80,7 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-stretch w-[250px] h-[340px] overflow-hidden mx-1">
+    <div className="frame relative flex flex-col items-stretch w-[250px] h-[310px] overflow-hidden mx-1">
       <div className="relative w-full h-[224px] overflow-hidden">
         <Image
           src={song.thumbnail_file}
@@ -111,7 +111,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
         </div>
 
         {/* Bottom gradient and content */}
-        <div className="absolute bottom-0 left-0 p-2 w-full h-16 bg-gradient-to-t from-black/90 to-transparent">
+        <div className="absolute bottom-0 left-0 p-2 w-full h-16 bg-gradient-to-t from-black/70 to-transparent">
           <div className="flex justify-between items-end w-full absolute left-0 bottom-1">
             <p className="uppercase text-yellow-300 tracking-tighter country-text absolute bottom-[-4px] left-[-20px] ">
               Kenya
