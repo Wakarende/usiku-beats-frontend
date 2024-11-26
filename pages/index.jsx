@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import "./pages.css";
 
 export default function TitleScreen() {
-  const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
   // Password
   useEffect(() => {
@@ -30,7 +29,7 @@ export default function TitleScreen() {
       document.documentElement
         .requestFullscreen()
         .then(() => {
-          router.push("/hub"); // Navigate to the HubScreen
+          router.push("/hub");
         })
         .catch((err) => {
           console.error("Error enabling full-screen mode:", err);

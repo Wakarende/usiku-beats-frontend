@@ -7,13 +7,11 @@ import moment from "moment-timezone";
 import Image from "next/image";
 
 import Header from "../components/header/Header";
-import Popup from "../components/dailyreward/DailyPopup";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { updateUser } from "../redux/main/authActions";
 import { OverlayCard, ArtistImage } from "../components/artistinfo/OverlayCard";
 import LevelUpPopup from "../components/leveluppopup/LevelUpPopup";
-import Footer from "../components/footer/Footer";
 import LibraryFooter from "../components/footer/Footer";
 import "./pages.css";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
@@ -42,21 +40,6 @@ const HubScreen = () => {
   const router = useRouter();
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
-  // useEffect(() => {
-  //   const isAuthenticated = localStorage.getItem("isAuthenticated");
-  //   const checkAuth = () => {
-  //     const auth = prompt("Please enter the password:", "");
-  //     if (auth === "1234") {
-  //       localStorage.setItem("isAuthenticated", "true");
-  //     } else {
-  //       alert("Incorrect password");
-  //       checkAuth();
-  //     }
-  //   };
-  //   if (!isAuthenticated) {
-  //     checkAuth();
-  //   }
-  // }, []);
 
   useEffect(() => {
     checkAnon();
