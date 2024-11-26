@@ -1,15 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { motion, useAnimation } from "framer-motion";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import "./pages.css";
 
 export default function TitleScreen() {
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
-
-  //Password
+  // Password
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
     const checkAuth = () => {
@@ -43,74 +42,83 @@ export default function TitleScreen() {
     }
   };
 
-  const logoVariants = {
-    hidden: { y: -300 },
-    visible: {
-      y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 10 },
-    },
-  };
-
-  //Start Button Animations
-  const controls = useAnimation();
+  // Animation states
+  const [backgroundVisible, setBackgroundVisible] = useState(false);
+  const [logoVisible, setLogoVisible] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(false);
 
   useEffect(() => {
-    async function sequence() {
-      await controls.start("visible");
-      controls.start("pulse");
-    }
-    sequence();
-  }, [controls]);
+    // Start the animation sequence
+    const sequence = async () => {
+      setBackgroundVisible(true);
 
-  const startButtonVariants = {
-    hidden: { x: "100vw", opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100, damping: 10 },
-    },
-    pulse: {
-      scale: [1, 1.05, 1],
-      transition: {
-        duration: 1,
-        repeat: Infinity,
-        repeatType: "loop",
-        ease: "easeIn",
-      },
-    },
-  };
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setLogoVisible(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setButtonVisible(true);
+    };
+
+    sequence();
+  }, []);
+
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      <div className="flex justify-center relative z-1">
-        <div className="slide-down absolute top-14">
+    <div className="fixed inset-0 h-full w-full overflow-hidden">
+      {/* Logo Section */}
+      <motion.div
+        className="flex justify-center relative z-10"
+        initial={{ y: -300, opacity: 0 }}
+        animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 10 }}
+      >
+        <div className="absolute">
           <Image
             src="/assets/img/start/LogoTail.png"
             width={250}
             height={200}
-            alt="logo w-auto h-auto"
+            alt="logo"
+            className="w-60 h-auto"
           />
         </div>
-      </div>
-      <div
-        className="absolute bottom-0 left-0 w-full h-[40vh] bg-cover bg-center bg-no-repeat fade-in"
+      </motion.div>
+
+      {/* Background Banner */}
+      <motion.div
+        className="absolute bottom-0 left-0 w-full h-[40vh] bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url(/assets/img/start/Bpttpm%20bannerv.png)",
           backgroundPosition: "bottom center",
         }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: backgroundVisible ? 1 : 0 }}
+        transition={{ duration: 1.5 }}
       />
+
+      {/* Start Button */}
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-72">
         <motion.div
-          // className="absolute bottom-20 left-1/2 -translate-x-1/2 w-72"
-          variants={startButtonVariants}
-          initial="hidden"
-          animate={controls}
+          initial={{ x: "100vw", opacity: 0 }}
+          animate={
+            buttonVisible
+              ? { x: 0, opacity: 1, scale: [1, 1.05, 1] }
+              : { x: "100vw", opacity: 0 }
+          }
+          transition={{
+            x: { type: "spring", stiffness: 100, damping: 10 },
+            scale: {
+              duration: 1,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            },
+          }}
         >
           <Image
             src="/assets/img/start/start%20button.png"
             alt="Start"
             width={400}
             height={400}
-            className="w-full transition-opacity h-auto"
+            className="w-full transition-opacity h-auto cursor-pointer"
             onClick={handleStart}
           />
         </motion.div>
