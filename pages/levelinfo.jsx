@@ -6,7 +6,6 @@ import Image from "next/image";
 import Header from "../components/header/Header";
 import LevelInfo from "../components/levelinfo/LevelInfo";
 
-// import "../components/styles.css";
 import "./pages.css";
 const LevelInfoPage = () => {
   const levelsData = [

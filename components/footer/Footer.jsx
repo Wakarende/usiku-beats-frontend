@@ -10,7 +10,7 @@ const LibraryFooter = () => {
   const unlocksReady = Math.floor(totalDiscs / 30);
 
   return (
-    <footer className="fixed bottom-0 left-0 w-full h-32 md:h-52">
+    <footer className="fixed bottom-0 left-0 w-full h-28 md:h-52">
       {/* Background pattern */}
       <div className="absolute inset-0 w-full h-full">
         <Image
@@ -29,7 +29,7 @@ const LibraryFooter = () => {
               src="/assets/img/footer/Library_banner.png"
               alt="Library banner"
               fill
-              className="object-contain lg:object-cover md:object-cover"
+              className="object-cover lg:object-cover md:object-cover"
               priority
             />
             {/* Unlock ready text overlay */}
