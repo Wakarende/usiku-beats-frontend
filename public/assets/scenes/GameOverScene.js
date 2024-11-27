@@ -98,8 +98,8 @@ class GameOverScene extends Phaser.Scene {
 
     // carousel
     const carousel = this.add.image(180, 238, "carousel_2");
-    carousel.scaleX = 0.6;
-    carousel.scaleY = 0.6;
+    // carousel.scaleX = 0.6;
+    // carousel.scaleY = 0.6;
 
     // continue_button
     const continue_button = this.add.image(180, 515, "Continue");
@@ -202,29 +202,8 @@ class GameOverScene extends Phaser.Scene {
     this.stars.forEach((star) => {
       star.setDepth(2);
     });
-    // Create circular mask for carousel
-    const maskGraphics = this.add.graphics();
-    // Set the graphics position to match carousel
-    maskGraphics.clear();
-    maskGraphics.fillStyle(0xffffff);
-    maskGraphics.beginPath();
-    maskGraphics.arc(180, 238, 100, 0, Math.PI * 2);
-    maskGraphics.closePath();
-    maskGraphics.fill();
 
-    // Set carousel texture first
-    this.carousel.setTexture(this.track.thumbnail);
-
-    // Create and apply the mask
-    const mask = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
-    this.carousel.setMask(mask);
-
-    // Hide the mask graphics - this is crucial!
-    maskGraphics.setVisible(false);
-
-    // Store mask references for cleanup
-    this.carouselMask = mask;
-    this.maskGraphics = maskGraphics;
+    this.adjustThumbnailImage();
 
     this.retry_button.setInteractive();
     this.retry_button.on("pointerup", () => {
@@ -261,6 +240,41 @@ class GameOverScene extends Phaser.Scene {
     this.animateScore();
 
     this.cameras.main.fadeIn(500);
+  }
+
+  adjustThumbnailImage() {
+    // Create circular mask for carousel
+    const maskGraphics = this.add.graphics();
+    maskGraphics.clear();
+    maskGraphics.fillStyle(0xffffff);
+    maskGraphics.beginPath();
+    maskGraphics.arc(180, 238, 100, 0, Math.PI * 2);
+    maskGraphics.closePath();
+    maskGraphics.fill();
+
+    // Set carousel texture first
+    this.carousel.setTexture(this.track.thumbnail);
+
+    // Calculate the scale to fit the image within the circular mask
+    const maskRadius = 100; // radius of the circular mask
+    const imageWidth = this.carousel.width;
+    const imageHeight = this.carousel.height;
+    const scale = Math.max((maskRadius * 2) / imageWidth, (maskRadius * 2) / imageHeight);
+
+    // Apply the calculated scale and center the image
+    this.carousel.setScale(scale);
+    this.carousel.setPosition(180, 238);
+
+    // Create and apply the mask
+    const mask = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
+    this.carousel.setMask(mask);
+
+    // Hide the mask graphics
+    maskGraphics.setVisible(false);
+
+    // Store mask references for cleanup
+    this.carouselMask = mask;
+    this.maskGraphics = maskGraphics;
   }
 
   adjustViewport() {
@@ -381,7 +395,6 @@ class GameOverScene extends Phaser.Scene {
     this.continue_button.setDepth(2).setScale(0);
 
     this.retry_button.setScale(0);
-    this.carousel.setScale(1);
 
     this.tweens.add({
       targets: [this.artist_name, this.song_name],
