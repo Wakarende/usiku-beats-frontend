@@ -114,7 +114,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
         <div className="absolute bottom-0 left-0 p-2 w-full h-16 bg-gradient-to-t from-black/70 to-transparent">
           <div className="flex justify-between items-end w-full absolute left-0 bottom-1">
             <p className="uppercase text-yellow-300 tracking-tighter country-text absolute bottom-[-4px] left-[-20px] ">
-              Kenya
+              {song.country_name}
             </p>
 
             <div className="flex gap-x-0.5 items-end absolute bottom-0 right-[20px]">
