@@ -799,7 +799,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }
@@ -1092,7 +1092,6 @@ class Level extends Phaser.Scene {
 
     // Create circular mask for carousel
     const maskGraphics = this.add.graphics();
-    // Set the graphics position to match carousel
     maskGraphics.clear();
     maskGraphics.fillStyle(0xffffff);
     maskGraphics.beginPath();
@@ -1101,13 +1100,23 @@ class Level extends Phaser.Scene {
     maskGraphics.fill();
 
     // Set carousel texture first
-    this.carousel.setTexture(this.track.thumbnail).setScale(1);
+    this.carousel.setTexture(this.track.thumbnail);
+
+    // Calculate the scale to fit the image within the circular mask
+    const maskRadius = 100; // radius of the circular mask
+    const imageWidth = this.carousel.width;
+    const imageHeight = this.carousel.height;
+    const scale = Math.max((maskRadius * 2) / imageWidth, (maskRadius * 2) / imageHeight);
+
+    // Apply the calculated scale and center the image
+    this.carousel.setScale(scale);
+    this.carousel.setPosition(180, 202);
 
     // Create and apply the mask
     const mask = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
     this.carousel.setMask(mask);
 
-    // Hide the mask graphics - this is crucial!
+    // Hide the mask graphics
     maskGraphics.setVisible(false);
 
     // Store mask references for cleanup
