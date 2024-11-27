@@ -15,10 +15,21 @@ class GameOverScene extends Phaser.Scene {
 	/** @returns {void} */
 	editorCreate() {
 
+<<<<<<< HEAD
 		// hub_background
 		const hub_background = this.add.image(180, 320, "summary_BG");
 		hub_background.scaleX = 0.3333;
 		hub_background.scaleY = 0.3333;
+=======
+    // bottom_banner
+    const bottom_banner = this.add.image(
+      180,
+      606.5033500000001,
+      "Bottom banner"
+    );
+    bottom_banner.scaleX = 0.3333;
+    bottom_banner.scaleY = 0.3333;
+>>>>>>> start
 
 		// bottom_banner
 		const bottom_banner = this.add.image(180, 606.5033500000001, "Bottom banner");
@@ -104,11 +115,22 @@ class GameOverScene extends Phaser.Scene {
 		difficulty_text.text = "MEDIUM";
 		difficulty_text.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "12px", "stroke": "#faf05e" });
 
+<<<<<<< HEAD
 		// total_stars_text
 		const total_stars_text = this.add.text(47, 22, "", {});
 		total_stars_text.setOrigin(0.5, 0.5);
 		total_stars_text.text = "000";
 		total_stars_text.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "15px", "stroke": "#faf05e" });
+=======
+    // lists
+    const stars = [
+      star_empty,
+      star_empty_1,
+      star_empty_2,
+      star_empty_3,
+      star_empty_4,
+    ];
+>>>>>>> start
 
 		// lists
 		const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
@@ -223,7 +245,7 @@ class GameOverScene extends Phaser.Scene {
       const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
       const newLevel = updatedUserData.profile.player.level;
       router.push({
-        pathname: "/",
+        pathname: "/hub",
         query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
     });
@@ -410,9 +432,18 @@ class GameOverScene extends Phaser.Scene {
                   this.yellowBar.moveTo(this.stars[0].x, this.stars[0].y);
 
                   for (let i = 1; i < activatedStars; i++) {
-                    let progress = i === activatedStars - 1 ? tween.getValue() / 100 : 1;
-                    let x = Phaser.Math.Linear(this.stars[i - 1].x, this.stars[i].x, progress);
-                    let y = Phaser.Math.Linear(this.stars[i - 1].y, this.stars[i].y, progress);
+                    let progress =
+                      i === activatedStars - 1 ? tween.getValue() / 100 : 1;
+                    let x = Phaser.Math.Linear(
+                      this.stars[i - 1].x,
+                      this.stars[i].x,
+                      progress
+                    );
+                    let y = Phaser.Math.Linear(
+                      this.stars[i - 1].y,
+                      this.stars[i].y,
+                      progress
+                    );
                     this.yellowBar.lineTo(x, y);
                   }
 
@@ -457,9 +488,10 @@ class GameOverScene extends Phaser.Scene {
   updateData() {
     let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
 
-    const songInstance = updatedUserData.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === this.track.id
-    );
+    const songInstance =
+      updatedUserData.profile.player.player_song_instances.find(
+        (instance) => instance.song.id === this.track.id
+      );
     if (songInstance) {
       let prevStarCount = 0;
       if (songInstance.no_of_plays !== 0) {
@@ -467,12 +499,19 @@ class GameOverScene extends Phaser.Scene {
       }
 
       // Update the high score if the current score is higher
-      songInstance.high_score = Math.max(songInstance.high_score, this.track.current_score);
+      songInstance.high_score = Math.max(
+        songInstance.high_score,
+        this.track.current_score
+      );
 
       // If it's the first play or if the current stars exceed the stars from the highest score
-      if (songInstance.no_of_plays === 0 || this.fullStarsCount > prevStarCount) {
+      if (
+        songInstance.no_of_plays === 0 ||
+        this.fullStarsCount > prevStarCount
+      ) {
         // Update total stars only if current stars are greater
-        updatedUserData.profile.player.total_stars += this.fullStarsCount - (prevStarCount || 0);
+        updatedUserData.profile.player.total_stars +=
+          this.fullStarsCount - (prevStarCount || 0);
       }
 
       console.log(this.fullStarsCount);

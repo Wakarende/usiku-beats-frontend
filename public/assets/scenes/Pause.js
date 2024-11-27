@@ -72,7 +72,7 @@ class Pause extends Phaser.Scene {
       levelScene.cleanUp(); // clean-up Level scene
       this.scene.stop("Level");
       // this.scene.start("BufferScene");
-      router.push("/");
+      router.push("/hub");
     });
   }
 
