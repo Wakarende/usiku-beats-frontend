@@ -70,8 +70,12 @@ class Pause extends Phaser.Scene {
     this.quit_btn.on("pointerup", () => {
       const levelScene = this.scene.get("Level");
       levelScene.cleanUp(); // clean-up Level scene
-      this.scene.stop("Level");
-      // this.scene.start("BufferScene");
+
+      this.scene.manager.scenes.forEach((scene) => {
+        this.scene.stop(scene.scene.key);
+      });
+      this.game.events.emit("destroyGame");
+
       router.push("/hub");
     });
   }

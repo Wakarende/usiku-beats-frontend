@@ -1245,7 +1245,7 @@ class Level extends Phaser.Scene {
   }
 
   streakDisplay() {
-    this.multiplier_emitter.explode(this.lowFpsMode ? 10 : 20);
+    // this.multiplier_emitter.explode(this.lowFpsMode ? 10 : 20);
 
     this.streak_popup.x = -180;
     this.streak_popup.setVisible(true).setDepth(3.9);
