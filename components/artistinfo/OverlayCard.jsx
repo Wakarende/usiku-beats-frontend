@@ -79,18 +79,7 @@ const OverlayCard = ({
 
 const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
   const starCount = getStarsFromScore(song.high_score);
-  // const [isPulsing, setIsPulsing] = useState(isFirstSong);
 
-  // useEffect(() => {
-  //   if (totalSongs > 1) {
-  //     setIsPulsing(false);
-  //   }
-  // }, [totalSongs]);
-
-  // const handlePlayClick = () => {
-  //   onPlayClick();
-  //   setIsPulsing(false);
-  // };
   return (
     <div className="frame relative flex flex-col items-stretch w-[250px] h-[310px] overflow-hidden mx-1">
       <div className="relative w-full h-[230px]">
