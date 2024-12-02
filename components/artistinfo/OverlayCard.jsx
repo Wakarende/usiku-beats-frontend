@@ -80,8 +80,8 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-stretch w-full max-w-[250px] h-[310px] overflow-hidden mx-1">
-      <div className="relative w-full h-[224px] overflow-hidden">
+    <div className="frame relative flex flex-col items-stretch w-[250px] h-[310px] overflow-hidden mx-1">
+      <div className="relative w-full h-[230px]">
         <Image
           src={song.thumbnail_file}
           alt={song.song_name}
@@ -89,47 +89,46 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
           objectFit="cover"
           className="rounded-t-md"
         />
-        {/* Star rating at the top */}
-        <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent">
-          <div className="absolute top-1 left-1/2 transform -translate-x-1/2 flex">
-            {[...Array(5)].map((_, index) => (
-              <div key={index} className="relative w-6 h-6">
-                <Image
-                  src={
-                    starCount > 0 && index < starCount
-                      ? "/assets/img/hub/Star Active.png"
-                      : "/assets/img/hub/Star_Inactive.png"
-                  }
-                  alt="star"
-                  width={16}
-                  height={16}
-                  className="stars"
-                />
-              </div>
-            ))}
-          </div>
+      </div>
+      {/* Star rating at the top */}
+
+      <div className="absolute top-0 left-0 w-full h-8  bg-gradient-to-b from-black/60 to-transparent">
+        <div className="absolute top-1 left-1/2 transform -translate-x-1/2 flex mt-2">
+          {[...Array(5)].map((_, index) => (
+            <div key={index} className="relative w-6 h-6">
+              <Image
+                src={
+                  starCount > 0 && index < starCount
+                    ? "/assets/img/hub/Star Active.png"
+                    : "/assets/img/hub/Star_Inactive.png"
+                }
+                alt="star"
+                width={16}
+                height={16}
+                className="stars"
+              />
+            </div>
+          ))}
         </div>
+      </div>
 
-        {/* Bottom gradient and content */}
-        <div className="absolute bottom-0 left-0 p-2 w-full h-16 bg-gradient-to-t from-black/70 to-transparent">
-          <div className="flex justify-between items-end w-full absolute left-0 bottom-1">
-            <p className="uppercase text-yellow-300 tracking-tighter country-text absolute bottom-0 left-[-25px] ">
-              {song.country_name}
-            </p>
+      {/* Bottom gradient and content */}
+      <div className="absolute bottom-0 left-0 p-2 w-full">
+        <div className="flex w-full justify-between items-end absolute bottom-28">
+          <p className="uppercase text-yellow-300 tracking-tighter country-text absolute top-[50%] left-[-30px]">
+            {song.country_name}
+          </p>
 
-            <div className="flex gap-x-0.5 items-end absolute bottom-0 right-[20px]">
-              <div className="flex flex-col">
-                <p className="text-yellow-300 uppercase tracking-tighter difficulty-text absolute bottom-0 right-[-45px]">
-                  Medium
-                </p>
-              </div>
+          <div className="flex gap-x-0.5 items-end">
+            <div className="flex flex-col">
+              <p className="text-yellow-300 uppercase tracking-tighter difficulty-text absolute right-[-14px] gradient-text">
+                Medium
+              </p>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Card Body */}
-      <div className="flex flex-col w-full max-w-[300px] flex-grow overflow-hidden">
+      <div className="flex flex-col flex-grow overflow-hidden justify-end">
         <div className="flex flex-col items-center text-md tracking-wide">
           <p className="text-yellow-300">{song.song_name}</p>
           <p
@@ -140,6 +139,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
           </p>
         </div>
       </div>
+      {/* </div> */}
       <div className="flex justify-center ">
         <button variant="default" onClick={onPlayClick} className="">
           <Image
