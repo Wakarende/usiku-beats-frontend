@@ -10,7 +10,7 @@ import { BASE_URL } from "../services/config";
 import { useRouter } from "next/router";
 import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
-
+import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import Header from "../components/header/Header";
 import BottomTabNav from "../components/BottomTabNav";
 
@@ -205,7 +205,7 @@ const Library = () => {
                   ) : (
                     <div
                       className={`relative mt-3 cursor-pointer ${
-                        !unlockable ? "pointer-events-none" : ""
+                        !unlockable ? "pointer-events-none opacity-50" : ""
                       }`}
                       onClick={() => unlockable && handleSongUnlock(song)}
                     >
@@ -237,8 +237,7 @@ const Library = () => {
             </div>
           ))}
         </div>
-
-        <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
+        {/* <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <h1 className="mt-2 text-xl">
             You have successfully unlocked the song:
           </h1>
@@ -252,6 +251,53 @@ const Library = () => {
           >
             Go to my library
           </button>
+        </Popup> */}
+        <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
+          <div
+            className=" w-full h-full p-6 flex flex-col items-center"
+            style={{
+              backgroundImage: "url('/assets/img/dailyreward/BG.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <h1 className="mt-2 text-2xl text-white tracking-wide">
+              You have successfully unlocked the song:
+            </h1>
+            <b
+              style={{ fontSize: "50px" }}
+              className="text-yellow-300 text-center"
+            >
+              {unlockedSong?.song_name}
+            </b>
+            {/* <button
+              onClick={() => {
+                setIsPopupOpen(false);
+                router.push("/hub");
+              }}
+              className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
+            >
+              Go to my library
+            </button> */}
+            <button
+              onClick={() => {
+                setIsPopupOpen(false);
+                router.push("/hub");
+              }}
+              className="mt-6 px-6 py-3 text-white font-semibold text-md text-nowrap rounded focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50 uppercase"
+              style={{
+                backgroundImage: "url('/assets/img/hub/Button blank.png')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                border: "none",
+                width: "200px",
+                height: "60px",
+              }}
+            >
+              Go to my library
+            </button>
+          </div>
         </Popup>
       </div>
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
