@@ -80,7 +80,7 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-stretch w-[250px] h-[310px] overflow-hidden mx-1">
+    <div className="frame relative flex flex-col items-stretch w-fullw-[250px] h-[310px] overflow-hidden mx-1">
       <div className="relative w-full h-[224px] overflow-hidden">
         <Image
           src={song.thumbnail_file}

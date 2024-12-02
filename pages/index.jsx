@@ -62,7 +62,7 @@ export default function TitleScreen() {
   }, []);
 
   return (
-    <div className="fixed inset-0 h-full w-full overflow-hidden">
+    <div className="fixed inset-0 h-full w-full overflow-hidden flex flex-col justify-between items-center">
       {/* Logo Section */}
       <motion.div
         className="flex justify-center relative z-10"
@@ -70,17 +70,16 @@ export default function TitleScreen() {
         animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 10 }}
       >
-        <div className="absolute">
+        <div className="">
           <Image
             src="/assets/img/start/LogoTail.png"
             width={250}
             height={200}
             alt="logo"
-            className="w-60 h-auto"
+            className="w-60 h-auto "
           />
         </div>
       </motion.div>
-
       {/* Background Banner */}
       <motion.div
         className="absolute bottom-0 left-0 w-full h-[40vh] bg-cover bg-center bg-no-repeat"
@@ -94,7 +93,7 @@ export default function TitleScreen() {
       />
 
       {/* Start Button */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-72">
+      <div className="absolute bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 w-72">
         <motion.div
           initial={{ x: "100vw", opacity: 0 }}
           animate={
