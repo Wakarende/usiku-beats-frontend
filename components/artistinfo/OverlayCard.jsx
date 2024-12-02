@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 import "../styles.css";
@@ -77,8 +77,20 @@ const OverlayCard = ({
   );
 };
 
-const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
+const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
   const starCount = getStarsFromScore(song.high_score);
+  // const [isPulsing, setIsPulsing] = useState(isFirstSong);
+
+  // useEffect(() => {
+  //   if (totalSongs > 1) {
+  //     setIsPulsing(false);
+  //   }
+  // }, [totalSongs]);
+
+  // const handlePlayClick = () => {
+  //   onPlayClick();
+  //   setIsPulsing(false);
+  // };
   return (
     <div className="frame relative flex flex-col items-stretch w-[250px] h-[310px] overflow-hidden mx-1">
       <div className="relative w-full h-[230px]">
@@ -141,13 +153,14 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
       </div>
       {/* </div> */}
       <div className="flex justify-center ">
-        <button variant="default" onClick={onPlayClick} className="">
+        <button variant="default" onClick={onPlayClick}>
           <Image
             src="/assets/img/hub/Play_now.png"
             width={200}
             height={30}
             alt="play-now-btn"
-            className="w-full h-full"
+            // className="w-full h-full pulse"
+            className={`w-full h-full ${isPulsing ? "pulse" : ""}`}
           />
         </button>
       </div>
