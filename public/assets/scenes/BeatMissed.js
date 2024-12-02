@@ -3,117 +3,95 @@
 /* START OF COMPILED CODE */
 
 class BeatMissed extends Phaser.Scene {
-  constructor() {
-    super("BeatMissed");
 
-    /* START-USER-CTR-CODE */
+	constructor() {
+		super("BeatMissed");
+
+		/* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-  }
+	}
 
-  /** @returns {void} */
-  editorCreate() {
-    // black_background
-    const black_background = this.add.image(180, 320, "BG_1");
-    black_background.scaleX = 0.3333;
-    black_background.scaleY = 0.3333;
+	/** @returns {void} */
+	editorCreate() {
 
-    // bm_BG
-    const bm_BG = this.add.image(180, 320, "bm_BG");
-    bm_BG.scaleX = 0.3333;
-    bm_BG.scaleY = 0.3333;
+		// black_background
+		const black_background = this.add.image(180, 320, "BG_1");
+		black_background.scaleX = 0.3333;
+		black_background.scaleY = 0.3333;
 
-    // Beat_Missed_Text
-    const beat_Missed_Text = this.add.text(180, 182, "", {});
-    beat_Missed_Text.setOrigin(0.5, 0.5);
-    beat_Missed_Text.text = "Missed \na Beat";
-    beat_Missed_Text.setStyle({
-      align: "center",
-      color: "#fe3400",
-      fontFamily: "Afolkalips",
-      fontSize: "60px",
-      stroke: "#fe3400",
-    });
+		// bm_BG
+		const bm_BG = this.add.image(180, 320, "bm_BG");
+		bm_BG.scaleX = 0.3333;
+		bm_BG.scaleY = 0.3333;
 
-    // timer_text
-    const timer_text = this.add.text(193, 471, "", {});
-    timer_text.setOrigin(0.5, 0.5);
-    timer_text.text = "5";
-    timer_text.setStyle({
-      color: "#fcb320",
-      fontFamily: "Carlito-BoldItalic",
-      fontSize: "20px",
-      stroke: "#fcb320",
-    });
+		// Beat_Missed_Text
+		const beat_Missed_Text = this.add.text(180, 182, "", {});
+		beat_Missed_Text.setOrigin(0.5, 0.5);
+		beat_Missed_Text.text = "Missed \na Beat";
+		beat_Missed_Text.setStyle({ "align": "center", "color": "#fe3400", "fontFamily": "Afolkalips", "fontSize": "60px", "stroke": "#fe3400" });
 
-    // continue_btn
-    const continue_btn = this.add.image(180, 552, "bm_continue");
-    continue_btn.scaleX = 0.3333;
-    continue_btn.scaleY = 0.3333;
+		// timer_text
+		const timer_text = this.add.text(199, 609, "", {});
+		timer_text.setOrigin(0.5, 0.5);
+		timer_text.text = "5";
+		timer_text.setStyle({ "color": "#fcb320", "fontFamily": "Carlito-BoldItalic", "fontSize": "24px", "stroke": "#fcb320" });
 
-    // gem_small
-    const gem_small = this.add.image(79, 549, "Gem_small");
-    gem_small.scaleX = 0.3333;
-    gem_small.scaleY = 0.3333;
+		// continue_btn
+		const continue_btn = this.add.image(180, 541, "bm_continue");
+		continue_btn.scaleX = 0.3333;
+		continue_btn.scaleY = 0.3333;
 
-    // gem_count
-    const gem_count = this.add.text(106, 549, "", {});
-    gem_count.setOrigin(0.5, 0.5);
-    gem_count.text = "5";
-    gem_count.setStyle({
-      color: "#000",
-      fontFamily: "Afolkalips",
-      fontSize: "30px",
-      stroke: "#000",
-    });
+		// gem_small
+		const gem_small = this.add.image(79, 538, "Gem_small");
+		gem_small.scaleX = 0.3333;
+		gem_small.scaleY = 0.3333;
 
-    // timer_icon
-    const timer_icon = this.add.image(170, 471, "Timer_icon");
-    timer_icon.scaleX = 0.3333;
-    timer_icon.scaleY = 0.3333;
+		// gem_count
+		const gem_count = this.add.text(106, 538, "", {});
+		gem_count.setOrigin(0.5, 0.5);
+		gem_count.text = "5";
+		gem_count.setStyle({ "color": "#000", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#000" });
 
-    // motivation_text
-    const motivation_text = this.add.text(184, 438, "", {});
-    motivation_text.setOrigin(0.5, 0.5);
-    motivation_text.text = "It just takes practice";
-    motivation_text.setStyle({ fontFamily: "Carlito-Italic", fontSize: "20px" });
+		// timer_icon
+		const timer_icon = this.add.image(170, 607, "Timer_icon");
+		timer_icon.scaleX = 0.5;
+		timer_icon.scaleY = 0.5;
 
-    // lists
-    const ui_layer = [
-      gem_count,
-      beat_Missed_Text,
-      continue_btn,
-      gem_small,
-      timer_icon,
-      motivation_text,
-      bm_BG,
-      timer_text,
-    ];
+		// motivation_text
+		const motivation_text = this.add.text(184, 449, "", {});
+		motivation_text.setOrigin(0.5, 0.5);
+		motivation_text.text = "You missed a beat! Continue from where you left off, or wait to see your score.";
+		motivation_text.setStyle({ "align": "center", "fontFamily": "Carlito-Italic", "fontSize": "20px", "maxLines":4});
+		motivation_text.setWordWrapWidth(300);
 
-    this.black_background = black_background;
-    this.timer_text = timer_text;
-    this.continue_btn = continue_btn;
-    this.gem_count = gem_count;
-    this.motivation_text = motivation_text;
-    this.ui_layer = ui_layer;
+		// lists
+		const ui_layer = [gem_count, beat_Missed_Text, continue_btn, gem_small, timer_icon, motivation_text, bm_BG, timer_text];
 
-    this.events.emit("scene-awake");
-  }
+		this.black_background = black_background;
+		this.timer_text = timer_text;
+		this.continue_btn = continue_btn;
+		this.gem_count = gem_count;
+		this.motivation_text = motivation_text;
+		this.ui_layer = ui_layer;
 
-  /** @type {Phaser.GameObjects.Image} */
-  black_background;
-  /** @type {Phaser.GameObjects.Text} */
-  timer_text;
-  /** @type {Phaser.GameObjects.Image} */
-  continue_btn;
-  /** @type {Phaser.GameObjects.Text} */
-  gem_count;
-  /** @type {Phaser.GameObjects.Text} */
-  motivation_text;
-  /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
-  ui_layer;
+		this.events.emit("scene-awake");
+	}
 
-  /* START-USER-CODE */
+	/** @type {Phaser.GameObjects.Image} */
+	black_background;
+	/** @type {Phaser.GameObjects.Text} */
+	timer_text;
+	/** @type {Phaser.GameObjects.Image} */
+	continue_btn;
+	/** @type {Phaser.GameObjects.Text} */
+	gem_count;
+	/** @type {Phaser.GameObjects.Text} */
+	motivation_text;
+	/** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
+	ui_layer;
+
+	/* START-USER-CODE */
 
   // Write your code here
 

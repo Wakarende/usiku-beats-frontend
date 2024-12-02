@@ -58,13 +58,13 @@
             "label": "timer_text",
             "scope": "CLASS",
             "components": [],
-            "x": 193,
-            "y": 471,
+            "x": 199,
+            "y": 609,
             "originX": 0.5,
             "originY": 0.5,
             "text": "5",
             "fontFamily": "Carlito-BoldItalic",
-            "fontSize": "20px",
+            "fontSize": "24px",
             "color": "#fcb320",
             "stroke": "#fcb320"
         },
@@ -78,7 +78,7 @@
                 "key": "bm_continue"
             },
             "x": 180,
-            "y": 552,
+            "y": 541,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -91,7 +91,7 @@
                 "key": "Gem_small"
             },
             "x": 79,
-            "y": 549,
+            "y": 538,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -102,7 +102,7 @@
             "scope": "CLASS",
             "components": [],
             "x": 106,
-            "y": 549,
+            "y": 538,
             "originX": 0.5,
             "originY": 0.5,
             "text": "5",
@@ -120,9 +120,9 @@
                 "key": "Timer_icon"
             },
             "x": 170,
-            "y": 471,
-            "scaleX": 0.3333,
-            "scaleY": 0.3333
+            "y": 607,
+            "scaleX": 0.5,
+            "scaleY": 0.5
         },
         {
             "type": "Text",
@@ -131,12 +131,15 @@
             "scope": "CLASS",
             "components": [],
             "x": 184,
-            "y": 438,
+            "y": 449,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "It just takes practice",
+            "text": "You missed a beat! Continue from where you left off, or wait to see your score.",
+            "align": "center",
             "fontFamily": "Carlito-Italic",
-            "fontSize": "20px"
+            "fontSize": "20px",
+            "maxLines": 4,
+            "wordWrapWidth": 300
         }
     ],
     "plainObjects": [],
