@@ -182,12 +182,12 @@
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "Retry button"
+                "key": "Button_blank"
             },
             "x": 180,
             "y": 586,
-            "scaleX": 0.3333,
-            "scaleY": 0.3333
+            "scaleX": 0.6,
+            "scaleY": 0.8
         },
         {
             "type": "Image",
@@ -210,12 +210,12 @@
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "Continue"
+                "key": "Button_blank"
             },
             "x": 180,
             "y": 515,
-            "scaleX": 0.3333,
-            "scaleY": 0.3333
+            "scaleX": 0.4,
+            "scaleY": 0.6
         },
         {
             "type": "Image",
@@ -261,6 +261,32 @@
             "fontSize": "15px",
             "color": "#faf05e",
             "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "9356df75-151d-41eb-88ee-326fb4778326",
+            "label": "main_menu_text",
+            "components": [],
+            "x": 180,
+            "y": 515,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "MAIN MENU",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "18px"
+        },
+        {
+            "type": "Text",
+            "id": "5e0333e4-321b-408e-8652-cf1782faee78",
+            "label": "main_menu_text_1",
+            "components": [],
+            "x": 180,
+            "y": 586.5756245511806,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "RETRY SONG",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "26px"
         }
     ],
     "plainObjects": [],
