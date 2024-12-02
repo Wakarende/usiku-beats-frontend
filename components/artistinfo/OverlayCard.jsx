@@ -80,7 +80,7 @@ const OverlayCard = ({
 const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
   const starCount = getStarsFromScore(song.high_score);
   return (
-    <div className="frame relative flex flex-col items-stretch w-fullw-[250px] h-[310px] overflow-hidden mx-1">
+    <div className="frame relative flex flex-col items-stretch w-full max-w-[250px] h-[310px] overflow-hidden mx-1">
       <div className="relative w-full h-[224px] overflow-hidden">
         <Image
           src={song.thumbnail_file}
@@ -113,21 +113,13 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick }) => {
         {/* Bottom gradient and content */}
         <div className="absolute bottom-0 left-0 p-2 w-full h-16 bg-gradient-to-t from-black/70 to-transparent">
           <div className="flex justify-between items-end w-full absolute left-0 bottom-1">
-            <p className="uppercase text-yellow-300 tracking-tighter country-text absolute bottom-[-4px] left-[-20px] ">
+            <p className="uppercase text-yellow-300 tracking-tighter country-text absolute bottom-0 left-[-25px] ">
               {song.country_name}
             </p>
 
             <div className="flex gap-x-0.5 items-end absolute bottom-0 right-[20px]">
-              <div className="relative">
-                <Image
-                  src="/assets/img/hub/Extreme.png"
-                  alt="difficulty"
-                  width={35}
-                  height={35}
-                />
-              </div>
               <div className="flex flex-col">
-                <p className="text-yellow-300 uppercase tracking-tighter difficulty-text absolute bottom-[-3px] right-[-40px]">
+                <p className="text-yellow-300 uppercase tracking-tighter difficulty-text absolute bottom-0 right-[-45px]">
                   Medium
                 </p>
               </div>
