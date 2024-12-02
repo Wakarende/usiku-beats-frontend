@@ -29,15 +29,15 @@ export default function TitleScreen() {
       document.documentElement
         .requestFullscreen()
         .then(() => {
-          router.push("/hub");
+          router.push("/intro");
         })
         .catch((err) => {
           console.error("Error enabling full-screen mode:", err);
-          router.push("/hub");
+          router.push("/intro");
         });
     } else {
       console.warn("Fullscreen API is not supported");
-      router.push("/hub");
+      router.push("/intro");
     }
   };
 

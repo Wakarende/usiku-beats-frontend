@@ -107,6 +107,25 @@
 /* INTRO PAGE  */
 .intro-bg {
     background-image: url("/assets/img/dailyreward/BG.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.intro-header {
+    color: #ff6a00;
+    text-transform: uppercase;
+    text-shadow: 1.5px 1.5px #faf05d;
+}
+
+.intro-btn {
+    background-image: url('/assets/img/hub/Button blank.png');
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    animation: none !important;
 }
 
 /* INTRO PAGE END  */
