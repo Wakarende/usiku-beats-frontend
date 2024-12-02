@@ -112,6 +112,7 @@
     background-position: center;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 
 .intro-header {
@@ -124,8 +125,24 @@
     background-image: url('/assets/img/hub/Button blank.png');
     width: 100%;
     height: auto;
-    transform: none !important;
-    animation: none !important;
+    animation: pulse 1s infinite;
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+    }
+
+    70% {
+        transform: scale(1);
+
+    }
+
+    100% {
+        transform: scale(0.95);
+
+    }
 }
 
 /* INTRO PAGE END  */

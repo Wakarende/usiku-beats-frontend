@@ -39,21 +39,13 @@ export default function IntroPanel() {
           your collection
         </p>
       </div>
-      <div className="w-80">
-        <motion.button
-          initial={{ scale: 1 }}
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
-          }}
+      <div className="w-80 justify-center flex items-center">
+        <button
           onClick={handleOk}
           className="intro-btn bg-contain bg-no-repeat flex items-center justify-center text-white font-bold text-2xl uppercase pt-3 pb-3 tracking-wider"
         >
           Ok!
-        </motion.button>
+        </button>
       </div>
     </div>
   );
