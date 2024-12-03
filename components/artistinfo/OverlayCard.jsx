@@ -82,7 +82,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
 
   return (
     <div className="frame relative flex flex-col items-stretch w-[250px] h-[310px] overflow-hidden mx-1">
-      <div className="relative w-full h-[230px]">
+      <div className="relative w-[238px] h-[220px]">
         <Image
           src={song.thumbnail_file}
           alt={song.song_name}
@@ -94,7 +94,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
       {/* Star rating at the top */}
 
       <div className="absolute top-0 left-0 w-full h-8  bg-gradient-to-b from-black/60 to-transparent">
-        <div className="absolute top-1 left-1/2 transform -translate-x-1/2 flex mt-2">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex mt-2">
           {[...Array(5)].map((_, index) => (
             <div key={index} className="relative w-6 h-6">
               <Image

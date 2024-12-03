@@ -215,7 +215,7 @@
   background-image: url("/assets/img/hub/Frame.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: 8px 6px;
+  padding: 7px 8px 6px 6px;
   z-index: 10;
 }
 
