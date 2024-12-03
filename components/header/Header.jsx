@@ -53,7 +53,7 @@ const Header = () => {
               className="value-bg"
             />
             <div className="absolute inset-0 flex items-center justify-center pl-8">
-              <p className="text-yellow-300 text-lg whitespace-nowrap">{stars}</p>
+              <p className="text-yellow text-lg whitespace-nowrap">{stars}</p>
             </div>
           </div>
           {/* Number of gems */}
@@ -66,7 +66,7 @@ const Header = () => {
               className="header-gem"
             />
             <div className="absolute inset-0 flex items-center justify-center pl-8">
-              <p className="text-yellow-300 text-lg whitespace-nowrap">{gems}</p>
+              <p className="text-yellow text-lg whitespace-nowrap">{gems}</p>
             </div>
           </div>
         </div>
@@ -94,7 +94,12 @@ const Header = () => {
             />
           </Link>
           <Link href={"/login"} className="flex items-center">
-            <Image src="/assets/img/header/Settings.png" alt="Settings" width={50} height={50} />
+            <Image
+              src="/assets/img/header/Settings.png"
+              alt="Settings"
+              width={50}
+              height={50}
+            />
           </Link>
         </div>
       </Container>

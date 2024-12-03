@@ -160,7 +160,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     layout="fill"
                     objectFit="cover"
                   />
-                  <p className="text-yellow-300 text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
+                  <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
                     {item.song.song_name}
                   </p>
                 </div>
@@ -228,13 +228,10 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                           height={16}
                         />
                         <div className="flex items-center">
-                          <span className="text-yellow-300 gems-required-text">
+                          <span className="text-yellow gems-required-text">
                             {gemsRequiredToUnlockSong}
                           </span>
                         </div>
-                        {/* <span className="text-yellow-300 gems-required-text">
-                          {gemsRequiredToUnlockSong}
-                        </span> */}
                       </div>
                       <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text">
                         unlock now
@@ -282,7 +279,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             width={90}
             height={90}
           />
-          <p className="text-yellow-300 disc-text text-center font-bold">
+          <p className="text-yellow disc-text text-center font-bold">
             {totalDiscs >= discsRequiredToUnlockSong
               ? "You have enough discs to unlock a new song!"
               : ` Earn ${

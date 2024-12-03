@@ -369,10 +369,10 @@ const HubScreen = () => {
         {/* Daily Reward Styling */}
       {/* <div className="daily-reward-content mt-5">
         <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
-        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow-300">
+        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow">
           Your Daily Gift
         </p>
-        <p className="daily-gift-subtext text-xl mt-1 text-yellow-300">
+        <p className="daily-gift-subtext text-xl mt-1 text-yellow">
           Check in everyday to get more rewards
         </p>
         <div className="daily-gem-section">
@@ -383,7 +383,7 @@ const HubScreen = () => {
             height={100}
             className="daily-reward-gem"
           />
-          <h3 className="gem-value text-yellow-300 text-6xl tracking-wider">
+          <h3 className="gem-value text-yellow text-6xl tracking-wider">
             +10
           </h3>
         </div>

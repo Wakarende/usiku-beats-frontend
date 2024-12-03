@@ -128,57 +128,6 @@ const Library = () => {
           />
         </div>
         <div className="flex flex-wrap gap-8 mt-8">
-          {/* {songs.map((song, index) => (
-            <div
-              key={index}
-              className="p-4 rounded-lg md:w-[400px] lg:w-[500px] sm:w-[400px] flex flex-row justify-center items-center"
-            >
-            
-              <Image
-                src={song.thumbnail_file}
-                alt="Song Cover"
-                width={150}
-                height={150}
-                className="rounded"
-              />
-        
-              <div className="flex-grow ml-6">
-                <p className="font-bold text-yellow-300 text-lg md:text-md">
-                  {song.song_name}
-                </p>
-                <p className="text-white uppercase text-xs">
-                  {song.artist_name}
-                </p>
-                {song.isUnlocked ? (
-                  <div className="text-green-500 font-bold mt-4">Unlocked</div>
-                ) : (
-                  <div
-                    className={` relative mt-3 cursor-pointer ${
-                      !unlockable ? "pointer-events-none" : ""
-                    }`}
-                    onClick={() => unlockable && handleSongUnlock(song)}
-                  >
-                    
-                    <div className="md:w-[400px]">
-                      <Image
-                        src="/assets/img/library/Get song button.png"
-                        width={200}
-                        height={80}
-                        alt="get-song-btn"
-                      />
-                      <span className="text-yellow-300 font-bold text-lg absolute top-1 left-4 sm:left-3 md:text-md sm:text-xs">
-                        30
-                      </span>
-                    </div>
-                  
-                    <div className="absolute inset-0 flex  items-center justify-between">
-                      <div className="flex items-center mx-4"></div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))} */}
           {songs.map((song, index) => (
             <div key={index}>
               <div className="p-4 rounded-lg md:w-[400px] lg:w-[500px] sm:w-[400px] flex flex-row justify-center items-center">
@@ -195,7 +144,7 @@ const Library = () => {
 
                 {/* Song Details Section */}
                 <div className="flex-grow ml-6">
-                  <p className="font-bold text-yellow-300 text-lg md:text-md">
+                  <p className="font-bold text-yellow text-lg md:text-md">
                     {song.song_name}
                   </p>
                   <p className="text-white uppercase text-xs">
@@ -220,7 +169,7 @@ const Library = () => {
                           height={80}
                           alt="get-song-btn"
                         />
-                        <span className="text-yellow-300 font-bold text-lg absolute top-1 left-4 sm:left-3 md:text-md sm:text-xs">
+                        <span className="text-yellow font-bold text-lg absolute top-1 left-4 sm:left-3 md:text-md sm:text-xs">
                           30
                         </span>
                       </div>

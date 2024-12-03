@@ -41,7 +41,7 @@ const LevelInfo = ({
       <div className="text-center mb-2">
         <p
           className={classNames("text-md carlito-bold tracking-wide ", {
-            "text-yellow-300": isActive,
+            "text-yellow": isActive,
             "text-gray-300": !isActive,
           })}
         >
@@ -49,7 +49,7 @@ const LevelInfo = ({
         </p>
         <h1
           className={classNames("text-7xl tracking-wide mb-2", {
-            "text-yellow-300": isActive,
+            "text-yellow": isActive,
             "text-gray-300": !isActive,
           })}
         >
@@ -73,7 +73,7 @@ const LevelInfo = ({
             {/* "YOU GET" Section */}
             <p
               className={classNames("text-5xl text-center mb-8 ", {
-                "text-yellow-300": !isInactive,
+                "text-yellow": !isInactive,
                 "text-gray-300": isInactive,
               })}
             >
@@ -95,7 +95,7 @@ const LevelInfo = ({
                   </div>
                   <p className="text-white text-lg">Bonus gems</p>
                 </div>
-                <h3 className="text-yellow-300 text-4xl font-bold ml-4 tracking-widest">
+                <h3 className="text-yellow text-4xl font-bold ml-4 tracking-widest">
                   {bonusGems}
                 </h3>
               </div>
@@ -138,7 +138,7 @@ const LevelInfo = ({
                     />
                   </div>
                   <p className="text-white text-lg w-28">New songs to unlock</p>
-                  <h3 className="text-yellow-300 text-4xl font-bold ml-4 tracking-widest">
+                  <h3 className="text-yellow text-4xl font-bold ml-4 tracking-widest">
                     20
                   </h3>
                 </div>
@@ -161,7 +161,7 @@ const LevelInfo = ({
                   {starsNeeded}
                 </h1>
               </div>
-              <p className="text-yellow-300 text-lg tracking-widest ">
+              <p className="text-yellow text-lg tracking-widest ">
                 Stars needed
               </p>
             </div>

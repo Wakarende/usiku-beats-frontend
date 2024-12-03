@@ -115,13 +115,13 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
       {/* Bottom gradient and content */}
       <div className="absolute bottom-0 left-0 p-2 w-full ">
         <div className="flex w-full justify-between items-end absolute bottom-28">
-          <p className="uppercase text-yellow-300 tracking-tighter country-text absolute top-[50%] left-[-30px] ">
+          <p className="uppercase text-yellow tracking-tighter country-text absolute top-[50%] left-[-30px] ">
             {song.country_name}
           </p>
 
           <div className="flex gap-x-0.5 items-end">
             <div className="flex flex-col">
-              <p className="text-yellow-300 uppercase tracking-tighter difficulty-text absolute right-[-14px] gradient-text">
+              <p className="text-yellow uppercase tracking-tighter difficulty-text absolute right-[-14px] gradient-text">
                 Medium
               </p>
             </div>
@@ -130,7 +130,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
       </div>
       <div className="flex flex-col flex-grow overflow-hidden justify-end ">
         <div className="flex flex-col items-center text-md tracking-wide">
-          <p className="text-yellow-300">{song.song_name}</p>
+          <p className="text-yellow">{song.song_name}</p>
           <p
             onClick={(e) => onArtistClick(e, song.artist)}
             className="text-white uppercase text-xs tracking-wide cursor-pointer"
