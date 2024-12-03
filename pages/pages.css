@@ -141,8 +141,8 @@
     width: 80%;
     height: auto;
     padding: 0.5rem;
-    animation: pulse 1s infinite;
-    animation-delay: 1s;
+    /* animation: pulse 1s infinite; */
+    /* animation-delay: 1s; */
 }
 
 @keyframes pulse {

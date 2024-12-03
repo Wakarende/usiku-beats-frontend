@@ -43,12 +43,25 @@ export default function IntroPanel() {
           </p>
         </div>
       </div>
-      <button
-        onClick={handleOk}
-        className="intro-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center "
+      <motion.div
+        className="w-full justify-center flex"
+        animate={{
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          repeatType: "loop",
+          ease: "easeInOut",
+        }}
       >
-        <p className="relative flex justify-center"> Ok</p>
-      </button>
+        <button
+          onClick={handleOk}
+          className="intro-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center "
+        >
+          <p className="relative flex justify-center"> Ok</p>
+        </button>
+      </motion.div>
     </div>
   );
 }

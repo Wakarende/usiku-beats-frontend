@@ -10,7 +10,6 @@ import { BASE_URL } from "../services/config";
 import { useRouter } from "next/router";
 import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
-import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import Header from "../components/header/Header";
 import BottomTabNav from "../components/BottomTabNav";
 

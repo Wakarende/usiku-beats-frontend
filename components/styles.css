@@ -82,8 +82,6 @@
   transform: translate(-50%, -50%);
 }
 
-.value-bg {}
-
 /* END HEADER  */
 
 /* UNLOCK ROW SONGS */
@@ -126,7 +124,6 @@
   font-size: 11px;
   align-items: center;
   line-height: 1;
-  /* font-family: 'Afolkalips', sans-serif; */
   line-height: 1;
   display: inline-flex;
   align-items: center;
