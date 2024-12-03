@@ -183,13 +183,16 @@ const Library = () => {
             <div key={index}>
               <div className="p-4 rounded-lg md:w-[400px] lg:w-[500px] sm:w-[400px] flex flex-row justify-center items-center">
                 {/* Image Section */}
-                <Image
-                  src={song.thumbnail_file}
-                  alt="Song Cover"
-                  width={150}
-                  height={150}
-                  className="rounded"
-                />
+                <div>
+                  <Image
+                    src={song.thumbnail_file}
+                    alt="Song Cover"
+                    width={150}
+                    height={150}
+                    className="rounded"
+                  />
+                </div>
+
                 {/* Song Details Section */}
                 <div className="flex-grow ml-6">
                   <p className="font-bold text-yellow-300 text-lg md:text-md">

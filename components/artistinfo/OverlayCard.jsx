@@ -112,11 +112,10 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
           ))}
         </div>
       </div>
-
       {/* Bottom gradient and content */}
-      <div className="absolute bottom-0 left-0 p-2 w-full">
+      <div className="absolute bottom-0 left-0 p-2 w-full ">
         <div className="flex w-full justify-between items-end absolute bottom-28">
-          <p className="uppercase text-yellow-300 tracking-tighter country-text absolute top-[50%] left-[-30px]">
+          <p className="uppercase text-yellow-300 tracking-tighter country-text absolute top-[50%] left-[-30px] ">
             {song.country_name}
           </p>
 
@@ -129,7 +128,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col flex-grow overflow-hidden justify-end">
+      <div className="flex flex-col flex-grow overflow-hidden justify-end ">
         <div className="flex flex-col items-center text-md tracking-wide">
           <p className="text-yellow-300">{song.song_name}</p>
           <p
@@ -148,7 +147,6 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
             width={200}
             height={30}
             alt="play-now-btn"
-            // className="w-full h-full pulse"
             className={`w-full h-full ${isPulsing ? "pulse" : ""}`}
           />
         </button>
