@@ -71,7 +71,11 @@ class Level extends Phaser.Scene {
     const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
     multiplier_text.setOrigin(0.5, 0.5);
     multiplier_text.text = "x 1";
-    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
+    multiplier_text.setStyle({
+      align: "center",
+      fontFamily: "Afolkalips",
+      fontSize: "25px",
+    });
 
     // tap_zone_area
     const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
@@ -106,7 +110,11 @@ class Level extends Phaser.Scene {
     const streak_text = this.add.text(180, 353, "", {});
     streak_text.setOrigin(0.5, 0.5);
     streak_text.text = "10 STREAK";
-    streak_text.setStyle({ align: "center", fontFamily: "Carlito-Regular", fontSize: "15px" });
+    streak_text.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Regular",
+      fontSize: "15px",
+    });
     streak_popup.add(streak_text);
 
     // perfect_1
@@ -161,7 +169,11 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(bG);
 
     // bottom_banner
-    const bottom_banner = this.add.image(180, 606.5033569335938, "Bottom banner");
+    const bottom_banner = this.add.image(
+      180,
+      606.5033569335938,
+      "Bottom banner"
+    );
     bottom_banner.scaleX = 0.3333;
     bottom_banner.scaleY = 0.3333;
     song_complete_overlay.add(bottom_banner);
@@ -170,7 +182,11 @@ class Level extends Phaser.Scene {
     const artist_name = this.add.text(180, 19, "", {});
     artist_name.setOrigin(0.5, 0.5);
     artist_name.text = "artist_name";
-    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
+    artist_name.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      stroke: "#faf05e",
+    });
     song_complete_overlay.add(artist_name);
 
     // song_name
@@ -225,7 +241,10 @@ class Level extends Phaser.Scene {
     const youve_earned_txt = this.add.text(180, 406, "", {});
     youve_earned_txt.setOrigin(0.5, 0.5);
     youve_earned_txt.text = "You've earned 30 discs";
-    youve_earned_txt.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
+    youve_earned_txt.setStyle({
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+    });
     song_complete_overlay.add(youve_earned_txt);
 
     // disc
@@ -484,13 +503,18 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
     this.multiplier_emitter = this.add
-      .particles(this.multiplier_text.x, this.multiplier_text.y, "Play_active", {
-        lifespan: 750,
-        speed: { min: 50, max: 100 },
-        scale: { start: 0.5, end: 0 },
-        blendMode: "ADD",
-        emitting: false,
-      })
+      .particles(
+        this.multiplier_text.x,
+        this.multiplier_text.y,
+        "Play_active",
+        {
+          lifespan: 750,
+          speed: { min: 50, max: 100 },
+          scale: { start: 0.5, end: 0 },
+          blendMode: "ADD",
+          emitting: false,
+        }
+      )
       .setDepth(10);
 
     this.tileEmitter = this.add
@@ -527,7 +551,7 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    // this.initializeVisualizer();
+    this.initializeVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
   }
@@ -553,7 +577,12 @@ class Level extends Phaser.Scene {
       var y = (targetHeight - newHeight) / 2;
 
       viewport.setTo(x, y, newWidth, newHeight);
-      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+      this.cameras.main.setViewport(
+        viewport.x,
+        viewport.y,
+        viewport.width,
+        viewport.height
+      );
       this.cameras.main.setZoom(scale);
       this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
 
@@ -637,14 +666,14 @@ class Level extends Phaser.Scene {
   //   // const visualizerSize = Math.max(textWidth, textHeight) + padding * 2;
 
   //   // Fixed visualizer
-  //   const visualizerSize = 250; // Adjust size as needed
+  //   const visualizerSize = 150; // Adjust size as needed
 
   //   // Calculate radius for the inner circle
   //   // const innerRadius = (textWidth / 2) / (visualizerSize / 2);
   //   // const radius = Phaser.Math.Clamp(innerRadius, 0, 1);
   //   const radius = 0.5;
 
-  //   const maxPixelRatio = 2;
+  //   const maxPixelRatio = 1;
 
   //   // Get the device pixel ratio
   //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
@@ -696,13 +725,13 @@ class Level extends Phaser.Scene {
   //     lumiBars: false,
   //     maxFreq: 16000,
   //     minFreq: 10,
-  //     smoothing: 0.5,
+  //     smoothing: 0.7,
   //     overlay: true,
   //     showBgColor: false,
   //     channelLayout: "dual-vertical",
   //     frequencyScale: "bark",
   //     outlineBars: true,
-  //     fftSize: 256, //reduce fft quality
+  //     fftSize: 128, //reduce fft quality
   //   });
 
   //   // Store references for later use
@@ -729,7 +758,7 @@ class Level extends Phaser.Scene {
   //   this.visualizerImage.setAlpha(1);
 
   //   let lastVisualizerUpdate = 0;
-  //   const visualizerUpdateInterval = 50;
+  //   const visualizerUpdateInterval = 100;
 
   //   // Update the onCanvasDraw function
   //   this.audioMotion.onCanvasDraw = () => {
@@ -760,6 +789,95 @@ class Level extends Phaser.Scene {
   //     }
   //   };
   // }
+  // initializeVisualizer() {
+  //   const gameWidth = this.sys.game.config.width;
+  //   const scoreY = this.score_text.y;
+  //   const multiplierY = this.multiplier_text.y;
+  //   const visualizerYPosition = (scoreY + multiplierY) / 2 - 20;
+
+  //   const visualizerSize = 150; // Reduced size for performance
+
+  //   // Get the device pixel ratio, limiting it for performance
+  //   const maxPixelRatio = 1; // Lowered pixel ratio for better performance
+  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+
+  //   // Create a Phaser CanvasTexture with the desired dimensions
+  //   this.visualizerTexture = this.textures.createCanvas(
+  //     "visualizerTexture",
+  //     visualizerSize,
+  //     visualizerSize
+  //   );
+
+  //   // Get the canvas from the CanvasTexture
+  //   const visualizerCanvas = this.visualizerTexture.getSourceImage();
+
+  //   // Create the AudioMotion Analyzer instance with the Phaser canvas
+  //   this.audioMotion = new AudioMotionAnalyzer(null, {
+  //     canvas: visualizerCanvas, // Use Phaser's canvas directly
+  //     audioCtx: this.sound.context,
+  //     useCanvas: true,
+  //     mode: 1, // Polar (circular) mode
+  //     radial: true,
+  //     radialInvert: true,
+  //     radialSpeed: true,
+  //     lineMode: 1, // Simplified line rendering
+  //     radius: 0.5, // Adjust as needed
+  //     responsive: false,
+  //     width: visualizerSize,
+  //     height: visualizerSize,
+  //     pixelRatio: pixelRatio,
+  //     showScaleY: false,
+  //     showScaleX: false,
+  //     showPeaks: false,
+  //     showFPS: false,
+  //     minDecibels: -100,
+  //     maxDecibels: -40,
+  //     gradient: "prism",
+  //     linearAmplitude: false,
+  //     linearBoost: 1.4,
+  //     bgAlpha: 0,
+  //     barSpace: 0.01,
+  //     fillAlpha: 0,
+  //     lineWidth: 1.5,
+  //     reflexRatio: 0,
+  //     reflexAlpha: 0,
+  //     lumiBars: false,
+  //     maxFreq: 16000,
+  //     minFreq: 10,
+  //     smoothing: 0.7, // Increased smoothing
+  //     overlay: true,
+  //     showBgColor: false,
+  //     channelLayout: "dual-vertical",
+  //     frequencyScale: "bark",
+  //     outlineBars: true,
+  //     fftSize: 64, // Reduced FFT size
+  //   });
+
+  //   // Position the visualizer image in your scene
+  //   this.visualizerImage = this.add.image(
+  //     gameWidth / 2,
+  //     visualizerYPosition,
+  //     "visualizerTexture"
+  //   );
+  //   this.visualizerImage.setDisplaySize(visualizerSize, visualizerSize);
+  //   this.visualizerImage.setOrigin(0.5, 0.5);
+  //   this.visualizerImage.setDepth(4);
+  //   this.visualizerImage.setAlpha(1);
+
+  //   let lastVisualizerUpdate = 0;
+  //   const visualizerUpdateInterval = 100; // Increased interval for performance
+
+  //   // Update the onCanvasDraw function
+  //   this.audioMotion.onCanvasDraw = () => {
+  //     const now = performance.now();
+  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
+  //       lastVisualizerUpdate = now;
+  //       // Since AudioMotionAnalyzer is drawing directly onto the canvas,
+  //       // simply refresh the texture to update the displayed image
+  //       this.visualizerTexture.refresh();
+  //     }
+  //   };
+  // }
 
   update(time, delta) {
     if (!this.tileGroup) {
@@ -771,14 +889,21 @@ class Level extends Phaser.Scene {
     this.lowFpsMode = this.fps < 30 ? true : false;
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
-      this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
+      this.scoreDisplay = Phaser.Math.Linear(
+        this.scoreDisplay,
+        this.score,
+        0.1
+      );
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
 
     let seek = this.music?.seek;
 
     if (seek >= 0) {
-      if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
+      if (
+        this.soundMarkers.length > 0 &&
+        seek + this.tileDuration >= this.soundMarkers[0].start
+      ) {
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
@@ -786,10 +911,15 @@ class Level extends Phaser.Scene {
       this.tileGroup.getChildren().forEach((tile) => {
         if (tile.swiped || tile.held) return;
 
-        tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
+        tile.lerp = Math.max(
+          0,
+          (seek - tile.start + this.tileDuration) / this.tileDuration
+        );
 
         // Update both base and overlay positions
-        tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
+        tile.setY(
+          Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp)
+        );
         tile.setAlpha(tile.lerp);
 
         if (tile.overlayTile) {
@@ -818,7 +948,13 @@ class Level extends Phaser.Scene {
 
     // Create base aesthetic tile with random texture
     let tile = this.tileGroup
-      .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
+      .create(
+        0,
+        0,
+        this.baseTileTextures[
+          Math.floor(Math.random() * this.baseTileTextures.length)
+        ]
+      )
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(0.2)
@@ -970,12 +1106,16 @@ class Level extends Phaser.Scene {
 
     let normalizationFactor = slope * tileDuration + intercept;
 
-    let heldTileScaleFactor = 1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
+    let heldTileScaleFactor =
+      1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
     return heldTileScaleFactor;
   }
 
   handleHeldTile(tile, duration) {
-    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
+    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(
+      duration,
+      this.tileDuration
+    );
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
     // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
@@ -1106,7 +1246,10 @@ class Level extends Phaser.Scene {
     const maskRadius = 100; // radius of the circular mask
     const imageWidth = this.carousel.width;
     const imageHeight = this.carousel.height;
-    const scale = Math.max((maskRadius * 2) / imageWidth, (maskRadius * 2) / imageHeight);
+    const scale = Math.max(
+      (maskRadius * 2) / imageWidth,
+      (maskRadius * 2) / imageHeight
+    );
 
     // Apply the calculated scale and center the image
     this.carousel.setScale(scale);
@@ -1351,7 +1494,9 @@ class Level extends Phaser.Scene {
     }
 
     if (this.progress >= this.streakThreshold) {
-      this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
+      this.streak_text.setText(
+        `${this.streakThreshold * this.currentMultiplier} STREAK`
+      );
       this.streakDisplay();
       this.progress = 0;
       this.currentMultiplier += 1;
