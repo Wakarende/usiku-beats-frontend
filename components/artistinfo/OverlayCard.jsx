@@ -92,7 +92,6 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
         />
       </div>
       {/* Star rating at the top */}
-
       <div className="absolute top-0 left-0 w-full h-8  bg-gradient-to-b from-black/60 to-transparent">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex mt-2">
           {[...Array(5)].map((_, index) => (
@@ -113,18 +112,28 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
         </div>
       </div>
       {/* Bottom gradient and content */}
-      <div className="absolute bottom-0 left-0 p-2 w-full ">
+      <div className="absolute bottom-0 left-0 p-2  ">
         <div className="flex w-full justify-between items-end absolute bottom-28">
-          <p className="uppercase tracking-tighter outline-text country-text absolute top-[50%] left-[-30px] ">
-            {song.country_name}
-          </p>
+          <svg viewBox="0 0 450 70" className="absolute left-[-30px]">
+            <text
+              className="svgText uppercase tracking-normal country-text"
+              x="1"
+              y="45"
+            >
+              {song.country_name}
+            </text>
+          </svg>
 
-          <div className="flex gap-x-0.5 items-end">
-            <div className="flex flex-col">
-              <p className="text-yellow uppercase tracking-tighter difficulty-text absolute right-[-14px] gradient-text outline-text">
+          <div className="absolute">
+            <svg viewBox="0 0 450 70" className="absolute left-[130px]">
+              <text
+                className="svgText uppercase tracking-normal difficulty-text"
+                x="3"
+                y="45"
+              >
                 Medium
-              </p>
-            </div>
+              </text>
+            </svg>
           </div>
         </div>
       </div>

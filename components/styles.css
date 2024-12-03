@@ -206,7 +206,8 @@
 }
 
 /* UNLOCK ROW SONGS END  */
-/* ARTIST INFO OVERLAY  */
+
+/* HUBSCREEN SONG CARD OVERLAY  */
 .frame {
   position: relative;
   background-image: url("/assets/img/hub/Frame.png");
@@ -234,7 +235,58 @@ button .pulse {
   animation: pulse 1.5s ease-in-out infinite !important;
 }
 
+/* text outline  */
+.country-text {
+  font-size: 10px;
+}
 
+.difficulty-text {
+  font-size: 10px;
+}
+
+.outline-text {
+  color: #faf05d;
+  text-shadow:
+    -1px -1px 0 #000,
+    0 -1px 0 #000,
+    1px -1px 0 #000,
+    1px 0 0 #000,
+    1px 1px 0 #000,
+    0 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px 0 0 #000;
+}
+
+.thick-outline-text {
+  color: #faf05d;
+  text-shadow:
+    -2px -2px 0 #000,
+    -2px 0 0 #000,
+    -2px 2px 0 #000,
+    0 2px 0 #000,
+    2px 2px 0 #000,
+    2px 0 0 #000,
+    2px -2px 0 #000,
+    0 -2px 0 #000;
+}
+
+svg {
+  font-size: 20px;
+  font-weight: bold;
+  width: 450px;
+  height: 70px;
+  fill: #faf05d;
+}
+
+.svgText {
+  fill: #faf05d;
+  stroke: black;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+/* text outline end  */
 .overlay {
   position: fixed;
   top: 0;
@@ -495,35 +547,3 @@ button .pulse {
 }
 
 /* LEVEL UP POPUP END  */
-
-.difficulty-text,
-.country-text {
-  font-size: 10px;
-}
-
-.outline-text {
-  color: #faf05d;
-  /* Ensure the text color is set to white */
-  text-shadow:
-    -1px -1px 0 #000,
-    0 -1px 0 #000,
-    1px -1px 0 #000,
-    1px 0 0 #000,
-    1px 1px 0 #000,
-    0 1px 0 #000,
-    -1px 1px 0 #000,
-    -1px 0 0 #000;
-}
-
-.thick-outline-text {
-  color: #faf05d;
-  text-shadow:
-    -2px -2px 0 #000,
-    -2px 0 0 #000,
-    -2px 2px 0 #000,
-    0 2px 0 #000,
-    2px 2px 0 #000,
-    2px 0 0 #000,
-    2px -2px 0 #000,
-    0 -2px 0 #000;
-}
