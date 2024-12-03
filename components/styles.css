@@ -500,3 +500,30 @@ button .pulse {
 .country-text {
   font-size: 10px;
 }
+
+.outline-text {
+  color: #faf05d;
+  /* Ensure the text color is set to white */
+  text-shadow:
+    -1px -1px 0 #000,
+    0 -1px 0 #000,
+    1px -1px 0 #000,
+    1px 0 0 #000,
+    1px 1px 0 #000,
+    0 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px 0 0 #000;
+}
+
+.thick-outline-text {
+  color: #faf05d;
+  text-shadow:
+    -2px -2px 0 #000,
+    -2px 0 0 #000,
+    -2px 2px 0 #000,
+    0 2px 0 #000,
+    2px 2px 0 #000,
+    2px 0 0 #000,
+    2px -2px 0 #000,
+    0 -2px 0 #000;
+}
