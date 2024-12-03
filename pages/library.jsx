@@ -120,7 +120,7 @@ const Library = () => {
         </div>
         <div className="gradient-container w-full mt-0">
           <Image
-            src={"/assets/img/library/Gradient copy.png"}
+            src={"/assets/img/library/Gradient-copy.png"}
             alt="gradient-separator"
             width={150}
             height={20}
