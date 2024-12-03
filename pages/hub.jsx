@@ -361,44 +361,42 @@ const HubScreen = () => {
         closePopup={closeLevelUpPopup}
         newLevel={newLevel}
       />
-      <DailyRewardPopup
+      {/* <DailyRewardPopup
         isOpen={isDailyPopupOpen}
         closePopup={toggleDailyPopup}
         className="popup-overlay"
       >
         {/* Daily Reward Styling */}
-        <div className="daily-reward-content mt-5">
-          <h1 className="daily-welcome uppercase text-8xl mb-4">
-            Welcome back
-          </h1>
-          <p className="daily-gift-title uppercase font-bold text-3xl text-yellow-300">
-            Your Daily Gift
-          </p>
-          <p className="daily-gift-subtext text-xl mt-1 text-yellow-300">
-            Check in everyday to get more rewards
-          </p>
-          <div className="daily-gem-section">
-            <Image
-              src="/assets/img/dailyreward/Gem.png"
-              alt="Gem Icon"
-              width={100}
-              height={100}
-              className="daily-reward-gem"
-            />
-            <h3 className="gem-value text-yellow-300 text-6xl tracking-wider">
-              +10
-            </h3>
-          </div>
-          <button className="daily-claim-button" onClick={toggleDailyPopup}>
-            <Image
-              src="/assets/img/dailyreward/Collect button.png"
-              alt="Claim Button"
-              width={220}
-              height={100}
-            />
-          </button>
+      {/* <div className="daily-reward-content mt-5">
+        <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
+        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow-300">
+          Your Daily Gift
+        </p>
+        <p className="daily-gift-subtext text-xl mt-1 text-yellow-300">
+          Check in everyday to get more rewards
+        </p>
+        <div className="daily-gem-section">
+          <Image
+            src="/assets/img/dailyreward/Gem.png"
+            alt="Gem Icon"
+            width={100}
+            height={100}
+            className="daily-reward-gem"
+          />
+          <h3 className="gem-value text-yellow-300 text-6xl tracking-wider">
+            +10
+          </h3>
         </div>
-      </DailyRewardPopup>
+        <button className="daily-claim-button" onClick={toggleDailyPopup}>
+          <Image
+            src="/assets/img/dailyreward/Collect button.png"
+            alt="Claim Button"
+            width={220}
+            height={100}
+          />
+        </button>
+      </div> */}
+      {/* </DailyRewardPopup> */}
       <div>
         <LibraryFooter />
       </div>
