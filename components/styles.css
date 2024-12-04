@@ -546,4 +546,8 @@ svg {
   transform: translate(-50%, -50%);
 }
 
+.levelup-btn {
+  background-image: url("/assets/img/levelup/Unlock combined copy 4.png");
+}
+
 /* LEVEL UP POPUP END  */
