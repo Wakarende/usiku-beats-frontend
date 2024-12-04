@@ -14,7 +14,7 @@ const Popup = ({ isOpen, closePopup, children }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        backgroundColor: "rgba(0, 0, 0, 0.9)",
         zIndex: 1000,
       }}
     >

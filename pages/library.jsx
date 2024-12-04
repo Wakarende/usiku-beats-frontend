@@ -26,6 +26,37 @@ const Library = () => {
   const { user_data, isAuthenticated } = auth;
   const router = useRouter();
 
+  const gemsRequiredToUnlockSong = 20;
+
+  const unlockSongWithGems = (song) => {
+    let newUserdata = JSON.parse(JSON.stringify(user_data));
+
+    if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
+      console.error("Not enough gems to unlock the song");
+      return;
+    }
+    newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
+
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+
+    if (songInstance) {
+      songInstance.unlocked = true;
+      songInstance.unlock_time = null;
+    } else {
+      console.error("Song not found in song instances", song.id);
+      return;
+    }
+
+    dispatch(updateUser(newUserdata));
+
+    // Update the song's unlocked status in the state
+    setSongs((prevSongs) =>
+      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
+    );
+  };
+
   useEffect(() => {
     setLoading(true);
 
@@ -140,7 +171,6 @@ const Library = () => {
                     className="rounded"
                   />
                 </div>
-
                 {/* Song Details Section */}
                 <div className="flex-grow ml-6">
                   <p className="font-bold text-yellow text-lg md:text-md">
@@ -193,39 +223,75 @@ const Library = () => {
             <h1 className="text-5xl popup-header tracking-wider">
               You've Just Got
             </h1>
-            <div className="flex flex-col justify-center items-center">
-              <Image
-                src={"/assets/img/library/Popup-Frame.png"}
-                width={320}
-                height={100}
-                alt="popup-frame"
-              />
-              <div className="flex flex-col justify-center items-center relative">
-                <p className="text-yellow uppercase text-xs text-nowrap absolute">
-                  {unlockedSong?.artist_name}
-                </p>
-                <p className="text-white ">{unlockedSong?.song_name}</p>
+            <div className="flex flex-col justify-center items-center relative">
+              <div className="relative flex justify-center items-center">
+                <Image
+                  src={"/assets/img/library/frame-removebg.png"}
+                  width={320}
+                  height={380}
+                  alt="popup-frame"
+                  className="rounded-lg z-1"
+                />
+                <div className="absolute top-[21.8%] left-[11.6%] overflow-hidden w-[237px] h-[256px] rounded-t-sm">
+                  <Image
+                    src={unlockedSong?.thumbnail_file}
+                    image
+                    alt="Artist Image"
+                    layout="fill"
+                    objectFit="cover"
+                    className="z-0"
+                  />
+                </div>
+                <div className="flex flex-col absolute bottom-[10%] z-1">
+                  <p className="text-yellow uppercase text-xs text-nowrap ">
+                    {unlockedSong?.artist_name}
+                  </p>
+                  <p className="text-white text-sm">
+                    {unlockedSong?.song_name}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
           <div className="flex justify-center">
-            <p className="text-yellow text-center w-[80%]">
-              This song will unlock in icon 2:00m or use your gems to unlock it
-              now
+            <p className="text-yellow text-center mb-2">
+              This song will unlock in icon
+              <Image
+                src="/assets/img/library/Timer_icon.png"
+                alt="timer-icon"
+                width={18} // You can set the desired width
+                height={18} // Set the desired height
+                className="inline-block mx-2 align-middle" // Style to position the image
+              />
+              <span className="text-white text-lg font-bold">2:00m</span> or use
+              your gems to unlock it now
             </p>
           </div>
           <button
             onClick={() => {
-              setIsPopupOpen(false);
-              router.push("/hub");
+              if (
+                user_data?.profile?.player?.total_gems >=
+                gemsRequiredToUnlockSong
+              ) {
+                unlockSongWithGems(unlockedSong);
+                setIsPopupOpen(false);
+                router.push("/hub");
+              }
             }}
-            className="mb-3 relative"
+            className={`mb-3 relative ${
+              user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong
+                ? "opacity-80 cursor-not-allowed"
+                : ""
+            }`}
+            disabled={
+              user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong
+            }
           >
             <Image
               src={"/assets/img/library/Continue.png"}
               width={250}
               height={100}
-              alt="continue-btn"
+              alt="unlocknow-btn"
             />
             <div className="absolute bottom-6">
               <p className="text-yellow ml-2 font-bold text-md">20</p>
@@ -246,53 +312,6 @@ const Library = () => {
             />
           </button>
         </Popup>
-        {/* <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-          <div
-            className=" w-full h-full p-6 flex flex-col items-center"
-            style={{
-              backgroundImage: "url('/assets/img/dailyreward/BG.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <h1 className="mt-2 text-2xl text-white tracking-wide">
-              You have successfully unlocked the song:
-            </h1>
-            <b
-              style={{ fontSize: "50px" }}
-              className="text-yellow-300 text-center"
-            >
-              {unlockedSong?.song_name}
-            </b>
-            {/* <button
-              onClick={() => {
-                setIsPopupOpen(false);
-                router.push("/hub");
-              }}
-              className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
-            >
-              Go to my library
-            </button> */}
-        {/* <button
-              onClick={() => {
-                setIsPopupOpen(false);
-                router.push("/hub");
-              }}
-              className="mt-6 px-6 py-3 text-white font-semibold text-md text-nowrap rounded focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50 uppercase"
-              style={{
-                backgroundImage: "url('/assets/img/hub/Button blank.png')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                border: "none",
-                width: "200px",
-                height: "60px",
-              }}
-            >
-              Go to my library
-            </button>
-          </div>
-        </Popup> */}
       </div>
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
         <Link href="/hub">
