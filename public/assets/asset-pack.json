@@ -255,6 +255,11 @@
                 "key": "Star_Reward_Sfx"
             },
             {
+                "url": "assets/sprites/tutorialscene/start button copy.png",
+                "type": "image",
+                "key": "start button copy"
+            },
+            {
                 "url": "assets/sprites/playscene/streak_overlay.png",
                 "type": "image",
                 "key": "streak_overlay"
@@ -320,6 +325,16 @@
                 "url": "assets/sprites/summaryscene/Top banner.png",
                 "type": "image",
                 "key": "Top banner"
+            },
+            {
+                "url": "assets/sprites/tutorialscene/Tutorial_BG.jpg",
+                "type": "image",
+                "key": "Tutorial_BG"
+            },
+            {
+                "url": "assets/scenes/TutorialScene.js",
+                "type": "sceneFile",
+                "key": "TutorialScene"
             },
             {
                 "url": "assets/sprites/playscene/Vignette.png",

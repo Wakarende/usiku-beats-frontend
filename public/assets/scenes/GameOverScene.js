@@ -3,164 +3,187 @@
 /* START OF COMPILED CODE */
 
 class GameOverScene extends Phaser.Scene {
+  constructor() {
+    super("GameOverScene");
 
-	constructor() {
-		super("GameOverScene");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // hub_background
+    const hub_background = this.add.image(180, 320, "summary_BG");
+    hub_background.scaleX = 0.3333;
+    hub_background.scaleY = 0.3333;
 
-		// hub_background
-		const hub_background = this.add.image(180, 320, "summary_BG");
-		hub_background.scaleX = 0.3333;
-		hub_background.scaleY = 0.3333;
+    // bottom_banner
+    const bottom_banner = this.add.image(180, 606.5033500000001, "Bottom banner");
+    bottom_banner.scaleX = 0.3333;
+    bottom_banner.scaleY = 0.3333;
 
-		// bottom_banner
-		const bottom_banner = this.add.image(180, 606.5033500000001, "Bottom banner");
-		bottom_banner.scaleX = 0.3333;
-		bottom_banner.scaleY = 0.3333;
+    // top_banner
+    const top_banner = this.add.image(180, 27.497249999999998, "Top banner");
+    top_banner.scaleX = 0.3333;
+    top_banner.scaleY = 0.3333;
 
-		// top_banner
-		const top_banner = this.add.image(180, 27.497249999999998, "Top banner");
-		top_banner.scaleX = 0.3333;
-		top_banner.scaleY = 0.3333;
+    // round_frame
+    const round_frame = this.add.image(180, 238, "Round Frame");
+    round_frame.scaleX = 0.3333;
+    round_frame.scaleY = 0.3333;
 
-		// round_frame
-		const round_frame = this.add.image(180, 238, "Round Frame");
-		round_frame.scaleX = 0.3333;
-		round_frame.scaleY = 0.3333;
+    // current_score
+    const current_score = this.add.text(180, 434, "", {});
+    current_score.setOrigin(0.5, 0.5);
+    current_score.text = "00000";
+    current_score.setStyle({
+      color: "#faf05e",
+      fontFamily: "Afolkalips",
+      fontSize: "45px",
+      stroke: "#faf05e",
+    });
 
-		// current_score
-		const current_score = this.add.text(180, 434, "", {});
-		current_score.setOrigin(0.5, 0.5);
-		current_score.text = "00000";
-		current_score.setStyle({ "color": "#faf05e", "fontFamily": "Afolkalips", "fontSize": "45px", "stroke": "#faf05e" });
+    // song_name
+    const song_name = this.add.text(180, 99, "", {});
+    song_name.setOrigin(0.5, 0.5);
+    song_name.text = "song_name";
+    song_name.setStyle({
+      color: "#ff6a00",
+      fontFamily: "Afolkalips",
+      fontSize: "30px",
+      stroke: "#ff6a00",
+    });
 
-		// song_name
-		const song_name = this.add.text(180, 99, "", {});
-		song_name.setOrigin(0.5, 0.5);
-		song_name.text = "song_name";
-		song_name.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#ff6a00" });
+    // artist_name
+    const artist_name = this.add.text(180, 68, "", {});
+    artist_name.setOrigin(0.5, 0.5);
+    artist_name.text = "artist_name";
+    artist_name.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "8px",
+      stroke: "#faf05e",
+    });
 
-		// artist_name
-		const artist_name = this.add.text(180, 68, "", {});
-		artist_name.setOrigin(0.5, 0.5);
-		artist_name.text = "artist_name";
-		artist_name.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "8px", "stroke": "#faf05e" });
+    // star_empty_4
+    const star_empty_4 = this.add.image(260, 376, "Star_Inactive");
+    star_empty_4.scaleX = 0.3333;
+    star_empty_4.scaleY = 0.3333;
 
-		// star_empty_4
-		const star_empty_4 = this.add.image(260, 376, "Star_Inactive");
-		star_empty_4.scaleX = 0.3333;
-		star_empty_4.scaleY = 0.3333;
+    // star_empty_3
+    const star_empty_3 = this.add.image(220, 375, "Star_Inactive");
+    star_empty_3.scaleX = 0.3333;
+    star_empty_3.scaleY = 0.3333;
 
-		// star_empty_3
-		const star_empty_3 = this.add.image(220, 375, "Star_Inactive");
-		star_empty_3.scaleX = 0.3333;
-		star_empty_3.scaleY = 0.3333;
+    // star_empty_2
+    const star_empty_2 = this.add.image(180, 375, "Star_Inactive");
+    star_empty_2.scaleX = 0.3333;
+    star_empty_2.scaleY = 0.3333;
 
-		// star_empty_2
-		const star_empty_2 = this.add.image(180, 375, "Star_Inactive");
-		star_empty_2.scaleX = 0.3333;
-		star_empty_2.scaleY = 0.3333;
+    // star_empty_1
+    const star_empty_1 = this.add.image(140, 375, "Star_Inactive");
+    star_empty_1.scaleX = 0.3333;
+    star_empty_1.scaleY = 0.3333;
 
-		// star_empty_1
-		const star_empty_1 = this.add.image(140, 375, "Star_Inactive");
-		star_empty_1.scaleX = 0.3333;
-		star_empty_1.scaleY = 0.3333;
+    // star_empty
+    const star_empty = this.add.image(100, 375, "Star_Inactive");
+    star_empty.scaleX = 0.3333;
+    star_empty.scaleY = 0.3333;
 
-		// star_empty
-		const star_empty = this.add.image(100, 375, "Star_Inactive");
-		star_empty.scaleX = 0.3333;
-		star_empty.scaleY = 0.3333;
+    // retry_button
+    const retry_button = this.add.image(180, 586, "Button_blank");
+    retry_button.scaleX = 0.6;
+    retry_button.scaleY = 0.8;
 
-		// retry_button
-		const retry_button = this.add.image(180, 586, "Button_blank");
-		retry_button.scaleX = 0.6;
-		retry_button.scaleY = 0.8;
+    // carousel
+    const carousel = this.add.image(180, 238, "carousel_2");
+    carousel.scaleX = 0.6;
+    carousel.scaleY = 0.6;
 
-		// carousel
-		const carousel = this.add.image(180, 238, "carousel_2");
-		carousel.scaleX = 0.6;
-		carousel.scaleY = 0.6;
+    // continue_button
+    const continue_button = this.add.image(180, 515, "Button_blank");
+    continue_button.scaleX = 0.4;
+    continue_button.scaleY = 0.6;
 
-		// continue_button
-		const continue_button = this.add.image(180, 515, "Button_blank");
-		continue_button.scaleX = 0.4;
-		continue_button.scaleY = 0.6;
+    // no_of_stars
+    const no_of_stars = this.add.image(53, 22, "No of stars");
+    no_of_stars.scaleX = 0.3333;
+    no_of_stars.scaleY = 0.3333;
 
-		// no_of_stars
-		const no_of_stars = this.add.image(53, 22, "No of stars");
-		no_of_stars.scaleX = 0.3333;
-		no_of_stars.scaleY = 0.3333;
+    // difficulty_text
+    const difficulty_text = this.add.text(323, 21, "", {});
+    difficulty_text.setOrigin(0.5, 0.5);
+    difficulty_text.text = "MEDIUM";
+    difficulty_text.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "12px",
+      stroke: "#faf05e",
+    });
 
-		// difficulty_text
-		const difficulty_text = this.add.text(323, 21, "", {});
-		difficulty_text.setOrigin(0.5, 0.5);
-		difficulty_text.text = "MEDIUM";
-		difficulty_text.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "12px", "stroke": "#faf05e" });
+    // total_stars_text
+    const total_stars_text = this.add.text(47, 22, "", {});
+    total_stars_text.setOrigin(0.5, 0.5);
+    total_stars_text.text = "000";
+    total_stars_text.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "15px",
+      stroke: "#faf05e",
+    });
 
-		// total_stars_text
-		const total_stars_text = this.add.text(47, 22, "", {});
-		total_stars_text.setOrigin(0.5, 0.5);
-		total_stars_text.text = "000";
-		total_stars_text.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "15px", "stroke": "#faf05e" });
+    // main_menu_text
+    const main_menu_text = this.add.text(180, 515, "", {});
+    main_menu_text.setOrigin(0.5, 0.5);
+    main_menu_text.text = "MAIN MENU";
+    main_menu_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
 
-		// main_menu_text
-		const main_menu_text = this.add.text(180, 515, "", {});
-		main_menu_text.setOrigin(0.5, 0.5);
-		main_menu_text.text = "MAIN MENU";
-		main_menu_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "18px" });
+    // main_menu_text_1
+    const main_menu_text_1 = this.add.text(180, 586.5756245511806, "", {});
+    main_menu_text_1.setOrigin(0.5, 0.5);
+    main_menu_text_1.text = "RETRY SONG";
+    main_menu_text_1.setStyle({ fontFamily: "Carlito-Bold", fontSize: "26px" });
 
-		// main_menu_text_1
-		const main_menu_text_1 = this.add.text(180, 586.5756245511806, "", {});
-		main_menu_text_1.setOrigin(0.5, 0.5);
-		main_menu_text_1.text = "RETRY SONG";
-		main_menu_text_1.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "26px" });
+    // lists
+    const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
 
-		// lists
-		const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
+    this.round_frame = round_frame;
+    this.current_score = current_score;
+    this.song_name = song_name;
+    this.artist_name = artist_name;
+    this.retry_button = retry_button;
+    this.carousel = carousel;
+    this.continue_button = continue_button;
+    this.difficulty_text = difficulty_text;
+    this.total_stars_text = total_stars_text;
+    this.stars = stars;
 
-		this.round_frame = round_frame;
-		this.current_score = current_score;
-		this.song_name = song_name;
-		this.artist_name = artist_name;
-		this.retry_button = retry_button;
-		this.carousel = carousel;
-		this.continue_button = continue_button;
-		this.difficulty_text = difficulty_text;
-		this.total_stars_text = total_stars_text;
-		this.stars = stars;
+    this.events.emit("scene-awake");
+  }
 
-		this.events.emit("scene-awake");
-	}
+  /** @type {Phaser.GameObjects.Image} */
+  round_frame;
+  /** @type {Phaser.GameObjects.Text} */
+  current_score;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_name;
+  /** @type {Phaser.GameObjects.Image} */
+  retry_button;
+  /** @type {Phaser.GameObjects.Image} */
+  carousel;
+  /** @type {Phaser.GameObjects.Image} */
+  continue_button;
+  /** @type {Phaser.GameObjects.Text} */
+  difficulty_text;
+  /** @type {Phaser.GameObjects.Text} */
+  total_stars_text;
+  /** @type {Phaser.GameObjects.Image[]} */
+  stars;
 
-	/** @type {Phaser.GameObjects.Image} */
-	round_frame;
-	/** @type {Phaser.GameObjects.Text} */
-	current_score;
-	/** @type {Phaser.GameObjects.Text} */
-	song_name;
-	/** @type {Phaser.GameObjects.Text} */
-	artist_name;
-	/** @type {Phaser.GameObjects.Image} */
-	retry_button;
-	/** @type {Phaser.GameObjects.Image} */
-	carousel;
-	/** @type {Phaser.GameObjects.Image} */
-	continue_button;
-	/** @type {Phaser.GameObjects.Text} */
-	difficulty_text;
-	/** @type {Phaser.GameObjects.Text} */
-	total_stars_text;
-	/** @type {Phaser.GameObjects.Image[]} */
-	stars;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
   init(data) {
@@ -340,6 +363,7 @@ class GameOverScene extends Phaser.Scene {
       }
     });
   }
+
   animateScore() {
     let startingScore = 0;
     let targetScore = Math.trunc(this.track.current_score);
