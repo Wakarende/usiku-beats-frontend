@@ -551,7 +551,7 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    this.initializeVisualizer();
+    // this.initializeVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
   }
@@ -786,95 +786,6 @@ class Level extends Phaser.Scene {
   //       );
   //       visualizerTexture.context.globalCompositeOperation = "source-over";
   //       visualizerTexture.refresh();
-  //     }
-  //   };
-  // }
-  // initializeVisualizer() {
-  //   const gameWidth = this.sys.game.config.width;
-  //   const scoreY = this.score_text.y;
-  //   const multiplierY = this.multiplier_text.y;
-  //   const visualizerYPosition = (scoreY + multiplierY) / 2 - 20;
-
-  //   const visualizerSize = 150; // Reduced size for performance
-
-  //   // Get the device pixel ratio, limiting it for performance
-  //   const maxPixelRatio = 1; // Lowered pixel ratio for better performance
-  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
-
-  //   // Create a Phaser CanvasTexture with the desired dimensions
-  //   this.visualizerTexture = this.textures.createCanvas(
-  //     "visualizerTexture",
-  //     visualizerSize,
-  //     visualizerSize
-  //   );
-
-  //   // Get the canvas from the CanvasTexture
-  //   const visualizerCanvas = this.visualizerTexture.getSourceImage();
-
-  //   // Create the AudioMotion Analyzer instance with the Phaser canvas
-  //   this.audioMotion = new AudioMotionAnalyzer(null, {
-  //     canvas: visualizerCanvas, // Use Phaser's canvas directly
-  //     audioCtx: this.sound.context,
-  //     useCanvas: true,
-  //     mode: 1, // Polar (circular) mode
-  //     radial: true,
-  //     radialInvert: true,
-  //     radialSpeed: true,
-  //     lineMode: 1, // Simplified line rendering
-  //     radius: 0.5, // Adjust as needed
-  //     responsive: false,
-  //     width: visualizerSize,
-  //     height: visualizerSize,
-  //     pixelRatio: pixelRatio,
-  //     showScaleY: false,
-  //     showScaleX: false,
-  //     showPeaks: false,
-  //     showFPS: false,
-  //     minDecibels: -100,
-  //     maxDecibels: -40,
-  //     gradient: "prism",
-  //     linearAmplitude: false,
-  //     linearBoost: 1.4,
-  //     bgAlpha: 0,
-  //     barSpace: 0.01,
-  //     fillAlpha: 0,
-  //     lineWidth: 1.5,
-  //     reflexRatio: 0,
-  //     reflexAlpha: 0,
-  //     lumiBars: false,
-  //     maxFreq: 16000,
-  //     minFreq: 10,
-  //     smoothing: 0.7, // Increased smoothing
-  //     overlay: true,
-  //     showBgColor: false,
-  //     channelLayout: "dual-vertical",
-  //     frequencyScale: "bark",
-  //     outlineBars: true,
-  //     fftSize: 64, // Reduced FFT size
-  //   });
-
-  //   // Position the visualizer image in your scene
-  //   this.visualizerImage = this.add.image(
-  //     gameWidth / 2,
-  //     visualizerYPosition,
-  //     "visualizerTexture"
-  //   );
-  //   this.visualizerImage.setDisplaySize(visualizerSize, visualizerSize);
-  //   this.visualizerImage.setOrigin(0.5, 0.5);
-  //   this.visualizerImage.setDepth(4);
-  //   this.visualizerImage.setAlpha(1);
-
-  //   let lastVisualizerUpdate = 0;
-  //   const visualizerUpdateInterval = 100; // Increased interval for performance
-
-  //   // Update the onCanvasDraw function
-  //   this.audioMotion.onCanvasDraw = () => {
-  //     const now = performance.now();
-  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
-  //       lastVisualizerUpdate = now;
-  //       // Since AudioMotionAnalyzer is drawing directly onto the canvas,
-  //       // simply refresh the texture to update the displayed image
-  //       this.visualizerTexture.refresh();
   //     }
   //   };
   // }
