@@ -322,14 +322,6 @@ const HubScreen = () => {
                 }`}
               >
                 {songs?.map((item, index) => (
-                  // <ArtistImage
-                  //   key={index}
-                  //   song={item}
-                  //   onArtistClick={handleArtistClick}
-                  //   onPlayClick={() => gotoGameDetail(item, index)}
-                  //   isFirstSong={index === 0}
-                  //   totalSongs={songs.length}
-                  // />
                   <ArtistImage
                     key={index}
                     song={item}

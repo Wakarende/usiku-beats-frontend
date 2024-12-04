@@ -86,7 +86,7 @@ const Library = () => {
     setUnlockedSong(song);
     setIsPopupOpen(true);
 
-    let unlockTime = moment().add(2, "minutes").toISOString();
+    let unlockTime = moment().add(20, "minutes").toISOString();
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     let newSongInstance = {
@@ -294,7 +294,9 @@ const Library = () => {
               alt="unlocknow-btn"
             />
             <div className="absolute bottom-6">
-              <p className="text-yellow ml-2 font-bold text-md">20</p>
+              <p className="text-yellow ml-2 font-bold text-md">
+                {gemsRequiredToUnlockSong}
+              </p>
             </div>
           </button>
           <button
