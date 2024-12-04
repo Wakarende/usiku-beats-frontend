@@ -22,7 +22,7 @@ const Popup = ({ isOpen, closePopup, children }) => {
           display: "flex",
           flexDirection: "column",
           padding: 20,
-          background: "transparent",
+          background: "white",
           borderRadius: 5,
           justifyContent: "center",
           alignItems: "center",

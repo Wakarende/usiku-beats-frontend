@@ -1,11 +1,46 @@
 "use client";
 import Image from "next/image";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
 import "./pages.css";
 
 export default function IntroPanel() {
   const router = useRouter();
+
+  const auth = useSelector((state) => state.auth);
+  const { user_data } = auth;
+  const dispatch = useDispatch();
+
+  const checkFirstLoginOfDay = () => {
+    const lastLoginDate = localStorage.getItem("lastLoginDate");
+    const today = new Date().toISOString().split("T")[0];
+
+    if (lastLoginDate !== today) {
+      if (user_data && user_data.profile && user_data.profile.player) {
+        const updatedUser = {
+          ...user_data,
+          profile: {
+            ...user_data.profile,
+            player: {
+              ...user_data.profile.player,
+              total_gems: user_data.profile.player.total_gems + 10,
+            },
+          },
+        };
+        dispatch(updateUser(updatedUser));
+      }
+
+      //   setIsDailyPopupOpen(true);
+      localStorage.setItem("lastLoginDate", today);
+    }
+  };
+
+  useEffect(() => {
+    checkFirstLoginOfDay();
+  }, [user_data]);
 
   const handleOk = () => {
     router.push("/hub");

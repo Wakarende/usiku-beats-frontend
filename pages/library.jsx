@@ -188,11 +188,13 @@ const Library = () => {
             </div>
           ))}
         </div>
-        {/* <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
+        <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <h1 className="mt-2 text-xl">
             You have successfully unlocked the song:
           </h1>
-          <b style={{ fontSize: "50px" }}>{unlockedSong?.song_name}</b>
+          <b className="text-nowrap" style={{ fontSize: "50px" }}>
+            {unlockedSong?.song_name}
+          </b>
           <button
             onClick={() => {
               setIsPopupOpen(false);
@@ -202,8 +204,8 @@ const Library = () => {
           >
             Go to my library
           </button>
-        </Popup> */}
-        <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
+        </Popup>
+        {/* <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div
             className=" w-full h-full p-6 flex flex-col items-center"
             style={{
@@ -231,7 +233,7 @@ const Library = () => {
             >
               Go to my library
             </button> */}
-            <button
+        {/* <button
               onClick={() => {
                 setIsPopupOpen(false);
                 router.push("/hub");
@@ -249,7 +251,7 @@ const Library = () => {
               Go to my library
             </button>
           </div>
-        </Popup>
+        </Popup> */}
       </div>
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
         <Link href="/hub">

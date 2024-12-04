@@ -18,7 +18,7 @@ import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 
 const HubScreen = () => {
-  const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
+  // const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
   const [isUnlockPopupOpen, setIsUnlockPopupOpen] = useState(false);
   const [unlockedSong, setUnlockedSong] = useState(null);
   const [songs, setSongs] = useState([]);
@@ -46,7 +46,7 @@ const HubScreen = () => {
   useEffect(() => {
     checkAnon();
     checkRedirect();
-    checkFirstLoginOfDay();
+    // checkFirstLoginOfDay();
     checkNewLevel();
     fetchUnlockableSongs();
   }, [router.query, user_data]);
@@ -59,29 +59,29 @@ const HubScreen = () => {
     }
   }, [songs]);
 
-  const checkFirstLoginOfDay = () => {
-    const lastLoginDate = localStorage.getItem("lastLoginDate");
-    const today = new Date().toISOString().split("T")[0];
+  // const checkFirstLoginOfDay = () => {
+  //   const lastLoginDate = localStorage.getItem("lastLoginDate");
+  //   const today = new Date().toISOString().split("T")[0];
 
-    if (lastLoginDate !== today) {
-      if (user_data && user_data.profile && user_data.profile.player) {
-        const updatedUser = {
-          ...user_data,
-          profile: {
-            ...user_data.profile,
-            player: {
-              ...user_data.profile.player,
-              total_gems: user_data.profile.player.total_gems + 10,
-            },
-          },
-        };
-        dispatch(updateUser(updatedUser));
-      }
+  //   if (lastLoginDate !== today) {
+  //     if (user_data && user_data.profile && user_data.profile.player) {
+  //       const updatedUser = {
+  //         ...user_data,
+  //         profile: {
+  //           ...user_data.profile,
+  //           player: {
+  //             ...user_data.profile.player,
+  //             total_gems: user_data.profile.player.total_gems + 10,
+  //           },
+  //         },
+  //       };
+  //       dispatch(updateUser(updatedUser));
+  //     }
 
-      setIsDailyPopupOpen(true);
-      localStorage.setItem("lastLoginDate", today);
-    }
-  };
+  //     setIsDailyPopupOpen(true);
+  //     localStorage.setItem("lastLoginDate", today);
+  //   }
+  // };
 
   const checkAnon = async () => {
     if (!user_data) {
@@ -291,9 +291,9 @@ const HubScreen = () => {
     setSongs((prevSongs) => [...prevSongs, song]);
   };
 
-  const toggleDailyPopup = () => {
-    setIsDailyPopupOpen(!isDailyPopupOpen);
-  };
+  // const toggleDailyPopup = () => {
+  //   setIsDailyPopupOpen(!isDailyPopupOpen);
+  // };
 
   const level = user_data?.profile?.player?.level || 1;
 
