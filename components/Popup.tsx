@@ -14,24 +14,20 @@ const Popup = ({ isOpen, closePopup, children }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        zIndex: 1000,
       }}
     >
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: 20,
-          background: "white",
-          borderRadius: 5,
           justifyContent: "center",
           alignItems: "center",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
           zIndex: 1000,
         }}
       >
         {children}
-        {/* <button onClick={closePopup}>Close</button> */}
       </div>
     </div>
   );

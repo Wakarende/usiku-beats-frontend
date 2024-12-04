@@ -189,20 +189,61 @@ const Library = () => {
           ))}
         </div>
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-          <h1 className="mt-2 text-xl">
-            You have successfully unlocked the song:
-          </h1>
-          <b className="text-nowrap" style={{ fontSize: "50px" }}>
-            {unlockedSong?.song_name}
-          </b>
+          <div className="flex justify-center flex-col items-center">
+            <h1 className="text-5xl popup-header tracking-wider">
+              You've Just Got
+            </h1>
+            <div className="flex flex-col justify-center items-center">
+              <Image
+                src={"/assets/img/library/Popup-Frame.png"}
+                width={320}
+                height={100}
+                alt="popup-frame"
+              />
+              <div className="flex flex-col justify-center items-center relative">
+                <p className="text-yellow uppercase text-xs text-nowrap absolute">
+                  {unlockedSong?.artist_name}
+                </p>
+                <p className="text-white ">{unlockedSong?.song_name}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <p className="text-yellow text-center w-[80%]">
+              This song will unlock in icon 2:00m or use your gems to unlock it
+              now
+            </p>
+          </div>
           <button
             onClick={() => {
               setIsPopupOpen(false);
               router.push("/hub");
             }}
-            className="mt-3 px-6 py-3 bg-blue-500 text-white font-semibold text-xl rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
+            className="mb-3 relative"
           >
-            Go to my library
+            <Image
+              src={"/assets/img/library/Continue.png"}
+              width={250}
+              height={100}
+              alt="continue-btn"
+            />
+            <div className="absolute bottom-6">
+              <p className="text-yellow ml-2 font-bold text-md">20</p>
+            </div>
+          </button>
+          <button
+            onClick={() => {
+              setIsPopupOpen(false);
+              router.push("/hub");
+            }}
+            className=""
+          >
+            <Image
+              src={"/assets/img/library/Continue_button copy.png"}
+              width={150}
+              height={100}
+              alt="continue-btn"
+            />
           </button>
         </Popup>
         {/* <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
