@@ -1,0 +1,115 @@
+{
+    "id": "b0b453d7-8664-4c59-9579-7648339942f5",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "TutorialScene",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "70d2dcdf-4aef-4c25-b541-adaaa4b7d256",
+            "label": "tutorial_BG",
+            "components": [],
+            "texture": {
+                "key": "Tutorial_BG"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "b36ae3b0-0e6d-4671-bcda-69eef75d7384",
+            "label": "pause_text",
+            "components": [],
+            "x": 180,
+            "y": 43,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "How to Play",
+            "fontFamily": "Afolkalips",
+            "fontSize": "58px",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
+        },
+        {
+            "type": "Text",
+            "id": "1e66cf5c-b3a2-43c1-8c70-e92804751d86",
+            "label": "artist_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 97,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Tap in time to the music ... \nand don't miss a beat",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "2606e50f-4ed4-4ee8-b190-caac300dd46c",
+            "label": "artist_name_1",
+            "scope": "CLASS",
+            "components": [],
+            "x": 148,
+            "y": 171,
+            "angle": -4,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Tiles drop down\nfrom the top of\nyour screen ",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "15px",
+            "color": "#fcb320",
+            "stroke": "#fcb320"
+        },
+        {
+            "type": "Text",
+            "id": "bc075ae8-61a0-4dd1-8a28-e171406a9dd6",
+            "label": "artist_name_2",
+            "scope": "CLASS",
+            "components": [],
+            "x": 147,
+            "y": 257,
+            "angle": -4,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Tap, swipe or hold tiles\nwhen they reach\nthis tap zone",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "15px",
+            "color": "#fcb320",
+            "stroke": "#fcb320"
+        },
+        {
+            "type": "Image",
+            "id": "0293cfee-93b1-44ba-be92-e684df1b06db",
+            "label": "start_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "start button copy"
+            },
+            "x": 180,
+            "y": 596,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}
