@@ -12,7 +12,7 @@ export default function TitleScreen() {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
     const checkAuth = () => {
       const auth = prompt("Please enter the password:", "");
-      if (auth === "1234") {
+      if (auth === "4321") {
         localStorage.setItem("isAuthenticated", "true");
       } else {
         alert("Incorrect password");
@@ -97,9 +97,7 @@ export default function TitleScreen() {
         <motion.div
           initial={{ x: "100vw", opacity: 0 }}
           animate={
-            buttonVisible
-              ? { x: 0, opacity: 1, scale: [1, 1.05, 1] }
-              : { x: "100vw", opacity: 0 }
+            buttonVisible ? { x: 0, opacity: 1, scale: [1, 1.05, 1] } : { x: "100vw", opacity: 0 }
           }
           transition={{
             x: { type: "spring", stiffness: 100, damping: 10 },

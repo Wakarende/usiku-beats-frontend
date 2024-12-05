@@ -29,10 +29,8 @@ const Library = () => {
   useEffect(() => {
     setLoading(true);
 
-    const songIds = [14, 54, 65, 56, 143, 144, 119, 146, 142];
-    const url = `${BASE_URL}/songs/?${songIds
-      .map((id) => `ids=${id}`)
-      .join("&")}`;
+    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142];
+    const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
     axios.get(url).then((res) => {
       const songsWithUnlockStatus = res.data.map((song) => ({
@@ -102,19 +100,12 @@ const Library = () => {
         </div>
         <div className=" flex mt-4 justify-center">
           <div className="flex justify-center flex-col items-center ">
-            <p className="text-library uppercase font-bold text-lg">
-              You have {totalDiscs} discs!
-            </p>
+            <p className="text-library uppercase font-bold text-lg">You have {totalDiscs} discs!</p>
             <p className="text-white mt-2">Each song costs 30 discs</p>
             <p className="text-white">Find your next song now!</p>
           </div>
           <div className="mt-2">
-            <Image
-              src={"/assets/img/hub/Disc.png"}
-              width={120}
-              height={120}
-              alt="disc-icon"
-            />
+            <Image src={"/assets/img/hub/Disc.png"} width={120} height={120} alt="disc-icon" />
           </div>
         </div>
         <div className="gradient-container w-full mt-0">
@@ -143,16 +134,10 @@ const Library = () => {
 
                 {/* Song Details Section */}
                 <div className="flex-grow ml-6">
-                  <p className="font-bold text-yellow text-lg md:text-md">
-                    {song.song_name}
-                  </p>
-                  <p className="text-white uppercase text-xs">
-                    {song.artist_name}
-                  </p>
+                  <p className="font-bold text-yellow text-lg md:text-md">{song.song_name}</p>
+                  <p className="text-white uppercase text-xs">{song.artist_name}</p>
                   {song.isUnlocked ? (
-                    <div className="text-green-500 font-bold mt-4">
-                      Unlocked
-                    </div>
+                    <div className="text-green-500 font-bold mt-4">Unlocked</div>
                   ) : (
                     <div
                       className={`relative mt-3 cursor-pointer ${
@@ -189,9 +174,7 @@ const Library = () => {
           ))}
         </div>
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-          <h1 className="mt-2 text-xl">
-            You have successfully unlocked the song:
-          </h1>
+          <h1 className="mt-2 text-xl">You have successfully unlocked the song:</h1>
           <b className="text-nowrap" style={{ fontSize: "50px" }}>
             {unlockedSong?.song_name}
           </b>
@@ -267,12 +250,7 @@ const Library = () => {
               ease: "easeInOut",
             }}
           >
-            <Image
-              src="/assets/img/levelinfo/Back_Button.png"
-              alt="Back"
-              width={200}
-              height={50}
-            />
+            <Image src="/assets/img/levelinfo/Back_Button.png" alt="Back" width={200} height={50} />
           </motion.div>
         </Link>
       </footer>
