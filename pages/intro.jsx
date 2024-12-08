@@ -33,7 +33,6 @@ export default function IntroPanel() {
         dispatch(updateUser(updatedUser));
       }
 
-      //   setIsDailyPopupOpen(true);
       localStorage.setItem("lastLoginDate", today);
     }
   };

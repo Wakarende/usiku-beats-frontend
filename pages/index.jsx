@@ -62,23 +62,24 @@ export default function TitleScreen() {
   }, []);
 
   return (
-    <div className="fixed inset-0 h-full w-full overflow-hidden flex flex-col justify-between items-center">
+    <div className="title-screen">
       {/* Logo Section */}
       <motion.div
-        className="flex justify-center relative z-10"
+        className="flex flex-col justify-center relative z-10 logo-container"
         initial={{ y: -300, opacity: 0 }}
         animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 10 }}
       >
-        <div className="">
-          <Image
-            src="/assets/img/start/LogoTail.png"
-            width={250}
-            height={200}
-            alt="logo"
-            className="w-60 h-auto "
-          />
-        </div>
+        <span className="text-white font-bold text-center text-xl text-nowrap mt-0.5">
+          Turn on your sound
+        </span>
+        <Image
+          src="/assets/img/start/LogoTail.png"
+          width={250}
+          height={200}
+          alt="logo"
+          className="w-60 h-auto "
+        />
       </motion.div>
       {/* Background Banner */}
       <motion.div
@@ -93,7 +94,7 @@ export default function TitleScreen() {
       />
 
       {/* Start Button */}
-      <div className="absolute bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 w-72">
+      <div className="start-button-container">
         <motion.div
           initial={{ x: "100vw", opacity: 0 }}
           animate={
@@ -116,7 +117,7 @@ export default function TitleScreen() {
             alt="Start"
             width={400}
             height={400}
-            className="w-full transition-opacity h-auto cursor-pointer"
+            className="w-full transition-opacity h-auto"
             onClick={handleStart}
           />
         </motion.div>

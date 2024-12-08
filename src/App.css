@@ -59,9 +59,9 @@ h3 {
   font-family: 'Afolkalips', sans-serif;
 }
 
-img {
+/* img {
   object-fit: cover;
-}
+} */
 
 .kayfo-header {
   background-color: var(--kayfo-violet) !important;

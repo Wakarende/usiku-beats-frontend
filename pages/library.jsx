@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import moment from "moment-timezone";
 import { useSelector, useDispatch } from "react-redux";
-import Popup from "../components/Popup";
+import Popup from "../components/library/Popup";
 import Image from "next/image";
 import Link from "next/link";
 import { instance as axios } from "../services/axios.config";
@@ -86,7 +86,7 @@ const Library = () => {
     setUnlockedSong(song);
     setIsPopupOpen(true);
 
-    let unlockTime = moment().add(20, "minutes").toISOString();
+    let unlockTime = moment().add(2, "minutes").toISOString();
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     let newSongInstance = {
@@ -128,10 +128,10 @@ const Library = () => {
     <div className="cmd-page">
       <Header />
       <div className="kayfo-body-content">
-        <div className="flex justify-center mt-3 ">
+        <div className="flex justify-center items-center mt-3 ">
           <h1 className="uppercase lib-header text-7xl">Full Song Library</h1>
         </div>
-        <div className=" flex mt-4 justify-center">
+        <div className=" flex mt-4 justify-center items-center">
           <div className="flex justify-center flex-col items-center ">
             <p className="text-library uppercase font-bold text-lg">
               You have {totalDiscs} discs!
@@ -148,21 +148,21 @@ const Library = () => {
             />
           </div>
         </div>
-        <div className="gradient-container w-full mt-0">
+        <div className="gradient-container item-stretch w-full">
           <Image
             src={"/assets/img/library/Gradient-copy.png"}
             alt="gradient-separator"
             width={150}
             height={20}
-            className="gradient-image w-full "
+            className="gradient-image w-full"
           />
         </div>
-        <div className="flex flex-wrap gap-8 mt-8">
+        <div className="flex flex-wrap justify-center items-stretch gap-8">
           {songs.map((song, index) => (
-            <div key={index}>
-              <div className="p-4 rounded-lg md:w-[400px] lg:w-[500px] sm:w-[400px] flex flex-row justify-center items-center">
+            <div key={index} className="w-full max-w-xl ">
+              <div className="p-4  flex flex-row justify-center items-center">
                 {/* Image Section */}
-                <div>
+                <div className="w-[150px] h-[150px] flex-shrink-0">
                   <Image
                     src={song.thumbnail_file}
                     alt="Song Cover"
@@ -173,12 +173,21 @@ const Library = () => {
                 </div>
                 {/* Song Details Section */}
                 <div className="flex-grow ml-6">
-                  <p className="font-bold text-yellow text-lg md:text-md">
-                    {song.song_name}
-                  </p>
-                  <p className="text-white uppercase text-xs">
-                    {song.artist_name}
-                  </p>
+                  <div className="flex items-center justify-between w-full">
+                    <p className="font-bold text-yellow text-lg md:text-md">
+                      {song.song_name}
+                    </p>
+                    <p className="text-yellow uppercase text-xs">
+                      {song.country_name}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between w-full">
+                    <p className="text-white uppercase text-xs">
+                      {song.artist_name}
+                    </p>
+                    <p className="text-white uppercase text-xs">Medium</p>
+                  </div>
+
                   {song.isUnlocked ? (
                     <div className="text-green-500 font-bold mt-4">
                       Unlocked
@@ -198,7 +207,7 @@ const Library = () => {
                           height={80}
                           alt="get-song-btn"
                         />
-                        <span className="text-yellow font-bold text-lg absolute top-1 left-4 sm:left-3 md:text-md sm:text-xs">
+                        <span className="text-yellow font-bold text-lg absolute top-0 left-[7%]  md:text-md sm:text-xs">
                           30
                         </span>
                       </div>
@@ -213,6 +222,7 @@ const Library = () => {
                   width={400}
                   height={100}
                   alt="divider"
+                  className="w-full"
                 />
               </div>
             </div>
@@ -226,7 +236,7 @@ const Library = () => {
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
-                  src={"/assets/img/library/frame-removebg.png"}
+                  src={"/assets/img/library/Group_13.png"}
                   width={320}
                   height={380}
                   alt="popup-frame"
@@ -253,9 +263,9 @@ const Library = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <p className="text-yellow text-center mb-2">
-              This song will unlock in icon
+          <div className="flex justify-center w-[80%]">
+            <p className="text-yellow text-center mb-2 text-lg">
+              This song will unlock in
               <Image
                 src="/assets/img/library/Timer_icon.png"
                 alt="timer-icon"
@@ -315,6 +325,7 @@ const Library = () => {
           </button>
         </Popup>
       </div>
+
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
         <Link href="/hub">
           <motion.div
@@ -334,6 +345,7 @@ const Library = () => {
               alt="Back"
               width={200}
               height={50}
+              className="object-contain"
             />
           </motion.div>
         </Link>

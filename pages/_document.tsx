@@ -23,7 +23,12 @@ export default function Document() {
           crossOrigin="anonymous"
         />
 
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js" async></script>
+        <script
+          src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"
+          async
+        ></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
       <body className="App">
