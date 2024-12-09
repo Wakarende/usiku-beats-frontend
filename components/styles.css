@@ -436,10 +436,6 @@ svg {
 }
 
 @media only screen and (min-width: 360px) {
-  .bottom-text-container {
-    right: -5%;
-    bottom: -5%
-  }
 
   .bottom-text {
     font-size: 8px;
@@ -451,13 +447,6 @@ svg {
 
   .footer-text {
     font-size: 10px;
-    font-weight: 500;
-  }
-
-  .footer-text-container {
-    width: 40%;
-    bottom: 5%;
-    right: 32%;
   }
 
   .discs-text-container {
@@ -471,11 +460,6 @@ svg {
 }
 
 @media only screen and (min-width: 376px) {
-  .bottom-text-container {
-    right: -4%;
-    bottom: 6%
-  }
-
   .bottom-text {
     font-size: 9px;
   }
@@ -486,12 +470,6 @@ svg {
 
   .footer-text {
     font-size: 12px;
-  }
-
-  .footer-text-container {
-    /* width: 45%; */
-    top: 45%;
-    right: 33%;
   }
 
   .discs-text-container {

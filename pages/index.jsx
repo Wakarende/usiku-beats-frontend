@@ -62,10 +62,10 @@ export default function TitleScreen() {
   }, []);
 
   return (
-    <div className="title-screen">
+    <div className=" relative flex flex-col justify-between items-center h-[100vh] w-[100%] overflow-hidden">
       {/* Logo Section */}
       <motion.div
-        className="flex flex-col justify-center relative z-10 logo-container"
+        className="flex flex-col justify-center relative z-10 medium:w-[15rem] medium:mt-[5vh] small:w-[11rem] large:w-[18rem] large:mt-[0.5vh]"
         initial={{ y: -300, opacity: 0 }}
         animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 10 }}
@@ -93,7 +93,7 @@ export default function TitleScreen() {
         transition={{ duration: 1.5 }}
       />
       {/* Start Button */}
-      <div className="start-button-container">
+      <div className="absolute bottom-[10%] left-[50%] transform -translate-x-[50%] w-[60%] ">
         <motion.div
           initial={{ x: "100vw", opacity: 0 }}
           animate={

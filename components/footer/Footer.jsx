@@ -10,7 +10,7 @@ const LibraryFooter = () => {
 
   return (
     <Link href={"/library"}>
-      <footer className="fixed hub-footer bottom-0 bg-center bg-norepeat bg-cover w-full">
+      <footer className="fixed hub-footer bottom-0 bg-center bg-norepeat bg-cover w-full small:h-[6rem]">
         <div>
           <Image
             src="/assets/img/footer/Footer-bg.png"
@@ -21,8 +21,8 @@ const LibraryFooter = () => {
           />
           <div className="absolute inset-0 z-1">
             <div className="flex flex-col justify-between">
-              <div className="absolute max-w-[45%] right-[29%] bottom-[10%] p-2 footer-text-container">
-                <p className="md:text-base font-medium text-white footer-text">
+              <div className="absolute max-w-[45%] right-[29%] bottom-[20%] p-2  small:w-[40%] small:bottom-[5%] small:right-[32%]">
+                <p className=",medium:font-medium   small:font-medium text-white footer-text">
                   Add more songs to your collection by earning discs
                 </p>
               </div>
@@ -35,7 +35,7 @@ const LibraryFooter = () => {
                   {totalDiscs} discs
                 </p>
               </div>
-              <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container">
+              <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[-5%] medium: right-[-4%] medium:bottom-[6%]">
                 <p className="text-sm md:text-base font-medium bottom-text text-nowrap">
                   Each song costs 20 discs.
                 </p>
