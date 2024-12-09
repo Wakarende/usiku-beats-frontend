@@ -136,7 +136,180 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
-    <div className="w-full pb-28">
+    // <div className="w-full mb-1">
+    //   <h1 className="text-[#6e6d6d] text-center text-4xl mb-1.5">
+    //     Currently Unlocking
+    //   </h1>
+    //   <div className="grid grid-cols-3 w-full gap-x-1">
+    //     {user_data?.profile?.player?.player_song_instances
+    //       ?.filter((item) => !item.unlocked)
+    //       .map((item, index) => (
+    //         <div
+    //           key={index}
+    //           className="flex flex-col items-center unlock-card-wrapper"
+    //         >
+    //           {/* Unlock Card */}
+    //           <div
+    //             className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg"
+    //             style={{
+    //               backgroundImage: `url(${item.song.thumbnail_file})`,
+    //             }}
+    //           >
+    //             {/* Top Banner with Song Name */}
+    //             <div className="relative flex justify-center items-center top-0 left-0 right-0 h-4">
+    //               <Image
+    //                 src="/assets/img/hub/Title bar.png"
+    //                 alt="Title Bar"
+    //                 layout="fill"
+    //                 objectFit="cover"
+    //               />
+    //               <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
+    //                 {item.song.song_name}
+    //               </p>
+    //             </div>
+
+    //             {/* "Unlocks in" Text */}
+    //             <div className="absolute bottom-7 left-0 right-0 flex flex-col items-center justify-center">
+    //               <h3 className="text-white text-2xl tracking-wide uppercase unlocks-in-text">
+    //                 unlocks in
+    //               </h3>
+    //             </div>
+    //             {/* Gradient Overlay with Timer */}
+    //             <div className="absolute bottom-0 left-0 right-0 h-8 flex items-center justify-center">
+    //               <Image
+    //                 src="/assets/img/hub/Gradient.png"
+    //                 alt="Gradient Overlay"
+    //                 layout="fill"
+    //                 objectFit="cover"
+    //               />
+    //               <div className="flex items-center timer-bg  justify-center rounded z-1 w-full">
+    //                 <Image
+    //                   src="/assets/img/hub/Timer.png"
+    //                   alt="Timer Icon"
+    //                   width={10}
+    //                   height={10}
+    //                 />
+    //                 <p className="text-white font-bold text-xs m-1">
+    //                   {isUnlockTimePassed(item.unlock_time) ? (
+    //                     <button onClick={() => addToLibrary(item.song)}>
+    //                       <p className="add-to-lib tracking-wide unlocked-text text-nowrap">
+    //                         Unlocked
+    //                       </p>
+    //                     </button>
+    //                   ) : (
+    //                     <CountdownTimer
+    //                       unlockTime={item.unlock_time}
+    //                       onExpire={() => setTimerExpired(!timerExpired)}
+    //                     />
+    //                   )}
+    //                 </p>
+    //               </div>
+    //             </div>
+    //           </div>
+    //           {!isUnlockTimePassed(item.unlock_time) ? (
+    //             <div className="relative mt-0.5">
+    //               <button
+    //                 className="w-full relative"
+    //                 disabled={
+    //                   user_data?.profile?.player?.total_gems <
+    //                   gemsRequiredToUnlockSong
+    //                 }
+    //                 onClick={() => unlockSongWithGems(item.song)}
+    //               >
+    //                 <Image
+    //                   src="/assets/img/hub/Button Blank.png"
+    //                   alt="Button"
+    //                   width={160}
+    //                   height={40}
+    //                 />
+    //                 <div className="absolute inset-0 flex items-center justify-between px-1">
+    //                   <div className="flex items-center gap-0.5">
+    //                     <Image
+    //                       src="/assets/img/hub/Gem.png"
+    //                       alt="Gem"
+    //                       width={16}
+    //                       height={16}
+    //                     />
+    //                     <div className="flex items-center">
+    //                       <span className="text-yellow gems-required-text">
+    //                         {gemsRequiredToUnlockSong}
+    //                       </span>
+    //                     </div>
+    //                   </div>
+    //                   <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text">
+    //                     unlock now
+    //                   </p>
+    //                   <Image
+    //                     src="/assets/img/hub/Unlock.png"
+    //                     alt="Unlock"
+    //                     width={16}
+    //                     height={16}
+    //                   />
+    //                 </div>
+    //               </button>
+    //             </div>
+    //           ) : (
+    //             <button className="unlock-button flex items-center justify-center mt-0.5">
+    //               <Image
+    //                 src="/assets/img/hub/Button Blank.png"
+    //                 alt="Unlock Button Background"
+    //                 width={160}
+    //                 height={100}
+    //               />
+    //               <div className="absolute gem-wrapper">
+    //                 <button onClick={() => addToLibrary(item.song)}>
+    //                   <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
+    //                     Add to Library
+    //                   </p>
+    //                 </button>
+    //               </div>
+    //             </button>
+    //           )}
+    //         </div>
+    //       ))}
+    //     {/* Disc Indicator Card */}
+    //     {/* <div
+    //       className="disc-indicator-wrapper w-1/3"
+    //       onClick={() => router.push("/library")}
+    //     >
+    //       <h1 className="total-discs-text text-3xl text-white tracking-widest">
+    //         {totalDiscs}
+    //       </h1>
+    //       <Image
+    //         src="/assets/img/hub/Disc.png"
+    //         className="disc-icon"
+    //         alt="Disc Icon"
+    //         width={90}
+    //         height={90}
+    //       />
+    //       <p className="text-yellow disc-text text-center font-bold">
+    //         {totalDiscs >= discsRequiredToUnlockSong
+    //           ? "You have enough discs to unlock a new song!"
+    //           : ` Earn ${
+    //               discsRequiredToUnlockSong - totalDiscs
+    //             } more discs to unlock your next song`}
+    //       </p>
+    //     </div> */}
+    //     <div className="w-full h-auto">
+    //       <Image
+    //         src={"assets/img/hub/No_song_unlock_.png"}
+    //         width={200}
+    //         height={100}
+    //         alt="no-song-to unlock-card"
+    //       />
+    //     </div>
+
+    //     {songs?.length === 0 && (
+    //       <div className="kayfo-filter-no-result-box">
+    //         {!loading ? "No result" : "loading..."}
+    //       </div>
+    //     )}
+    //   </div>
+    // </div>
+    <div className="w-full mb-1">
+      <h1 className="text-[#6e6d6d] text-center text-4xl mb-1.5">
+        Currently Unlocking
+      </h1>
       <div className="grid grid-cols-3 w-full gap-x-1">
         {user_data?.profile?.player?.player_song_instances
           ?.filter((item) => !item.unlocked)
@@ -152,8 +325,41 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                   backgroundImage: `url(${item.song.thumbnail_file})`,
                 }}
               >
-                {/* Top Banner with Song Name */}
-                <div className="relative flex justify-center items-center top-0 left-0 right-0 h-4">
+                <div className="flex justify-center items-center">
+                  <div className="absolute top-[-4%]">
+                    <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
+                      {item.song.song_name}
+                    </p>
+                  </div>
+                </div>
+                <div className="relative justify-center items-center">
+                  <Image
+                    src="/assets/img/hub/unlock_frame.png"
+                    alt="Title Bar"
+                    width={300}
+                    height={200}
+                    className="h-[7.8rem]"
+                  />
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center">
+                  <div className="flex items-center justify-center z-1 w-full">
+                    <p className="text-white font-bold text-xs mb-0.5 ml-2">
+                      {isUnlockTimePassed(item.unlock_time) ? (
+                        <button onClick={() => addToLibrary(item.song)}>
+                          <p className="add-to-lib tracking-wide unlocked-text text-nowrap text-xs ml-1">
+                            Unlocked
+                          </p>
+                        </button>
+                      ) : (
+                        <CountdownTimer
+                          unlockTime={item.unlock_time}
+                          onExpire={() => setTimerExpired(!timerExpired)}
+                        />
+                      )}
+                    </p>
+                  </div>
+                </div>
+                {/* <div className="relative flex justify-center items-center top-0 left-0 right-0 h-4">
                   <Image
                     src="/assets/img/hub/Title bar.png"
                     alt="Title Bar"
@@ -163,16 +369,16 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                   <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
                     {item.song.song_name}
                   </p>
-                </div>
+                </div> */}
 
                 {/* "Unlocks in" Text */}
-                <div className="absolute bottom-7 left-0 right-0 flex flex-col items-center justify-center">
+                {/* <div className="absolute bottom-7 left-0 right-0 flex flex-col items-center justify-center">
                   <h3 className="text-white text-2xl tracking-wide uppercase unlocks-in-text">
                     unlocks in
                   </h3>
-                </div>
+                </div> */}
                 {/* Gradient Overlay with Timer */}
-                <div className="absolute bottom-0 left-0 right-0 h-8 flex items-center justify-center">
+                {/* <div className="absolute bottom-0 left-0 right-0 h-8 flex items-center justify-center">
                   <Image
                     src="/assets/img/hub/Gradient.png"
                     alt="Gradient Overlay"
@@ -201,7 +407,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       )}
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
               {!isUnlockTimePassed(item.unlock_time) ? (
                 <div className="relative mt-0.5">
@@ -264,28 +470,13 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               )}
             </div>
           ))}
-        {/* Disc Indicator Card */}
-        <div
-          className="disc-indicator-wrapper w-1/3"
-          onClick={() => router.push("/library")}
-        >
-          <h1 className="total-discs-text text-3xl text-white tracking-widest">
-            {totalDiscs}
-          </h1>
+        <div className="w-full h-auto">
           <Image
-            src="/assets/img/hub/Disc.png"
-            className="disc-icon"
-            alt="Disc Icon"
-            width={90}
-            height={90}
+            src={"assets/img/hub/No_song_unlock_.png"}
+            width={200}
+            height={100}
+            alt="no-song-to unlock-card"
           />
-          <p className="text-yellow disc-text text-center font-bold">
-            {totalDiscs >= discsRequiredToUnlockSong
-              ? "You have enough discs to unlock a new song!"
-              : ` Earn ${
-                  discsRequiredToUnlockSong - totalDiscs
-                } more discs to unlock your next song`}
-          </p>
         </div>
 
         {songs?.length === 0 && (

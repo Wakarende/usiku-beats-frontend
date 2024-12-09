@@ -300,7 +300,7 @@ const HubScreen = () => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
-    <div className="">
+    <div className="hubscreen-container">
       <Header />
       {/* Container */}
       <div className="px-1 mx-auto max-w-7xl">
@@ -310,7 +310,7 @@ const HubScreen = () => {
             Your Songs
           </h1>
         </div>
-        <div>
+        <div className="mb-1">
           <div
             className="kayfo-masonry-main overflow-x-auto overflow-y-hidden"
             style={{ minWidth: "100%" }}
@@ -338,8 +338,26 @@ const HubScreen = () => {
             )}
           </div>
         </div>
+        <div className="w-full">
+          <Image
+            src={"/assets/img/library/Divider.png"}
+            width={400}
+            height={100}
+            alt="divider"
+            className="w-full"
+          />
+        </div>
         {/* Horizontal Cards Row */}
         <UnlockSongsRow user_data={user_data} songs={songs} loading={loading} />
+        <div className="w-full">
+          <Image
+            src={"/assets/img/library/Divider.png"}
+            width={400}
+            height={100}
+            alt="divider"
+            className="w-full"
+          />
+        </div>
       </div>
       <OverlayCard
         isOpen={isOverlayOpen}

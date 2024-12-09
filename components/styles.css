@@ -151,9 +151,12 @@
 }
 
 .unlock-now-text,
-.add-to-lib,
-.unlocked-text {
+.add-to-lib {
   font-size: 10px;
+}
+
+.unlocked-text {
+  font-size: 8px;
 }
 
 .disc-indicator-wrapper {
@@ -469,7 +472,6 @@ svg {
   .disc-text {
     font-size: 14px;
   }
-
 
 }
 

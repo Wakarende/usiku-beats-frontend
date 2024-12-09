@@ -92,7 +92,6 @@ export default function TitleScreen() {
         animate={{ opacity: backgroundVisible ? 1 : 0 }}
         transition={{ duration: 1.5 }}
       />
-
       {/* Start Button */}
       <div className="start-button-container">
         <motion.div
