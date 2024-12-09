@@ -136,7 +136,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-28">
       <div className="grid grid-cols-3 w-full gap-x-1">
         {user_data?.profile?.player?.player_song_instances
           ?.filter((item) => !item.unlocked)

@@ -325,7 +325,6 @@ const Library = () => {
           </button>
         </Popup>
       </div>
-
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
         <Link href="/hub">
           <motion.div

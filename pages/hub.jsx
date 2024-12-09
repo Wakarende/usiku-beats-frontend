@@ -300,13 +300,13 @@ const HubScreen = () => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   return (
-    <div className="cmd-page">
+    <div className="">
       <Header />
       {/* Container */}
       <div className="px-1 mx-auto max-w-7xl">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
-          <h1 className="your-songs text-center mt-3 mb-2 text-5xl uppercase tracking-wider">
+          <h1 className="your-songs text-center mt- mb-2 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
         </div>
@@ -389,9 +389,7 @@ const HubScreen = () => {
         </button>
       </div> */}
       {/* </DailyRewardPopup> */}
-      <div>
-        <LibraryFooter />
-      </div>
+      <LibraryFooter />
     </div>
   );
 };
