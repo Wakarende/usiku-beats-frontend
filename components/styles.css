@@ -211,6 +211,36 @@
 /* UNLOCK ROW SONGS END  */
 
 /* HUBSCREEN SONG CARD OVERLAY  */
+/* HUBSCREEN CARD  */
+
+
+@media only screen and (min-width: 360px) {
+  /* .card-frame {
+    width: 140px;
+    height: 210px;
+  }
+
+  .artist-img {
+    top: 2%;
+    left: 0%;
+    width: 172px;
+    height: 140px;
+  } */
+}
+
+/* @media only screen and (min-width: 376px) { */
+/* .card-frame {
+    width: 160px;
+    height: 250px;
+  } */
+
+/* .artist-img {}
+}
+
+.artist-text {
+  font-size: 9px;
+} */
+
 .frame {
   position: relative;
   background-image: url("/assets/img/hub/Frame_.png");
@@ -240,11 +270,11 @@ button .pulse {
 
 /* text outline  */
 .country-text {
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .difficulty-text {
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .outline-text {
@@ -547,13 +577,13 @@ svg {
   background-image: url('/assets/img/levelinfo/Tile_Inactive.png');
 }
 
-.stars {
+/* .stars {
   width: 24px !important;
   height: 24px !important;
   min-width: 24px;
   min-height: 24px;
   object-fit: contain;
-}
+} */
 
 .bg-level {
   background-size: contain;
