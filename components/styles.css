@@ -97,24 +97,21 @@
 }
 
 .unlock-card {
-  background-repeat: no-repeat;
-  max-width: 137px;
-  height: 124px;
+  max-width: 132px;
+  height: 116px;
   aspect-ratio: 140/115;
-  background-size: cover;
-  background-position: center;
 }
 
-.unlocks-in-text {
+/* .unlocks-in-text {
   text-shadow: 1.536px 1.573px #000;
-}
+} */
 
-.timer-bg {
+/* .timer-bg {
   background: url("/assets/img/hub/Timer bar.png");
   background-position: center;
   background-size: cover;
   width: 100%;
-}
+} */
 
 .timer-text {
   font-size: 9px;
@@ -152,7 +149,7 @@
 
 .unlock-now-text,
 .add-to-lib {
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .unlocked-text {
