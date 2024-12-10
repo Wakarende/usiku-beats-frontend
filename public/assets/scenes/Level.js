@@ -823,7 +823,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }
@@ -1113,7 +1113,7 @@ class Level extends Phaser.Scene {
 
     const user_data = JSON.parse(localStorage.getItem("user_data"));
     const disc_count = user_data.profile.player.total_discs;
-    this.disc_count_txt.setText(disc_count);
+    this.disc_count_txt.setText(disc_count + 45);
 
     this.artist_name.setText(this.track.artist_name.toUpperCase());
     this.song_name.setText(this.track.song_name);

@@ -37,7 +37,7 @@ const LibraryFooter = () => {
               </div>
               <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[5%] medium: right-[-4%] medium:bottom-[15%] leading-tight ">
                 <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
-                  Each song costs 20 discs.
+                  Each song costs 30 discs.
                 </p>
                 <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
                   Get discs by playing your song
