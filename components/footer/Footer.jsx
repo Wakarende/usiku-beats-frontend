@@ -13,7 +13,7 @@ const LibraryFooter = () => {
       <footer className="fixed hub-footer bottom-0 bg-center bg-norepeat bg-cover w-full small:h-[6rem]">
         <div>
           <Image
-            src="/assets/img/footer/Footer-bg.png"
+            src="/assets/img/footer/footer-bg.png"
             alt="Footer background pattern"
             fill
             className="object-contain z-1"
