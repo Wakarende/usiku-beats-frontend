@@ -208,7 +208,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       onClick={() => unlockSongWithGems(item.song)}
                     >
                       <Image
-                        src="/assets/img/hub/Button Blank.png"
+                        src="/assets/img/hub/Button blank.png"
                         alt="Button"
                         width={160}
                         height={40}

@@ -34,7 +34,7 @@ const OverlayCard = ({
       <div className="overlay-content">
         <div className="overlay-header mb-1">
           <Image
-            src="/assets/img/artistinfo/info_icon.png"
+            src="/assets/img/artistinfo/Info_icon.png"
             alt="info-icon"
             width={25}
             height={25}
