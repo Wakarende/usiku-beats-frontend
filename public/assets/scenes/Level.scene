@@ -340,10 +340,10 @@
                     "label": "bottom_banner",
                     "components": [],
                     "texture": {
-                        "key": "Bottom banner"
+                        "key": "sc_banner"
                     },
                     "x": 180,
-                    "y": 606.5033569335938,
+                    "y": 526.678,
                     "scaleX": 0.3333,
                     "scaleY": 0.3333
                 },
@@ -427,7 +427,7 @@
                     "label": "song_complete_txt",
                     "components": [],
                     "x": 180,
-                    "y": 356,
+                    "y": 348,
                     "originX": 0.5,
                     "originY": 0.5,
                     "text": "Song Complete",
@@ -441,13 +441,14 @@
                     "id": "bf44b44a-5301-4d91-a6b0-cf68f1eb906e",
                     "label": "youve_earned_txt",
                     "components": [],
-                    "x": 180,
-                    "y": 406,
+                    "x": 142,
+                    "y": 392,
                     "originX": 0.5,
                     "originY": 0.5,
-                    "text": "You've earned 45 discs",
+                    "text": "You've earned:",
                     "fontFamily": "Carlito-Regular",
-                    "fontSize": "20px"
+                    "fontSize": "20px",
+                    "color": "#faf05e"
                 },
                 {
                     "type": "Image",
@@ -458,25 +459,9 @@
                         "key": "Disc"
                     },
                     "x": 180,
-                    "y": 486,
-                    "scaleX": 0.3333,
-                    "scaleY": 0.3333
-                },
-                {
-                    "type": "Text",
-                    "id": "1c41c89c-ef4c-45d1-9f4d-8b417067540b",
-                    "label": "plus_30",
-                    "components": [],
-                    "x": 246,
-                    "y": 457,
-                    "angle": -29,
-                    "originX": 0.5,
-                    "originY": 0.5,
-                    "text": "+45",
-                    "fontFamily": "Afolkalips",
-                    "fontSize": "57px",
-                    "color": "#faf05e",
-                    "stroke": "#faf05e"
+                    "y": 551,
+                    "scaleX": 0.4,
+                    "scaleY": 0.4
                 },
                 {
                     "type": "Text",
@@ -485,16 +470,72 @@
                     "scope": "CLASS",
                     "components": [],
                     "x": 180,
-                    "y": 555,
+                    "y": 616,
                     "originX": 0.5,
                     "originY": 0.5,
-                    "text": "Earn more discs to unlock your next song",
+                    "text": "Each new song costs 30 discs",
                     "align": "center",
                     "fontFamily": "Carlito-Regular",
                     "fontSize": "20px",
                     "color": "#faf05e",
                     "stroke": "#faf05e",
-                    "wordWrapWidth": 200
+                    "wordWrapWidth": 250
+                },
+                {
+                    "type": "Text",
+                    "id": "c0c9cd67-83f9-42d1-9686-7610d7637a5e",
+                    "label": "youve_earned_txt_1",
+                    "components": [],
+                    "x": 240,
+                    "y": 392,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "45 discs",
+                    "fontFamily": "Carlito-Regular",
+                    "fontSize": "20px"
+                },
+                {
+                    "type": "Text",
+                    "id": "457116ad-e7e4-4385-951b-7c52ad045107",
+                    "label": "youve_earned_txt_2",
+                    "components": [],
+                    "x": 180,
+                    "y": 456.1981865735109,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "YOU NOW HAVE",
+                    "align": "center",
+                    "fontFamily": "Carlito-Bold",
+                    "fontSize": "20px"
+                },
+                {
+                    "type": "Text",
+                    "id": "d0572aca-9562-4fe0-a02f-ba3f9867eae2",
+                    "label": "disc_count_txt",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 150,
+                    "y": 484,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "30",
+                    "align": "center",
+                    "fontFamily": "Carlito-Bold",
+                    "fontSize": "20px"
+                },
+                {
+                    "type": "Text",
+                    "id": "55f0629b-b5d0-477c-836d-1c343d4d0a1e",
+                    "label": "disc_count_txt_1",
+                    "components": [],
+                    "x": 193,
+                    "y": 484,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "DISCS",
+                    "align": "center",
+                    "fontFamily": "Carlito-Bold",
+                    "fontSize": "20px"
                 }
             ]
         }
