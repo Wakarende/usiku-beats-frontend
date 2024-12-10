@@ -226,6 +226,11 @@
                 "key": "Round Frame"
             },
             {
+                "url": "assets/sprites/summaryscene/sc_banner.png",
+                "type": "image",
+                "key": "sc_banner"
+            },
+            {
                 "url": [
                     "assets/sounds/SoundScape/Score_Counter_Sfx.mp3"
                 ],

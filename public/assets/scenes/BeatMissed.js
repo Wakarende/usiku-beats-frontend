@@ -3,95 +3,125 @@
 /* START OF COMPILED CODE */
 
 class BeatMissed extends Phaser.Scene {
+  constructor() {
+    super("BeatMissed");
+    this.continueCount = 0;
 
-	constructor() {
-		super("BeatMissed");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // black_background
+    const black_background = this.add.image(180, 320, "BG_1");
+    black_background.scaleX = 0.3333;
+    black_background.scaleY = 0.3333;
 
-		// black_background
-		const black_background = this.add.image(180, 320, "BG_1");
-		black_background.scaleX = 0.3333;
-		black_background.scaleY = 0.3333;
+    // bm_BG
+    const bm_BG = this.add.image(180, 320, "bm_BG");
+    bm_BG.scaleX = 0.3333;
+    bm_BG.scaleY = 0.3333;
 
-		// bm_BG
-		const bm_BG = this.add.image(180, 320, "bm_BG");
-		bm_BG.scaleX = 0.3333;
-		bm_BG.scaleY = 0.3333;
+    // Beat_Missed_Text
+    const beat_Missed_Text = this.add.text(180, 182, "", {});
+    beat_Missed_Text.setOrigin(0.5, 0.5);
+    beat_Missed_Text.text = "Missed \na Beat";
+    beat_Missed_Text.setStyle({
+      align: "center",
+      color: "#fe3400",
+      fontFamily: "Afolkalips",
+      fontSize: "60px",
+      stroke: "#fe3400",
+    });
 
-		// Beat_Missed_Text
-		const beat_Missed_Text = this.add.text(180, 182, "", {});
-		beat_Missed_Text.setOrigin(0.5, 0.5);
-		beat_Missed_Text.text = "Missed \na Beat";
-		beat_Missed_Text.setStyle({ "align": "center", "color": "#fe3400", "fontFamily": "Afolkalips", "fontSize": "60px", "stroke": "#fe3400" });
+    // timer_text
+    const timer_text = this.add.text(199, 609, "", {});
+    timer_text.setOrigin(0.5, 0.5);
+    timer_text.text = "5";
+    timer_text.setStyle({
+      color: "#fcb320",
+      fontFamily: "Carlito-BoldItalic",
+      fontSize: "24px",
+      stroke: "#fcb320",
+    });
 
-		// timer_text
-		const timer_text = this.add.text(199, 609, "", {});
-		timer_text.setOrigin(0.5, 0.5);
-		timer_text.text = "5";
-		timer_text.setStyle({ "color": "#fcb320", "fontFamily": "Carlito-BoldItalic", "fontSize": "24px", "stroke": "#fcb320" });
+    // continue_btn
+    const continue_btn = this.add.image(180, 541, "bm_continue");
+    continue_btn.scaleX = 0.3333;
+    continue_btn.scaleY = 0.3333;
 
-		// continue_btn
-		const continue_btn = this.add.image(180, 541, "bm_continue");
-		continue_btn.scaleX = 0.3333;
-		continue_btn.scaleY = 0.3333;
+    // gem_small
+    const gem_small = this.add.image(79, 538, "Gem_small");
+    gem_small.scaleX = 0.3333;
+    gem_small.scaleY = 0.3333;
 
-		// gem_small
-		const gem_small = this.add.image(79, 538, "Gem_small");
-		gem_small.scaleX = 0.3333;
-		gem_small.scaleY = 0.3333;
+    // gem_count
+    const gem_count = this.add.text(106, 538, "", {});
+    gem_count.setOrigin(0.5, 0.5);
+    gem_count.text = "5";
+    gem_count.setStyle({
+      color: "#000",
+      fontFamily: "Afolkalips",
+      fontSize: "30px",
+      stroke: "#000",
+    });
 
-		// gem_count
-		const gem_count = this.add.text(106, 538, "", {});
-		gem_count.setOrigin(0.5, 0.5);
-		gem_count.text = "5";
-		gem_count.setStyle({ "color": "#000", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#000" });
+    // timer_icon
+    const timer_icon = this.add.image(170, 607, "Timer_icon");
+    timer_icon.scaleX = 0.5;
+    timer_icon.scaleY = 0.5;
 
-		// timer_icon
-		const timer_icon = this.add.image(170, 607, "Timer_icon");
-		timer_icon.scaleX = 0.5;
-		timer_icon.scaleY = 0.5;
+    // motivation_text
+    const motivation_text = this.add.text(184, 449, "", {});
+    motivation_text.setOrigin(0.5, 0.5);
+    motivation_text.text =
+      "You missed a beat! Continue from where you left off, or wait to see your score.";
+    motivation_text.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Italic",
+      fontSize: "20px",
+      maxLines: 4,
+    });
+    motivation_text.setWordWrapWidth(300);
 
-		// motivation_text
-		const motivation_text = this.add.text(184, 449, "", {});
-		motivation_text.setOrigin(0.5, 0.5);
-		motivation_text.text = "You missed a beat! Continue from where you left off, or wait to see your score.";
-		motivation_text.setStyle({ "align": "center", "fontFamily": "Carlito-Italic", "fontSize": "20px", "maxLines":4});
-		motivation_text.setWordWrapWidth(300);
+    // lists
+    const ui_layer = [
+      gem_count,
+      beat_Missed_Text,
+      continue_btn,
+      gem_small,
+      timer_icon,
+      motivation_text,
+      bm_BG,
+      timer_text,
+    ];
 
-		// lists
-		const ui_layer = [gem_count, beat_Missed_Text, continue_btn, gem_small, timer_icon, motivation_text, bm_BG, timer_text];
+    this.black_background = black_background;
+    this.timer_text = timer_text;
+    this.continue_btn = continue_btn;
+    this.gem_count = gem_count;
+    this.motivation_text = motivation_text;
+    this.ui_layer = ui_layer;
 
-		this.black_background = black_background;
-		this.timer_text = timer_text;
-		this.continue_btn = continue_btn;
-		this.gem_count = gem_count;
-		this.motivation_text = motivation_text;
-		this.ui_layer = ui_layer;
+    this.events.emit("scene-awake");
+  }
 
-		this.events.emit("scene-awake");
-	}
+  /** @type {Phaser.GameObjects.Image} */
+  black_background;
+  /** @type {Phaser.GameObjects.Text} */
+  timer_text;
+  /** @type {Phaser.GameObjects.Image} */
+  continue_btn;
+  /** @type {Phaser.GameObjects.Text} */
+  gem_count;
+  /** @type {Phaser.GameObjects.Text} */
+  motivation_text;
+  /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
+  ui_layer;
 
-	/** @type {Phaser.GameObjects.Image} */
-	black_background;
-	/** @type {Phaser.GameObjects.Text} */
-	timer_text;
-	/** @type {Phaser.GameObjects.Image} */
-	continue_btn;
-	/** @type {Phaser.GameObjects.Text} */
-	gem_count;
-	/** @type {Phaser.GameObjects.Text} */
-	motivation_text;
-	/** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
-	ui_layer;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
 
@@ -198,7 +228,7 @@ class BeatMissed extends Phaser.Scene {
   }
 
   startAutoQuitTimer() {
-    let timeLeft = 5;
+    let timeLeft = 4;
     this.timer_text.setText(timeLeft);
 
     this.autoQuitTimer = this.time.addEvent({
@@ -211,7 +241,7 @@ class BeatMissed extends Phaser.Scene {
           this.autoQuit();
         }
       },
-      repeat: 4,
+      repeat: 3,
     });
   }
 
@@ -225,18 +255,30 @@ class BeatMissed extends Phaser.Scene {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     const total_gems = user_data.profile.player.total_gems;
     this.gem_count.setText(total_gems);
-    if (total_gems < 20) {
-      this.continue_btn.disableInteractive();
-      this.motivation_text.setText("Insufficient gems to continue");
+
+    const continueCost = (this.continueCount + 1) * 5; // Calculate the cost
+
+    // Initially disable the button
+    this.continue_btn.disableInteractive();
+    // this.continue_btn.setAlpha(0.5); // Optional: make it look disabled
+
+    if (total_gems < continueCost) {
+      this.motivation_text.setText(`Insufficient gems to continue. Need ${continueCost} gems.`);
       this.continue_btn.setTint(0x888888); // Gray out the button
     } else {
-      this.continue_btn.setInteractive();
-      //   this.continue_text.setText("CONTINUE");
-      this.continue_btn.on("pointerup", () => {
-        this.subtractGems(5);
-        this.countDown();
-        // this.scene.stop();
-        // this.scene.resume("Level");
+      // this.motivation_text.setText(`Continue for ${continueCost} gems?`);
+      this.continue_btn.clearTint(); // Remove the gray tint
+
+      // Set a timer to enable the button after 1 second
+      this.time.delayedCall(800, () => {
+        this.continue_btn.setInteractive();
+        this.continue_btn.setAlpha(1); // Optional: restore full opacity
+
+        // Add the click event listener here
+        this.continue_btn.on("pointerup", () => {
+          this.subtractGems(continueCost);
+          this.countDown();
+        });
       });
     }
   }
@@ -245,6 +287,8 @@ class BeatMissed extends Phaser.Scene {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     user_data.profile.player.total_gems -= amount;
     this.game.events.emit("updateUserEvent", { data: user_data });
+
+    this.continueCount++; // Increment the continue count
   }
 
   countDown() {

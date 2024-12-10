@@ -71,11 +71,7 @@ class Level extends Phaser.Scene {
     const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
     multiplier_text.setOrigin(0.5, 0.5);
     multiplier_text.text = "x 1";
-    multiplier_text.setStyle({
-      align: "center",
-      fontFamily: "Afolkalips",
-      fontSize: "25px",
-    });
+    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
 
     // tap_zone_area
     const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
@@ -110,11 +106,7 @@ class Level extends Phaser.Scene {
     const streak_text = this.add.text(180, 353, "", {});
     streak_text.setOrigin(0.5, 0.5);
     streak_text.text = "10 STREAK";
-    streak_text.setStyle({
-      align: "center",
-      fontFamily: "Carlito-Regular",
-      fontSize: "15px",
-    });
+    streak_text.setStyle({ align: "center", fontFamily: "Carlito-Regular", fontSize: "15px" });
     streak_popup.add(streak_text);
 
     // perfect_1
@@ -169,7 +161,7 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(bG);
 
     // bottom_banner
-    const bottom_banner = this.add.image(180, 606.5033569335938, "Bottom banner");
+    const bottom_banner = this.add.image(180, 526.678, "sc_banner");
     bottom_banner.scaleX = 0.3333;
     bottom_banner.scaleY = 0.3333;
     song_complete_overlay.add(bottom_banner);
@@ -178,11 +170,7 @@ class Level extends Phaser.Scene {
     const artist_name = this.add.text(180, 19, "", {});
     artist_name.setOrigin(0.5, 0.5);
     artist_name.text = "artist_name";
-    artist_name.setStyle({
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      stroke: "#faf05e",
-    });
+    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
     song_complete_overlay.add(artist_name);
 
     // song_name
@@ -222,7 +210,7 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(carousel);
 
     // song_complete_txt
-    const song_complete_txt = this.add.text(180, 356, "", {});
+    const song_complete_txt = this.add.text(180, 348, "", {});
     song_complete_txt.setOrigin(0.5, 0.5);
     song_complete_txt.text = "Song Complete";
     song_complete_txt.setStyle({
@@ -234,35 +222,26 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(song_complete_txt);
 
     // youve_earned_txt
-    const youve_earned_txt = this.add.text(180, 406, "", {});
+    const youve_earned_txt = this.add.text(142, 392, "", {});
     youve_earned_txt.setOrigin(0.5, 0.5);
-    youve_earned_txt.text = "You've earned 45 discs";
-    youve_earned_txt.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
+    youve_earned_txt.text = "You've earned:";
+    youve_earned_txt.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+    });
     song_complete_overlay.add(youve_earned_txt);
 
     // disc
-    const disc = this.add.image(180, 486, "Disc");
-    disc.scaleX = 0.3333;
-    disc.scaleY = 0.3333;
+    const disc = this.add.image(180, 551, "Disc");
+    disc.scaleX = 0.4;
+    disc.scaleY = 0.4;
     song_complete_overlay.add(disc);
 
-    // plus_30
-    const plus_30 = this.add.text(246, 457, "", {});
-    plus_30.angle = -29;
-    plus_30.setOrigin(0.5, 0.5);
-    plus_30.text = "+45";
-    plus_30.setStyle({
-      color: "#faf05e",
-      fontFamily: "Afolkalips",
-      fontSize: "57px",
-      stroke: "#faf05e",
-    });
-    song_complete_overlay.add(plus_30);
-
     // earn_text
-    const earn_text = this.add.text(180, 555, "", {});
+    const earn_text = this.add.text(180, 616, "", {});
     earn_text.setOrigin(0.5, 0.5);
-    earn_text.text = "Earn more discs to unlock your next song";
+    earn_text.text = "Each new song costs 30 discs";
     earn_text.setStyle({
       align: "center",
       color: "#faf05e",
@@ -270,8 +249,22 @@ class Level extends Phaser.Scene {
       fontSize: "20px",
       stroke: "#faf05e",
     });
-    earn_text.setWordWrapWidth(200);
+    earn_text.setWordWrapWidth(250);
     song_complete_overlay.add(earn_text);
+
+    // youve_earned_txt_1
+    const youve_earned_txt_1 = this.add.text(240, 392, "", {});
+    youve_earned_txt_1.setOrigin(0.5, 0.5);
+    youve_earned_txt_1.text = "45 discs";
+    youve_earned_txt_1.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
+    song_complete_overlay.add(youve_earned_txt_1);
+
+    // youve_earned_txt_2
+    const youve_earned_txt_2 = this.add.text(180, 475.1981865735109, "", {});
+    youve_earned_txt_2.setOrigin(0.5, 0.5);
+    youve_earned_txt_2.text = "YOU NOW HAVE \n30 DISCS";
+    youve_earned_txt_2.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    song_complete_overlay.add(youve_earned_txt_2);
 
     // lists
     const ui_layer = [
@@ -542,6 +535,8 @@ class Level extends Phaser.Scene {
     // this.initializeVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
+
+    this.scene.get("BeatMissed").continueCount = 0;
   }
 
   adjustViewport() {
@@ -811,7 +806,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }

@@ -88,7 +88,7 @@ const HubScreen = () => {
       setLoading(true);
 
       try {
-        let response = await axios.get(`${BASE_URL}initial-song-list/?ids=146`);
+        let response = await axios.get(`${BASE_URL}initial-song-list/?ids=147`);
 
         let anonUserObject = {
           profile: {
@@ -135,9 +135,7 @@ const HubScreen = () => {
         ),
       }));
 
-      const lockedSongs = songsWithUnlockStatus.filter(
-        (song) => !song.isUnlocked
-      );
+      const lockedSongs = songsWithUnlockStatus.filter((song) => !song.isUnlocked);
       setUnlockableSongs(lockedSongs);
 
       setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
@@ -266,9 +264,7 @@ const HubScreen = () => {
     dispatch(updateUser(newUserdata));
 
     // Remove the unlocked song from the unlockable songs list
-    setUnlockableSongs((prevSongs) =>
-      prevSongs.filter((s) => s.id !== song.id)
-    );
+    setUnlockableSongs((prevSongs) => prevSongs.filter((s) => s.id !== song.id));
 
     // Update visible unlockable songs
     setVisibleUnlockableSongs((prevVisibleSongs) => {
@@ -276,9 +272,7 @@ const HubScreen = () => {
       let updatedVisible = prevVisibleSongs.filter((s) => s.id !== song.id);
 
       // Add the next song from unlockableSongs if available
-      const remainingLockedSongs = unlockableSongs.filter(
-        (s) => s.id !== song.id
-      );
+      const remainingLockedSongs = unlockableSongs.filter((s) => s.id !== song.id);
       if (remainingLockedSongs.length > 0) {
         // Add the next song to maintain two visible unlockable songs
         updatedVisible.push(remainingLockedSongs[0]);
@@ -316,11 +310,7 @@ const HubScreen = () => {
             style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
-              <div
-                className={`flex flex-row ${
-                  songs.length === 1 ? "mx-auto" : ""
-                }`}
-              >
+              <div className={`flex flex-row ${songs.length === 1 ? "mx-auto" : ""}`}>
                 {songs?.map((item, index) => (
                   <ArtistImage
                     key={index}
