@@ -81,89 +81,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
   const starCount = getStarsFromScore(song.high_score);
 
   return (
-    // <div className="container">
-    //   <div className="frame relative flex flex-col items-stretch w-[250px] h-auto overflow-hidden mx-1">
-    //     <div className="relative w-[238px] h-[233px]">
-    //       <Image
-    //         src={song.thumbnail_file}
-    //         alt={song.song_name}
-    //         layout="fill"
-    //         objectFit="cover"
-    //         className="rounded-t-md z-[-5px]"
-    //       />
-    //     </div>
-    //     {/* Star rating at the top */}
-    //     <div className="absolute top-0 left-0 w-full h-8  bg-gradient-to-b from-black/60 to-transparent">
-    //       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex mt-2">
-    //         {[...Array(5)].map((_, index) => (
-    //           <div key={index} className="relative w-6 h-6">
-    //             <Image
-    //               src={
-    //                 starCount > 0 && index < starCount
-    //                   ? "/assets/img/hub/Star Active.png"
-    //                   : "/assets/img/hub/Star_Inactive.png"
-    //               }
-    //               alt="star"
-    //               width={16}
-    //               height={16}
-    //               className="stars"
-    //             />
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-    //     {/* Bottom gradient and content */}
-    //     <div className="absolute bottom-0 left-0 p-2  ">
-    //       <div className="flex w-full justify-between items-end absolute bottom-28">
-    //         <svg viewBox="0 0 450 70" className="absolute left-[-30px]">
-    //           <text
-    //             className="svgText uppercase tracking-normal country-text"
-    //             x="1"
-    //             y="45"
-    //           >
-    //             {song.country_name}
-    //           </text>
-    //         </svg>
-
-    //         <div className="absolute">
-    //           <svg viewBox="0 0 450 70" className="absolute left-[130px]">
-    //             <text
-    //               className="svgText uppercase tracking-normal difficulty-text"
-    //               x="3"
-    //               y="45"
-    //             >
-    //               Medium
-    //             </text>
-    //           </svg>
-    //         </div>
-    //       </div>
-    //     </div>
-    //     <div className="flex flex-col flex-grow overflow-hidden justify-end ">
-    //       <div className="flex flex-col items-center text-md tracking-wide">
-    //         <p className="text-yellow">{song.song_name}</p>
-    //         <p
-    //           onClick={(e) => onArtistClick(e, song.artist)}
-    //           className="text-white uppercase text-xs tracking-wide cursor-pointer"
-    //         >
-    //           {song.artist_name}
-    //         </p>
-    //       </div>
-    //     </div>
-    //     {/* </div> */}
-    //     <div className="flex justify-center ">
-    //       <button variant="default" onClick={onPlayClick}>
-    //         <Image
-    //           src="/assets/img/hub/Play_now.png"
-    //           width={200}
-    //           height={30}
-    //           alt="play-now-btn"
-    //           className={`w-full h-full ${isPulsing ? "pulse" : ""}`}
-    //         />
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
-    <div className=" relative overflow-hidden flex justify-center items-center mx-1 small:w-[140px] small:h-[210px] medium:w-[160px] medium:h-[250px]">
+    <div className="relative overflow-hidden flex justify-center items-center mx-1 small:w-[140px] small:h-[210px] medium:w-[160px] medium:h-[250px]">
       {/* Frame */}
       <Image
         src="/assets/img/hub/Frame_.png"
@@ -186,7 +104,10 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
       <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-black/60 to-transparent z-20">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex mt-2">
           {[...Array(5)].map((_, index) => (
-            <div key={index} className="relative medium:w-5 medium:h-5">
+            <div
+              key={index}
+              className="relative medium:w-5 medium:h-5 small:w-4 small:h-4"
+            >
               <Image
                 src={
                   starCount > 0 && index < starCount
@@ -196,13 +117,12 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
                 alt="star"
                 width={15}
                 height={15}
-                className="stars object-contain medium:min-w-5 medium:min-h-5"
+                className="stars object-contain medium:min-w-5 medium:min-h-5 small:min-w-4 small:min-h-4"
               />
             </div>
           ))}
         </div>
       </div>
-
       {/* Country and Difficulty Labels */}
       <div className="absolute medium:bottom-[92px] small:bottom-[78px] medium:left-0 small:left-[-10px] w-full flex justify-start items-end z-20">
         <svg
@@ -210,7 +130,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
           className="absolute medium:left-[-25px] small:left-[-16px]"
         >
           <text
-            className="svgText uppercase tracking-normal country-text text-yellow medium:text-xs small:text-xs"
+            className="svgText uppercase tracking-normal  text-yellow medium:text-[8px] small:text-[8px]"
             x="1"
             y="45"
           >
@@ -222,7 +142,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
           className="absolute medium:left-[91px] small:left-[81px]"
         >
           <text
-            className="svgText uppercase tracking-normal difficulty-text text-yellow"
+            className="svgText uppercase tracking-normal  text-yellow medium:text-[8px] small:text-[8px]"
             x="3"
             y="45"
           >
@@ -231,11 +151,14 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
         </svg>
       </div>
       {/* Text (Artist and Song) and Play Button */}
-      <div className="absolute medium:bottom-[-1px]  small:bottom-[-1px] left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2">
-        <p className="text-yellow text-sm text-nowrap medium:text-base small:text-sm">
+      <div className="absolute medium:bottom-[-1px]  small:bottom-[-1px] left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight">
+        <p className="text-yellow text-nowrap medium:text-base small:text-sm leading-tight">
           {song.song_name}
         </p>
-        <p className="text-white uppercase artist-text text-nowrap medium:text-xs small:text-xs">
+        <p
+          onClick={(e) => onArtistClick(e, song.artist)}
+          className="text-white uppercase text-nowrap medium:text-[10px] small:text-[8px] leading-tight"
+        >
           {song.artist_name}
         </p>
 

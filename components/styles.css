@@ -102,17 +102,6 @@
   aspect-ratio: 140/115;
 }
 
-/* .unlocks-in-text {
-  text-shadow: 1.536px 1.573px #000;
-} */
-
-/* .timer-bg {
-  background: url("/assets/img/hub/Timer bar.png");
-  background-position: center;
-  background-size: cover;
-  width: 100%;
-} */
-
 .timer-text {
   font-size: 9px;
 }
@@ -209,35 +198,6 @@
 
 /* HUBSCREEN SONG CARD OVERLAY  */
 /* HUBSCREEN CARD  */
-
-
-@media only screen and (min-width: 360px) {
-  /* .card-frame {
-    width: 140px;
-    height: 210px;
-  }
-
-  .artist-img {
-    top: 2%;
-    left: 0%;
-    width: 172px;
-    height: 140px;
-  } */
-}
-
-/* @media only screen and (min-width: 376px) { */
-/* .card-frame {
-    width: 160px;
-    height: 250px;
-  } */
-
-/* .artist-img {}
-}
-
-.artist-text {
-  font-size: 9px;
-} */
-
 .frame {
   position: relative;
   background-image: url("/assets/img/hub/Frame_.png");
@@ -266,14 +226,6 @@ button .pulse {
 }
 
 /* text outline  */
-.country-text {
-  font-size: 8px;
-}
-
-.difficulty-text {
-  font-size: 8px;
-}
-
 .outline-text {
   color: #faf05d;
   text-shadow:
@@ -409,7 +361,6 @@ svg {
   transition: opacity 0.3s ease;
 }
 
-
 .kayfo-masonry-item {
   position: relative;
   margin: 0;
@@ -447,7 +398,7 @@ svg {
   }
 
   .discs-text-container {
-    left: 62%;
+    left: 61%;
     top: 10%;
   }
 
@@ -470,8 +421,8 @@ svg {
   }
 
   .discs-text-container {
-    left: 65%;
-    top: 17%;
+    left: 64%;
+    top: 22%;
   }
 
   .disc-text {

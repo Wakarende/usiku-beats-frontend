@@ -310,7 +310,7 @@ const HubScreen = () => {
             Your Songs
           </h1>
         </div>
-        <div className="mb-1">
+        <div className="">
           <div
             className="kayfo-masonry-main overflow-x-auto overflow-y-hidden"
             style={{ minWidth: "100%" }}

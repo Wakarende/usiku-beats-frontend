@@ -70,9 +70,6 @@ export default function TitleScreen() {
         animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 10 }}
       >
-        <span className="text-white font-bold text-center text-xl text-nowrap mt-0.5">
-          Turn on your sound
-        </span>
         <Image
           src="/assets/img/start/LogoTail.png"
           width={250}

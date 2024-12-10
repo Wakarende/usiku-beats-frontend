@@ -137,7 +137,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center text-4xl mb-1.5">
+      <h1 className="text-[#6e6d6d] text-center text-4xl">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">
