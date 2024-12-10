@@ -260,11 +260,25 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(youve_earned_txt_1);
 
     // youve_earned_txt_2
-    const youve_earned_txt_2 = this.add.text(180, 475.1981865735109, "", {});
+    const youve_earned_txt_2 = this.add.text(180, 456.1981865735109, "", {});
     youve_earned_txt_2.setOrigin(0.5, 0.5);
-    youve_earned_txt_2.text = "YOU NOW HAVE \n30 DISCS";
+    youve_earned_txt_2.text = "YOU NOW HAVE";
     youve_earned_txt_2.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
     song_complete_overlay.add(youve_earned_txt_2);
+
+    // disc_count_txt
+    const disc_count_txt = this.add.text(150, 484, "", {});
+    disc_count_txt.setOrigin(0.5, 0.5);
+    disc_count_txt.text = "30";
+    disc_count_txt.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    song_complete_overlay.add(disc_count_txt);
+
+    // disc_count_txt_1
+    const disc_count_txt_1 = this.add.text(193, 484, "", {});
+    disc_count_txt_1.setOrigin(0.5, 0.5);
+    disc_count_txt_1.text = "DISCS";
+    disc_count_txt_1.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    song_complete_overlay.add(disc_count_txt_1);
 
     // lists
     const ui_layer = [
@@ -296,6 +310,7 @@ class Level extends Phaser.Scene {
     this.difficulty_text = difficulty_text;
     this.carousel = carousel;
     this.earn_text = earn_text;
+    this.disc_count_txt = disc_count_txt;
     this.ui_layer = ui_layer;
 
     this.events.emit("scene-awake");
@@ -339,6 +354,8 @@ class Level extends Phaser.Scene {
   carousel;
   /** @type {Phaser.GameObjects.Text} */
   earn_text;
+  /** @type {Phaser.GameObjects.Text} */
+  disc_count_txt;
   /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
   ui_layer;
 
@@ -806,7 +823,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          // this.checkOverlap(tile);
+          this.checkOverlap(tile);
         }
       });
     }
@@ -1093,6 +1110,10 @@ class Level extends Phaser.Scene {
     this.scene.pause();
 
     this.matchedMarkerTracker = [];
+
+    const user_data = JSON.parse(localStorage.getItem("user_data"));
+    const disc_count = user_data.profile.player.total_discs;
+    this.disc_count_txt.setText(disc_count);
 
     this.artist_name.setText(this.track.artist_name.toUpperCase());
     this.song_name.setText(this.track.song_name);
