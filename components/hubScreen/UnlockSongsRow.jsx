@@ -242,7 +242,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 ) : (
                   <button className="unlock-button flex items-center justify-center">
                     <Image
-                      src="/assets/img/hub/Button Blank.png"
+                      src="/assets/img/hub/Button blank.png"
                       alt="Unlock Button Background"
                       width={160}
                       height={100}
