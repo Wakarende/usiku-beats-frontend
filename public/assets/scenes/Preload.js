@@ -51,7 +51,6 @@ class Preload extends Phaser.Scene {
 		rectangle_1.scaleX = 3.5006144584682515;
 		rectangle_1.scaleY = 0.1;
 		rectangle_1.angle = -1;
-		rectangle_1.visible = false;
 		rectangle_1.isFilled = true;
 		rectangle_1.fillColor = 0;
 
@@ -136,7 +135,6 @@ class Preload extends Phaser.Scene {
 		rectangle.scaleX = 3.5006144584682515;
 		rectangle.scaleY = 0.12;
 		rectangle.angle = 2;
-		rectangle.visible = false;
 		rectangle.isFilled = true;
 		rectangle.fillColor = 0;
 

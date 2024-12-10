@@ -60,7 +60,7 @@ const Library = () => {
   useEffect(() => {
     setLoading(true);
 
-    const songIds = [14, 54, 65, 56, 143, 144, 119, 146, 142];
+    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142];
     const url = `${BASE_URL}/songs/?${songIds
       .map((id) => `ids=${id}`)
       .join("&")}`;
