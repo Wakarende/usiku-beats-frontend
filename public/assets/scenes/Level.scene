@@ -199,13 +199,15 @@
                     "type": "Image",
                     "id": "c43e6c54-c5f1-4847-a5bc-9732e0c3195d",
                     "label": "streak_overlay",
+                    "scope": "CLASS",
                     "components": [],
                     "texture": {
-                        "key": "streak_overlay"
+                        "key": "streak_blur"
                     },
                     "x": 180,
                     "y": 352,
-                    "visible": false
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
                 },
                 {
                     "type": "Text",
@@ -214,13 +216,14 @@
                     "scope": "CLASS",
                     "components": [],
                     "x": 180,
-                    "y": 353,
+                    "y": 351,
                     "originX": 0.5,
                     "originY": 0.5,
                     "text": "10 STREAK",
                     "align": "center",
-                    "fontFamily": "Carlito-Regular",
-                    "fontSize": "15px"
+                    "fontFamily": "Afolkalips",
+                    "fontSize": "32px",
+                    "color": "#fcb320"
                 }
             ]
         },

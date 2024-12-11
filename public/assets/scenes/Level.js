@@ -98,15 +98,21 @@ class Level extends Phaser.Scene {
     streak_popup.visible = false;
 
     // streak_overlay
-    const streak_overlay = this.add.image(180, 352, "streak_overlay");
-    streak_overlay.visible = false;
+    const streak_overlay = this.add.image(180, 352, "streak_blur");
+    streak_overlay.scaleX = 0.3333;
+    streak_overlay.scaleY = 0.3333;
     streak_popup.add(streak_overlay);
 
     // streak_text
-    const streak_text = this.add.text(180, 353, "", {});
+    const streak_text = this.add.text(180, 351, "", {});
     streak_text.setOrigin(0.5, 0.5);
     streak_text.text = "10 STREAK";
-    streak_text.setStyle({ align: "center", fontFamily: "Carlito-Regular", fontSize: "15px" });
+    streak_text.setStyle({
+      align: "center",
+      color: "#fcb320",
+      fontFamily: "Afolkalips",
+      fontSize: "32px",
+    });
     streak_popup.add(streak_text);
 
     // perfect_1
@@ -303,6 +309,7 @@ class Level extends Phaser.Scene {
     this.divider_2 = divider_2;
     this.feedback_text = feedback_text;
     this.streak_popup = streak_popup;
+    this.streak_overlay = streak_overlay;
     this.streak_text = streak_text;
     this.song_complete_overlay = song_complete_overlay;
     this.artist_name = artist_name;
@@ -340,6 +347,8 @@ class Level extends Phaser.Scene {
   feedback_text;
   /** @type {Phaser.GameObjects.Container} */
   streak_popup;
+  /** @type {Phaser.GameObjects.Image} */
+  streak_overlay;
   /** @type {Phaser.GameObjects.Text} */
   streak_text;
   /** @type {Phaser.GameObjects.Layer} */
@@ -487,6 +496,7 @@ class Level extends Phaser.Scene {
 
     this.divider_1.setDepth(2.5);
     this.divider_2.setDepth(2.5);
+    this.streak_popup.setDepth(3.9);
 
     this.path = this.add
       .rectangle(0, 0, this.screenWidth / 3, this.screenHeight, 0x90ee90)
@@ -823,7 +833,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          // this.checkOverlap(tile);
+          this.checkOverlap(tile);
         }
       });
     }
@@ -1272,7 +1282,9 @@ class Level extends Phaser.Scene {
   resetStreak() {
     if (this.currentMultiplier >= 2) {
       this.streak_text.setText("STREAK LOST");
-      this.streak_popup.setVisible(true).setDepth(3.9);
+      this.streak_text.setColor("#fe3400");
+      this.streak_overlay.setTexture("streak_blur_red");
+      this.streak_popup.setVisible(true);
       setTimeout(() => {
         this.streak_popup.setVisible(false);
       }, 700);
@@ -1285,7 +1297,9 @@ class Level extends Phaser.Scene {
     // this.multiplier_emitter.explode(this.lowFpsMode ? 10 : 20);
 
     this.streak_popup.x = -180;
-    this.streak_popup.setVisible(true).setDepth(3.9);
+    this.streak_popup.setVisible(true);
+    this.streak_text.setColor("#fcb320");
+    this.streak_overlay.setTexture("streak_blur");
     this.tweens.killTweensOf(this.streak_popup);
     var tweenIn = this.tweens.add({
       targets: this.streak_popup,

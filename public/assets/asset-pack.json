@@ -265,6 +265,16 @@
                 "key": "start button copy"
             },
             {
+                "url": "assets/sprites/playscene/streak_blur.png",
+                "type": "image",
+                "key": "streak_blur"
+            },
+            {
+                "url": "assets/sprites/playscene/streak_blur_red.png",
+                "type": "image",
+                "key": "streak_blur_red"
+            },
+            {
                 "url": "assets/sprites/playscene/streak_overlay.png",
                 "type": "image",
                 "key": "streak_overlay"
