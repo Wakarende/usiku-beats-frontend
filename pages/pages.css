@@ -1,3 +1,11 @@
+/* INDEX PAGE  */
+.toast-message {
+    background: #242424;
+    color: white;
+    max-width: 300px;
+}
+
+/* INDEX PAGE END  */
 /* HUBSCREEN  */
 .cdm-page {
     min-height: 100vh;
@@ -80,7 +88,6 @@
 /* DAILY REWARD POPUP END  */
 
 /* FOOTER  */
-
 
 /* HUBSCREEN PAGE END  */
 

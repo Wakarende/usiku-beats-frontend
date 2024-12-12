@@ -63,6 +63,7 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
             src={"/assets/img/levelup/Unlock combined copy 4.png"}
             width={300}
             height={100}
+            alt="unlock-btn"
           />
         </button>
       </motion.div>
