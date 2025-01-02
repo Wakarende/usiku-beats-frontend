@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/main/authActions";
-import moment from "moment";
+import Popup from "../library/Popup";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import "../styles.css";
 
 const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const [timerExpired, setTimerExpired] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
   const gemsRequiredToUnlockSong = 20; // As previously defined
 
   const dispatch = useDispatch();
@@ -92,7 +94,10 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     let newUserdata = JSON.parse(JSON.stringify(user_data));
 
     if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
-      console.error("Not enough gems to unlock the song");
+      setPopupMessage(
+        "You don't have enough gems to unlock this song right now."
+      );
+      setIsPopupOpen(true);
       return;
     }
 
@@ -175,10 +180,10 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             <div className="relative mt-0.5">
               <button
                 className="w-full relative"
-                disabled={
-                  user_data?.profile?.player?.total_gems <
-                  gemsRequiredToUnlockSong
-                }
+                // disabled={
+                //   user_data?.profile?.player?.total_gems <
+                //   gemsRequiredToUnlockSong
+                // }
                 onClick={() => unlockSongWithGems(item.song)}
               >
                 <Image
@@ -261,6 +266,20 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           {!loading ? "No result" : "loading..."}
         </div>
       )}
+      <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
+        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg">
+          <p className="text-yellow font-bold text-2xl text-nowrap tracking-wide mb-3">
+            Not Enough Gems!
+          </p>
+          <p className="text-white mb-3 tracking-wider">{popupMessage}</p>
+          <button
+            className="bg-[#5fc9d2] text-white px-4 py-2 mt-2 w-full uppercase text-xl"
+            onClick={() => setIsPopupOpen(false)}
+          >
+            Ok
+          </button>
+        </div>
+      </Popup>
     </div>
   );
 };
