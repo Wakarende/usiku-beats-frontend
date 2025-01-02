@@ -260,7 +260,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
-
       {songs?.length === 0 && (
         <div className="kayfo-filter-no-result-box">
           {!loading ? "No result" : "loading..."}
