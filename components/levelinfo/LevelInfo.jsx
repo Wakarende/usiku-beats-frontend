@@ -11,6 +11,7 @@ const LevelInfo = ({
   isActive,
   isCompleted,
   isInactive,
+  isNextLevel,
 }) => {
   const containerClasses = classNames(
     "min-w-full snap-center scale-90",
@@ -30,8 +31,16 @@ const LevelInfo = ({
   );
 
   const getLevelText = () => {
-    if (isActive) return "CURRENT LEVEL";
-    if (isInactive) return "NEXT LEVEL";
+    if (isActive) {
+      return "CURRENT LEVEL";
+    } else if (isInactive) {
+      return "LEVEL";
+    } else if (isNextLevel) {
+      return "NEXT LEVEL";
+    } else if (isCompleted) {
+      return "PREVIOUS LEVEL";
+    }
+
     return "PREVIOUS LEVEL";
   };
 

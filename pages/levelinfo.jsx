@@ -86,17 +86,20 @@ const LevelInfoPage = () => {
               {levelsData.map((levelInfo) => {
                 const isActive = levelInfo.level === currentLevel;
                 const isCompleted = levelInfo.level < currentLevel;
-                const isInactive = levelInfo.level > currentLevel;
+                const isNextLevel = levelInfo.level === currentLevel + 1;
+                const isInactive = levelInfo.level > currentLevel + 1;
                 return (
                   <LevelInfo
                     key={levelInfo.level} // Using 'level' as a unique key
                     level={levelInfo.level}
+                    currentLevel={currentLevel}
                     bonusGems={levelInfo.bonusGems}
                     normalDifficulty={levelInfo.normalDifficulty}
                     multiTapTiles={levelInfo.multiTapTiles}
                     starsNeeded={levelInfo.starsNeeded}
                     achievements={levelInfo.unlockSongs}
                     isActive={isActive}
+                    isNextLevel={isNextLevel}
                     isCompleted={isCompleted}
                     isInactive={isInactive}
                   />
