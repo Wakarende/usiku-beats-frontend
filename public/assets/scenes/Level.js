@@ -71,7 +71,11 @@ class Level extends Phaser.Scene {
     const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
     multiplier_text.setOrigin(0.5, 0.5);
     multiplier_text.text = "x 1";
-    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
+    multiplier_text.setStyle({
+      align: "center",
+      fontFamily: "Afolkalips",
+      fontSize: "25px",
+    });
 
     // tap_zone_area
     const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
@@ -176,7 +180,11 @@ class Level extends Phaser.Scene {
     const artist_name = this.add.text(180, 19, "", {});
     artist_name.setOrigin(0.5, 0.5);
     artist_name.text = "artist_name";
-    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
+    artist_name.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      stroke: "#faf05e",
+    });
     song_complete_overlay.add(artist_name);
 
     // song_name
@@ -262,28 +270,43 @@ class Level extends Phaser.Scene {
     const youve_earned_txt_1 = this.add.text(240, 392, "", {});
     youve_earned_txt_1.setOrigin(0.5, 0.5);
     youve_earned_txt_1.text = "45 discs";
-    youve_earned_txt_1.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
+    youve_earned_txt_1.setStyle({
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+    });
     song_complete_overlay.add(youve_earned_txt_1);
 
     // youve_earned_txt_2
     const youve_earned_txt_2 = this.add.text(180, 456.1981865735109, "", {});
     youve_earned_txt_2.setOrigin(0.5, 0.5);
     youve_earned_txt_2.text = "YOU NOW HAVE";
-    youve_earned_txt_2.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    youve_earned_txt_2.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Bold",
+      fontSize: "20px",
+    });
     song_complete_overlay.add(youve_earned_txt_2);
 
     // disc_count_txt
     const disc_count_txt = this.add.text(150, 484, "", {});
     disc_count_txt.setOrigin(0.5, 0.5);
     disc_count_txt.text = "30";
-    disc_count_txt.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    disc_count_txt.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Bold",
+      fontSize: "20px",
+    });
     song_complete_overlay.add(disc_count_txt);
 
     // disc_count_txt_1
     const disc_count_txt_1 = this.add.text(193, 484, "", {});
     disc_count_txt_1.setOrigin(0.5, 0.5);
     disc_count_txt_1.text = "DISCS";
-    disc_count_txt_1.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    disc_count_txt_1.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Bold",
+      fontSize: "20px",
+    });
     song_complete_overlay.add(disc_count_txt_1);
 
     // lists
@@ -516,13 +539,18 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
     this.multiplier_emitter = this.add
-      .particles(this.multiplier_text.x, this.multiplier_text.y, "Play_active", {
-        lifespan: 750,
-        speed: { min: 50, max: 100 },
-        scale: { start: 0.5, end: 0 },
-        blendMode: "ADD",
-        emitting: false,
-      })
+      .particles(
+        this.multiplier_text.x,
+        this.multiplier_text.y,
+        "Play_active",
+        {
+          lifespan: 750,
+          speed: { min: 50, max: 100 },
+          scale: { start: 0.5, end: 0 },
+          blendMode: "ADD",
+          emitting: false,
+        }
+      )
       .setDepth(10);
 
     this.tileEmitter = this.add
@@ -559,7 +587,8 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    // this.initializeVisualizer();
+    this.initializeVisualizer();
+    this.initializeBottomVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
@@ -587,7 +616,12 @@ class Level extends Phaser.Scene {
       var y = (targetHeight - newHeight) / 2;
 
       viewport.setTo(x, y, newWidth, newHeight);
-      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+      this.cameras.main.setViewport(
+        viewport.x,
+        viewport.y,
+        viewport.width,
+        viewport.height
+      );
       this.cameras.main.setZoom(scale);
       this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
 
@@ -649,151 +683,190 @@ class Level extends Phaser.Scene {
     this.progressBarBg.setDepth(40);
   }
 
-  // initializeVisualizer() {
-  //   const gameWidth = this.sys.game.config.width;
-  //   // const gameHeight = this.sys.game.config.height;
+  initializeVisualizer() {
+    const visualizerWidth = this.screenWidth;
+    const visualizerHeight = 30;
 
-  //   // Determine positions
-  //   const scoreY = this.score_text.y;
-  //   const multiplierY = this.multiplier_text.y;
-  //   const visualizerYPosition = (scoreY + multiplierY) / 2 - 20;
+    const maxPixelRatio = 2;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
 
-  //   // Calculate visualizer size based on text dimensions
-  //   const textWidth = Math.max(
-  //     this.score_text.width,
-  //     this.multiplier_text.width
-  //   );
-  //   const textHeight =
-  //     this.multiplier_text.y +
-  //     this.multiplier_text.height / 2 -
-  //     (this.score_text.y - this.score_text.height / 2);
-  //   const padding = 20;
-  //   // const visualizerSize = Math.max(textWidth, textHeight) + padding * 2;
+    const canvasWidth = visualizerWidth * pixelRatio;
+    const canvasHeight = visualizerHeight * pixelRatio;
+    const offscreenCanvas = document.createElement("canvas");
+    offscreenCanvas.width = canvasWidth;
+    offscreenCanvas.height = canvasHeight;
 
-  //   // Fixed visualizer
-  //   const visualizerSize = 150; // Adjust size as needed
+    if (this.sound.context.state === "suspended") {
+      this.sound.context.resume();
+    }
 
-  //   // Calculate radius for the inner circle
-  //   // const innerRadius = (textWidth / 2) / (visualizerSize / 2);
-  //   // const radius = Phaser.Math.Clamp(innerRadius, 0, 1);
-  //   const radius = 0.5;
+    this.audioMotion = new AudioMotionAnalyzer(null, {
+      canvas: offscreenCanvas,
+      audioCtx: this.sound.context,
+      mode: 10,
+      radial: false,
+      fftSize: 256,
+      smoothing: 0.2,
+      showPeaks: true,
+      showScaleX: false,
+      showScaleY: false,
+      showFPS: false,
+      minDecibels: -60,
+      maxDecibels: -25,
+      linearAmplitude: true,
+      linearBoost: 1.5,
+      gradient: "rainbow",
+      fillAlpha: 0.1,
+      lineWidth: 1.5,
+      barSpace: 0.25,
+      bgAlpha: 0,
+      loRes: false,
+      width: visualizerWidth,
+      height: visualizerHeight,
+      pixelRatio: 1,
+      responsive: false,
+      overlay: true,
+      channelLayout: "dual-combined",
+    });
 
-  //   const maxPixelRatio = 1;
+    this.visualizerTexture = this.textures.createCanvas(
+      "visualizerTexture",
+      visualizerWidth,
+      visualizerHeight
+    );
 
-  //   // Get the device pixel ratio
-  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+    this.visualizerImage = this.add.image(
+      this.screenCenterX,
+      45,
+      "visualizerTexture"
+    );
+    this.visualizerImage.setOrigin(0.5, 0);
 
-  //   // Ensure audio context is running
-  //   if (this.sound.context.state === "suspended") {
-  //     this.sound.context.resume();
-  //   }
+    this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
 
-  //   // Create an offscreen canvas with adjusted dimensions
-  //   const canvasWidth = visualizerSize * pixelRatio;
-  //   const canvasHeight = visualizerSize * pixelRatio;
+    this.visualizerImage.setAngle(180);
 
-  //   // Create an offscreen canvas with square dimensions
-  //   const offscreenCanvas = document.createElement("canvas");
-  //   offscreenCanvas.width = canvasWidth;
-  //   offscreenCanvas.height = canvasHeight;
+    this.visualizerImage.setDepth(2.5);
+    this.visualizerImage.setAlpha(1);
 
-  //   // Create the AudioMotion Analyzer instance with the offscreen canvas
-  //   this.audioMotion = new AudioMotionAnalyzer(null, {
-  //     canvas: offscreenCanvas,
-  //     audioCtx: this.sound.context,
-  //     useCanvas: true,
-  //     mode: 1, // Polar (circular) mode
-  //     radial: true,
-  //     radialInvert: true,
-  //     radialSpeed: true, //distribute frequencies evenly in radial mode
-  //     lineMode: 2, //Extra smooth curves for fluid lines
-  //     radius: radius, // Increase or Decrease size of visualizer
-  //     responsive: false, // Disable responsive resizing
-  //     width: visualizerSize, // Match canvas width
-  //     height: visualizerSize, // Match canvas height
-  //     pixelRatio: pixelRatio, // Set pixel ratio to 1
-  //     showScaleY: false,
-  //     showScaleX: false,
-  //     showPeaks: false,
-  //     showFPS: false,
-  //     minDecibels: -100,
-  //     maxDecibels: -40,
-  //     gradient: "prism",
-  //     linearAmplitude: false,
-  //     linearBoost: 1.4, // Increase to make bars taller
-  //     bgAlpha: 0, // Fully transparent background
-  //     barSpace: 0.01,
-  //     fillAlpha: 0,
-  //     lineWidth: 1.5,
-  //     reflexRatio: 0,
-  //     reflexAlpha: 0,
-  //     lumiBars: false,
-  //     maxFreq: 16000,
-  //     minFreq: 10,
-  //     smoothing: 0.7,
-  //     overlay: true,
-  //     showBgColor: false,
-  //     channelLayout: "dual-vertical",
-  //     frequencyScale: "bark",
-  //     outlineBars: true,
-  //     fftSize: 128, //reduce fft quality
-  //   });
+    let lastVisualizerUpdate = 0;
+    const visualizerUpdateInterval = 50;
 
-  //   // Store references for later use
-  //   this.visualizerCanvas = offscreenCanvas;
-  //   // this.visualizerSize = visualizerSize;
-  //   this.visualizerSize = 250; // Set to a size that should be clearly visible
+    this.audioMotion.onCanvasDraw = () => {
+      const now = performance.now();
+      if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
+        lastVisualizerUpdate = now;
 
-  //   // Create a Phaser CanvasTexture with the same dimensions
-  //   this.visualizerTexture = this.textures.createCanvas(
-  //     "visualizerTexture",
-  //     visualizerSize,
-  //     visualizerSize
-  //   );
+        const ctx = this.visualizerTexture.context;
 
-  //   // Position the visualizer at the calculated Y position
-  //   this.visualizerImage = this.add.image(
-  //     gameWidth / 2,
-  //     visualizerYPosition,
-  //     "visualizerTexture"
-  //   );
-  //   this.visualizerImage.setDisplaySize(visualizerSize, visualizerSize);
-  //   this.visualizerImage.setOrigin(0.5, 0.5);
-  //   this.visualizerImage.setDepth(4); // Set depth lower than text
-  //   this.visualizerImage.setAlpha(1);
+        ctx.clearRect(0, 0, visualizerWidth, visualizerHeight);
 
-  //   let lastVisualizerUpdate = 0;
-  //   const visualizerUpdateInterval = 100;
+        ctx.drawImage(
+          offscreenCanvas,
+          0,
+          0,
+          canvasWidth,
+          canvasHeight,
+          0,
+          0,
+          visualizerWidth,
+          visualizerHeight
+        );
+        this.visualizerTexture.refresh();
+      }
+    };
+  }
 
-  //   // Update the onCanvasDraw function
-  //   this.audioMotion.onCanvasDraw = () => {
-  //     const now = performance.now();
-  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
-  //       lastVisualizerUpdate = now;
-  //       let visualizerTexture = this.visualizerTexture;
-  //       visualizerTexture.context.clearRect(
-  //         0,
-  //         0,
-  //         visualizerTexture.width,
-  //         visualizerTexture.height
-  //       );
-  //       visualizerTexture.context.globalCompositeOperation = "copy";
-  //       visualizerTexture.context.drawImage(
-  //         this.visualizerCanvas,
-  //         0,
-  //         0,
-  //         this.visualizerCanvas.width,
-  //         this.visualizerCanvas.height,
-  //         0,
-  //         0,
-  //         visualizerTexture.width,
-  //         visualizerTexture.height
-  //       );
-  //       visualizerTexture.context.globalCompositeOperation = "source-over";
-  //       visualizerTexture.refresh();
-  //     }
-  //   };
-  // }
+  initializeBottomVisualizer() {
+    const visualizerWidth = this.screenWidth;
+    const visualizerHeight = 30;
+
+    const maxPixelRatio = 2;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+
+    const canvasWidth = visualizerWidth * pixelRatio;
+    const canvasHeight = visualizerHeight * pixelRatio;
+    const offscreenCanvas = document.createElement("canvas");
+    offscreenCanvas.width = canvasWidth;
+    offscreenCanvas.height = canvasHeight;
+
+    if (this.sound.context.state === "suspended") {
+      this.sound.context.resume();
+    }
+
+    this.bottomAudioMotion = new AudioMotionAnalyzer(null, {
+      canvas: offscreenCanvas,
+      audioCtx: this.sound.context,
+      mode: 10,
+      radial: false,
+      fftSize: 256,
+      smoothing: 0.2,
+      showPeaks: true,
+      showScaleX: false,
+      showScaleY: false,
+      minDecibels: -60,
+      maxDecibels: -25,
+      linearAmplitude: true,
+      linearBoost: 1.5,
+      gradient: "rainbow",
+      fillAlpha: 0.1,
+      lineWidth: 1.5,
+      bgAlpha: 0,
+      loRes: false,
+      width: visualizerWidth,
+      height: visualizerHeight,
+      pixelRatio: 1,
+      responsive: false,
+      overlay: true,
+      channelLayout: "dual-combined",
+    });
+
+    this.bottomVisualizerTexture = this.textures.createCanvas(
+      "bottomVisualizerTexture",
+      visualizerWidth,
+      visualizerHeight
+    );
+
+    this.bottomVisualizerImage = this.add.image(
+      this.screenCenterX,
+      this.screenHeight - 10,
+      "bottomVisualizerTexture"
+    );
+
+    this.bottomVisualizerImage.setOrigin(0.5, 1);
+
+    this.bottomVisualizerImage.setDisplaySize(
+      visualizerWidth,
+      visualizerHeight
+    );
+    this.bottomVisualizerImage.setDepth(2.5);
+    this.bottomVisualizerImage.setAlpha(1);
+
+    let lastVisualizerUpdate = 0;
+    const visualizerUpdateInterval = 50;
+
+    this.bottomAudioMotion.onCanvasDraw = () => {
+      const now = performance.now();
+      if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
+        lastVisualizerUpdate = now;
+
+        let ctx = this.bottomVisualizerTexture.context;
+        ctx.clearRect(0, 0, visualizerWidth, visualizerHeight);
+        ctx.drawImage(
+          offscreenCanvas,
+          0,
+          0,
+          canvasWidth,
+          canvasHeight,
+          0,
+          0,
+          visualizerWidth,
+          visualizerHeight
+        );
+        this.bottomVisualizerTexture.refresh();
+      }
+    };
+  }
 
   update(time, delta) {
     if (!this.tileGroup) {
@@ -805,14 +878,21 @@ class Level extends Phaser.Scene {
     this.lowFpsMode = this.fps < 30 ? true : false;
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
-      this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
+      this.scoreDisplay = Phaser.Math.Linear(
+        this.scoreDisplay,
+        this.score,
+        0.1
+      );
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
 
     let seek = this.music?.seek;
 
     if (seek >= 0) {
-      if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
+      if (
+        this.soundMarkers.length > 0 &&
+        seek + this.tileDuration >= this.soundMarkers[0].start
+      ) {
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
@@ -820,10 +900,15 @@ class Level extends Phaser.Scene {
       this.tileGroup.getChildren().forEach((tile) => {
         if (tile.swiped || tile.held) return;
 
-        tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
+        tile.lerp = Math.max(
+          0,
+          (seek - tile.start + this.tileDuration) / this.tileDuration
+        );
 
         // Update both base and overlay positions
-        tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
+        tile.setY(
+          Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp)
+        );
         tile.setAlpha(tile.lerp);
 
         if (tile.overlayTile) {
@@ -833,7 +918,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }
@@ -852,7 +937,13 @@ class Level extends Phaser.Scene {
 
     // Create base aesthetic tile with random texture
     let tile = this.tileGroup
-      .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
+      .create(
+        0,
+        0,
+        this.baseTileTextures[
+          Math.floor(Math.random() * this.baseTileTextures.length)
+        ]
+      )
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(0.2)
@@ -1004,12 +1095,16 @@ class Level extends Phaser.Scene {
 
     let normalizationFactor = slope * tileDuration + intercept;
 
-    let heldTileScaleFactor = 1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
+    let heldTileScaleFactor =
+      1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
     return heldTileScaleFactor;
   }
 
   handleHeldTile(tile, duration) {
-    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
+    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(
+      duration,
+      this.tileDuration
+    );
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
     // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
@@ -1105,6 +1200,7 @@ class Level extends Phaser.Scene {
         this.analyserNode = this.sound.context.createAnalyser();
         this.music.volumeNode.connect(this.analyserNode);
         this.audioMotion.connectInput(this.analyserNode);
+        this.bottomAudioMotion.connectInput(this.analyserNode);
       }
     });
 
@@ -1126,6 +1222,7 @@ class Level extends Phaser.Scene {
     this.disc_count_txt.setText(disc_count + 45);
 
     this.artist_name.setText(this.track.artist_name.toUpperCase());
+
     this.song_name.setText(this.track.song_name);
 
     // Create circular mask for carousel
@@ -1144,7 +1241,10 @@ class Level extends Phaser.Scene {
     const maskRadius = 100; // radius of the circular mask
     const imageWidth = this.carousel.width;
     const imageHeight = this.carousel.height;
-    const scale = Math.max((maskRadius * 2) / imageWidth, (maskRadius * 2) / imageHeight);
+    const scale = Math.max(
+      (maskRadius * 2) / imageWidth,
+      (maskRadius * 2) / imageHeight
+    );
 
     // Apply the calculated scale and center the image
     this.carousel.setScale(scale);
@@ -1393,7 +1493,9 @@ class Level extends Phaser.Scene {
     }
 
     if (this.progress >= this.streakThreshold) {
-      this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
+      this.streak_text.setText(
+        `${this.streakThreshold * this.currentMultiplier} STREAK`
+      );
       this.streakDisplay();
       this.progress = 0;
       this.currentMultiplier += 1;
