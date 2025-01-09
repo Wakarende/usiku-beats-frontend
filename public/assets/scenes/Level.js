@@ -685,7 +685,7 @@ class Level extends Phaser.Scene {
 
   initializeVisualizer() {
     const visualizerWidth = this.screenWidth;
-    const visualizerHeight = 30;
+    const visualizerHeight = 100;
 
     const maxPixelRatio = 2;
     const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
@@ -703,19 +703,16 @@ class Level extends Phaser.Scene {
     this.audioMotion = new AudioMotionAnalyzer(null, {
       canvas: offscreenCanvas,
       audioCtx: this.sound.context,
-      mode: 10,
+      mode: 1,
       radial: false,
-      fftSize: 256,
-      smoothing: 0.2,
+      fftSize: 8192,
+      smoothing: 0,
       showPeaks: true,
       showScaleX: false,
       showScaleY: false,
       showFPS: false,
       minDecibels: -60,
       maxDecibels: -25,
-      linearAmplitude: true,
-      linearBoost: 1.5,
-      gradient: "rainbow",
       fillAlpha: 0.1,
       lineWidth: 1.5,
       barSpace: 0.25,
@@ -729,6 +726,18 @@ class Level extends Phaser.Scene {
       channelLayout: "dual-combined",
     });
 
+    //Custom visualizer color
+    this.audioMotion.registerGradient("custom", {
+      colorStops: [
+        { pos: 0, color: "#4fa3af", level: 0.5 },
+        { pos: 1, color: "#f2d469", level: 1 },
+      ],
+    });
+
+    this.audioMotion.setOptions({
+      gradient: "custom",
+    });
+
     this.visualizerTexture = this.textures.createCanvas(
       "visualizerTexture",
       visualizerWidth,
@@ -737,10 +746,10 @@ class Level extends Phaser.Scene {
 
     this.visualizerImage = this.add.image(
       this.screenCenterX,
-      45,
+      100,
       "visualizerTexture"
     );
-    this.visualizerImage.setOrigin(0.5, 0);
+    this.visualizerImage.setOrigin(0.5, 0.1);
 
     this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
 
@@ -797,18 +806,15 @@ class Level extends Phaser.Scene {
     this.bottomAudioMotion = new AudioMotionAnalyzer(null, {
       canvas: offscreenCanvas,
       audioCtx: this.sound.context,
-      mode: 10,
+      mode: 1,
       radial: false,
-      fftSize: 256,
+      fftSize: 8192,
       smoothing: 0.2,
       showPeaks: true,
       showScaleX: false,
       showScaleY: false,
       minDecibels: -60,
       maxDecibels: -25,
-      linearAmplitude: true,
-      linearBoost: 1.5,
-      gradient: "rainbow",
       fillAlpha: 0.1,
       lineWidth: 1.5,
       bgAlpha: 0,
@@ -819,6 +825,18 @@ class Level extends Phaser.Scene {
       responsive: false,
       overlay: true,
       channelLayout: "dual-combined",
+    });
+
+    //Custom visualizer color
+    this.bottomAudioMotion.registerGradient("custom", {
+      colorStops: [
+        { pos: 0, color: "#4fa3af", level: 0.5 },
+        { pos: 1, color: "#f2d469", level: 1 },
+      ],
+    });
+
+    this.bottomAudioMotion.setOptions({
+      gradient: "custom",
     });
 
     this.bottomVisualizerTexture = this.textures.createCanvas(
@@ -833,7 +851,7 @@ class Level extends Phaser.Scene {
       "bottomVisualizerTexture"
     );
 
-    this.bottomVisualizerImage.setOrigin(0.5, 1);
+    this.bottomVisualizerImage.setOrigin(0.5, 1.2);
 
     this.bottomVisualizerImage.setDisplaySize(
       visualizerWidth,
