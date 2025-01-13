@@ -685,7 +685,7 @@ class Level extends Phaser.Scene {
 
   initializeVisualizer() {
     const visualizerWidth = this.screenWidth;
-    const visualizerHeight = 100;
+    const visualizerHeight = 50;
 
     const maxPixelRatio = 2;
     const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
@@ -706,8 +706,8 @@ class Level extends Phaser.Scene {
       mode: 1,
       radial: false,
       fftSize: 8192,
-      smoothing: 0,
-      showPeaks: true,
+      smoothing: 0.2,
+      showPeaks: false,
       showScaleX: false,
       showScaleY: false,
       showFPS: false,
@@ -746,17 +746,17 @@ class Level extends Phaser.Scene {
 
     this.visualizerImage = this.add.image(
       this.screenCenterX,
-      100,
+      50,
       "visualizerTexture"
     );
-    this.visualizerImage.setOrigin(0.5, 0.1);
+    this.visualizerImage.setOrigin(0.5, 0);
 
     this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
 
     this.visualizerImage.setAngle(180);
 
     this.visualizerImage.setDepth(2.5);
-    this.visualizerImage.setAlpha(1);
+    this.visualizerImage.setAlpha(0.5);
 
     let lastVisualizerUpdate = 0;
     const visualizerUpdateInterval = 50;
@@ -810,7 +810,7 @@ class Level extends Phaser.Scene {
       radial: false,
       fftSize: 8192,
       smoothing: 0.2,
-      showPeaks: true,
+      showPeaks: false,
       showScaleX: false,
       showScaleY: false,
       minDecibels: -60,
@@ -858,7 +858,7 @@ class Level extends Phaser.Scene {
       visualizerHeight
     );
     this.bottomVisualizerImage.setDepth(2.5);
-    this.bottomVisualizerImage.setAlpha(1);
+    this.bottomVisualizerImage.setAlpha(0.5);
 
     let lastVisualizerUpdate = 0;
     const visualizerUpdateInterval = 50;
