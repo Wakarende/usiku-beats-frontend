@@ -17,4 +17,7 @@ module.exports = {
   },
   plugins: [require("@designbycode/tailwindcss-text-stroke")],
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  corePlugins: {
+    animation: true,
+  },
 };

@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+import Confetti from "react-confetti";
 
 const LibraryFooter = () => {
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
+  const canUnlockSongs = totalDiscs >= 30;
+
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   return (
     <Link href={"/library"}>
@@ -30,10 +35,23 @@ const LibraryFooter = () => {
             {/* Right Section */}
             <div className="text-white text-right absolute inset-0">
               <div className="absolute flex flex-col discs-text-container">
-                <p className="text-sm lg:text-3xl font-bold uppercase mb-1 discs-text text-center text-nowrap leading-tight">
+                <motion.p
+                  className="text-sm lg:text-3xl font-bold uppercase mb-1 discs-text text-center text-nowrap leading-tight"
+                  animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
+                  transition={
+                    canUnlockSongs
+                      ? {
+                          duration: 0.8,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          ease: "easeInOut",
+                        }
+                      : {}
+                  }
+                >
                   You now have <br />
                   {totalDiscs} discs
-                </p>
+                </motion.p>
               </div>
               <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[5%] medium: right-[-4%] medium:bottom-[15%] leading-tight ">
                 <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
