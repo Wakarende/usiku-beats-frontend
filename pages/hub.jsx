@@ -47,7 +47,7 @@ const HubScreen = () => {
     checkAnon();
     checkRedirect();
     // checkFirstLoginOfDay();
-    checkNewLevel();
+    // checkNewLevel();
     fetchUnlockableSongs();
   }, [router.query, user_data]);
 
@@ -135,7 +135,9 @@ const HubScreen = () => {
         ),
       }));
 
-      const lockedSongs = songsWithUnlockStatus.filter((song) => !song.isUnlocked);
+      const lockedSongs = songsWithUnlockStatus.filter(
+        (song) => !song.isUnlocked
+      );
       setUnlockableSongs(lockedSongs);
 
       setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
@@ -143,14 +145,14 @@ const HubScreen = () => {
     });
   };
 
-  const checkNewLevel = () => {
-    const { newLevelAchieved } = router.query;
-    if (newLevelAchieved === "true") {
-      const level = parseInt(router.query.newLevel, 10);
-      setNewLevel(level);
-      setIsLevelUpPopupOpen(true);
-    }
-  };
+  // const checkNewLevel = () => {
+  //   const { newLevelAchieved } = router.query;
+  //   if (newLevelAchieved === "true") {
+  //     const level = parseInt(router.query.newLevel, 10);
+  //     setNewLevel(level);
+  //     setIsLevelUpPopupOpen(true);
+  //   }
+  // };
 
   const gotoGameDetail = (track, index) => {
     router.push({
@@ -187,17 +189,17 @@ const HubScreen = () => {
     }
   };
 
-  const closeLevelUpPopup = () => {
-    setIsLevelUpPopupOpen(false);
-    const currentPath = router.pathname;
-    const currentQuery = { ...router.query };
-    delete currentQuery.newLevelAchieved;
-    delete currentQuery.newLevel;
-    router.replace({
-      pathname: currentPath,
-      query: currentQuery,
-    });
-  };
+  // const closeLevelUpPopup = () => {
+  //   setIsLevelUpPopupOpen(false);
+  //   const currentPath = router.pathname;
+  //   const currentQuery = { ...router.query };
+  //   delete currentQuery.newLevelAchieved;
+  //   delete currentQuery.newLevel;
+  //   router.replace({
+  //     pathname: currentPath,
+  //     query: currentQuery,
+  //   });
+  // };
 
   const openOverlay = async (artistId) => {
     setIsOverlayOpen(true);
@@ -264,7 +266,9 @@ const HubScreen = () => {
     dispatch(updateUser(newUserdata));
 
     // Remove the unlocked song from the unlockable songs list
-    setUnlockableSongs((prevSongs) => prevSongs.filter((s) => s.id !== song.id));
+    setUnlockableSongs((prevSongs) =>
+      prevSongs.filter((s) => s.id !== song.id)
+    );
 
     // Update visible unlockable songs
     setVisibleUnlockableSongs((prevVisibleSongs) => {
@@ -272,7 +276,9 @@ const HubScreen = () => {
       let updatedVisible = prevVisibleSongs.filter((s) => s.id !== song.id);
 
       // Add the next song from unlockableSongs if available
-      const remainingLockedSongs = unlockableSongs.filter((s) => s.id !== song.id);
+      const remainingLockedSongs = unlockableSongs.filter(
+        (s) => s.id !== song.id
+      );
       if (remainingLockedSongs.length > 0) {
         // Add the next song to maintain two visible unlockable songs
         updatedVisible.push(remainingLockedSongs[0]);
@@ -300,7 +306,7 @@ const HubScreen = () => {
       <div className="px-1 mx-auto max-w-7xl">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
-          <h1 className="your-songs text-center medium:mt-3 small:mt-1.5 small:mb-2.5 medium:mb-2 text-5xl uppercase tracking-wider">
+          <h1 className="your-songs text-center medium:mt-3.5 small:mt-1.5 small:mb-2.5 medium:mb-2 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
         </div>
@@ -310,7 +316,11 @@ const HubScreen = () => {
             style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
-              <div className={`flex flex-row ${songs.length === 1 ? "mx-auto" : ""}`}>
+              <div
+                className={`flex flex-row ${
+                  songs.length === 1 ? "mx-auto" : ""
+                }`}
+              >
                 {songs?.map((item, index) => (
                   <ArtistImage
                     key={index}
@@ -356,11 +366,11 @@ const HubScreen = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-      <LevelUpPopup
+      {/* <LevelUpPopup
         isOpen={isLevelUpPopupOpen}
         closePopup={closeLevelUpPopup}
         newLevel={newLevel}
-      />
+      /> */}
       {/* <DailyRewardPopup
         isOpen={isDailyPopupOpen}
         closePopup={toggleDailyPopup}

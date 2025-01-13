@@ -71,7 +71,7 @@ const Header = () => {
           </div>
         </div>
         {/* Level Info Section */}
-        <Link href={"/levelinfo"}>
+        {/* <Link href={"/levelinfo"}>
           <div className="header-level relative flex items-center justify-center">
             <Image
               src="/assets/img/header/Star_Level.png"
@@ -82,7 +82,17 @@ const Header = () => {
             />
             <h3 className="level-text text-white text-4xl">{level}</h3>
           </div>
-        </Link>
+        </Link> */}
+        {/* Ayoba Test  */}
+        <div className="header-level relative flex items-center justify-center">
+          <Image
+            src="/assets/img/start/Group 5.png"
+            alt="Star Level"
+            width={75}
+            height={75}
+            className="star-levels"
+          />
+        </div>
         {/* Header Icons Section */}
         <div className="header-right flex items-center gap-x-2 h-full">
           <Link href={"#"} className="flex items-center">

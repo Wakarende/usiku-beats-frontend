@@ -1635,9 +1635,12 @@ class Level extends Phaser.Scene {
     if (this.audioMotion) {
       if (this.analyzerNode) {
         this.audioMotion.disconnectInput(this.analyserNode);
+        this.bottomAudioMotion.disconnectInput(this.analyserNode);
       }
       this.audioMotion.destroy();
+      this.bottomAudioMotion.destroy();
       this.visualizerTexture.destroy();
+      this.bottomVisualizerTexture.destroy();
     }
 
     if (this.music) {
