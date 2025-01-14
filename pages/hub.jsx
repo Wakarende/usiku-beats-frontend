@@ -54,9 +54,9 @@ const HubScreen = () => {
 
   useEffect(() => {
     if (songs.length === 1) {
-      setIsPulsing(true); // Pulse if only one song is available
+      setIsPulsing(true);
     } else {
-      setIsPulsing(false); // Stop pulsing if more than one song is available
+      setIsPulsing(false);
     }
   }, [songs]);
 
@@ -65,25 +65,22 @@ const HubScreen = () => {
     const loginCount = parseInt(localStorage.getItem("loginCount") || "0", 10);
     const today = new Date().toISOString().split("T")[0];
 
-    // Check if a session already exists
     const sessionActive = sessionStorage.getItem("sessionActive");
 
     if (lastLoginDate !== today) {
-      // New day: Reset login count and session state
       localStorage.setItem("lastLoginDate", today);
       localStorage.setItem("loginCount", "1");
-      sessionStorage.setItem("sessionActive", "true"); // Start a new session
+      sessionStorage.setItem("sessionActive", "true");
 
       console.log("First login of the day. Count reset to 1.");
     } else if (!sessionActive) {
-      // Increment login count only if no active session
       const updatedLoginCount = loginCount + 1;
       localStorage.setItem("loginCount", updatedLoginCount.toString());
-      sessionStorage.setItem("sessionActive", "true"); // Start a new session
+      sessionStorage.setItem("sessionActive", "true");
 
       if (updatedLoginCount > 1) {
         console.log("Second login. Showing popup.");
-        setIsDailyPopupOpen(true); // Show popup
+        setIsDailyPopupOpen(true);
       }
     } else {
       console.log("Session already active. No increment.");
