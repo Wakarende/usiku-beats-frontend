@@ -14,32 +14,7 @@ export default function IntroPanel() {
   const { user_data } = auth;
   const dispatch = useDispatch();
 
-  const checkFirstLoginOfDay = () => {
-    const lastLoginDate = localStorage.getItem("lastLoginDate");
-    const today = new Date().toISOString().split("T")[0];
-
-    if (lastLoginDate !== today) {
-      if (user_data && user_data.profile && user_data.profile.player) {
-        const updatedUser = {
-          ...user_data,
-          profile: {
-            ...user_data.profile,
-            player: {
-              ...user_data.profile.player,
-              total_gems: user_data.profile.player.total_gems + 10,
-            },
-          },
-        };
-        dispatch(updateUser(updatedUser));
-      }
-
-      localStorage.setItem("lastLoginDate", today);
-    }
-  };
-
-  useEffect(() => {
-    checkFirstLoginOfDay();
-  }, [user_data]);
+  useEffect(() => {}, [user_data]);
 
   const handleOk = () => {
     router.push("/hub");

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment-timezone";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 import Header from "../components/header/Header";
 import { instance as axios } from "../services/axios.config";
@@ -18,7 +19,7 @@ import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 
 const HubScreen = () => {
-  // const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
+  const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
   const [isUnlockPopupOpen, setIsUnlockPopupOpen] = useState(false);
   const [unlockedSong, setUnlockedSong] = useState(null);
   const [songs, setSongs] = useState([]);
@@ -46,7 +47,7 @@ const HubScreen = () => {
   useEffect(() => {
     checkAnon();
     checkRedirect();
-    // checkFirstLoginOfDay();
+    checkFirstLoginOfDay();
     // checkNewLevel();
     fetchUnlockableSongs();
   }, [router.query, user_data]);
@@ -59,29 +60,35 @@ const HubScreen = () => {
     }
   }, [songs]);
 
-  // const checkFirstLoginOfDay = () => {
-  //   const lastLoginDate = localStorage.getItem("lastLoginDate");
-  //   const today = new Date().toISOString().split("T")[0];
+  const checkFirstLoginOfDay = () => {
+    const lastLoginDate = localStorage.getItem("lastLoginDate");
+    const loginCount = parseInt(localStorage.getItem("loginCount") || "0", 10);
+    const today = new Date().toISOString().split("T")[0];
 
-  //   if (lastLoginDate !== today) {
-  //     if (user_data && user_data.profile && user_data.profile.player) {
-  //       const updatedUser = {
-  //         ...user_data,
-  //         profile: {
-  //           ...user_data.profile,
-  //           player: {
-  //             ...user_data.profile.player,
-  //             total_gems: user_data.profile.player.total_gems + 10,
-  //           },
-  //         },
-  //       };
-  //       dispatch(updateUser(updatedUser));
-  //     }
+    // Check if a session already exists
+    const sessionActive = sessionStorage.getItem("sessionActive");
 
-  //     setIsDailyPopupOpen(true);
-  //     localStorage.setItem("lastLoginDate", today);
-  //   }
-  // };
+    if (lastLoginDate !== today) {
+      // New day: Reset login count and session state
+      localStorage.setItem("lastLoginDate", today);
+      localStorage.setItem("loginCount", "1");
+      sessionStorage.setItem("sessionActive", "true"); // Start a new session
+
+      console.log("First login of the day. Count reset to 1.");
+    } else if (!sessionActive) {
+      // Increment login count only if no active session
+      const updatedLoginCount = loginCount + 1;
+      localStorage.setItem("loginCount", updatedLoginCount.toString());
+      sessionStorage.setItem("sessionActive", "true"); // Start a new session
+
+      if (updatedLoginCount > 1) {
+        console.log("Second login. Showing popup.");
+        setIsDailyPopupOpen(true); // Show popup
+      }
+    } else {
+      console.log("Session already active. No increment.");
+    }
+  };
 
   const checkAnon = async () => {
     if (!user_data) {
@@ -291,9 +298,9 @@ const HubScreen = () => {
     setSongs((prevSongs) => [...prevSongs, song]);
   };
 
-  // const toggleDailyPopup = () => {
-  //   setIsDailyPopupOpen(!isDailyPopupOpen);
-  // };
+  const toggleDailyPopup = () => {
+    setIsDailyPopupOpen(!isDailyPopupOpen);
+  };
 
   const level = user_data?.profile?.player?.level || 1;
 
@@ -371,42 +378,50 @@ const HubScreen = () => {
         closePopup={closeLevelUpPopup}
         newLevel={newLevel}
       /> */}
-      {/* <DailyRewardPopup
+      <DailyRewardPopup
         isOpen={isDailyPopupOpen}
         closePopup={toggleDailyPopup}
         className="popup-overlay"
       >
         {/* Daily Reward Styling */}
-      {/* <div className="daily-reward-content mt-5">
-        <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
-        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow">
-          Your Daily Gift
-        </p>
-        <p className="daily-gift-subtext text-xl mt-1 text-yellow">
-          Check in everyday to get more rewards
-        </p>
-        <div className="daily-gem-section">
-          <Image
-            src="/assets/img/dailyreward/Gem.png"
-            alt="Gem Icon"
-            width={100}
-            height={100}
-            className="daily-reward-gem"
-          />
-          <h3 className="gem-value text-yellow text-6xl tracking-wider">
-            +10
-          </h3>
+        <div className="daily-reward-content mt-5">
+          <h1 className="daily-welcome uppercase text-8xl mb-4">
+            Welcome back
+          </h1>
+          <p className="daily-gift-title uppercase font-bold text-3xl text-yellow">
+            Your Daily Gift
+          </p>
+          <p className="daily-gift-subtext text-xl mt-1 text-yellow">
+            Check in everyday to get more rewards
+          </p>
+          <div className="daily-gem-section">
+            <Image
+              src="/assets/img/dailyreward/Gem.png"
+              alt="Gem Icon"
+              width={100}
+              height={100}
+              className="daily-reward-gem"
+            />
+            <h3 className="gem-value text-yellow text-6xl tracking-wider">
+              +10
+            </h3>
+          </div>
+          <motion.button
+            className="daily-claim-button"
+            onClick={toggleDailyPopup}
+            whileHover={{ scale: 1.1 }}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
+          >
+            <Image
+              src="/assets/img/dailyreward/Collect button.png"
+              alt="Claim Button"
+              width={220}
+              height={100}
+            />
+          </motion.button>
         </div>
-        <button className="daily-claim-button" onClick={toggleDailyPopup}>
-          <Image
-            src="/assets/img/dailyreward/Collect button.png"
-            alt="Claim Button"
-            width={220}
-            height={100}
-          />
-        </button>
-      </div> */}
-      {/* </DailyRewardPopup> */}
+      </DailyRewardPopup>
       <LibraryFooter />
     </div>
   );
