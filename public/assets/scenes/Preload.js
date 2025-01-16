@@ -124,7 +124,7 @@ class Preload extends Phaser.Scene {
     // loading_txt
     const loading_txt = this.add.text(180, 597, "", {});
     loading_txt.setOrigin(0.5, 0.5);
-    loading_txt.text = "LOADING...";
+    loading_txt.text = "LOADING";
     loading_txt.setStyle({ color: "#ff6a00", fontFamily: "Carlito-BoldItalic", stroke: "#ff6a00" });
 
     // play_button
@@ -262,7 +262,7 @@ class Preload extends Phaser.Scene {
     this.editorCreate();
     this.adjustViewport();
     // Start the dot animation and text pulsing
-    this.animateDots();
+    // this.animateDots();
     this.pulseText();
 
     this.loading.setOrigin(0, 0.5);
@@ -289,7 +289,7 @@ class Preload extends Phaser.Scene {
 
     this.load.on(Phaser.Loader.Events.PROGRESS, (p) => {
       // console.log(Math.round(p/1 * 100))
-      this.percentage.setText("LOADING..." + Math.round((p / 1) * 100) + " %");
+      this.percentage.setText("LOADING" + Math.round((p / 1) * 100) + " %");
       this.loading.scaleX = p + 0.66;
     });
 
@@ -325,8 +325,52 @@ class Preload extends Phaser.Scene {
     //   this.scene.start("Level", { track: this.track, midi: this.midi });
     // });
 
+    // Show button and text with pulse animation
     this.play_button.setVisible(true);
     this.play_text.setVisible(true);
+
+    // Add pulse animation to button
+    this.tweens.add({
+      targets: this.play_button,
+      scaleX: { from: 0.35, to: 0.45 },
+      scaleY: { from: 0.5, to: 0.6 },
+      duration: 1000,
+      yoyo: true,
+      repeat: -1,
+      ease: "Sine.easeInOut",
+    });
+
+    // Add pulse animation to text (keeping it simpler to maintain readability)
+    this.tweens.add({
+      targets: this.play_text,
+      scale: { from: 0.4, to: 0.5 },
+      duration: 1000,
+      yoyo: true,
+      repeat: -1,
+      ease: "Sine.easeInOut",
+    });
+
+    // Create particle effect
+    const particles = this.add.particles(180, 593, "button_blank_particle", {
+      scale: { start: 1, end: 0 },
+      speed: { min: 50, max: 250 },
+      angle: { min: 0, max: 360 },
+      lifespan: 1000,
+      gravityY: 300,
+      frequency: -1, // Only emit when explicitly triggered
+      blendMode: "ADD",
+    });
+
+    // Emit particles once when button appears
+    particles.explode(20);
+
+    // Fade out and destroy particles after animation
+    this.tweens.add({
+      targets: particles,
+      alpha: 0,
+      duration: 1000,
+      onComplete: () => particles.destroy(),
+    });
 
     this.play_button.setInteractive();
     this.play_button.on("pointerup", () => {
@@ -489,7 +533,9 @@ class Preload extends Phaser.Scene {
   getStarsFromScore(score) {
     let starsCount;
 
-    if (score < 5000) {
+    if (score <= 0) {
+      starsCount = 0;
+    } else if (score < 5000) {
       starsCount = 1;
     } else if (score >= 5000 && score < 10000) {
       starsCount = 2;
@@ -500,7 +546,7 @@ class Preload extends Phaser.Scene {
     } else if (score >= 20000) {
       starsCount = 5;
     } else {
-      starsCount = 0; // Consider handling unexpected cases
+      starsCount = 0; // Handle unexpected cases
     }
 
     return starsCount;

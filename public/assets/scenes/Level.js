@@ -587,8 +587,8 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    // this.initializeVisualizer();
-    // this.initializeBottomVisualizer();
+    // // this.initializeVisualizer();
+    // // this.initializeBottomVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
