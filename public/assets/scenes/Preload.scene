@@ -215,7 +215,7 @@
             "y": 597,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "LOADING...",
+            "text": "LOADING",
             "fontFamily": "Carlito-BoldItalic",
             "color": "#ff6a00",
             "stroke": "#ff6a00"

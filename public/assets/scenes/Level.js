@@ -539,18 +539,13 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
     this.multiplier_emitter = this.add
-      .particles(
-        this.multiplier_text.x,
-        this.multiplier_text.y,
-        "Play_active",
-        {
-          lifespan: 750,
-          speed: { min: 50, max: 100 },
-          scale: { start: 0.5, end: 0 },
-          blendMode: "ADD",
-          emitting: false,
-        }
-      )
+      .particles(this.multiplier_text.x, this.multiplier_text.y, "Play_active", {
+        lifespan: 750,
+        speed: { min: 50, max: 100 },
+        scale: { start: 0.5, end: 0 },
+        blendMode: "ADD",
+        emitting: false,
+      })
       .setDepth(10);
 
     this.tileEmitter = this.add
@@ -587,8 +582,8 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    this.initializeVisualizer();
-    this.initializeBottomVisualizer();
+    // this.initializeVisualizer();
+    // this.initializeBottomVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
@@ -616,12 +611,7 @@ class Level extends Phaser.Scene {
       var y = (targetHeight - newHeight) / 2;
 
       viewport.setTo(x, y, newWidth, newHeight);
-      this.cameras.main.setViewport(
-        viewport.x,
-        viewport.y,
-        viewport.width,
-        viewport.height
-      );
+      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
       this.cameras.main.setZoom(scale);
       this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
 
@@ -744,11 +734,7 @@ class Level extends Phaser.Scene {
       visualizerHeight
     );
 
-    this.visualizerImage = this.add.image(
-      this.screenCenterX,
-      50,
-      "visualizerTexture"
-    );
+    this.visualizerImage = this.add.image(this.screenCenterX, 50, "visualizerTexture");
     this.visualizerImage.setOrigin(0.5, 0);
 
     this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
@@ -853,10 +839,7 @@ class Level extends Phaser.Scene {
 
     this.bottomVisualizerImage.setOrigin(0.5, 1.2);
 
-    this.bottomVisualizerImage.setDisplaySize(
-      visualizerWidth,
-      visualizerHeight
-    );
+    this.bottomVisualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
     this.bottomVisualizerImage.setDepth(2.5);
     this.bottomVisualizerImage.setAlpha(0.5);
 
@@ -896,21 +879,14 @@ class Level extends Phaser.Scene {
     this.lowFpsMode = this.fps < 30 ? true : false;
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
-      this.scoreDisplay = Phaser.Math.Linear(
-        this.scoreDisplay,
-        this.score,
-        0.1
-      );
+      this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
 
     let seek = this.music?.seek;
 
     if (seek >= 0) {
-      if (
-        this.soundMarkers.length > 0 &&
-        seek + this.tileDuration >= this.soundMarkers[0].start
-      ) {
+      if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
@@ -918,15 +894,10 @@ class Level extends Phaser.Scene {
       this.tileGroup.getChildren().forEach((tile) => {
         if (tile.swiped || tile.held) return;
 
-        tile.lerp = Math.max(
-          0,
-          (seek - tile.start + this.tileDuration) / this.tileDuration
-        );
+        tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
 
         // Update both base and overlay positions
-        tile.setY(
-          Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp)
-        );
+        tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
         tile.setAlpha(tile.lerp);
 
         if (tile.overlayTile) {
@@ -955,13 +926,7 @@ class Level extends Phaser.Scene {
 
     // Create base aesthetic tile with random texture
     let tile = this.tileGroup
-      .create(
-        0,
-        0,
-        this.baseTileTextures[
-          Math.floor(Math.random() * this.baseTileTextures.length)
-        ]
-      )
+      .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(0.2)
@@ -1113,16 +1078,12 @@ class Level extends Phaser.Scene {
 
     let normalizationFactor = slope * tileDuration + intercept;
 
-    let heldTileScaleFactor =
-      1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
+    let heldTileScaleFactor = 1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
     return heldTileScaleFactor;
   }
 
   handleHeldTile(tile, duration) {
-    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(
-      duration,
-      this.tileDuration
-    );
+    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
     // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
@@ -1259,10 +1220,7 @@ class Level extends Phaser.Scene {
     const maskRadius = 100; // radius of the circular mask
     const imageWidth = this.carousel.width;
     const imageHeight = this.carousel.height;
-    const scale = Math.max(
-      (maskRadius * 2) / imageWidth,
-      (maskRadius * 2) / imageHeight
-    );
+    const scale = Math.max((maskRadius * 2) / imageWidth, (maskRadius * 2) / imageHeight);
 
     // Apply the calculated scale and center the image
     this.carousel.setScale(scale);
@@ -1511,9 +1469,7 @@ class Level extends Phaser.Scene {
     }
 
     if (this.progress >= this.streakThreshold) {
-      this.streak_text.setText(
-        `${this.streakThreshold * this.currentMultiplier} STREAK`
-      );
+      this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
       this.streakDisplay();
       this.progress = 0;
       this.currentMultiplier += 1;

@@ -14,6 +14,11 @@
                 "key": "Button_blank"
             },
             {
+                "url": "assets/sprites/preloader/button_blank_particle.png",
+                "type": "image",
+                "key": "button_blank_particle"
+            },
+            {
                 "url": "assets/sprites/preloader/carousel_2.png",
                 "type": "image",
                 "key": "carousel_2"
