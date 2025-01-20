@@ -15,19 +15,20 @@ const LibraryFooter = () => {
 
   return (
     <Link href={"/library"}>
-      <footer className="fixed hub-footer bottom-0 bg-center bg-norepeat bg-cover w-full small:h-[6rem]">
-        <div>
+      <footer className="fixed hub-footer bottom-0 bg-center bg-norepeat bg-contain w-full ">
+        <div className="relative medium:h-[100px] medium:top-[15%] ">
           <Image
             src="/assets/img/footer/footer-bg.png"
             alt="Footer background pattern"
-            fill
-            className="object-contain z-1 no-repeat"
+            height={100}
+            width={100}
+            className="small:object-contain medium:object-contain large:object-contain z-1 bg-no-repeat w-full"
             priority
           />
           <div className="absolute inset-0 z-1">
             <div className="flex flex-col justify-between">
-              <div className="absolute max-w-[45%] medium:right-[33%] medium:bottom-[10%] p-2  small:w-[40%] small:bottom-[5%] small:right-[32%]">
-                <p className=",medium:font-medium   small:font-medium text-white footer-text leading-tight">
+              <div className="absolute small:max-w-[45%] medium:max-w-[45%] medium:right-[33%] medium:bottom-[10%] p-2  small:w-[40%] small:bottom-[5%] small:right-[32%] large:right-[35%] large:bottom-[5%] large:max-w-[30%] ">
+                <p className="small:font-medium medium:font-medium large:font-medium text-white leading-tight small:text-[10px] medium:text-[12px] large:text-[16px]">
                   Add more songs to your collection by earning discs
                 </p>
               </div>
@@ -36,7 +37,7 @@ const LibraryFooter = () => {
             <div className="text-white text-right absolute inset-0">
               <div className="absolute flex flex-col discs-text-container">
                 <motion.p
-                  className="text-sm lg:text-3xl font-bold uppercase mb-1 discs-text text-center text-nowrap leading-tight"
+                  className="text-sm large:text-3xl font-bold uppercase mb-1 discs-text text-center text-nowrap leading-tight"
                   animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
                   transition={
                     canUnlockSongs
