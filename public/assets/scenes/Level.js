@@ -587,10 +587,11 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    // // this.initializeVisualizer();
-    // // this.initializeBottomVisualizer();
+    this.initializeVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
+
+    this._didSwitchToLow = false;
 
     this.scene.get("BeatMissed").continueCount = 0;
   }
@@ -683,208 +684,109 @@ class Level extends Phaser.Scene {
     this.progressBarBg.setDepth(40);
   }
 
-  // initializeVisualizer() {
-  //   const visualizerWidth = this.screenWidth;
-  //   const visualizerHeight = 50;
+  initializeVisualizer() {
+    const visualizerWidth = this.screenWidth;
+    const visualizerHeight = 40;
 
-  //   const maxPixelRatio = 2;
-  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+    const maxPixelRatio = 2;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
 
-  //   const canvasWidth = visualizerWidth * pixelRatio;
-  //   const canvasHeight = visualizerHeight * pixelRatio;
-  //   const offscreenCanvas = document.createElement("canvas");
-  //   offscreenCanvas.width = canvasWidth;
-  //   offscreenCanvas.height = canvasHeight;
+    const canvasWidth = visualizerWidth * pixelRatio;
+    const canvasHeight = visualizerHeight * pixelRatio;
+    const offscreenCanvas = document.createElement("canvas");
+    offscreenCanvas.width = canvasWidth;
+    offscreenCanvas.height = canvasHeight;
 
-  //   if (this.sound.context.state === "suspended") {
-  //     this.sound.context.resume();
-  //   }
+    if (this.sound.context.state === "suspended") {
+      this.sound.context.resume();
+    }
 
-  //   this.audioMotion = new AudioMotionAnalyzer(null, {
-  //     canvas: offscreenCanvas,
-  //     audioCtx: this.sound.context,
-  //     mode: 1,
-  //     radial: false,
-  //     fftSize: 8192,
-  //     smoothing: 0.2,
-  //     showPeaks: false,
-  //     showScaleX: false,
-  //     showScaleY: false,
-  //     showFPS: false,
-  //     minDecibels: -60,
-  //     maxDecibels: -25,
-  //     fillAlpha: 0.1,
-  //     lineWidth: 1.5,
-  //     barSpace: 0.25,
-  //     bgAlpha: 0,
-  //     loRes: false,
-  //     width: visualizerWidth,
-  //     height: visualizerHeight,
-  //     pixelRatio: 1,
-  //     responsive: false,
-  //     overlay: true,
-  //     channelLayout: "dual-combined",
-  //   });
+    this.audioMotion = new AudioMotionAnalyzer(null, {
+      canvas: offscreenCanvas,
+      audioCtx: this.sound.context,
+      mode: 2,
+      radial: false,
+      fftSize: 1024,
+      smoothing: 0.2,
+      showPeaks: false,
+      showScaleX: false,
+      showScaleY: false,
+      showFPS: false,
+      minDecibels: -60,
+      maxDecibels: -25,
+      fillAlpha: 0.1,
+      lineWidth: 1.5,
 
-  //   //Custom visualizer color
-  //   this.audioMotion.registerGradient("custom", {
-  //     colorStops: [
-  //       { pos: 0, color: "#4fa3af", level: 0.5 },
-  //       { pos: 1, color: "#f2d469", level: 1 },
-  //     ],
-  //   });
+      barSpace: 0.25,
+      bgAlpha: 0,
+      loRes: false,
+      width: visualizerWidth,
+      height: visualizerHeight,
+      pixelRatio: 1,
+      responsive: false,
+      overlay: true,
+      channelLayout: "dual-combined",
+    });
 
-  //   this.audioMotion.setOptions({
-  //     gradient: "custom",
-  //   });
+    //Custom visualizer color
+    this.audioMotion.registerGradient("custom", {
+      colorStops: [
+        { pos: 0, color: "#4fa3af", level: 0.5 },
+        { pos: 1, color: "#f2d469", level: 1 },
+      ],
+    });
 
-  //   this.visualizerTexture = this.textures.createCanvas(
-  //     "visualizerTexture",
-  //     visualizerWidth,
-  //     visualizerHeight
-  //   );
+    this.audioMotion.setOptions({
+      gradient: "custom",
+    });
 
-  //   this.visualizerImage = this.add.image(
-  //     this.screenCenterX,
-  //     50,
-  //     "visualizerTexture"
-  //   );
-  //   this.visualizerImage.setOrigin(0.5, 0);
+    this.visualizerTexture = this.textures.createCanvas(
+      "visualizerTexture",
+      visualizerWidth,
+      visualizerHeight
+    );
 
-  //   this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
+    this.visualizerImage = this.add.image(
+      this.screenCenterX,
+      50,
+      "visualizerTexture"
+    );
+    this.visualizerImage.setOrigin(0.5, 0);
 
-  //   this.visualizerImage.setAngle(180);
+    this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
 
-  //   this.visualizerImage.setDepth(2.5);
-  //   this.visualizerImage.setAlpha(0.5);
+    this.visualizerImage.setAngle(180);
 
-  //   let lastVisualizerUpdate = 0;
-  //   const visualizerUpdateInterval = 50;
+    this.visualizerImage.setDepth(2.5);
+    this.visualizerImage.setAlpha(0.5);
 
-  //   this.audioMotion.onCanvasDraw = () => {
-  //     const now = performance.now();
-  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
-  //       lastVisualizerUpdate = now;
+    let lastVisualizerUpdate = 0;
+    const visualizerUpdateInterval = 100;
 
-  //       const ctx = this.visualizerTexture.context;
+    this.audioMotion.onCanvasDraw = () => {
+      const now = performance.now();
+      if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
+        lastVisualizerUpdate = now;
 
-  //       ctx.clearRect(0, 0, visualizerWidth, visualizerHeight);
+        const ctx = this.visualizerTexture.context;
 
-  //       ctx.drawImage(
-  //         offscreenCanvas,
-  //         0,
-  //         0,
-  //         canvasWidth,
-  //         canvasHeight,
-  //         0,
-  //         0,
-  //         visualizerWidth,
-  //         visualizerHeight
-  //       );
-  //       this.visualizerTexture.refresh();
-  //     }
-  //   };
-  // }
+        ctx.clearRect(0, 0, visualizerWidth, visualizerHeight);
 
-  // initializeBottomVisualizer() {
-  //   const visualizerWidth = this.screenWidth;
-  //   const visualizerHeight = 30;
-
-  //   const maxPixelRatio = 2;
-  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
-
-  //   const canvasWidth = visualizerWidth * pixelRatio;
-  //   const canvasHeight = visualizerHeight * pixelRatio;
-  //   const offscreenCanvas = document.createElement("canvas");
-  //   offscreenCanvas.width = canvasWidth;
-  //   offscreenCanvas.height = canvasHeight;
-
-  //   if (this.sound.context.state === "suspended") {
-  //     this.sound.context.resume();
-  //   }
-
-  //   this.bottomAudioMotion = new AudioMotionAnalyzer(null, {
-  //     canvas: offscreenCanvas,
-  //     audioCtx: this.sound.context,
-  //     mode: 1,
-  //     radial: false,
-  //     fftSize: 8192,
-  //     smoothing: 0.2,
-  //     showPeaks: false,
-  //     showScaleX: false,
-  //     showScaleY: false,
-  //     minDecibels: -60,
-  //     maxDecibels: -25,
-  //     fillAlpha: 0.1,
-  //     lineWidth: 1.5,
-  //     bgAlpha: 0,
-  //     loRes: false,
-  //     width: visualizerWidth,
-  //     height: visualizerHeight,
-  //     pixelRatio: 1,
-  //     responsive: false,
-  //     overlay: true,
-  //     channelLayout: "dual-combined",
-  //   });
-
-  //   //Custom visualizer color
-  //   this.bottomAudioMotion.registerGradient("custom", {
-  //     colorStops: [
-  //       { pos: 0, color: "#4fa3af", level: 0.5 },
-  //       { pos: 1, color: "#f2d469", level: 1 },
-  //     ],
-  //   });
-
-  //   this.bottomAudioMotion.setOptions({
-  //     gradient: "custom",
-  //   });
-
-  //   this.bottomVisualizerTexture = this.textures.createCanvas(
-  //     "bottomVisualizerTexture",
-  //     visualizerWidth,
-  //     visualizerHeight
-  //   );
-
-  //   this.bottomVisualizerImage = this.add.image(
-  //     this.screenCenterX,
-  //     this.screenHeight - 10,
-  //     "bottomVisualizerTexture"
-  //   );
-
-  //   this.bottomVisualizerImage.setOrigin(0.5, 1.2);
-
-  //   this.bottomVisualizerImage.setDisplaySize(
-  //     visualizerWidth,
-  //     visualizerHeight
-  //   );
-  //   this.bottomVisualizerImage.setDepth(2.5);
-  //   this.bottomVisualizerImage.setAlpha(0.5);
-
-  //   let lastVisualizerUpdate = 0;
-  //   const visualizerUpdateInterval = 50;
-
-  //   this.bottomAudioMotion.onCanvasDraw = () => {
-  //     const now = performance.now();
-  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
-  //       lastVisualizerUpdate = now;
-
-  //       let ctx = this.bottomVisualizerTexture.context;
-  //       ctx.clearRect(0, 0, visualizerWidth, visualizerHeight);
-  //       ctx.drawImage(
-  //         offscreenCanvas,
-  //         0,
-  //         0,
-  //         canvasWidth,
-  //         canvasHeight,
-  //         0,
-  //         0,
-  //         visualizerWidth,
-  //         visualizerHeight
-  //       );
-  //       this.bottomVisualizerTexture.refresh();
-  //     }
-  //   };
-  // }
+        ctx.drawImage(
+          offscreenCanvas,
+          0,
+          0,
+          canvasWidth,
+          canvasHeight,
+          0,
+          0,
+          visualizerWidth,
+          visualizerHeight
+        );
+        this.visualizerTexture.refresh();
+      }
+    };
+  }
 
   update(time, delta) {
     if (!this.tileGroup) {
@@ -894,6 +796,23 @@ class Level extends Phaser.Scene {
     this.fps = ((1 / this.frameTime) * 1000).toFixed(1);
     this.fps_text.text = this.fps;
     this.lowFpsMode = this.fps < 30 ? true : false;
+
+    //Low resolution screens visualizer
+    if (this.lowFpsMode && !this._didSwitchToLow) {
+      this._didSwitchToLow = true;
+      console.log("Switching to low fps mode");
+      this.audioMotion.setOptions({
+        fftSize: 512,
+      });
+    }
+
+    if (!this.lowFpsMode && this._didSwitchToLow) {
+      this._didSwitchToLow = false;
+      console.log("Switching to normal mode");
+      this.audioMotion.setOptions({
+        fftSize: 1024,
+      });
+    }
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
       this.scoreDisplay = Phaser.Math.Linear(
@@ -936,7 +855,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }
@@ -1218,7 +1137,7 @@ class Level extends Phaser.Scene {
         this.analyserNode = this.sound.context.createAnalyser();
         this.music.volumeNode.connect(this.analyserNode);
         this.audioMotion.connectInput(this.analyserNode);
-        this.bottomAudioMotion.connectInput(this.analyserNode);
+        // this.bottomAudioMotion.connectInput(this.analyserNode);
       }
     });
 

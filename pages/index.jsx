@@ -120,7 +120,7 @@ export default function TitleScreen() {
           transition={{ duration: 1.5 }}
         />
         {/* Start Button */}
-        <div className="absolute bottom-[10%] left-[50%] transform -translate-x-[50%] w-[60%] ">
+        <div className="absolute small:bottom-[10%] medium:bottom-[12%] left-[50%] transform -translate-x-[50%] w-[60%]  large:bottom-[15%]">
           <motion.div
             initial={{ x: "100vw", opacity: 0 }}
             animate={
