@@ -12,6 +12,7 @@ import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
 import Header from "../components/header/Header";
 import BottomTabNav from "../components/BottomTabNav";
+import { OverlayCard } from "../components/artistinfo/OverlayCard";
 
 import "./pages.css";
 
@@ -20,6 +21,12 @@ const Library = () => {
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [unlockedSong, setUnlockedSong] = useState(null);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [selectedArtist, setSelectedArtist] = useState({
+    artistName: "",
+    bio: "",
+    socialMedia: [],
+  });
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -124,6 +131,38 @@ const Library = () => {
     );
   }
 
+  //Artist overlay
+  const openOverlay = async (artistId) => {
+    setIsOverlayOpen(true);
+
+    try {
+      const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
+      let artist = response.data;
+      setSelectedArtist({
+        artistName: artist.name,
+        bio: artist.bio,
+        socialMedia: {
+          spotify: artist.spotify_link,
+          twitter: artist.twitter_link,
+          youtube: artist.youtube_link,
+          instagram: artist.instagram_link,
+          website: artist.website_link,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching artist details:", error);
+      setIsOverlayOpen(false);
+    }
+  };
+
+  const closeOverlay = () => {
+    setIsOverlayOpen(false);
+  };
+
+  const handleArtistClick = (artistId) => {
+    openOverlay(artistId); // or whatever the correct field is
+  };
+
   return (
     <div className="cmd-page">
       <Header />
@@ -182,7 +221,10 @@ const Library = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between w-full">
-                    <p className="text-white uppercase text-xs">
+                    <p
+                      className="text-white uppercase text-xs"
+                      onClick={() => handleArtistClick(song.artist?.id)}
+                    >
                       {song.artist_name}
                     </p>
                     <p className="text-white uppercase text-xs">Medium</p>
@@ -349,6 +391,13 @@ const Library = () => {
           </motion.div>
         </Link>
       </footer>
+      <OverlayCard
+        isOpen={isOverlayOpen}
+        onClose={closeOverlay}
+        artistName={selectedArtist.artistName}
+        bio={selectedArtist.bio}
+        socialMedia={selectedArtist.socialMedia}
+      />
     </div>
   );
 };

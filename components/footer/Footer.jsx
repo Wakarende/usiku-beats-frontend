@@ -21,7 +21,7 @@ const LibraryFooter = () => {
             src="/assets/img/footer/footer-bg.png"
             alt="Footer background pattern"
             fill
-            className="object-contain z-1"
+            className="object-contain z-1 no-repeat"
             priority
           />
           <div className="absolute inset-0 z-1">
