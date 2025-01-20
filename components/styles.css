@@ -96,11 +96,11 @@
   font-size: 12px;
 }
 
-.unlock-card {
+/* .unlock-card {
   max-width: 132px;
   height: 116px;
   aspect-ratio: 140/115;
-}
+} */
 
 .timer-text {
   font-size: 9px;
@@ -136,14 +136,14 @@
   margin-right: 6px;
 }
 
-.unlock-now-text,
+/* .unlock-now-text,
 .add-to-lib {
   font-size: 9px;
-}
+} */
 
-.unlocked-text {
+/* .unlocked-text {
   font-size: 8px;
-}
+} */
 
 .disc-indicator-wrapper {
   position: relative;

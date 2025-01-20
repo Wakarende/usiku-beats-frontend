@@ -38,7 +38,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }, [timeLeft, unlockTime]);
 
     return (
-      <p className="text-xs timer-text">
+      <p className="small:text-[6px] medium:text-[7px] large:text-[12px] small:pb-[5px] medium:pb-[4px] large:pb-[7px] ">
         {timeLeft.minutes}:{timeLeft.seconds}m
       </p>
     );
@@ -136,14 +136,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
           <div
-            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px]"
+            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px]"
             style={{
               backgroundImage: `url(${item.song.thumbnail_file})`,
             }}
           >
             <div className="flex justify-center items-center">
-              <div className="absolute top-[-6%]">
-                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap text-xl z-1">
+              <div className="absolute small:top-[-6%] medium:top-[-6%] large:top-[-1%]">
+                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap small:text-xl  medium:text-xl large:text-xl z-1">
                   {item.song.song_name}
                 </p>
               </div>
@@ -154,15 +154,15 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 alt="Title Bar"
                 width={300}
                 height={200}
-                className="h-[7.3rem]"
+                className="h-[7.3rem] large:h-[180px]"
               />
             </div>
             <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center">
               <div className="flex items-center justify-center z-1 w-full">
-                <p className="text-white font-bold text-xs mb-0.5 ml-2">
+                <p className="text-white font-bold ml-2">
                   {isUnlockTimePassed(item.unlock_time) ? (
                     <button onClick={() => addToLibrary(item.song)}>
-                      <p className="add-to-lib tracking-wide unlocked-text text-nowrap text-xs ml-1">
+                      <p className="tracking-wide unlocked-text text-nowrap large:ml-1 small:text-[6px] medium:text-[7px] large:text-[10px] small:pb-[5px] medium:pb-[4px] large:pb-[7px]">
                         Unlocked
                       </p>
                     </button>
@@ -191,6 +191,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                   alt="Button"
                   width={160}
                   height={40}
+                  className="small:h-[20px] small:w-[120px] medium:w-[200px] medium:h-[25px] large:w-[200px] large:h-[35px]"
                 />
                 <div className="absolute inset-0 flex items-center justify-between px-1">
                   <div className="flex items-center gap-0.5">
@@ -199,14 +200,15 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       alt="Gem"
                       width={16}
                       height={16}
+                      className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px]"
                     />
                     <div className="flex items-center">
-                      <span className="text-yellow gems-required-text">
+                      <span className="text-yellow  small:text-[8px] medium:text-[10px] large:text-[14px] ">
                         {gemsRequiredToUnlockSong}
                       </span>
                     </div>
                   </div>
-                  <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text">
+                  <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text small:text-[8px] medium:text-[10px] large:text-lg">
                     unlock now
                   </p>
                   <Image
@@ -214,6 +216,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     alt="Unlock"
                     width={16}
                     height={16}
+                    className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px]"
                   />
                 </div>
               </button>
@@ -225,10 +228,11 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 alt="Unlock Button Background"
                 width={160}
                 height={100}
+                className="small:h-[20px] small:w-[120px] medium:w-[200px] medium:h-[25px] large:w-[200px] large:h-[35px] "
               />
               <div className="absolute gem-wrapper">
                 <button onClick={() => addToLibrary(item.song)}>
-                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center ">
+                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center small:text-xs medium:text-md large:text-lg">
                     Add to Library
                   </p>
                 </button>
@@ -241,7 +245,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       // Render the placeholder slot card
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
-          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[140px]">
+          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[140px] large:h-[220px] large:w-[202px]">
             <Image
               src="/assets/img/hub/No_song_unlock_.png"
               width={200}
@@ -256,7 +260,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center text-4xl">
+      <h1 className="text-[#6e6d6d] text-center small:text-xl medium:text-4xl large:text-6xl large:mb-3">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
