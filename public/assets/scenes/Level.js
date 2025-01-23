@@ -702,7 +702,8 @@ class Level extends Phaser.Scene {
     this.audioMotion = new AudioMotionAnalyzer(null, {
       canvas: offscreenCanvas,
       audioCtx: this.sound.context,
-      mode: 1,
+      connectSpeakers: false,
+      mode: 2,
       radial: false,
       fftSize: 1024,
       smoothing: 0.2,
