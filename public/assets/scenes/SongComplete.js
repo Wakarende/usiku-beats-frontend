@@ -371,7 +371,7 @@ class SongComplete extends Phaser.Scene {
   }
   // In SongComplete.js, update the startAutoTransitionTimer method:
   startAutoTransitionTimer() {
-    this.time.delayedCall(100000, () => {
+    this.time.delayedCall(5000, () => {
       // Update user data first
       let user_data = JSON.parse(localStorage.getItem("user_data"));
       user_data.profile.player.total_discs += this.sceneData.earnedDiscs;
