@@ -23,7 +23,7 @@ export default function IntroPanel() {
   return (
     <div className="intro-bg">
       <div className="intro-card flex flex-col justify-center items-center">
-        <h1 className="flex justify-center text-5xl lg:text-7xl uppercase intro-header tracking-wider">
+        <h1 className="flex justify-center text-5xl large:text-7xl xl:text-9xl uppercase intro-header tracking-wider text-balance">
           Welcome to
         </h1>
         <div className="intro-logo flex justify-center">
@@ -34,8 +34,8 @@ export default function IntroPanel() {
             alt="w-full"
           />
         </div>
-        <div className="intro-text flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-wide text-center ">
-          <p className="text-yellow mb-2 uppercase font-bold text-xl">
+        <div className="intro-text flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-wide text-center large:text-xl large:w-2/3 ">
+          <p className="text-yellow mb-2 uppercase font-bold text-xl large:text-2xl large:mt-4">
             Demo Version 0.3
           </p>
           <p className="text-yellow mb-2">
@@ -66,7 +66,7 @@ export default function IntroPanel() {
       >
         <button
           onClick={handleOk}
-          className="intro-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center "
+          className="intro-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center large:mt-4 "
         >
           <p className="relative flex justify-center"> Ok</p>
         </button>
