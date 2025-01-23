@@ -232,7 +232,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               />
               <div className="absolute gem-wrapper">
                 <button onClick={() => addToLibrary(item.song)}>
-                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center small:text-xs medium:text-md large:text-lg">
+                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center small:text-[8px] medium:text-[10px] large:text-lg">
                     Add to Library
                   </p>
                 </button>
