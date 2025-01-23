@@ -81,7 +81,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
   const starCount = getStarsFromScore(song.high_score);
 
   return (
-    <div className="relative overflow-hidden flex justify-center items-center mx-1 small:w-[140px] small:h-[210px] medium:w-[160px] medium:h-[250px]  large:w-[160px] large:h-[250px]">
+    <div className="relative overflow-hidden flex justify-center items-center mx-1 small:w-[140px] small:h-[210px] medium:w-[160px] medium:h-[250px] large:w-[160px] large:h-[250px]">
       {/* Frame */}
       <Image
         src="/assets/img/hub/Frame_.png"
