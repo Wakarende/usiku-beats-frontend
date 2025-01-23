@@ -238,6 +238,11 @@
                 "key": "Score_Counter_Sfx"
             },
             {
+                "url": "assets/scenes/SongComplete.js",
+                "type": "sceneFile",
+                "key": "SongComplete"
+            },
+            {
                 "url": "assets/sprites/playscene/Spot_icon.png",
                 "type": "image",
                 "key": "Spot_icon"
