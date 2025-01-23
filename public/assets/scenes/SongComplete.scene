@@ -1,0 +1,244 @@
+{
+    "id": "9d4a572e-cb2c-485e-9788-0f68d6ffa69b",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "SongComplete",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "0294bee9-559b-420d-9957-31dcd6e4f886",
+            "label": "bG",
+            "components": [],
+            "texture": {
+                "key": "BG_1"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "23ae6584-07cf-4d06-a653-43e9315ddc13",
+            "label": "bottom_banner",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "sc_banner"
+            },
+            "x": 180,
+            "y": 526.677978515625,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "589fe7e6-7083-43b9-b166-e673e86363ca",
+            "label": "artist_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 19,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "artist_name",
+            "fontFamily": "Carlito-Regular",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "2a0bc6aa-ab56-4d65-9f9e-3f6d8a7280ba",
+            "label": "song_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 42,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "song_name",
+            "fontFamily": "Afolkalips",
+            "fontSize": "30px",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
+        },
+        {
+            "type": "Text",
+            "id": "bac16992-37f2-4315-ba60-4af5fb4e727f",
+            "label": "difficulty_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 72.88130950927734,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "MEDIUM DIFFICULTY",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "12px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Image",
+            "id": "d1529b4d-a8e6-47e3-9cb7-447b23aa3612",
+            "label": "round_frame",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Round Frame"
+            },
+            "x": 180,
+            "y": 202,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "4f195a74-3ff9-4d5a-8efe-f84b16774b9f",
+            "label": "carousel",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "carousel_2"
+            },
+            "x": 180,
+            "y": 202,
+            "scaleX": 0.6,
+            "scaleY": 0.6
+        },
+        {
+            "type": "Text",
+            "id": "f9202b8c-3c22-4c55-b32d-88795e1be878",
+            "label": "song_complete_txt",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 348,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Song Complete",
+            "fontFamily": "Afolkalips",
+            "fontSize": "60px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "8fb2c4e3-c7ce-4286-a25c-1ecdf63f9264",
+            "label": "youve_earned_txt",
+            "scope": "CLASS",
+            "components": [],
+            "x": 142,
+            "y": 392,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "You've earned:",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e"
+        },
+        {
+            "type": "Image",
+            "id": "dff35c3d-6782-43f8-8c99-f2a404c2aad2",
+            "label": "disc",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Disc"
+            },
+            "x": 180,
+            "y": 551,
+            "scaleX": 0.4,
+            "scaleY": 0.4
+        },
+        {
+            "type": "Text",
+            "id": "8c21ca34-51b9-4fa3-a5f1-a1b8efb8f6de",
+            "label": "earn_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 616,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Each new song costs 30 discs",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e",
+            "wordWrapWidth": 250
+        },
+        {
+            "type": "Text",
+            "id": "04edb2ba-2c26-4122-b260-0c3365454c42",
+            "label": "discs_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 240,
+            "y": 392,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "45 discs",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px"
+        },
+        {
+            "type": "Text",
+            "id": "2754d6dd-cb83-4b0c-b157-700b091d96b1",
+            "label": "you_now_have",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 456.19818115234375,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "YOU NOW HAVE",
+            "align": "center",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "20px"
+        },
+        {
+            "type": "Text",
+            "id": "88e44bb6-afe6-4c70-a100-f590d60091d5",
+            "label": "disc_count_txt",
+            "scope": "CLASS",
+            "components": [],
+            "x": 150,
+            "y": 484,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "30",
+            "align": "center",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "20px"
+        },
+        {
+            "type": "Text",
+            "id": "0bfeb079-0a8a-443c-9792-b8fd820e2b79",
+            "label": "disc_text_2",
+            "scope": "CLASS",
+            "components": [],
+            "x": 193,
+            "y": 484,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "DISCS",
+            "align": "center",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "20px"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}
