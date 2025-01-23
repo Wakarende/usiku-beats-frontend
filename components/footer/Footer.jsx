@@ -15,7 +15,7 @@ const LibraryFooter = () => {
 
   return (
     <Link href={"/library"}>
-      <footer className="fixed hub-footer bottom-0 bg-center bg-norepeat bg-contain w-full ">
+      <footer className="fixed hub-footer bottom-0 bg-center bg-no-repeat bg-contain w-full ">
         <div className="relative medium:h-[100px] medium:top-[15%] ">
           <Image
             src="/assets/img/footer/footer-bg.png"
@@ -27,8 +27,8 @@ const LibraryFooter = () => {
           />
           <div className="absolute inset-0 z-1">
             <div className="flex flex-col justify-between">
-              <div className="absolute small:max-w-[45%] medium:max-w-[45%] medium:right-[33%] medium:bottom-[10%] p-2  small:w-[40%] small:bottom-[5%] small:right-[32%] large:right-[35%] large:bottom-[5%] large:max-w-[30%] ">
-                <p className="small:font-medium medium:font-medium large:font-medium text-white leading-tight small:text-[10px] medium:text-[12px] large:text-[16px]">
+              <div className="absolute p-2 more-songs-container">
+                <p className=" more-songs-text small:font-medium medium:font-medium large:font-medium text-white leading-tight medium:text-[12px] large:text-lg xl:text-2xl">
                   Add more songs to your collection by earning discs
                 </p>
               </div>
@@ -54,7 +54,7 @@ const LibraryFooter = () => {
                   {totalDiscs} discs
                 </motion.p>
               </div>
-              <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[5%] medium: right-[-4%] medium:bottom-[15%] leading-tight ">
+              <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[5%] medium: right-[-4%] medium:bottom-[15%] leading-tight">
                 <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
                   Each song costs 30 discs.
                 </p>
