@@ -270,13 +270,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         </div>
       )}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg">
+        <div className="bg-[#1a1a1a] p-4 text-center medium:w-2/3 rounded-lg small:w-[280px]">
           <p className="text-yellow font-bold text-2xl text-nowrap tracking-wide mb-3">
             Not Enough Gems!
           </p>
           <p className="text-white mb-3 tracking-wider">{popupMessage}</p>
           <button
-            className="bg-[#5fc9d2] text-white px-4 py-2 mt-2 w-full uppercase text-xl"
+            className="text-white mt-2 w-full uppercase text-xl enough-gems-btn bg-no-repeat bg-center bg-contain
+            "
             onClick={() => setIsPopupOpen(false)}
           >
             Ok

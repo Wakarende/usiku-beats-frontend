@@ -375,6 +375,12 @@ svg {
   opacity: 1;
 }
 
+.enough-gems-btn {
+  background-image: url('/assets/img/hub/Button blank.png');
+  width: 100%;
+  height: auto;
+  padding: 0.5rem;
+}
 
 /* END ARTIST INFO OVERLAY  */
 
