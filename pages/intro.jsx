@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "../redux/main/authActions";
+import { instance as axios } from "../services/axios.config";
+import { BASE_URL } from "../services/config";
 import { motion } from "framer-motion";
 import "./pages.css";
 
@@ -16,8 +18,27 @@ export default function IntroPanel() {
 
   useEffect(() => {}, [user_data]);
 
-  const handleOk = () => {
-    router.push("/hub");
+  const handleOk = async () => {
+    //check if first time user
+    const hasSeenTutorial = localStorage.getItem("hasSeenTutorial");
+
+    if (!hasSeenTutorial) {
+      localStorage.setItem("hasSeenTutorial", true);
+      try {
+        const response = await axios.get(`${BASE_URL}song-detail/148/`);
+        const tutorialTrack = response.data;
+
+        router.push({
+          pathname: "/game",
+          query: { track: JSON.stringify(tutorialTrack) },
+        });
+      } catch (err) {
+        console.log("Error fetching tutorial track", err);
+        router.push("/hub");
+      }
+    } else {
+      router.push("/hub");
+    }
   };
 
   return (
