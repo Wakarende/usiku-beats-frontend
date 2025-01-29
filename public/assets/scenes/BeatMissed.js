@@ -129,7 +129,7 @@ class BeatMissed extends Phaser.Scene {
     this.editorCreate();
     this.adjustViewport();
     console.log("BeatMissed create.js()");
-    this.cameras.main.shake(500, 0.005);
+    this.cameras.main.shake(500, 0.0025);
 
     this.checkGems();
 
