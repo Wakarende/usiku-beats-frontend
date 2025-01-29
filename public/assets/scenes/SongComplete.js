@@ -113,13 +113,13 @@ class SongComplete extends Phaser.Scene {
     you_now_have.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
 
     // disc_count_txt
-    const disc_count_txt = this.add.text(150, 484, "", {});
+    const disc_count_txt = this.add.text(151, 484, "", {});
     disc_count_txt.setOrigin(0.5, 0.5);
     disc_count_txt.text = "30";
     disc_count_txt.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
 
     // disc_text_2
-    const disc_text_2 = this.add.text(193, 484, "", {});
+    const disc_text_2 = this.add.text(200, 484, "", {});
     disc_text_2.setOrigin(0.5, 0.5);
     disc_text_2.text = "DISCS";
     disc_text_2.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
@@ -225,42 +225,93 @@ class SongComplete extends Phaser.Scene {
     this.disc_count_txt.setText(this.sceneData.currentDiscs + this.sceneData.earnedDiscs);
 
     // Add animations if desired
+    this.setupParticleEffects();
     this.animateElements();
   }
 
+  setupParticleEffects() {
+    // Setup disc sparkles
+    this.sparkleParticles = this.add.particles(0, 0, "disc_flare", {
+      speed: { min: 50, max: 100 },
+      scale: { start: 0.4, end: 0 },
+      lifespan: 1000,
+      frequency: 100,
+      quantity: 1,
+      blendMode: "ADD",
+      emitZone: {
+        type: "edge",
+        source: new Phaser.Geom.Circle(0, 0, 40),
+        quantity: 32,
+      },
+      alpha: { start: 0.6, end: 0 },
+      tint: [0xffffff, 0xfff5a6, 0xffed70],
+    });
+
+    // Position sparkles at disc position
+    this.sparkleParticles.setPosition(this.disc.x, this.disc.y);
+    this.sparkleParticles.stop();
+    this.sparkleParticles.setVisible(false);
+
+    // Setup confetti burst
+    this.confettiParticles = this.add.particles(180, 320, "disc_flare", {
+      frame: { frames: [0, 1, 2, 3], cycle: true },
+      lifespan: 4000,
+      speed: { min: 300, max: 600 },
+      angle: { min: 0, max: 360 }, // Burst in all directions
+      gravityY: 300,
+      scale: { min: 0.4, max: 0.6 },
+      quantity: 50, // Single larger burst
+      rotate: { start: 0, end: 360, ease: "Back.easeOut" },
+      tint: [0xfcb320, 0x5dfe7b, 0xfaf05e, 0xffff00, 0xfe3400, 0x00ffff],
+      frequency: -1, // Emit only once
+      alpha: { start: 1, end: 0 },
+      emitting: false,
+    });
+  }
+
   animateElements() {
-    // Define the animation sequence with elements and their properties
+    this.confettiParticles.explode(500); // Emit 500 particles at once
+
     const animationSequence = [
       {
         element: this.artist_name,
         startY: -50,
-        duration: 600,
+        duration: 300,
       },
       {
         element: this.song_name,
         startY: -30,
-        duration: 600,
-        delay: 150,
+        duration: 300,
+        delay: 75,
       },
       {
         element: this.difficulty_text,
         startY: 30,
-        duration: 600,
-        delay: 300,
+        duration: 300,
+        delay: 150,
+      },
+      {
+        element: this.round_frame,
+        duration: 350,
+        delay: 225,
+        fromScaleX: 0.1,
+        fromScaleY: 0.1,
+        scaleX: 0.3333,
+        scaleY: 0.3333,
       },
       {
         element: this.carousel,
         scaleX: this.carousel.scaleX,
         scaleY: this.carousel.scaleY,
-        duration: 700,
-        delay: 450,
+        duration: 350,
+        delay: 225,
         fromScaleX: 0.1,
         fromScaleY: 0.1,
       },
       {
         element: this.song_complete_txt,
-        duration: 600,
-        delay: 600,
+        duration: 300,
+        delay: 300,
         fromScaleX: 0.5,
         fromScaleY: 0.5,
         scaleX: 1,
@@ -269,34 +320,47 @@ class SongComplete extends Phaser.Scene {
       {
         element: this.youve_earned_txt,
         startX: -100,
-        duration: 600,
-        delay: 750,
+        duration: 300,
+        delay: 375,
       },
       {
         element: this.discs_text,
         startX: 100,
-        duration: 600,
-        delay: 900,
+        duration: 300,
+        delay: 450,
+      },
+      {
+        element: this.bottom_banner,
+        startY: 700,
+        duration: 300,
+        delay: 525,
+        scaleX: 0.3333,
+        scaleY: 0.3333,
       },
       {
         element: this.disc,
-        duration: 600,
-        delay: 1050,
+        duration: 300,
+        delay: 525,
         fromScaleX: 0.1,
         fromScaleY: 0.1,
         scaleX: 0.4,
         scaleY: 0.4,
+        onComplete: () => {
+          // Start particle effect after disc appears
+          this.sparkleParticles.setVisible(true);
+          this.sparkleParticles.start();
+        },
       },
       {
         element: this.you_now_have,
         startY: 50,
-        duration: 600,
-        delay: 1200,
+        duration: 300,
+        delay: 600,
       },
       {
         element: this.disc_count_txt,
-        duration: 600,
-        delay: 1350,
+        duration: 300,
+        delay: 675,
         fromScaleX: 0.5,
         fromScaleY: 0.5,
         scaleX: 1,
@@ -304,23 +368,37 @@ class SongComplete extends Phaser.Scene {
       },
       {
         element: this.disc_text_2,
-        duration: 600,
-        delay: 1500,
+        duration: 300,
+        delay: 750,
         fromScaleX: 0.5,
         fromScaleY: 0.5,
         scaleX: 1,
         scaleY: 1,
       },
+      {
+        element: this.earn_text,
+        startY: 700,
+        duration: 300,
+        delay: 825,
+      },
     ];
 
-    // Set up and play animations for each element
     animationSequence.forEach(
-      ({ element, startY, startX, scaleX, scaleY, fromScaleX, fromScaleY, duration, delay }) => {
-        // Store original positions
+      ({
+        element,
+        startY,
+        startX,
+        scaleX,
+        scaleY,
+        fromScaleX,
+        fromScaleY,
+        duration,
+        delay,
+        onComplete,
+      }) => {
         const originalY = element.y;
         const originalX = element.x;
 
-        // Set initial states
         element.setAlpha(0);
 
         if (startY !== undefined) {
@@ -333,42 +411,31 @@ class SongComplete extends Phaser.Scene {
           element.setScale(fromScaleX, fromScaleY);
         }
 
-        // Create animation configuration
         const tweenConfig = {
           targets: element,
           alpha: 1,
           duration: duration,
           delay: delay,
-          ease: "Back.out(1.2)",
+          ease: "Back.out",
+          onComplete: onComplete,
         };
 
-        // Add position properties if defined
         if (startY !== undefined) {
           tweenConfig.y = originalY;
         }
         if (startX !== undefined) {
           tweenConfig.x = originalX;
         }
-        // Add scale properties if defined
         if (scaleX !== undefined && scaleY !== undefined) {
           tweenConfig.scaleX = scaleX;
           tweenConfig.scaleY = scaleY;
         }
 
-        // Create the tween
         this.tweens.add(tweenConfig);
       }
     );
-
-    // Add a rotating animation to the disc
-    this.tweens.add({
-      targets: this.disc,
-      angle: 360,
-      duration: 6000, // Moderate disc rotation speed
-      repeat: -1,
-      ease: "Linear",
-    });
   }
+
   // In SongComplete.js, update the startAutoTransitionTimer method:
   startAutoTransitionTimer() {
     this.time.delayedCall(5000, () => {

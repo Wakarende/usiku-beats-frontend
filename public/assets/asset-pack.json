@@ -61,6 +61,11 @@
                 "key": "Disc"
             },
             {
+                "url": "assets/sprites/playscene/disc_flare.png",
+                "type": "image",
+                "key": "disc_flare"
+            },
+            {
                 "url": "assets/sprites/playscene/Down.png",
                 "type": "image",
                 "key": "Down"
