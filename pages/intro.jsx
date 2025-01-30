@@ -20,10 +20,9 @@ export default function IntroPanel() {
 
   const handleOk = async () => {
     //check if first time user
-    const hasSeenTutorial = localStorage.getItem("hasSeenTutorial");
+    const ftueCompleted = localStorage.getItem("hasSeenTutorial");
 
-    if (!hasSeenTutorial) {
-      localStorage.setItem("hasSeenTutorial", true);
+    if (!ftueCompleted || ftueCompleted === "false") {
       try {
         const response = await axios.get(`${BASE_URL}song-detail/148/`);
         const tutorialTrack = response.data;
