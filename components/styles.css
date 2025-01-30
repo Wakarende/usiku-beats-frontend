@@ -85,22 +85,12 @@
 /* END HEADER  */
 
 /* UNLOCK ROW SONGS */
-.kayfo-masonry-main {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  overflow: hidden;
-}
+
 
 .title-text {
   font-size: 12px;
 }
 
-/* .unlock-card {
-  max-width: 132px;
-  height: 116px;
-  aspect-ratio: 140/115;
-} */
 
 .timer-text {
   font-size: 9px;
@@ -361,19 +351,6 @@ svg {
   transition: opacity 0.3s ease;
 }
 
-.kayfo-masonry-item {
-  position: relative;
-  margin: 0;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.kayfo-masonry-container:active .artist-name,
-.kayfo-masonry-container:focus .artist-name {
-  opacity: 1;
-}
 
 .enough-gems-btn {
   background-image: url('/assets/img/hub/Button blank.png');

@@ -95,7 +95,7 @@ export default function TitleScreen() {
       <div className=" relative flex flex-col justify-between items-center h-[100vh] w-[100%] overflow-hidden">
         {/* Logo Section */}
         <motion.div
-          className="flex flex-col justify-center relative z-10 medium:w-[15rem] medium:mt-[5vh] small:w-[11rem] large:w-[18rem] large:mt-[0.5vh]"
+          className="flex flex-col justify-center relative z-10 medium:w-[15rem] medium:mt-[5vh] small:mt-[4vh] small:w-[11rem] large:w-[15rem] large:mt-[5vh]"
           initial={{ y: -300, opacity: 0 }}
           animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
@@ -105,22 +105,25 @@ export default function TitleScreen() {
             width={250}
             height={200}
             alt="logo"
-            className="w-60 h-auto "
+            className="medium:w-60 medium:h-auto large:w-80 large:h-auto"
           />
         </motion.div>
         {/* Background Banner */}
         <motion.div
-          className="absolute bottom-0 left-0 w-full h-[40vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url(/assets/img/start/Bpttpm%20bannerv.png)",
-            backgroundPosition: "bottom center",
-          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: backgroundVisible ? 1 : 0 }}
           transition={{ duration: 1.5 }}
-        />
+        >
+          <Image
+            src={"/assets/img/start/Bpttpm%20bannerv.png"}
+            alt="bottom-banner"
+            width={1000}
+            height={400}
+            className="medium:w-full medium:h-[40vh] bg-cover bg-center bg-no-repeat absolute bottom-0 left-0"
+          />
+        </motion.div>
         {/* Start Button */}
-        <div className="absolute bottom-[10%] left-[50%] transform -translate-x-[50%] w-[60%] ">
+        <div className="absolute  small:bottom-[10%] small:left-[50%] medium:bottom-[10%] medium:left-[50%] small:transform -translate-x-[50%] small:w-[60%] medium:transform -translate-x-[50%] medium:w-[60%] large:bottom-[12%] large:left-[50%] large:transform -translate-x-[50%] large:w-[60%]">
           <motion.div
             initial={{ x: "100vw", opacity: 0 }}
             animate={

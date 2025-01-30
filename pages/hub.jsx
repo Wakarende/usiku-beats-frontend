@@ -316,7 +316,7 @@ const HubScreen = () => {
         </div>
         <div className="">
           <div
-            className="kayfo-masonry-main overflow-x-auto overflow-y-hidden"
+            className="kayfo-masonry-main overlfow-hidden flex flex-col items-start overflow-x-auto overflow-y-hidden"
             style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (

@@ -317,14 +317,14 @@ const Library = () => {
                   alt="popup-frame"
                   className="rounded-lg z-1"
                 />
-                <div className="absolute top-[21.8%] left-[11.6%] overflow-hidden w-[237px] h-[256px] rounded-t-sm">
+                <div className="absolute top-[21.8%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
                   <Image
                     src={unlockedSong?.thumbnail_file}
                     image
                     alt="Artist Image"
                     layout="fill"
-                    objectFit="cover"
-                    className="z-0"
+                    objectFit="contain"
+                    className="z-0 w-[237px] h-[256px]"
                   />
                 </div>
                 <div className="flex flex-col absolute bottom-[10%] z-1">
