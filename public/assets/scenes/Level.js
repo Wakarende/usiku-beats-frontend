@@ -398,6 +398,7 @@ class Level extends Phaser.Scene {
   init(data) {
     this.midi = data.midi;
     this.track = data.track;
+    this.isFTUE = data.isFTUE;
     if (this.sound.locked) {
       this.sound.unlock();
     }
@@ -407,8 +408,6 @@ class Level extends Phaser.Scene {
         this.sound.unlock();
       }
     });
-
-    this.isFTUE = true;
   }
   preload() {
     this.load.scenePlugin({
@@ -584,7 +583,7 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    this.initializeVisualizer();
+    // this.initializeVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
