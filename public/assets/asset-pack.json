@@ -19,6 +19,21 @@
                 "key": "BeatMissed"
             },
             {
+                "url": "assets/scenes/BeatMissedHeld.js",
+                "type": "sceneFile",
+                "key": "BeatMissedHeld"
+            },
+            {
+                "url": "assets/scenes/BeatMissedSwipe.js",
+                "type": "sceneFile",
+                "key": "BeatMissedSwipe"
+            },
+            {
+                "url": "assets/scenes/BeatMissedTap.js",
+                "type": "sceneFile",
+                "key": "BeatMissedTap"
+            },
+            {
                 "url": "assets/sprites/playscene/BG.png",
                 "type": "image",
                 "key": "BG_1"
@@ -37,6 +52,11 @@
                 "url": "assets/sprites/summaryscene/Bottom banner.png",
                 "type": "image",
                 "key": "Bottom banner"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Choose song button.png",
+                "type": "image",
+                "key": "Choose song button"
             },
             {
                 "url": "assets/sprites/playscene/Colour highlight.png",
@@ -86,6 +106,16 @@
                 "key": "EventComponent"
             },
             {
+                "url": "assets/sprites/summaryscene/FTUE_Game summary.jpg",
+                "type": "image",
+                "key": "FTUE_Game summary"
+            },
+            {
+                "url": "assets/scenes/GameOverFTUE.js",
+                "type": "sceneFile",
+                "key": "GameOverFTUE"
+            },
+            {
                 "url": "assets/scenes/GameOverScene.js",
                 "type": "sceneFile",
                 "key": "GameOverScene"
@@ -116,6 +146,21 @@
                 "url": "assets/scenes/Level.js",
                 "type": "sceneFile",
                 "key": "Level"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Missed a beat_Hold.jpg",
+                "type": "image",
+                "key": "Missed a beat_Hold"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Missed a beat_Swipe.jpg",
+                "type": "image",
+                "key": "Missed a beat_Swipe"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Missed a beat_Tap.jpg",
+                "type": "image",
+                "key": "Missed a beat_Tap"
             },
             {
                 "url": "assets/sprites/playscene/new_held.png",
@@ -350,6 +395,11 @@
                 "url": "assets/sprites/summaryscene/Top banner.png",
                 "type": "image",
                 "key": "Top banner"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Try again.png",
+                "type": "image",
+                "key": "Try again"
             },
             {
                 "url": "assets/sprites/tutorialscene/Tutorial_BG.jpg",

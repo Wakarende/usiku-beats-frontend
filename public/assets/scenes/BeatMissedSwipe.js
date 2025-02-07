@@ -1,0 +1,154 @@
+// You can write more code here
+
+/* START OF COMPILED CODE */
+
+class BeatMissedSwipe extends Phaser.Scene {
+  constructor() {
+    super("BeatMissedSwipe");
+
+    /* START-USER-CTR-CODE */
+    // Write your code here.
+    /* END-USER-CTR-CODE */
+  }
+
+  /** @returns {void} */
+  editorCreate() {
+    // missed_a_beat_Tap
+    const missed_a_beat_Tap = this.add.image(180, 320, "Missed a beat_Swipe");
+    missed_a_beat_Tap.scaleX = 0.3333;
+    missed_a_beat_Tap.scaleY = 0.3333;
+
+    // try_again_btn
+    const try_again_btn = this.add.image(180, 573, "Try again");
+    try_again_btn.scaleX = 0.3333;
+    try_again_btn.scaleY = 0.3333;
+
+    // text_1
+    const text_1 = this.add.text(180, 145, "", {});
+    text_1.setOrigin(0.5, 0.5);
+    text_1.text = "SWIPE these beats in the arrow's\ndirection, instead of tapping.";
+    text_1.setStyle({
+      align: "center",
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      stroke: "#faf05e",
+    });
+
+    // text_2
+    const text_2 = this.add.text(180, 217, "", {});
+    text_2.setOrigin(0.5, 0.5);
+    text_2.text = "Swipe in the Perfect Zone to score\nbig!";
+    text_2.setStyle({
+      align: "center",
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      stroke: "#faf05e",
+    });
+
+    this.try_again_btn = try_again_btn;
+
+    this.events.emit("scene-awake");
+  }
+
+  /** @type {Phaser.GameObjects.Image} */
+  try_again_btn;
+
+  /* START-USER-CODE */
+
+  // Write your code here
+
+  create() {
+    this.editorCreate();
+    this.adjustViewport();
+    this.cameras.main.shake(500, 0.0025);
+
+    this.try_again_btn.setInteractive();
+    this.try_again_btn.on("pointerup", () => {
+      this.scene.stop();
+      this.scene.resume("Level");
+    });
+  }
+
+  adjustViewport() {
+    this.rexScaleOuter.scale();
+    const baseWidth = 360;
+    const baseHeight = 640;
+    const targetWidth = 720;
+    const targetHeight = 1280;
+
+    var viewport = new Phaser.Geom.Rectangle();
+
+    var UpdateViewport = function () {
+      var innerViewport = this.rexScaleOuter.innerViewport;
+      var scaleX = targetWidth / baseWidth;
+      var scaleY = targetHeight / baseHeight;
+      var scale = Math.min(scaleX, scaleY);
+
+      var newWidth = baseWidth * scale;
+      var newHeight = baseHeight * scale;
+      var x = (targetWidth - newWidth) / 2;
+      var y = (targetHeight - newHeight) / 2;
+
+      viewport.setTo(x, y, newWidth, newHeight);
+      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+      this.cameras.main.setZoom(scale);
+      this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
+
+      this.adjustTextProperties(scale);
+    }.bind(this);
+
+    // this.scale.on("resize", UpdateViewport);
+    UpdateViewport();
+  }
+
+  adjustTextProperties(scale) {
+    this.children.list.forEach((child) => {
+      if (child instanceof Phaser.GameObjects.Text) {
+        // Font size adjustment
+        if (!child.originalFontSize) {
+          child.originalFontSize = parseInt(child.style.fontSize);
+        }
+        const newSize = Math.round(child.originalFontSize * scale);
+        child.setScale(0.5).setFontSize(`${newSize}px`);
+
+        // Word wrap width adjustment
+        if (child.style.wordWrapWidth) {
+          if (!child.originalWordWrapWidth) {
+            child.originalWordWrapWidth = child.style.wordWrapWidth;
+          }
+          const newWrapWidth = Math.round(child.originalWordWrapWidth * scale);
+          child.setWordWrapWidth(newWrapWidth);
+        }
+
+        // Padding adjustment
+        if (child.padding) {
+          if (!child.originalPadding) {
+            child.originalPadding = { ...child.padding };
+          }
+          child.setPadding({
+            left: Math.round(child.originalPadding.left * scale),
+            right: Math.round(child.originalPadding.right * scale),
+            top: Math.round(child.originalPadding.top * scale),
+            bottom: Math.round(child.originalPadding.bottom * scale),
+          });
+        }
+
+        // Line spacing adjustment
+        if (child.lineSpacing !== undefined) {
+          if (child.originalLineSpacing === undefined) {
+            child.originalLineSpacing = child.lineSpacing;
+          }
+          child.setLineSpacing(Math.round(child.originalLineSpacing * scale));
+        }
+      }
+    });
+  }
+
+  /* END-USER-CODE */
+}
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

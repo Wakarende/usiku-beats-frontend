@@ -254,7 +254,6 @@ class SongComplete extends Phaser.Scene {
 
     // Setup confetti burst
     this.confettiParticles = this.add.particles(180, 320, "disc_flare", {
-      frame: { frames: [0, 1, 2, 3], cycle: true },
       lifespan: 4000,
       speed: { min: 300, max: 600 },
       angle: { min: 0, max: 360 }, // Burst in all directions
@@ -460,7 +459,12 @@ class SongComplete extends Phaser.Scene {
 
       // Stop current scene
       this.scene.stop();
-      levelScene.gameOver();
+
+      if (this.sceneData.isFTUE) {
+        levelScene.ftueGameOver();
+      } else {
+        levelScene.gameOver();
+      }
     });
   }
 

@@ -1,0 +1,63 @@
+{
+    "id": "81d9067d-8d9a-4035-ba4b-d3fb4efcce3b",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "GameOverFtue",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "a2fa6dc5-e34f-422a-99a1-1f003e11b0ec",
+            "label": "fTUE_Game_summary",
+            "components": [],
+            "texture": {
+                "key": "FTUE_Game summary"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "87b9f125-4b5a-4249-9cd7-581e94e08d12",
+            "label": "choose_song_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Choose song button"
+            },
+            "x": 180,
+            "y": 541,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "c3cefb93-7b5e-4695-a062-3879cbb0f74c",
+            "label": "text_1",
+            "components": [],
+            "x": 180,
+            "y": 409.93804067328125,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "You've just learnt the basics of\nplaying Usiku Beats... and it's\ntime to use your Discs to\nunlock your first song",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

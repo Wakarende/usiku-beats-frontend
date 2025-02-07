@@ -407,6 +407,8 @@ class Level extends Phaser.Scene {
         this.sound.unlock();
       }
     });
+
+    this.isFTUE = true;
   }
   preload() {
     this.load.scenePlugin({
@@ -954,6 +956,7 @@ class Level extends Phaser.Scene {
     const swipeDirection = swipeDirections[velocity];
 
     if (swipeDirection) {
+      tile.tileType = "swipe";
       // Set the overlay texture and angle based on swipe direction
       tile.overlayTile.setTexture(swipeDirection.texture);
       tile.overlayTile.setAngle(swipeDirection.angle);
@@ -976,8 +979,10 @@ class Level extends Phaser.Scene {
     } else if (velocity === 0.007874015748031496) {
       // Set default overlay texture for held notes
       // tile.overlayTile.setTexture("Hold");
+      tile.tileType = "held";
       this.handleHeldTile(tile, duration);
     } else {
+      tile.tileType = "tap";
       // Set default overlay texture for regular notes
       tile.overlayTile.setTexture("Spot_icon");
 
@@ -1026,7 +1031,7 @@ class Level extends Phaser.Scene {
     ninesliceTile.duration = duration;
     ninesliceTile.initialHeight = initialHeight;
     ninesliceTile.setDepth(4);
-
+    ninesliceTile.tileType = "held";
     // Replace the original tile with the nineslice tile in the tileGroup
     this.tileGroup.remove(tile);
     this.tileGroup.add(ninesliceTile);
@@ -1077,11 +1082,13 @@ class Level extends Phaser.Scene {
     });
   }
 
+  // Modify checkOverlap to track failed tile type
   checkOverlap(tile) {
     if (tile.y >= this.screenHeight) {
+      const failedTileType = tile.tileType || "tap"; // Default to tap if type not set
+      this.beatMissedDisplay(failedTileType);
       tile.overlayTile && tile.overlayTile.destroy();
       tile.destroy();
-      this.beatMissedDisplay();
     }
   }
 
@@ -1180,6 +1187,7 @@ class Level extends Phaser.Scene {
       score: this.score,
       currentDiscs: JSON.parse(localStorage.getItem("user_data")).profile.player.total_discs,
       earnedDiscs: 45,
+      isFTUE: this.isFTUE,
     };
 
     // Launch SongComplete scene
@@ -1188,6 +1196,8 @@ class Level extends Phaser.Scene {
 
   handleSwipe(tile, swipe) {
     tile.swiped = true;
+    tile.tileType = "swipe";
+
     this.onClickInstrument(tile, true);
 
     let movementDistance = 25;
@@ -1336,7 +1346,8 @@ class Level extends Phaser.Scene {
     });
   }
 
-  beatMissedDisplay() {
+  // Update beatMissedDisplay to handle tile type
+  beatMissedDisplay(tileType = "tap") {
     this.music.pause();
     this.scene.pause();
 
@@ -1347,8 +1358,29 @@ class Level extends Phaser.Scene {
       tile.destroy();
     });
 
-    this.scene.bringToTop("BeatMissed");
-    this.scene.launch("BeatMissed");
+    console.log("tileType", tileType);
+
+    // Pass the tile type to the BeatMissed scene
+
+    // this.scene.launch("BeatMissed", { failedTileType: tileType });
+
+    if (this.isFTUE) {
+      if (tileType == "tap") {
+        this.scene.bringToTop("BeatMissedTap");
+        this.scene.launch("BeatMissedTap");
+      }
+      if (tileType == "swipe") {
+        this.scene.bringToTop("BeatMissedSwipe");
+        this.scene.launch("BeatMissedSwipe");
+      }
+      if (tileType == "held") {
+        this.scene.bringToTop("BeatMissedHeld");
+        this.scene.launch("BeatMissedHeld");
+      }
+    } else {
+      this.scene.bringToTop("BeatMissed");
+      this.scene.launch("BeatMissed");
+    }
   }
 
   onClickInstrument(tile, swiped = false, held = false) {
@@ -1563,6 +1595,19 @@ class Level extends Phaser.Scene {
     this.cleanUp();
     this.scene.stop("Level");
     this.scene.start("GameOverScene", { track: this.track });
+  }
+
+  ftueGameOver() {
+    this.music.stop();
+    this.matchedMarkerTracker = [];
+    clearInterval(this.globalInterval);
+
+    this.track.current_score = this.score;
+    this.track.midi = this.midi;
+
+    this.cleanUp();
+    this.scene.stop("Level");
+    this.scene.start("GameOverFTUE", { track: this.track });
   }
 
   countDown() {

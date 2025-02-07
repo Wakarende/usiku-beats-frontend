@@ -1,0 +1,79 @@
+{
+    "id": "0cec7ee5-1cfa-434a-a3ac-685cf76e7f4f",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "BeatMissedTap.js",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "47f657cb-0e82-45ee-b88e-81f2214e6f79",
+            "label": "missed_a_beat_Tap",
+            "components": [],
+            "texture": {
+                "key": "Missed a beat_Tap"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "0a880f7a-4581-4892-ac52-aa969e465a82",
+            "label": "try_again_btn",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Try again"
+            },
+            "x": 180,
+            "y": 572,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "24896cc4-0b47-461c-9508-0810da2ccaa1",
+            "label": "text_1",
+            "components": [],
+            "x": 180,
+            "y": 143.84203473801563,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "TAP every beat before they\nfall off the screen!",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "035f5050-8062-4cb2-aa8c-727c0b193c60",
+            "label": "text_2",
+            "components": [],
+            "x": 180,
+            "y": 216,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Aim for the Perfect Zone for\nmaximum points",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}
