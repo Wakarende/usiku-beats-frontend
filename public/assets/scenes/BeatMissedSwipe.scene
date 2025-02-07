@@ -1,0 +1,79 @@
+{
+    "id": "54702df9-c9ef-4f68-84ce-c7c4dcb01da1",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "BeatMissedSwipe",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "2967efaa-96a1-4bb5-9f92-dfc53b28605a",
+            "label": "missed_a_beat_Tap",
+            "components": [],
+            "texture": {
+                "key": "Missed a beat_Swipe"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "72c8f0d1-8cbb-4bb6-97fb-d0f1414736a5",
+            "label": "try_again_btn",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Try again"
+            },
+            "x": 180,
+            "y": 573,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "778b1ac0-25b0-4041-9258-e2f93568e89e",
+            "label": "text_1",
+            "components": [],
+            "x": 180,
+            "y": 145,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "SWIPE these beats in the arrow's\ndirection, instead of tapping.",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "6d7fc3c6-ee87-4487-a731-ccdbcc7baa4c",
+            "label": "text_2",
+            "components": [],
+            "x": 180,
+            "y": 217,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Swipe in the Perfect Zone to score\nbig!",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}

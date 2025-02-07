@@ -1,0 +1,79 @@
+{
+    "id": "32fb3cfa-344b-4b32-8a69-6e893c0f97e6",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "BeatMissedHeld",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "5c7f7025-815a-4d4e-a66d-7e38de5e1675",
+            "label": "missed_a_beat_Tap",
+            "components": [],
+            "texture": {
+                "key": "Missed a beat_Hold"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "8e3e4530-5fa9-42a9-bc2f-469fac5a2dd9",
+            "label": "try_again_btn",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Try again"
+            },
+            "x": 180,
+            "y": 572,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "874f2da2-ba7f-404b-8b22-a4f1ebcd5efe",
+            "label": "text_1",
+            "components": [],
+            "x": 180,
+            "y": 143,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "HOLD these beats by tapping\nand holding until the tile ends.",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "fe678d80-579a-4971-9a83-e086a5c060c8",
+            "label": "text_2",
+            "components": [],
+            "x": 180,
+            "y": 216,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Release in the Perfect Zone\nfor top points!",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    }
+}
