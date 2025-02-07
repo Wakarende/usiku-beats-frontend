@@ -20,7 +20,7 @@ export default function IntroPanel() {
 
   const handleOk = async () => {
     //check if first time user
-    const ftueCompleted = localStorage.getItem("hasSeenTutorial");
+    const ftueCompleted = localStorage.getItem("ftueCompleted");
 
     if (!ftueCompleted || ftueCompleted === "false") {
       try {
@@ -47,28 +47,19 @@ export default function IntroPanel() {
           Welcome to
         </h1>
         <div className="intro-logo flex justify-center">
-          <Image
-            src={"/assets/img/start/LogoTail.png"}
-            width={130}
-            height={130}
-            alt="w-full"
-          />
+          <Image src={"/assets/img/start/LogoTail.png"} width={130} height={130} alt="w-full" />
         </div>
         <div className="intro-text flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-wide text-center large:text-xl large:w-2/3 ">
           <p className="text-yellow mb-2 uppercase font-bold text-xl large:text-2xl large:mt-4">
             Demo Version 0.3
           </p>
+          <p className="text-yellow mb-2">This is a fully featured playable demo of the game.</p>
           <p className="text-yellow mb-2">
-            This is a fully featured playable demo of the game.
-          </p>
-          <p className="text-yellow mb-2">
-            When you reach the next screen, just tap{" "}
-            <span className="font-bold">'PLAY NOW'</span> under your songs to
-            get started.
+            When you reach the next screen, just tap <span className="font-bold">'PLAY NOW'</span>{" "}
+            under your songs to get started.
           </p>
           <p className="text-yellow mb-1">
-            Play that song well enough, and you'll be able to add more songs to
-            your collection.
+            Play that song well enough, and you'll be able to add more songs to your collection.
           </p>
         </div>
       </div>

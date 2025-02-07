@@ -381,6 +381,12 @@ class Preload extends Phaser.Scene {
         localStorage.setItem("tutorialShown", true);
       }
 
+      let ftueCompleted = localStorage.getItem("ftueCompleted");
+      let isFTUE = false;
+      if (!ftueCompleted || ftueCompleted != "true") {
+        isFTUE = true;
+      }
+
       if (this.dotsTimer) {
         this.dotsTimer.remove();
       }
@@ -390,7 +396,7 @@ class Preload extends Phaser.Scene {
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
         // background_music.stop()
-        this.scene.start(nextScene, { track: this.track, midi: this.midi });
+        this.scene.start(nextScene, { track: this.track, midi: this.midi, isFTUE: isFTUE });
       });
     });
   }
