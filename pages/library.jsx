@@ -13,13 +13,49 @@ import { motion } from "framer-motion";
 import Header from "../components/header/Header";
 import BottomTabNav from "../components/BottomTabNav";
 import { OverlayCard } from "../components/artistinfo/OverlayCard";
-
 import "./pages.css";
+
+function LibraryInfoPanel({ onClose }) {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        zIndex: 9999,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "90%",
+          maxWidth: 600,
+          backgroundColor: "white",
+          borderRadius: "10px",
+          padding: "1rem",
+          color: "#333",
+        }}
+      >
+        <h2>Library Tutorial</h2>
+        <p>Welcome! This is where you spend discs to unlock new songs.</p>
+        <p>
+          Since you’re in the tutorial, you’ll unlock your first song
+          immediately—no timer required.
+        </p>
+        <button style={{ marginTop: "1rem" }} onClick={onClose}>
+          Got It!
+        </button>
+      </div>
+    </div>
+  );
+}
 
 const isSongInQueue = (songInstance) => {
   if (!songInstance) return false;
   if (songInstance.unlocked) return false;
-
   if (!songInstance.unlock_time) return false;
 
   const unlockTime = new Date(songInstance.unlock_time).getTime();
@@ -38,9 +74,12 @@ const Library = () => {
     socialMedia: [],
   });
 
+  const [isFtue, setIsFtue] = useState(false); // Are we in tutorial flow?
+  const [showFtuePanel, setShowFtuePanel] = useState(false); // Show info panel?
+
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const { user_data, isAuthenticated } = auth;
+  const { user_data } = auth;
   const router = useRouter();
 
   const gemsRequiredToUnlockSong = 20;
@@ -76,6 +115,20 @@ const Library = () => {
   useEffect(() => {
     setLoading(true);
 
+    const params = new URLSearchParams(window.location.search);
+    const ftueParam = params.get("ftueGameplayCompleted");
+    const libraryTutorialSeen = localStorage.getItem("libraryTutorialSeen");
+    const ftueCompleted = localStorage.getItem("ftueCompleted");
+    if (
+      ftueParam === "true" &&
+      ftueCompleted !== "true" &&
+      !libraryTutorialSeen
+    ) {
+      setIsFtue(true);
+      setShowFtuePanel(true);
+      localStorage.setItem("libraryTutorialSeen", "true");
+    }
+
     const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142];
     const url = `${BASE_URL}/songs/?${songIds
       .map((id) => `ids=${id}`)
@@ -84,7 +137,6 @@ const Library = () => {
     axios.get(url).then((res) => {
       const songsWithUnlockStatus = res.data.map((song) => ({
         ...song,
-        // If user has a player_song_instance with 'unlocked=true'
         isUnlocked: user_data?.profile?.player?.player_song_instances.some(
           (instance) => instance.song.id === song.id && instance.unlocked
         ),
@@ -95,7 +147,7 @@ const Library = () => {
   }, [user_data]);
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
-  const unlockable = user_data?.profile?.player?.total_discs >= 30;
+  const unlockable = totalDiscs >= 30;
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
@@ -103,10 +155,15 @@ const Library = () => {
     setUnlockedSong(song);
     setIsPopupOpen(true);
 
-    let unlockTime = moment().add(2, "minutes").toISOString();
+    let unlockTime = null;
+    let unlockedFlag = true;
+
+    if (!isFtue) {
+      unlockTime = moment().add(2, "minutes").toISOString();
+      unlockedFlag = false;
+    }
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
-
     const existingInstance =
       newUserdata.profile.player.player_song_instances.find(
         (instance) => instance.song.id === song.id
@@ -129,7 +186,7 @@ const Library = () => {
       no_of_plays: 0,
       paid_for_flag: false,
       unlock_time: unlockTime,
-      unlocked: false,
+      unlocked: unlockedFlag,
       song,
     };
 
@@ -143,19 +200,15 @@ const Library = () => {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="cmd-page">
-        <Header />
-        <div className="kayfo-body-content">
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-        <BottomTabNav />
-      </div>
-    );
-  }
+  const handlePopupContinue = () => {
+    setIsPopupOpen(false);
+
+    if (isFtue) {
+      router.push("/hub?ftueGameplayCompleted=true");
+    } else {
+      router.push("/hub");
+    }
+  };
 
   const openOverlay = async (artistId) => {
     setIsOverlayOpen(true);
@@ -188,9 +241,25 @@ const Library = () => {
     openOverlay(artistId);
   };
 
+  if (loading) {
+    return (
+      <div className="cmd-page">
+        <div className="kayfo-body-content">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+        <BottomTabNav />
+      </div>
+    );
+  }
+
   return (
     <div className="cmd-page">
       <Header />
+      {showFtuePanel && (
+        <LibraryInfoPanel onClose={() => setShowFtuePanel(false)} />
+      )}
       <div className="kayfo-body-content">
         <div className="flex justify-center items-center mt-3 ">
           <h1 className="uppercase lib-header text-7xl">Full Song Library</h1>
@@ -222,6 +291,7 @@ const Library = () => {
           />
         </div>
 
+        {/* Songs List */}
         <div className="flex flex-wrap justify-center items-stretch gap-8">
           {songs.map((song, index) => {
             const instance =
@@ -229,7 +299,6 @@ const Library = () => {
                 (inst) => inst.song.id === song.id
               );
             const inQueue = isSongInQueue(instance);
-
             const showUnlocked = song.isUnlocked || inQueue;
 
             return (
@@ -256,7 +325,7 @@ const Library = () => {
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <p
-                        className="text-white uppercase text-xs"
+                        className="text-white uppercase text-xs cursor-pointer"
                         onClick={() => handleArtistClick(song.artist?.id)}
                       >
                         {song.artist_name}
@@ -264,6 +333,7 @@ const Library = () => {
                       <p className="text-white uppercase text-xs">Medium</p>
                     </div>
 
+                    {/* Unlock Button */}
                     {showUnlocked ? (
                       <div className="text-green-500 font-bold mt-4">
                         Unlocked
@@ -303,6 +373,8 @@ const Library = () => {
             );
           })}
         </div>
+
+        {/* Popup shown after user clicks unlock */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div className="flex justify-center flex-col items-center">
             <h1 className="text-5xl popup-header tracking-wider">
@@ -320,11 +392,9 @@ const Library = () => {
                 <div className="absolute top-[21.8%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
                   <Image
                     src={unlockedSong?.thumbnail_file}
-                    image
                     alt="Artist Image"
                     layout="fill"
-                    objectFit="contain"
-                    className="z-0 w-[237px] h-[256px]"
+                    className="z-0 w-[237px] h-[256px] object-contain"
                   />
                 </div>
                 <div className="flex flex-col absolute bottom-[10%] z-1">
@@ -338,56 +408,65 @@ const Library = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center w-[80%]">
-            <p className="text-yellow text-center mb-2 text-lg">
-              This song will unlock in
-              <Image
-                src="/assets/img/library/Timer_icon.png"
-                alt="timer-icon"
-                width={18}
-                height={18}
-                className="inline-block mx-2 align-middle"
-              />
-              <span className="text-white text-lg font-bold">2:00m</span> or use
-              your gems to unlock it now
-            </p>
-          </div>
+
+          {/* If NOT in FTUE, show the usual timer & gem unlock. If FTUE, skip this section. */}
+          {!isFtue && (
+            <>
+              <div className="flex justify-center w-[80%]">
+                <p className="text-yellow text-center mb-2 text-lg">
+                  This song will unlock in
+                  <Image
+                    src="/assets/img/library/Timer_icon.png"
+                    alt="timer-icon"
+                    width={18}
+                    height={18}
+                    className="inline-block mx-2 align-middle"
+                  />
+                  <span className="text-white text-lg font-bold">2:00m</span> or
+                  use your gems to unlock it now
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  if (
+                    user_data?.profile?.player?.total_gems >=
+                    gemsRequiredToUnlockSong
+                  ) {
+                    unlockSongWithGems(unlockedSong);
+                    setIsPopupOpen(false);
+                    router.push("/hub");
+                  }
+                }}
+                className={`mb-3 relative ${
+                  user_data?.profile?.player?.total_gems <
+                  gemsRequiredToUnlockSong
+                    ? "opacity-80 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={
+                  user_data?.profile?.player?.total_gems <
+                  gemsRequiredToUnlockSong
+                }
+              >
+                <Image
+                  src={"/assets/img/library/Continue.png"}
+                  width={250}
+                  height={100}
+                  alt="unlocknow-btn"
+                />
+                <div className="absolute bottom-6">
+                  <p className="text-yellow ml-2 font-bold text-md">
+                    {gemsRequiredToUnlockSong}
+                  </p>
+                </div>
+              </button>
+            </>
+          )}
+
           <button
             onClick={() => {
-              if (
-                user_data?.profile?.player?.total_gems >=
-                gemsRequiredToUnlockSong
-              ) {
-                unlockSongWithGems(unlockedSong);
-                setIsPopupOpen(false);
-                router.push("/hub");
-              }
-            }}
-            className={`mb-3 relative ${
-              user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong
-                ? "opacity-80 cursor-not-allowed"
-                : ""
-            }`}
-            disabled={
-              user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong
-            }
-          >
-            <Image
-              src={"/assets/img/library/Continue.png"}
-              width={250}
-              height={100}
-              alt="unlocknow-btn"
-            />
-            <div className="absolute bottom-6">
-              <p className="text-yellow ml-2 font-bold text-md">
-                {gemsRequiredToUnlockSong}
-              </p>
-            </div>
-          </button>
-          <button
-            onClick={() => {
-              setIsPopupOpen(false);
-              router.push("/hub");
+              // In FTUE, go to hub with ftueGameplayCompleted=true
+              handlePopupContinue();
             }}
             className=""
           >
@@ -426,6 +505,7 @@ const Library = () => {
           </motion.div>
         </Link>
       </footer>
+
       <OverlayCard
         isOpen={isOverlayOpen}
         onClose={closeOverlay}
@@ -433,6 +513,7 @@ const Library = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
+      {/* FTUE Info Panel */}
     </div>
   );
 };

@@ -65,7 +65,7 @@ class GameOverFTUE extends Phaser.Scene {
       this.game.events.emit("destroyGame");
 
       router.push({
-        pathname: "/hub",
+        pathname: "/library",
         query: { ftueGameplayCompleted: this.ftueCompleted },
       });
     });
@@ -94,7 +94,12 @@ class GameOverFTUE extends Phaser.Scene {
       var y = (targetHeight - newHeight) / 2;
 
       viewport.setTo(x, y, newWidth, newHeight);
-      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+      this.cameras.main.setViewport(
+        viewport.x,
+        viewport.y,
+        viewport.width,
+        viewport.height
+      );
       this.cameras.main.setZoom(scale);
       this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
 

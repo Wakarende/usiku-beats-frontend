@@ -14,9 +14,10 @@ import { updateUser } from "../redux/main/authActions";
 import { OverlayCard, ArtistImage } from "../components/artistinfo/OverlayCard";
 import LevelUpPopup from "../components/leveluppopup/LevelUpPopup";
 import LibraryFooter from "../components/footer/Footer";
-import "./pages.css";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
+import InfoPanel from "../components/infopanel/InfoPanel"; // <--- import your info panel
+import "./pages.css";
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -34,8 +35,9 @@ const HubScreen = () => {
   });
   const [isLevelUpPopupOpen, setIsLevelUpPopupOpen] = useState(false);
   const [newLevel, setNewLevel] = useState();
-
   const [isPulsing, setIsPulsing] = useState(false);
+
+  const [showFtuePanel, setShowFtuePanel] = useState(false);
 
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
@@ -45,10 +47,9 @@ const HubScreen = () => {
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
 
   useEffect(() => {
-    checkAnon();
+    checkAnonUser();
     checkRedirect();
     checkFirstLoginOfDay();
-    // checkNewLevel();
     fetchUnlockableSongs();
   }, [router.query, user_data]);
 
@@ -59,6 +60,65 @@ const HubScreen = () => {
       setIsPulsing(false);
     }
   }, [songs]);
+
+  const checkAnonUser = async () => {
+    if (!user_data) {
+      setLoading(true);
+      try {
+        let anonUserObject = {
+          profile: {
+            id: Math.floor(100000 + Math.random() * 900000).toString(),
+            player: {
+              level: 1,
+              total_discs: 30,
+              total_gems: 30,
+              total_stars: 0,
+              player_song_instances: [],
+              data: null,
+            },
+          },
+        };
+
+        dispatch(updateUser(anonUserObject));
+        setSongs([]);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("error creating anon user", error);
+      }
+    } else {
+      setSongs(
+        user_data?.profile?.player?.player_song_instances
+          ?.filter((item) => item.unlocked)
+          .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
+          .map(({ song, ...rest }) => ({ ...song, ...rest }))
+      );
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ftueParam = params.get("ftueGameplayCompleted");
+    const ftueCompleted = localStorage.getItem("ftueCompleted");
+
+    if (ftueParam === "true" && ftueCompleted !== "true") {
+      setShowFtuePanel(true);
+    }
+  }, []);
+
+  const closeFtuePanel = () => {
+    localStorage.setItem("ftueCompleted", "true");
+    setShowFtuePanel(false);
+
+    const currentQuery = { ...router.query };
+    delete currentQuery.ftueGameplayCompleted;
+
+    router.replace({
+      pathname: "/hub",
+      query: currentQuery,
+    });
+  };
 
   const checkFirstLoginOfDay = () => {
     const lastLoginDate = localStorage.getItem("lastLoginDate");
@@ -71,7 +131,6 @@ const HubScreen = () => {
       localStorage.setItem("lastLoginDate", today);
       localStorage.setItem("loginCount", "1");
       sessionStorage.setItem("sessionActive", "true");
-
       console.log("First login of the day. Count reset to 1.");
     } else if (!sessionActive) {
       const updatedLoginCount = loginCount + 1;
@@ -84,49 +143,6 @@ const HubScreen = () => {
       }
     } else {
       console.log("Session already active. No increment.");
-    }
-  };
-
-  const checkAnon = async () => {
-    if (!user_data) {
-      setLoading(true);
-
-      try {
-        let response = await axios.get(`${BASE_URL}initial-song-list/?ids=147`);
-
-        let anonUserObject = {
-          profile: {
-            id: Math.floor(100000 + Math.random() * 900000).toString(),
-            player: {
-              level: 1,
-              total_discs: 0,
-              total_gems: 30,
-              total_stars: 0,
-              player_song_instances: response.data,
-              data: null,
-            },
-          },
-        };
-        dispatch(updateUser(anonUserObject));
-
-        const songList = response.data.map(({ song, ...rest }) => ({
-          ...song,
-          ...rest,
-        }));
-
-        setSongs(songList);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log("error getting initial songs", error);
-      }
-    } else {
-      setSongs(
-        user_data?.profile?.player?.player_song_instances
-          ?.filter((item) => item.unlocked)
-          .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
-          .map(({ song, ...rest }) => ({ ...song, ...rest }))
-      );
     }
   };
 
@@ -143,25 +159,8 @@ const HubScreen = () => {
         (song) => !song.isUnlocked
       );
       setUnlockableSongs(lockedSongs);
-
       setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
       setLoading(false);
-    });
-  };
-
-  // const checkNewLevel = () => {
-  //   const { newLevelAchieved } = router.query;
-  //   if (newLevelAchieved === "true") {
-  //     const level = parseInt(router.query.newLevel, 10);
-  //     setNewLevel(level);
-  //     setIsLevelUpPopupOpen(true);
-  //   }
-  // };
-
-  const gotoGameDetail = (track, index) => {
-    router.push({
-      pathname: "/game",
-      query: { track: JSON.stringify(track) },
     });
   };
 
@@ -193,55 +192,18 @@ const HubScreen = () => {
     }
   };
 
-  // const closeLevelUpPopup = () => {
-  //   setIsLevelUpPopupOpen(false);
-  //   const currentPath = router.pathname;
-  //   const currentQuery = { ...router.query };
-  //   delete currentQuery.newLevelAchieved;
-  //   delete currentQuery.newLevel;
-  //   router.replace({
-  //     pathname: currentPath,
-  //     query: currentQuery,
-  //   });
-  // };
-
-  const openOverlay = async (artistId) => {
-    setIsOverlayOpen(true);
-
-    try {
-      const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
-      let artist = response.data;
-      setSelectedArtist({
-        artistName: artist.name,
-        bio: artist.bio,
-        socialMedia: {
-          spotify: artist.spotify_link,
-          twitter: artist.twitter_link,
-          youtube: artist.youtube_link,
-          instagram: artist.instagram_link,
-          website: artist.website_link,
-        },
-      });
-    } catch (error) {
-      console.error("Error fetching artist details:", error);
-      setIsOverlayOpen(false);
-    }
-  };
-
-  const closeOverlay = () => {
-    setIsOverlayOpen(false);
-  };
-
-  const handleArtistClick = (e, artist) => {
-    openOverlay(artist.id);
+  const gotoGameDetail = (track) => {
+    router.push({
+      pathname: "/game",
+      query: { track: JSON.stringify(track) },
+    });
   };
 
   const handlePlayClick = (song, index) => {
     if (index === 0 && songs.length === 1) {
       setIsPulsing(false);
     }
-
-    gotoGameDetail(song, index);
+    gotoGameDetail(song);
   };
 
   const handleSongUnlock = (song) => {
@@ -269,43 +231,62 @@ const HubScreen = () => {
     newUserdata.profile.player.total_discs -= 30;
     dispatch(updateUser(newUserdata));
 
-    // Remove the unlocked song from the unlockable songs list
-    setUnlockableSongs((prevSongs) =>
-      prevSongs.filter((s) => s.id !== song.id)
-    );
-
-    // Update visible unlockable songs
-    setVisibleUnlockableSongs((prevVisibleSongs) => {
-      // Remove the unlocked song
-      let updatedVisible = prevVisibleSongs.filter((s) => s.id !== song.id);
-
-      // Add the next song from unlockableSongs if available
+    setUnlockableSongs((prev) => prev.filter((s) => s.id !== song.id));
+    setVisibleUnlockableSongs((prevVisible) => {
+      let updatedVisible = prevVisible.filter((s) => s.id !== song.id);
       const remainingLockedSongs = unlockableSongs.filter(
         (s) => s.id !== song.id
       );
       if (remainingLockedSongs.length > 0) {
-        // Add the next song to maintain two visible unlockable songs
         updatedVisible.push(remainingLockedSongs[0]);
       }
-
       return updatedVisible;
     });
 
-    // Update user's songs
     setSongs((prevSongs) => [...prevSongs, song]);
   };
 
-  const toggleDailyPopup = () => {
-    setIsDailyPopupOpen(!isDailyPopupOpen);
+  const openOverlay = async (artistId) => {
+    setIsOverlayOpen(true);
+    try {
+      const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
+      let artist = response.data;
+      setSelectedArtist({
+        artistName: artist.name,
+        bio: artist.bio,
+        socialMedia: {
+          spotify: artist.spotify_link,
+          twitter: artist.twitter_link,
+          youtube: artist.youtube_link,
+          instagram: artist.instagram_link,
+          website: artist.website_link,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching artist details:", error);
+      setIsOverlayOpen(false);
+    }
   };
 
-  const level = user_data?.profile?.player?.level || 1;
+  const closeOverlay = () => setIsOverlayOpen(false);
 
-  const totalDiscs = user_data?.profile?.player?.total_discs || 0;
+  if (loading) {
+    return (
+      <div className="hubscreen-container">
+        <Header />
+        <div style={{ textAlign: "center", marginTop: "3rem" }}>Loading...</div>
+        <LibraryFooter />
+      </div>
+    );
+  }
 
   return (
     <div className="hubscreen-container">
       <Header />
+
+      {/* The FTUE panel if needed */}
+      {showFtuePanel && <InfoPanel onClose={closeFtuePanel} />}
+
       {/* Container */}
       <div className="px-1 mx-auto max-w-7xl">
         {/* Your Songs Section */}
@@ -314,34 +295,30 @@ const HubScreen = () => {
             Your Songs
           </h1>
         </div>
+
         <div className="">
           <div
-            className="kayfo-masonry-main overlfow-hidden flex flex-col items-start overflow-x-auto overflow-y-hidden"
+            className="kayfo-masonry-main overflow-x-auto overflow-y-hidden flex flex-row"
             style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
-              <div
-                className={`flex flex-row ${
-                  songs.length === 1 ? "mx-auto" : ""
-                }`}
-              >
-                {songs?.map((item, index) => (
-                  <ArtistImage
-                    key={index}
-                    song={item}
-                    onArtistClick={handleArtistClick}
-                    onPlayClick={() => handlePlayClick(item, index)}
-                    isPulsing={isPulsing && index === 0}
-                  />
-                ))}
-              </div>
+              songs.map((item, index) => (
+                <ArtistImage
+                  key={index}
+                  song={item}
+                  onArtistClick={(e, artist) => openOverlay(artist.id)}
+                  onPlayClick={() => handlePlayClick(item, index)}
+                  isPulsing={isPulsing && index === 0}
+                />
+              ))
             ) : (
               <div className="kayfo-filter-no-result-box">
-                {!loading ? "No result" : "loading..."}
+                No unlocked songs yet. Head to the Library!
               </div>
             )}
           </div>
         </div>
+
         <div className="w-full">
           <Image
             src={"/assets/img/library/Divider.png"}
@@ -351,8 +328,10 @@ const HubScreen = () => {
             className="w-full"
           />
         </div>
+
         {/* Horizontal Cards Row */}
         <UnlockSongsRow user_data={user_data} songs={songs} loading={loading} />
+
         <div className="w-full">
           <Image
             src={"/assets/img/library/Divider.png"}
@@ -363,6 +342,8 @@ const HubScreen = () => {
           />
         </div>
       </div>
+
+      {/* Overlays / popups */}
       <OverlayCard
         isOpen={isOverlayOpen}
         onClose={closeOverlay}
@@ -370,17 +351,16 @@ const HubScreen = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-      {/* <LevelUpPopup
-        isOpen={isLevelUpPopupOpen}
-        closePopup={closeLevelUpPopup}
-        newLevel={newLevel}
-      /> */}
+
+      {/* (Optional) LevelUpPopup, etc. */}
+      {/* <LevelUpPopup isOpen={isLevelUpPopupOpen} ... /> */}
+
+      {/* Daily Reward Popup */}
       <DailyRewardPopup
         isOpen={isDailyPopupOpen}
-        closePopup={toggleDailyPopup}
+        closePopup={() => setIsDailyPopupOpen(false)}
         className="popup-overlay"
       >
-        {/* Daily Reward Styling */}
         <div className="daily-reward-content mt-5">
           <h1 className="daily-welcome uppercase text-8xl mb-4">
             Welcome back
@@ -405,7 +385,7 @@ const HubScreen = () => {
           </div>
           <motion.button
             className="daily-claim-button"
-            onClick={toggleDailyPopup}
+            onClick={() => setIsDailyPopupOpen(false)}
             whileHover={{ scale: 1.1 }}
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
@@ -419,6 +399,7 @@ const HubScreen = () => {
           </motion.button>
         </div>
       </DailyRewardPopup>
+
       <LibraryFooter />
     </div>
   );

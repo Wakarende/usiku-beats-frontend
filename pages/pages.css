@@ -172,6 +172,12 @@
 /* INTRO PAGE END  */
 
 /* LIBRARY PAGE  */
+.infopanel-btn {
+    background-image: url('/assets/img/hub/Button blank.png');
+    height: auto;
+    padding: 0.5rem;
+}
+
 .lib-header {
     color: rgb(255, 106, 0);
     text-shadow: 1.636px 1.673px 0px #faf05d;
