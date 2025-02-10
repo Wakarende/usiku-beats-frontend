@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import Header from "../components/header/Header";
 import BottomTabNav from "../components/BottomTabNav";
 import { OverlayCard } from "../components/artistinfo/OverlayCard";
+import InfoPanel from "../components/infopanel/InfoPanel";
 import "./pages.css";
 
 function LibraryInfoPanel({ onClose }) {
@@ -265,7 +266,16 @@ const Library = () => {
     <div className="cmd-page">
       <Header />
       {showFtuePanel && (
-        <LibraryInfoPanel onClose={() => setShowFtuePanel(false)} />
+        <InfoPanel
+          onClose={() => setShowFtuePanel(false)}
+          paragraphs={[
+            <>
+              This is the <span className="font-bold">Library</span> where you
+              can browse and unlock songs for your collection
+            </>,
+            "Choose your first song now!",
+          ]}
+        />
       )}
       <div className="kayfo-body-content">
         <div className="flex justify-center items-center mt-3 ">
@@ -297,7 +307,6 @@ const Library = () => {
             className="gradient-image w-full"
           />
         </div>
-
         {/* Songs List */}
         <div className="flex flex-wrap justify-center items-stretch gap-8">
           {songs.map((song, index) => {
@@ -486,56 +495,36 @@ const Library = () => {
           </button>
         </Popup>
       </div>
-
       {/* FOOTER */}
-
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
-        {isFtue && !hasUnlockedSong ? (
-          <motion.div
-            style={{ pointerEvents: "none" }}
-            className="flex justify-center mt-5"
-            animate={{
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-            }}
-          >
-            <Image
-              src="/assets/img/levelinfo/Back_Button.png"
-              alt="Back"
-              width={200}
-              height={50}
-              className="object-contain"
-            />
-          </motion.div>
-        ) : (
-          <Link href="/hub">
-            <motion.div
-              className="flex justify-center mt-5"
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut",
-              }}
-            >
-              <Image
-                src="/assets/img/levelinfo/Back_Button.png"
-                alt="Back"
-                width={200}
-                height={50}
-                className="object-contain"
-              />
-            </motion.div>
-          </Link>
-        )}
+        <motion.div
+          className="flex justify-center mt-5"
+          animate={{
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "easeInOut",
+          }}
+          onClick={() => {
+            if (isFtue && !hasUnlockedSong) {
+              console.log("FTUE: User must unlock a song first");
+              return;
+            } else {
+              router.push("/hub");
+            }
+          }}
+        >
+          <Image
+            src="/assets/img/levelinfo/Back_Button.png"
+            alt="Back"
+            width={200}
+            height={50}
+            className="object-contain"
+          />
+        </motion.div>
       </footer>
 
       <OverlayCard

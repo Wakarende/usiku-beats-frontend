@@ -285,7 +285,20 @@ const HubScreen = () => {
       <Header />
 
       {/* The FTUE panel if needed */}
-      {showFtuePanel && <InfoPanel onClose={closeFtuePanel} />}
+      {showFtuePanel && (
+        <InfoPanel
+          onClose={closeFtuePanel}
+          paragraphs={[
+            <>
+              This is the <span className="font-bold">Hubscreen</span>, where
+              you can play the songs you've unlocked and access the library to
+              unlock more.
+            </>,
+            ,
+            "Press play now on your first song to get started!",
+          ]}
+        />
+      )}
 
       {/* Container */}
       <div className="px-1 mx-auto max-w-7xl">
