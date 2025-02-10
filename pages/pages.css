@@ -146,12 +146,7 @@
     transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
 }
 
-.intro-btn {
-    background-image: url('/assets/img/hub/Button blank.png');
-    width: 80%;
-    height: auto;
-    padding: 0.5rem;
-}
+
 
 @keyframes pulse {
     0% {

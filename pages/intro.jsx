@@ -23,9 +23,9 @@ export default function IntroPanel() {
       if (!user_data) {
         setLoading(true);
         try {
-          let response = await axios.get(
-            `${BASE_URL}initial-song-list/?ids=147`
-          );
+          // let response = await axios.get(
+          //   `${BASE_URL}initial-song-list/?ids=147`
+          // );
           let anonUserObject = {
             profile: {
               id: Math.floor(100000 + Math.random() * 900000).toString(),
@@ -34,7 +34,7 @@ export default function IntroPanel() {
                 total_discs: 0,
                 total_gems: 30,
                 total_stars: 0,
-                player_song_instances: response.data,
+                player_song_instances: [],
                 data: null,
               },
             },
@@ -75,10 +75,7 @@ export default function IntroPanel() {
 
   return (
     <div className="intro-bg">
-      <div className="intro-card flex flex-col justify-center items-center">
-        <h1 className="flex justify-center text-5xl large:text-7xl xl:text-9xl uppercase intro-header tracking-wider text-balance">
-          Welcome to
-        </h1>
+      <div className="intro-card flex flex-col justify-center items-center text-white mb-4">
         <div className="intro-logo flex justify-center">
           <Image
             src={"/assets/img/start/LogoTail.png"}
@@ -87,22 +84,22 @@ export default function IntroPanel() {
             alt="w-full"
           />
         </div>
-        <div className="intro-text flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-wide text-center large:text-xl large:w-2/3 ">
-          <p className="text-yellow mb-2 uppercase font-bold text-xl large:text-2xl large:mt-4">
-            Demo Version 0.3
+        <div className="flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-widest text-center small: text-xs small:w-[75vw] medium:text-sm medium: w-[75vw] large:text-xl large:w-[80vw] xl:text-2xl xl:w-[80vw]">
+          <p className=" mb-4 font-bold medium:text-xl large:text-2xl large:mt-4 text-nowrap">
+            Feel the Beat of Africa!
           </p>
-          <p className="text-yellow mb-2">
-            This is a fully featured playable demo of the game.
+          <div className="mb-4">
+            <p className="font-extralight">
+              Welcome to <span className="font-bold">Usiku Beats</span> - the
+              rhythm game that brings Africa's music to life!
+            </p>
+            <p>Tap, swipe, and groove to the continent's best sounds.</p>
+          </div>
+          <p className="mb-2">
+            This is just the beginning! Usiku Beats is in early access, with new
+            music and features coming soon.
           </p>
-          <p className="text-yellow mb-2">
-            When you reach the next screen, just tap{" "}
-            <span className="font-bold">'PLAY NOW'</span> under your songs to
-            get started.
-          </p>
-          <p className="text-yellow mb-1">
-            Play that song well enough, and you'll be able to add more songs to
-            your collection.
-          </p>
+          <p className="font-bold mt-4">Ready to move to the rhythm?</p>
         </div>
       </div>
       <motion.div
@@ -120,9 +117,17 @@ export default function IntroPanel() {
         <button
           onClick={handleOk}
           disabled={loading}
-          className="intro-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center large:mt-4 "
+          className="relative text-white font-bold text-2xl uppercase tracking-wider small:w-[250px] small:h-[50px]  medium:w-[300px] medium:h-[50px] large:w-[300px] large:h-[50px] large:mt-4 xl:h-[50px] xl:w-[500px]"
         >
-          <p className="relative flex justify-center"> Ok</p>
+          <Image
+            src={"/assets/img/hub/Button blank.png"}
+            alt="button-bg"
+            fill
+            className="object-contain pointer-events-none "
+          />
+          <span className="absolute inset-0 flex items-center justify-center z-10">
+            Let&apos;s Play!
+          </span>
         </button>
       </motion.div>
     </div>

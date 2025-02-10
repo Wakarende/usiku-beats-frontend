@@ -312,7 +312,7 @@ const HubScreen = () => {
                 />
               ))
             ) : (
-              <div className="kayfo-filter-no-result-box">
+              <div className="flex justify-center kayfo-filter-no-result-box text-center">
                 No unlocked songs yet. Head to the Library!
               </div>
             )}

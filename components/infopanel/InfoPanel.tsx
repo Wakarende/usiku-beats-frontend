@@ -1,5 +1,5 @@
 import React from "react";
-
+import Image from "next/image";
 export default function InfoPanel({ onClose }) {
   return (
     <div
@@ -10,28 +10,31 @@ export default function InfoPanel({ onClose }) {
         zIndex: 9999,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "90%",
-          maxWidth: 600,
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "1rem",
-          color: "#333",
-        }}
-      >
-        <h2>Welcome to the Hub!</h2>
-        <p>
-          This is where you’ll find all the songs you’ve unlocked. From here,
-          you can jump into a game at any time.
-        </p>
-        <p>Good luck, and have fun exploring more tracks!</p>
-        <button onClick={onClose} style={{ marginTop: "1rem" }}>
-          Got It!
+      <div className="flex flex-col absolute bottom-0 left-[50%] transform translate-x-[-50%] w-[100%] bg-[#1a1a1a] p-4 text-white tracking-widest rounded-lg">
+        <div className="absolute left-[-2%]">
+          <Image
+            src="/assets/img/artistinfo/Info_icon.png"
+            alt="info-icon"
+            width={25}
+            height={25}
+          />
+        </div>
+        <h1 className="text-6xl mb-4 leading-tight">Did you know?</h1>
+        <div className="text-lg mb-4 text-yellow">
+          <p>
+            This is the <span className=" font-extrabold">Hubscreen</span>,
+            where you can play the songs you've unlocked and access the library
+            to unlock more.
+          </p>
+          <p>Press play now, on your first song to get playing!</p>
+        </div>
+        <button className="mt-4" onClick={onClose}>
+          <Image
+            src="/assets/img/ftue/Close_button.png"
+            width={250}
+            height={100}
+            alt="continue-btn"
+          />
         </button>
       </div>
     </div>

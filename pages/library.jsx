@@ -21,32 +21,34 @@ function LibraryInfoPanel({ onClose }) {
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: "rgba(2, 1, 1, 0.5)",
         zIndex: 9999,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "90%",
-          maxWidth: 600,
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "1rem",
-          color: "#333",
-        }}
-      >
-        <h2>Library Tutorial</h2>
-        <p>Welcome! This is where you spend discs to unlock new songs.</p>
-        <p>
-          Since you’re in the tutorial, you’ll unlock your first song
-          immediately—no timer required.
-        </p>
-        <button style={{ marginTop: "1rem" }} onClick={onClose}>
-          Got It!
+      <div className="flex flex-col absolute bottom-0 left-[50%] transform translate-x-[-50%] w-[100%] bg-[#1a1a1a] p-4 text-white tracking-widest rounded-lg ">
+        <div className="absolute left-[-2%]">
+          <Image
+            src="/assets/img/artistinfo/Info_icon.png"
+            alt="info-icon"
+            width={25}
+            height={25}
+          />
+        </div>
+        <h1 className="text-6xl mb-4 leading-tight">Did you know?</h1>
+        <div className="text-lg mb-4 text-center text-yellow">
+          <p>
+            This is the library, where you can browse and unlock songs for your
+            collection.
+          </p>
+          <p>Choose your first song now!</p>
+        </div>
+        <button className="mt-4" onClick={onClose}>
+          <Image
+            src="/assets/img/ftue/Close_button.png"
+            width={250}
+            height={100}
+            alt="close-btn"
+          />
         </button>
       </div>
     </div>
@@ -129,7 +131,7 @@ const Library = () => {
       localStorage.setItem("libraryTutorialSeen", "true");
     }
 
-    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142];
+    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142, 147];
     const url = `${BASE_URL}/songs/?${songIds
       .map((id) => `ids=${id}`)
       .join("&")}`;
@@ -253,6 +255,11 @@ const Library = () => {
       </div>
     );
   }
+
+  const hasUnlockedSong =
+    user_data?.profile?.player?.player_song_instances?.some(
+      (instance) => instance.unlocked
+    );
 
   return (
     <div className="cmd-page">
@@ -481,9 +488,11 @@ const Library = () => {
       </div>
 
       {/* FOOTER */}
+
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
-        <Link href="/hub">
+        {isFtue && !hasUnlockedSong ? (
           <motion.div
+            style={{ pointerEvents: "none" }}
             className="flex justify-center mt-5"
             animate={{
               scale: [1, 1.1, 1],
@@ -503,7 +512,30 @@ const Library = () => {
               className="object-contain"
             />
           </motion.div>
-        </Link>
+        ) : (
+          <Link href="/hub">
+            <motion.div
+              className="flex justify-center mt-5"
+              animate={{
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut",
+              }}
+            >
+              <Image
+                src="/assets/img/levelinfo/Back_Button.png"
+                alt="Back"
+                width={200}
+                height={50}
+                className="object-contain"
+              />
+            </motion.div>
+          </Link>
+        )}
       </footer>
 
       <OverlayCard
