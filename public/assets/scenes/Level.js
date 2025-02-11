@@ -509,6 +509,10 @@ class Level extends Phaser.Scene {
       this.scene.pause();
       this.scene.launch("Pause");
     });
+    if (this.isFTUE) {
+      this.pause_btn.setVisible(false);
+      this.pause_btn.disableInteractive();
+    }
 
     // this.tapZone = this.add
     //   .image(this.screenCenterX, this.screenHeight * this.tileTarget, "tapZone")
