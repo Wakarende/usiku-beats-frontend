@@ -60,6 +60,31 @@ const HubScreen = () => {
       setIsPulsing(false);
     }
   }, [songs]);
+  const checkFirstLoginOfDay = () => {
+    const lastLoginDate = localStorage.getItem("lastLoginDate");
+    const loginCount = parseInt(localStorage.getItem("loginCount") || "0", 10);
+    const today = new Date().toISOString().split("T")[0];
+
+    const sessionActive = sessionStorage.getItem("sessionActive");
+
+    if (lastLoginDate !== today) {
+      localStorage.setItem("lastLoginDate", today);
+      localStorage.setItem("loginCount", "1");
+      sessionStorage.setItem("sessionActive", "true");
+      console.log("First login of the day. Count reset to 1.");
+    } else if (!sessionActive) {
+      const updatedLoginCount = loginCount + 1;
+      localStorage.setItem("loginCount", updatedLoginCount.toString());
+      sessionStorage.setItem("sessionActive", "true");
+
+      if (updatedLoginCount > 1) {
+        console.log("Second login. Showing popup.");
+        setIsDailyPopupOpen(true);
+      }
+    } else {
+      console.log("Session already active. No increment.");
+    }
+  };
 
   const checkAnonUser = async () => {
     if (!user_data) {
@@ -120,32 +145,6 @@ const HubScreen = () => {
     });
   };
 
-  const checkFirstLoginOfDay = () => {
-    const lastLoginDate = localStorage.getItem("lastLoginDate");
-    const loginCount = parseInt(localStorage.getItem("loginCount") || "0", 10);
-    const today = new Date().toISOString().split("T")[0];
-
-    const sessionActive = sessionStorage.getItem("sessionActive");
-
-    if (lastLoginDate !== today) {
-      localStorage.setItem("lastLoginDate", today);
-      localStorage.setItem("loginCount", "1");
-      sessionStorage.setItem("sessionActive", "true");
-      console.log("First login of the day. Count reset to 1.");
-    } else if (!sessionActive) {
-      const updatedLoginCount = loginCount + 1;
-      localStorage.setItem("loginCount", updatedLoginCount.toString());
-      sessionStorage.setItem("sessionActive", "true");
-
-      if (updatedLoginCount > 1) {
-        console.log("Second login. Showing popup.");
-        setIsDailyPopupOpen(true);
-      }
-    } else {
-      console.log("Session already active. No increment.");
-    }
-  };
-
   const fetchUnlockableSongs = () => {
     axios.get(`${BASE_URL}/songs/?ids=14&ids=54&ids=65&ids=136`).then((res) => {
       const songsWithUnlockStatus = res.data.map((song) => ({
@@ -161,6 +160,22 @@ const HubScreen = () => {
       setUnlockableSongs(lockedSongs);
       setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
       setLoading(false);
+    });
+  };
+
+  // const checkNewLevel = () => {
+  //   const { newLevelAchieved } = router.query;
+  //   if (newLevelAchieved === "true") {
+  //     const level = parseInt(router.query.newLevel, 10);
+  //     setNewLevel(level);
+  //     setIsLevelUpPopupOpen(true);
+  //   }
+  // };
+
+  const gotoGameDetail = (track) => {
+    router.push({
+      pathname: "/game",
+      query: { track: JSON.stringify(track) },
     });
   };
 
@@ -192,12 +207,45 @@ const HubScreen = () => {
     }
   };
 
-  const gotoGameDetail = (track) => {
-    router.push({
-      pathname: "/game",
-      query: { track: JSON.stringify(track) },
-    });
+  // const closeLevelUpPopup = () => {
+  //   setIsLevelUpPopupOpen(false);
+  //   const currentPath = router.pathname;
+  //   const currentQuery = { ...router.query };
+  //   delete currentQuery.newLevelAchieved;
+  //   delete currentQuery.newLevel;
+  //   router.replace({
+  //     pathname: currentPath,
+  //     query: currentQuery,
+  //   });
+  // };
+
+  const openOverlay = async (artistId) => {
+    setIsOverlayOpen(true);
+    try {
+      const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
+      let artist = response.data;
+      setSelectedArtist({
+        artistName: artist.name,
+        bio: artist.bio,
+        socialMedia: {
+          spotify: artist.spotify_link,
+          twitter: artist.twitter_link,
+          youtube: artist.youtube_link,
+          instagram: artist.instagram_link,
+          website: artist.website_link,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching artist details:", error);
+      setIsOverlayOpen(false);
+    }
   };
+
+  const closeOverlay = () => setIsOverlayOpen(false);
+
+  // const handleArtistClick = (e, artist) => {
+  //   openOverlay(artist.id);
+  // };
 
   const handlePlayClick = (song, index) => {
     if (index === 0 && songs.length === 1) {
@@ -246,29 +294,13 @@ const HubScreen = () => {
     setSongs((prevSongs) => [...prevSongs, song]);
   };
 
-  const openOverlay = async (artistId) => {
-    setIsOverlayOpen(true);
-    try {
-      const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
-      let artist = response.data;
-      setSelectedArtist({
-        artistName: artist.name,
-        bio: artist.bio,
-        socialMedia: {
-          spotify: artist.spotify_link,
-          twitter: artist.twitter_link,
-          youtube: artist.youtube_link,
-          instagram: artist.instagram_link,
-          website: artist.website_link,
-        },
-      });
-    } catch (error) {
-      console.error("Error fetching artist details:", error);
-      setIsOverlayOpen(false);
-    }
+  const toggleDailyPopup = () => {
+    setIsDailyPopupOpen(!isDailyPopupOpen);
   };
 
-  const closeOverlay = () => setIsOverlayOpen(false);
+  const level = user_data?.profile?.player?.level || 1;
+
+  const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
   if (loading) {
     return (
@@ -283,7 +315,6 @@ const HubScreen = () => {
   return (
     <div className="hubscreen-container">
       <Header />
-
       {/* The FTUE panel if needed */}
       {showFtuePanel && (
         <InfoPanel
@@ -311,7 +342,9 @@ const HubScreen = () => {
 
         <div className="">
           <div
-            className="kayfo-masonry-main overflow-x-auto overflow-y-hidden flex flex-row"
+            className={`kayfo-masonry-main overflow-x-auto overflow-y-hidden flex ${
+              songs.length === 1 ? "justify-center" : ""
+            }`}
             style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
@@ -325,7 +358,7 @@ const HubScreen = () => {
                 />
               ))
             ) : (
-              <div className="flex justify-center kayfo-filter-no-result-box text-center">
+              <div className="flex justify-center kayfo-filter-no-result-box">
                 No unlocked songs yet. Head to the Library!
               </div>
             )}
