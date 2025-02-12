@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import Confetti from "react-confetti";
+import useSound from "use-sound";
+import useClickSound from "../../hooks/useClickSound";
 
 const LibraryFooter = () => {
   const auth = useSelector((state) => state.auth);
@@ -13,8 +14,10 @@ const LibraryFooter = () => {
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
+  const handleClickSound = useClickSound();
+
   return (
-    <Link href={"/library"}>
+    <Link href={"/library"} onClick={handleClickSound}>
       <footer className="fixed hub-footer bottom-0 bg-center bg-no-repeat bg-contain w-full ">
         <div className="relative medium:h-[100px] medium:top-[15%] ">
           <Image

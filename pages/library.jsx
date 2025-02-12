@@ -14,47 +14,9 @@ import Header from "../components/header/Header";
 import BottomTabNav from "../components/BottomTabNav";
 import { OverlayCard } from "../components/artistinfo/OverlayCard";
 import InfoPanel from "../components/infopanel/InfoPanel";
+import useSound from "use-sound";
+import useClickSound from "../hooks/useClickSound";
 import "./pages.css";
-
-function LibraryInfoPanel({ onClose }) {
-  return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(2, 1, 1, 0.5)",
-        zIndex: 9999,
-      }}
-    >
-      <div className="flex flex-col absolute bottom-0 left-[50%] transform translate-x-[-50%] w-[100%] bg-[#1a1a1a] p-4 text-white tracking-widest rounded-lg ">
-        <div className="absolute left-[-2%]">
-          <Image
-            src="/assets/img/artistinfo/Info_icon.png"
-            alt="info-icon"
-            width={25}
-            height={25}
-          />
-        </div>
-        <h1 className="text-6xl mb-4 leading-tight">Did you know?</h1>
-        <div className="text-lg mb-4 text-center text-yellow">
-          <p>
-            This is the library, where you can browse and unlock songs for your
-            collection.
-          </p>
-          <p>Choose your first song now!</p>
-        </div>
-        <button className="mt-4" onClick={onClose}>
-          <Image
-            src="/assets/img/ftue/Close_button.png"
-            width={250}
-            height={100}
-            alt="close-btn"
-          />
-        </button>
-      </div>
-    </div>
-  );
-}
 
 const isSongInQueue = (songInstance) => {
   if (!songInstance) return false;
@@ -113,6 +75,8 @@ const Library = () => {
     setSongs((prevSongs) =>
       prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
     );
+
+    handleClickSound();
   };
 
   useEffect(() => {
@@ -201,6 +165,7 @@ const Library = () => {
     setSongs((prevSongs) =>
       prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
     );
+    handleClickSound();
   };
 
   const handlePopupContinue = () => {
@@ -211,9 +176,11 @@ const Library = () => {
     } else {
       router.push("/hub");
     }
+    handleClickSound();
   };
 
   const openOverlay = async (artistId) => {
+    handleClickSound();
     setIsOverlayOpen(true);
 
     try {
@@ -237,6 +204,7 @@ const Library = () => {
   };
 
   const closeOverlay = () => {
+    handleClickSound();
     setIsOverlayOpen(false);
   };
 
@@ -244,6 +212,7 @@ const Library = () => {
     openOverlay(artistId);
   };
 
+  const handleClickSound = useClickSound();
   if (loading) {
     return (
       <div className="cmd-page">
@@ -509,6 +478,7 @@ const Library = () => {
             ease: "easeInOut",
           }}
           onClick={() => {
+            handleClickSound();
             if (isFtue && !hasUnlockedSong) {
               console.log("FTUE: User must unlock a song first");
               return;

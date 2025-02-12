@@ -5,6 +5,8 @@ import { updateUser } from "../../redux/main/authActions";
 import Popup from "../library/Popup";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import useSound from "use-sound";
+import useClickSound from "../../hooks/useClickSound";
 import "../styles.css";
 
 const UnlockSongsRow = ({ user_data, songs, loading }) => {
@@ -16,6 +18,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const handleClickSound = useClickSound();
   const CountdownTimer = ({ unlockTime, onExpire }) => {
     const [timeLeft, setTimeLeft] = useState(
       calculateTimeLeft(new Date(unlockTime))
@@ -88,6 +91,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     } else {
       console.error("Song not found in song instances", song.id);
     }
+    handleClickSound();
   };
 
   const unlockSongWithGems = (song) => {
@@ -112,6 +116,8 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     } else {
       console.error("Song not found in song instances", song.id);
     }
+
+    handleClickSound();
   };
 
   // Get locked (not yet unlocked) songs
@@ -278,7 +284,9 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           <button
             className="text-white mt-2 w-full uppercase text-xl enough-gems-btn bg-no-repeat bg-center bg-contain
             "
-            onClick={() => setIsPopupOpen(false)}
+            onClick={() => {
+              setIsPopupOpen(false), handleClickSound();
+            }}
           >
             Ok
           </button>

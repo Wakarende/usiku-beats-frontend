@@ -6,9 +6,12 @@ import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InfoIcon from "@mui/icons-material/Info";
+import useSound from "use-sound";
+import useClickSound from "../hooks/useClickSound";
 import "./pages.css";
 
 export default function TitleScreen() {
+  const handleClickSound = useClickSound();
   const router = useRouter();
   // Password
   useEffect(() => {
@@ -42,6 +45,7 @@ export default function TitleScreen() {
       console.warn("Fullscreen API is not supported");
       router.push("/intro");
     }
+    handleClickSound();
   };
 
   // Animation states

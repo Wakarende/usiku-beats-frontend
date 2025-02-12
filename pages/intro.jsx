@@ -7,6 +7,8 @@ import { updateUser } from "../redux/main/authActions";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { motion } from "framer-motion";
+import useSound from "use-sound";
+import useClickSound from "../hooks/useClickSound";
 import "./pages.css";
 
 export default function IntroPanel() {
@@ -17,6 +19,8 @@ export default function IntroPanel() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
+
+  // const [buttonSound] = useSound("/assets/sounds/ui/buttonSfx.mp3");
 
   useEffect(() => {
     const checkAnon = async () => {
@@ -52,6 +56,7 @@ export default function IntroPanel() {
   }, [user_data, dispatch]);
 
   const handleOk = async () => {
+    handleClickSound();
     //check if first time user
     const ftueCompleted = localStorage.getItem("ftueCompleted");
 
@@ -72,6 +77,8 @@ export default function IntroPanel() {
       router.push("/hub");
     }
   };
+
+  const handleClickSound = useClickSound();
 
   return (
     <div className="intro-bg">

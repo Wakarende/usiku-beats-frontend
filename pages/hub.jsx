@@ -17,6 +17,8 @@ import LibraryFooter from "../components/footer/Footer";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import InfoPanel from "../components/infopanel/InfoPanel"; // <--- import your info panel
+import useSound from "use-sound";
+import useClickSound from "../hooks/useClickSound";
 import "./pages.css";
 
 const HubScreen = () => {
@@ -220,6 +222,7 @@ const HubScreen = () => {
   // };
 
   const openOverlay = async (artistId) => {
+    handleClickSound();
     setIsOverlayOpen(true);
     try {
       const response = await axios.get(`${BASE_URL}artist-detail/${artistId}/`);
@@ -241,7 +244,10 @@ const HubScreen = () => {
     }
   };
 
-  const closeOverlay = () => setIsOverlayOpen(false);
+  const closeOverlay = () => {
+    handleClickSound();
+    setIsOverlayOpen(false);
+  };
 
   // const handleArtistClick = (e, artist) => {
   //   openOverlay(artist.id);
@@ -302,6 +308,8 @@ const HubScreen = () => {
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
 
+  const handleClickSound = useClickSound();
+
   if (loading) {
     return (
       <div className="hubscreen-container">
@@ -352,7 +360,9 @@ const HubScreen = () => {
                   key={index}
                   song={item}
                   onArtistClick={(e, artist) => openOverlay(artist.id)}
-                  onPlayClick={() => handlePlayClick(item, index)}
+                  onPlayClick={() => {
+                    handlePlayClick(item, index), handleClickSound();
+                  }}
                   isPulsing={isPulsing && index === 0}
                 />
               ))
