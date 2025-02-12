@@ -4,7 +4,7 @@ export default function InfoPanel({
   title = "Did you know?",
   paragraphs = [],
   onClose,
-  bgImage = "/assets/img/ftue/info_panel.png",
+  bgImage = "/assets/img/ftue/Info_panel.png",
 }) {
   return (
     <div
