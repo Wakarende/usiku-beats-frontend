@@ -32,6 +32,7 @@
     "cors": "^2.8.5",
     "framer-motion": "^11.11.17",
     "gh-pages": "^6.0.0",
+    "howler": "^2.2.4",
     "immer": "^10.0.3",
     "isotope-layout": "^3.0.6",
     "jquery": "^3.7.1",

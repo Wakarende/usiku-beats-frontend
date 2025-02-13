@@ -9,6 +9,7 @@ import { BASE_URL } from "../services/config";
 import { motion } from "framer-motion";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
+import { useAudio } from "../src/context/AudioProvider";
 import "./pages.css";
 
 export default function IntroPanel() {
@@ -19,6 +20,7 @@ export default function IntroPanel() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
+  const { playBoom } = useAudio();
 
   // const [buttonSound] = useSound("/assets/sounds/ui/buttonSfx.mp3");
 
@@ -56,7 +58,8 @@ export default function IntroPanel() {
   }, [user_data, dispatch]);
 
   const handleOk = async () => {
-    handleClickSound();
+    playBoom();
+    // handleClickSound();
     //check if first time user
     const ftueCompleted = localStorage.getItem("ftueCompleted");
 

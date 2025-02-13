@@ -17,8 +17,9 @@ import LibraryFooter from "../components/footer/Footer";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import InfoPanel from "../components/infopanel/InfoPanel"; // <--- import your info panel
-import useSound from "use-sound";
+
 import useClickSound from "../hooks/useClickSound";
+import { useAudio } from "../src/context/AudioProvider";
 import "./pages.css";
 
 const HubScreen = () => {
@@ -47,6 +48,12 @@ const HubScreen = () => {
   const router = useRouter();
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
+
+  const { fadeOutBgMusic, playBoom } = useAudio();
+
+  // useEffect(() => {
+  //   playBgMusic();
+  // }, [playBgMusic]);
 
   useEffect(() => {
     checkAnonUser();
@@ -258,6 +265,8 @@ const HubScreen = () => {
       setIsPulsing(false);
     }
     gotoGameDetail(song);
+
+    // gotoGameDetail(song);
   };
 
   const handleSongUnlock = (song) => {
@@ -361,7 +370,7 @@ const HubScreen = () => {
                   song={item}
                   onArtistClick={(e, artist) => openOverlay(artist.id)}
                   onPlayClick={() => {
-                    handlePlayClick(item, index), handleClickSound();
+                    handlePlayClick(item, index), playBoom();
                   }}
                   isPulsing={isPulsing && index === 0}
                 />
