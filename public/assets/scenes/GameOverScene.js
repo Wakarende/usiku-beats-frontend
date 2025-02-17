@@ -219,17 +219,19 @@ class GameOverScene extends Phaser.Scene {
 
     this.retry_button.setInteractive();
     this.retry_button.on("pointerup", () => {
-      // start_sfx.play();
       this.current_track.stop();
       this.scoreTickSound.stop();
-      // background_music.stop()
+
+      this.button_sfx.play();
+      this.background_music.stop();
       this.scene.stop("GameOverScene");
       this.scene.start("Level", { track: this.track, midi: this.track.midi });
     });
 
     this.continue_button.setInteractive();
     this.continue_button.on("pointerup", () => {
-      // start_sfx.play();
+      this.button_sfx.play();
+      this.background_music.stop();
       this.current_track.stop();
       this.scoreTickSound.stop();
       this.scene.stop("GameOverScene");
@@ -250,6 +252,10 @@ class GameOverScene extends Phaser.Scene {
 
     this.buildScreen();
     this.animateScore();
+
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
+    this.background_music.play();
 
     this.cameras.main.fadeIn(500);
   }

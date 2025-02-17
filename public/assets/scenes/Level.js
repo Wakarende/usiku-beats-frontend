@@ -1674,7 +1674,7 @@ class Level extends Phaser.Scene {
       this.countDownText.setText(this.initialTime);
 
       if (this.initialTime === 0) {
-        this.sound.play("Last Countdown Beep_Sfx", { volume: 1, loop: false });
+        this.sound.play("countdown_sfx", { volume: 1, loop: false });
       } else {
         countdown_sfx.play();
       }

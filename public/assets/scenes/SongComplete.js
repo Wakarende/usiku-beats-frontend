@@ -184,6 +184,12 @@ class SongComplete extends Phaser.Scene {
 
     this.setupScene();
     this.startAutoTransitionTimer();
+
+    const song_complete_sfx = this.sound.add("song_complete_sfx", { volume: 0.7, loop: false });
+    song_complete_sfx.play();
+
+    // this.background_music = this.registry.get("background_music");
+    // this.background_music.play();
   }
 
   setupScene() {
@@ -459,6 +465,7 @@ class SongComplete extends Phaser.Scene {
 
       // Stop current scene
       this.scene.stop();
+      // this.background_music.stop();
 
       if (this.sceneData.isFTUE) {
         levelScene.ftueGameOver();

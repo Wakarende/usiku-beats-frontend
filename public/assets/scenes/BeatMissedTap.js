@@ -64,9 +64,18 @@ class BeatMissedTap extends Phaser.Scene {
     this.adjustViewport();
     this.cameras.main.shake(500, 0.0025);
 
+    const scratch_sound = this.sound.add("scratch_sound", { volume: 0.7, loop: false });
+    scratch_sound.play();
+
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
+    this.background_music.play();
+
     this.try_again_btn.setInteractive();
     this.try_again_btn.on("pointerup", () => {
       this.scene.stop();
+      this.button_sfx.play();
+      this.background_music.stop();
       this.scene.resume("Level");
     });
   }

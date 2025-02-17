@@ -70,7 +70,7 @@
             },
             {
                 "url": [
-                    "assets/sounds/countdown_sfx.mp3"
+                    "assets/sounds/SoundScape/countdown_sfx.mp3"
                 ],
                 "type": "audio",
                 "key": "countdown_sfx"
@@ -134,13 +134,6 @@
                 "url": "assets/sprites/playscene/Hold.png",
                 "type": "image",
                 "key": "Hold"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/Last Countdown Beep_Sfx.mp3"
-                ],
-                "type": "audio",
-                "key": "Last Countdown Beep_Sfx"
             },
             {
                 "url": "assets/scenes/Level.js",
@@ -228,34 +221,6 @@
                 "key": "perfect+"
             },
             {
-                "url": [
-                    "assets/sounds/SoundScape/Pop_Sfx_1.mp3"
-                ],
-                "type": "audio",
-                "key": "Pop_Sfx_1"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/Pop_Sfx_2.mp3"
-                ],
-                "type": "audio",
-                "key": "Pop_Sfx_2"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/Pop_Sfx_3.mp3"
-                ],
-                "type": "audio",
-                "key": "Pop_Sfx_3"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/Pop_Sfx_4.mp3"
-                ],
-                "type": "audio",
-                "key": "Pop_Sfx_4"
-            },
-            {
                 "url": "assets/sprites/pausescene/Quit.png",
                 "type": "image",
                 "key": "Quit"
@@ -286,6 +251,20 @@
                 ],
                 "type": "audio",
                 "key": "Score_Counter_Sfx"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/scratch_sound.mp3"
+                ],
+                "type": "audio",
+                "key": "scratch_sound"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/song_complete_sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "song_complete_sfx"
             },
             {
                 "url": "assets/scenes/SongComplete.js",

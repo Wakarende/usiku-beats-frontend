@@ -13,9 +13,17 @@ class Boot extends Phaser.Scene {
   }
 
   create() {
-    //   start_sfx = this.sound.add("start_sfx", { volume: 0.7, loop: false });
-    //   background_music = this.sound.add("BackGround_Music", { volume: 0.7, loop: false });
-    //   background_music.play()
+    // Init audio sounds
+    const sprinkle_chime = this.sound.add("sprinkle_chime", { volume: 0.7, loop: false });
+    this.registry.set("sprinkle_chime", sprinkle_chime);
+
+    const button_sfx = this.sound.add("button_sfx", { volume: 0.7, loop: false });
+    this.registry.set("button_sfx", button_sfx);
+
+    const background_music = this.sound.add("music_bed", { volume: 0.7, loop: true });
+    this.registry.set("background_music", background_music);
+
+    background_music.play();
 
     const trackData = this.registry.get("trackData");
 

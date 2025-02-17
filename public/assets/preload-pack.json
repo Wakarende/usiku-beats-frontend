@@ -2,13 +2,6 @@
     "section1": {
         "files": [
             {
-                "url": [
-                    "assets/sounds/SoundScape/BackGround_Music.mp3"
-                ],
-                "type": "audio",
-                "key": "BackGround_Music"
-            },
-            {
                 "url": "assets/sprites/preloader/Button_blank.png",
                 "type": "image",
                 "key": "Button_blank"
@@ -19,9 +12,23 @@
                 "key": "button_blank_particle"
             },
             {
+                "url": [
+                    "assets/sounds/SoundScape/button_sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "button_sfx"
+            },
+            {
                 "url": "assets/sprites/preloader/carousel_2.png",
                 "type": "image",
                 "key": "carousel_2"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/music_bed.mp3"
+                ],
+                "type": "audio",
+                "key": "music_bed"
             },
             {
                 "url": "assets/scenes/Preload.js",
@@ -47,6 +54,13 @@
                 "url": "assets/sprites/preloader/preloader_Top banner.png",
                 "type": "image",
                 "key": "preloader_Top banner"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/sprinkle_chime.mp3"
+                ],
+                "type": "audio",
+                "key": "sprinkle_chime"
             },
             {
                 "url": [

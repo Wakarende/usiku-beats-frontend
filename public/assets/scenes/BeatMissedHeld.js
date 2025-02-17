@@ -3,49 +3,59 @@
 /* START OF COMPILED CODE */
 
 class BeatMissedHeld extends Phaser.Scene {
+  constructor() {
+    super("BeatMissedHeld");
 
-	constructor() {
-		super("BeatMissedHeld");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // missed_a_beat_Tap
+    const missed_a_beat_Tap = this.add.image(180, 320, "Missed a beat_Hold");
+    missed_a_beat_Tap.scaleX = 0.3333;
+    missed_a_beat_Tap.scaleY = 0.3333;
 
-		// missed_a_beat_Tap
-		const missed_a_beat_Tap = this.add.image(180, 320, "Missed a beat_Hold");
-		missed_a_beat_Tap.scaleX = 0.3333;
-		missed_a_beat_Tap.scaleY = 0.3333;
+    // try_again_btn
+    const try_again_btn = this.add.image(180, 572, "Try again");
+    try_again_btn.scaleX = 0.3333;
+    try_again_btn.scaleY = 0.3333;
 
-		// try_again_btn
-		const try_again_btn = this.add.image(180, 572, "Try again");
-		try_again_btn.scaleX = 0.3333;
-		try_again_btn.scaleY = 0.3333;
+    // text_1
+    const text_1 = this.add.text(180, 143, "", {});
+    text_1.setOrigin(0.5, 0.5);
+    text_1.text = "HOLD these beats by tapping\nand holding until the tile ends.";
+    text_1.setStyle({
+      align: "center",
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      stroke: "#faf05e",
+    });
 
-		// text_1
-		const text_1 = this.add.text(180, 143, "", {});
-		text_1.setOrigin(0.5, 0.5);
-		text_1.text = "HOLD these beats by tapping\nand holding until the tile ends.";
-		text_1.setStyle({ "align": "center", "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "20px", "stroke": "#faf05e" });
+    // text_2
+    const text_2 = this.add.text(180, 216, "", {});
+    text_2.setOrigin(0.5, 0.5);
+    text_2.text = "Release in the Perfect Zone\nfor top points!";
+    text_2.setStyle({
+      align: "center",
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      stroke: "#faf05e",
+    });
 
-		// text_2
-		const text_2 = this.add.text(180, 216, "", {});
-		text_2.setOrigin(0.5, 0.5);
-		text_2.text = "Release in the Perfect Zone\nfor top points!";
-		text_2.setStyle({ "align": "center", "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "20px", "stroke": "#faf05e" });
+    this.try_again_btn = try_again_btn;
 
-		this.try_again_btn = try_again_btn;
+    this.events.emit("scene-awake");
+  }
 
-		this.events.emit("scene-awake");
-	}
+  /** @type {Phaser.GameObjects.Image} */
+  try_again_btn;
 
-	/** @type {Phaser.GameObjects.Image} */
-	try_again_btn;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
 
@@ -54,9 +64,18 @@ class BeatMissedHeld extends Phaser.Scene {
     this.adjustViewport();
     this.cameras.main.shake(500, 0.0025);
 
+    const scratch_sound = this.sound.add("scratch_sound", { volume: 0.7, loop: false });
+    scratch_sound.play();
+
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
+    this.background_music.play();
+
     this.try_again_btn.setInteractive();
     this.try_again_btn.on("pointerup", () => {
       this.scene.stop();
+      this.button_sfx.play();
+      this.background_music.stop();
       this.scene.resume("Level");
     });
   }

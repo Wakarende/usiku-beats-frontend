@@ -57,6 +57,8 @@ class GameOverFTUE extends Phaser.Scene {
 
     this.choose_song_button.setInteractive();
     this.choose_song_button.on("pointerup", () => {
+      this.button_sfx.play();
+      this.background_music.stop();
       this.scene.stop("GameOverSceneFTUE");
 
       this.scene.manager.scenes.forEach((scene) => {
@@ -69,6 +71,10 @@ class GameOverFTUE extends Phaser.Scene {
         query: { ftueGameplayCompleted: this.ftueCompleted },
       });
     });
+
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
+    this.background_music.play();
 
     this.cameras.main.fadeIn(500);
   }
@@ -94,12 +100,7 @@ class GameOverFTUE extends Phaser.Scene {
       var y = (targetHeight - newHeight) / 2;
 
       viewport.setTo(x, y, newWidth, newHeight);
-      this.cameras.main.setViewport(
-        viewport.x,
-        viewport.y,
-        viewport.width,
-        viewport.height
-      );
+      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
       this.cameras.main.setZoom(scale);
       this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
 

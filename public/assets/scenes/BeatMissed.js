@@ -131,6 +131,13 @@ class BeatMissed extends Phaser.Scene {
     console.log("BeatMissed create.js()");
     this.cameras.main.shake(500, 0.0025);
 
+    const scratch_sound = this.sound.add("scratch_sound", { volume: 0.7, loop: false });
+    scratch_sound.play();
+
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
+    this.background_music.play();
+
     this.checkGems();
 
     // this.continue_button.setInteractive()
@@ -246,6 +253,7 @@ class BeatMissed extends Phaser.Scene {
   }
 
   autoQuit() {
+    this.background_music.stop();
     this.scene.stop();
     const levelScene = this.scene.get("Level");
     levelScene.gameOver(); // clean-up Level scene
@@ -277,6 +285,7 @@ class BeatMissed extends Phaser.Scene {
         // Add the click event listener here
         this.continue_btn.on("pointerup", () => {
           this.subtractGems(continueCost);
+          this.background_music.stop();
           this.countDown();
         });
       });
@@ -360,7 +369,7 @@ class BeatMissed extends Phaser.Scene {
       this.countDownText.setText(this.initialTime);
 
       if (this.initialTime === 0) {
-        this.sound.play("Last Countdown Beep_Sfx", { volume: 1, loop: false });
+        this.sound.play("countdown_sfx", { volume: 1, loop: false });
       } else {
         countdown_sfx.play();
       }

@@ -296,10 +296,13 @@ class Preload extends Phaser.Scene {
     this.load.audio(`${this.track.song_name}`, this.track.mp3_url);
 
     this.editorPreload();
+
+    this.sprinkle_chime = this.registry.get("sprinkle_chime");
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
   }
 
   init(data) {
-    // background_music.play()
     console.log(data);
     this.track = data.track;
     this.track.mp3_url = this.track.mp3_file;
@@ -362,6 +365,7 @@ class Preload extends Phaser.Scene {
     });
 
     // Emit particles once when button appears
+    this.sprinkle_chime.play();
     particles.explode(20);
 
     // Fade out and destroy particles after animation
@@ -395,7 +399,8 @@ class Preload extends Phaser.Scene {
       // this.scale.startFullscreen();
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
-        // background_music.stop()
+        this.button_sfx.play();
+        this.background_music.stop();
         this.scene.start(nextScene, { track: this.track, midi: this.midi, isFTUE: isFTUE });
       });
     });

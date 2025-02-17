@@ -103,10 +103,16 @@ class TutorialScene extends Phaser.Scene {
     this.editorCreate();
     this.adjustViewport();
 
+    this.button_sfx = this.registry.get("button_sfx");
+    this.background_music = this.registry.get("background_music");
+    this.background_music.play();
+
     this.start_button.setInteractive();
     this.start_button.on("pointerup", () => {
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
+        this.button_sfx.play();
+        this.background_music.stop();
         this.scene.start("Level", { track: this.track, midi: this.midi, isFTUE: this.isFTUE });
       });
     });
