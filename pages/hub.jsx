@@ -358,10 +358,9 @@ const HubScreen = () => {
         </div>
         <div className="">
           <div
-            className={`kayfo-masonry-main overflow-x-auto overflow-y-hidden flex ${
+            className={`kayfo-masonry-main overflow-x-auto overflow-y-hidden flex flex-nowrap hide-scrollbar gap-2 w-full shrink-0 ${
               songs.length === 1 ? "justify-center" : ""
             }`}
-            style={{ minWidth: "100%" }}
           >
             {songs?.length > 0 ? (
               songs.map((item, index) => (

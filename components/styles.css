@@ -351,6 +351,10 @@ svg {
   transition: opacity 0.3s ease;
 }
 
+.kayfo-masonry-item {
+  position: relative;
+  margin: 0;
+}
 
 .enough-gems-btn {
   background-image: url('/assets/img/hub/Button blank.png');

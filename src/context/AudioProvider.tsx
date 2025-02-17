@@ -65,6 +65,30 @@ export default function AudioProvider({
     }
   }, [pathname]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab is inactive → Pause bgMusic
+        if (howlsRef.current.bgMusic?.playing()) {
+          setWasPlaying(true);
+          howlsRef.current.bgMusic.pause();
+        }
+      } else {
+        // Tab is active again → Resume bgMusic
+        if (wasPlaying) {
+          howlsRef.current.bgMusic?.play();
+          setWasPlaying(false);
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [wasPlaying]);
+
   const playBgMusic = () => {
     howlsRef.current.bgMusic?.play();
   };
