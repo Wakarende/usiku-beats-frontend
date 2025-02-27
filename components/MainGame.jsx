@@ -27,9 +27,19 @@ class Boot extends Phaser.Scene {
 
     const trackData = this.registry.get("trackData");
 
-    // superglobal settings
     this.registry.set("transitionDuration", 500);
-    this.scene.start("Preload", { track: trackData });
+
+    let ftueCompleted = localStorage.getItem("ftueCompleted");
+    let isFTUE = false;
+    if (!ftueCompleted || ftueCompleted != "true") {
+      isFTUE = true;
+    }
+
+    if (isFTUE) {
+      this.scene.start("PreloadJ", { track: trackData });
+    } else {
+      this.scene.start("Preload", { track: trackData });
+    }
   }
 }
 
@@ -65,13 +75,7 @@ const PhaserGame = () => {
   useEffect(() => {
     WebFont.load({
       custom: {
-        families: [
-          "Afolkalips",
-          "Carlito-Bold",
-          "Carlito-BoldItalic",
-          "Carlito-Italic",
-          "Carlito-Regular",
-        ],
+        families: ["Afolkalips", "Carlito-Bold", "Carlito-BoldItalic", "Carlito-Italic", "Carlito-Regular"],
       },
       active: () => {
         if (phaserGameRef.current) {

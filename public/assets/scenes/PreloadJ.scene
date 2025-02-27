@@ -1,0 +1,266 @@
+{
+    "id": "9a7bde81-ac9d-4b8a-b504-38804a616079",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadMethodName": "editorPreload",
+        "preloadPackFiles": [
+            "jnj-2/assets/asset-pack.json"
+        ],
+        "createMethodName": "editorCreate",
+        "sceneKey": "PreloadJ",
+        "borderWidth": 360,
+        "borderHeight": 640
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "763e2f23-e806-4dc3-ab71-c7cfbdc03cd2",
+            "label": "logos_background",
+            "components": [],
+            "texture": {
+                "key": "BG_1"
+            },
+            "x": 180,
+            "y": 320,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "cd0654ae-d604-40ef-a29f-b7aa758996a2",
+            "label": "preloader_bottom_banner",
+            "components": [],
+            "texture": {
+                "key": "preloader_bottom_banner"
+            },
+            "x": 180,
+            "y": 506.0135,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "d7bc2f00-cdc9-4181-9326-df47ea822616",
+            "label": "loading_thumbnail_text",
+            "components": [],
+            "x": 180,
+            "y": 229,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "LOADING COVER...",
+            "fontFamily": "Carlito-Italic",
+            "fontSize": "13px",
+            "fontStyle": "bold",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
+        },
+        {
+            "type": "Image",
+            "id": "fe95d5c1-c3a5-4c21-a206-3e85d335d396",
+            "label": "preloader_Top_banner",
+            "components": [],
+            "texture": {
+                "key": "preloader_Top banner"
+            },
+            "x": 180,
+            "y": 41.6625,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Image",
+            "id": "41dd05a9-ec29-41c1-aaa5-77be17bf7a68",
+            "label": "thumbnail_image",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "carousel_2"
+            },
+            "x": 180,
+            "y": 230,
+            "visible": false
+        },
+        {
+            "type": "Rectangle",
+            "id": "db1d6fab-51ba-49f3-8eaf-64103e2430b9",
+            "label": "rectangle_1",
+            "components": [],
+            "x": 148,
+            "y": 74,
+            "scaleX": 3.5006144584682515,
+            "scaleY": 0.1,
+            "angle": -1,
+            "isFilled": true,
+            "fillColor": "#000",
+            "width": 128,
+            "height": 128
+        },
+        {
+            "type": "Text",
+            "id": "e121c028-0333-4e3c-859c-205527efd15e",
+            "label": "bio_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 483,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Feel the Rhythm, Own the Beat!\nUsiku Beats is the rhythm game that celebrates Africa’s music!\nTap, swipe, and groove to the hottest sounds from across the continent.\nReady to get started?\nFirst Let’s Learn How To Play…\n",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "20px",
+            "maxLines": 10,
+            "wordWrapWidth": 350
+        },
+        {
+            "type": "Text",
+            "id": "4900c50a-fa30-45ea-88e8-d6c5b3401c98",
+            "label": "artist_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 23,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "artist_name",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "14px",
+            "color": "#faf05e",
+            "stroke": "#faf05e"
+        },
+        {
+            "type": "Text",
+            "id": "b7340ea4-20fb-4025-9610-a90c5d3639c5",
+            "label": "song_name",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 46,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "song_name",
+            "fontFamily": "Afolkalips",
+            "fontSize": "30px",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
+        },
+        {
+            "type": "Image",
+            "id": "b833f09e-7a40-44fe-813e-cc5df83f5166",
+            "label": "loading",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "beat_meter_empty"
+            },
+            "x": 115,
+            "y": 594,
+            "originX": 0,
+            "visible": false
+        },
+        {
+            "type": "Text",
+            "id": "922811f5-0399-4d82-8a96-f04be55109bb",
+            "label": "percentage",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 553,
+            "originX": 0.5,
+            "originY": 0.5,
+            "visible": false,
+            "text": "0%",
+            "align": "center",
+            "fontFamily": "DINPro-Medium",
+            "fontSize": "15px"
+        },
+        {
+            "type": "Text",
+            "id": "0876d0a2-87ba-4346-92f2-9066cffa4584",
+            "label": "current_asset",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 602,
+            "originX": 0.5,
+            "originY": 0.5,
+            "visible": false,
+            "text": "null",
+            "align": "center",
+            "fontSize": "13px"
+        },
+        {
+            "type": "Text",
+            "id": "a7f0cee9-a906-4168-977d-905941dd17bc",
+            "label": "loading_txt",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 597,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "LOADING",
+            "fontFamily": "Carlito-BoldItalic",
+            "color": "#ff6a00",
+            "stroke": "#ff6a00"
+        },
+        {
+            "type": "Image",
+            "id": "0aea47d6-f20f-4c47-86e9-e004a402b558",
+            "label": "play_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Button_blank"
+            },
+            "x": 180,
+            "y": 593,
+            "scaleX": 0.4,
+            "scaleY": 0.55,
+            "visible": false
+        },
+        {
+            "type": "Text",
+            "id": "4e2fa6c9-8320-49c8-ba8d-21ca4b013444",
+            "label": "play_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 593,
+            "originX": 0.5,
+            "originY": 0.5,
+            "visible": false,
+            "text": "SHOW ME!",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "22px"
+        },
+        {
+            "type": "Rectangle",
+            "id": "478b2233-e18f-44b7-925f-dac3ac934432",
+            "label": "rectangle",
+            "components": [],
+            "x": 197,
+            "y": 387,
+            "scaleX": 3.5006144584682515,
+            "scaleY": 0.12,
+            "angle": 2,
+            "isFilled": true,
+            "fillColor": "#000",
+            "width": 128,
+            "height": 128
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 3
+    },
+    "lists": [
+        {
+            "id": "a2f7905d-6bc5-4ac8-af52-3ffdaa5ab84c",
+            "label": "stars"
+        }
+    ]
+}

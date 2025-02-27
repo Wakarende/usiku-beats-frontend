@@ -380,15 +380,16 @@ class Preload extends Phaser.Scene {
     this.play_button.on("pointerup", () => {
       let tutorialShown = localStorage.getItem("tutorialShown");
       let nextScene = "Level";
-      if (!tutorialShown) {
-        nextScene = "TutorialScene";
-        localStorage.setItem("tutorialShown", true);
-      }
 
       let ftueCompleted = localStorage.getItem("ftueCompleted");
       let isFTUE = false;
       if (!ftueCompleted || ftueCompleted != "true") {
         isFTUE = true;
+      }
+
+      if (!tutorialShown || isFTUE) {
+        nextScene = "TutorialScene";
+        localStorage.setItem("tutorialShown", true);
       }
 
       if (this.dotsTimer) {

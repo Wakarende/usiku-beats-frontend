@@ -1,81 +1,78 @@
 {
-    "section1": {
-        "files": [
-            {
-                "url": "assets/sprites/preloader/Button_blank.png",
-                "type": "image",
-                "key": "Button_blank"
-            },
-            {
-                "url": "assets/sprites/preloader/button_blank_particle.png",
-                "type": "image",
-                "key": "button_blank_particle"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/button_sfx.mp3"
-                ],
-                "type": "audio",
-                "key": "button_sfx"
-            },
-            {
-                "url": "assets/sprites/preloader/carousel_2.png",
-                "type": "image",
-                "key": "carousel_2"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/music_bed.mp3"
-                ],
-                "type": "audio",
-                "key": "music_bed"
-            },
-            {
-                "url": "assets/scenes/Preload.js",
-                "type": "sceneFile",
-                "key": "Preload"
-            },
-            {
-                "url": "assets/sprites/preloader/preloader_bottom_banner.png",
-                "type": "image",
-                "key": "preloader_bottom_banner"
-            },
-            {
-                "url": "assets/sprites/preloader/preloader_Star_Active.png",
-                "type": "image",
-                "key": "preloader_Star_Active"
-            },
-            {
-                "url": "assets/sprites/preloader/preloader_Star_Inactive.png",
-                "type": "image",
-                "key": "preloader_Star_Inactive"
-            },
-            {
-                "url": "assets/sprites/preloader/preloader_Top banner.png",
-                "type": "image",
-                "key": "preloader_Top banner"
-            },
-            {
-                "url": [
-                    "assets/sounds/SoundScape/sprinkle_chime.mp3"
-                ],
-                "type": "audio",
-                "key": "sprinkle_chime"
-            },
-            {
-                "url": [
-                    "assets/sounds/start_sfx.mp3"
-                ],
-                "type": "audio",
-                "key": "start_sfx"
-            }
-        ]
-    },
-    "meta": {
-        "app": "Phaser Editor 2D - Asset Pack Editor",
-        "contentType": "phasereditor2d.pack.core.AssetContentType",
-        "url": "https://phasereditor2d.com",
-        "version": 2,
-        "showAllFilesInBlocks": false
-    }
+  "section1": {
+    "files": [
+      {
+        "url": "assets/sprites/preloader/Button_blank.png",
+        "type": "image",
+        "key": "Button_blank"
+      },
+      {
+        "url": "assets/sprites/preloader/button_blank_particle.png",
+        "type": "image",
+        "key": "button_blank_particle"
+      },
+      {
+        "url": ["assets/sounds/SoundScape/button_sfx.mp3"],
+        "type": "audio",
+        "key": "button_sfx"
+      },
+      {
+        "url": "assets/sprites/preloader/carousel_2.png",
+        "type": "image",
+        "key": "carousel_2"
+      },
+      {
+        "url": ["assets/sounds/SoundScape/music_bed.mp3"],
+        "type": "audio",
+        "key": "music_bed"
+      },
+      {
+        "url": "assets/scenes/Preload.js",
+        "type": "sceneFile",
+        "key": "Preload"
+      },
+      {
+        "url": "assets/scenes/PreloadJ.js",
+        "type": "sceneFile",
+        "key": "PreloadJ"
+      },
+      {
+        "url": "assets/sprites/preloader/preloader_bottom_banner.png",
+        "type": "image",
+        "key": "preloader_bottom_banner"
+      },
+      {
+        "url": "assets/sprites/preloader/preloader_Star_Active.png",
+        "type": "image",
+        "key": "preloader_Star_Active"
+      },
+      {
+        "url": "assets/sprites/preloader/preloader_Star_Inactive.png",
+        "type": "image",
+        "key": "preloader_Star_Inactive"
+      },
+      {
+        "url": "assets/sprites/preloader/preloader_Top banner.png",
+        "type": "image",
+        "key": "preloader_Top banner"
+      },
+      {
+        "url": ["assets/sounds/SoundScape/sprinkle_chime.mp3"],
+        "type": "audio",
+        "key": "sprinkle_chime"
+      },
+      {
+        "url": ["assets/sounds/start_sfx.mp3"],
+        "type": "audio",
+        "key": "start_sfx"
+      }
+    ]
+  },
+  "meta": {
+    "app": "Phaser Editor 2D - Asset Pack Editor",
+    "contentType": "phasereditor2d.pack.core.AssetContentType",
+    "url": "https://phasereditor2d.com",
+    "version": 2,
+    "showAllFilesInBlocks": false
+  }
 }
