@@ -8,11 +8,24 @@ import "react-toastify/dist/ReactToastify.css";
 import InfoIcon from "@mui/icons-material/Info";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUser } from "../redux/main/authActions";
+import { instance as axios } from "../services/axios.config";
+import { BASE_URL } from "../services/config";
+import { useAudio } from "../src/context/AudioProvider";
+
 import "./pages.css";
 
 export default function TitleScreen() {
   const handleClickSound = useClickSound();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const { user_data } = auth;
+
+  const { playBoom } = useAudio();
+  const [loading, setLoading] = useState(false);
+
   // Password
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
@@ -30,22 +43,86 @@ export default function TitleScreen() {
     }
   }, []);
 
-  const handleStart = () => {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement
-        .requestFullscreen()
-        .then(() => {
-          router.push("/intro");
-        })
-        .catch((err) => {
-          console.error("Error enabling full-screen mode:", err);
-          router.push("/intro");
-        });
-    } else {
-      console.warn("Fullscreen API is not supported");
-      router.push("/intro");
-    }
+  //Intro.jsx Anonymous user setup
+  useEffect(() => {
+    const checkAnon = async () => {
+      if (!user_data) {
+        setLoading(true);
+        try {
+          const anonUserObject = {
+            profile: {
+              id: Math.floor(100000 + Math.random() * 900000).toString(),
+              player: {
+                level: 1,
+                total_discs: 0,
+                total_gems: 30,
+                total_stars: 0,
+                player_song_instances: [],
+                data: null,
+              },
+            },
+          };
+          dispatch(updateUser(anonUserObject));
+        } catch (error) {
+          console.log("Error creating anon user:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    checkAnon();
+  }, [user_data, dispatch]);
+
+  // const handleStart = () => {
+  //   if (document.documentElement.requestFullscreen) {
+  //     document.documentElement
+  //       .requestFullscreen()
+  //       .then(() => {
+  //         router.push("/intro");
+  //       })
+  //       .catch((err) => {
+  //         console.error("Error enabling full-screen mode:", err);
+  //         router.push("/intro");
+  //       });
+  //   } else {
+  //     console.warn("Fullscreen API is not supported");
+  //     router.push("/intro");
+  //   }
+  //   handleClickSound();
+  // };
+
+  // Combined intro and index logic
+  const handleStart = async () => {
     handleClickSound();
+    playBoom();
+
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        console.warn("Fullscreen API is not supported");
+      }
+    } catch (err) {
+      console.error("Error enabling full-screen mode:", err);
+    }
+
+    // Check FTUE
+    const ftueCompleted = localStorage.getItem("ftueCompleted");
+    if (!ftueCompleted || ftueCompleted === "false") {
+      try {
+        const response = await axios.get(`${BASE_URL}song-detail/148/`);
+        const tutorialTrack = response.data;
+        router.push({
+          pathname: "/game",
+          query: { track: JSON.stringify(tutorialTrack) },
+        });
+      } catch (err) {
+        console.log("Error fetching tutorial track", err);
+        router.push("/hub");
+      }
+    } else {
+      router.push("/hub");
+    }
   };
 
   // Animation states
@@ -96,6 +173,11 @@ export default function TitleScreen() {
   return (
     <div>
       <ToastContainer />
+      <div className="flex justify-end px-2 py-1">
+        <p className="text-white leading-wide small:text-[10px] medium:text-sm">
+          Version:0.2
+        </p>
+      </div>
       <div className=" relative flex flex-col justify-between items-center h-[100vh] w-[100%] overflow-hidden">
         {/* Logo Section */}
         <motion.div

@@ -450,7 +450,6 @@ const Library = () => {
 
           <button
             onClick={() => {
-              // In FTUE, go to hub with ftueGameplayCompleted=true
               handlePopupContinue();
             }}
             className=""
@@ -464,37 +463,39 @@ const Library = () => {
           </button>
         </Popup>
       </div>
-      {/* FOOTER */}
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
-        <motion.div
-          className="flex justify-center mt-5"
-          animate={{
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut",
-          }}
-          onClick={() => {
-            handleClickSound();
-            if (isFtue && !hasUnlockedSong) {
-              console.log("FTUE: User must unlock a song first");
-              return;
-            } else {
-              router.push("/hub");
-            }
-          }}
-        >
+        {isFtue && !hasUnlockedSong ? (
           <Image
-            src="/assets/img/levelinfo/Back_Button.png"
-            alt="Back"
-            width={200}
-            height={50}
+            src="/assets/img/ftue/Footer_pattern.png"
+            alt="Footer pattern"
+            width={400}
+            height={100}
             className="object-contain"
           />
-        </motion.div>
+        ) : (
+          <motion.div
+            className="flex justify-center mt-5 mb-2.5"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            }}
+            onClick={() => {
+              handleClickSound();
+              router.push("/hub");
+            }}
+          >
+            <Image
+              src="/assets/img/levelinfo/Back_Button.png"
+              alt="Back"
+              width={190}
+              height={50}
+              className="object-contain"
+            />
+          </motion.div>
+        )}
       </footer>
 
       <OverlayCard
@@ -504,7 +505,6 @@ const Library = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-      {/* FTUE Info Panel */}
     </div>
   );
 };
