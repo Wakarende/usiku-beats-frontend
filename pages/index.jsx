@@ -227,14 +227,26 @@ export default function TitleScreen() {
               },
             }}
           >
-            <Image
+            {/* <Image
               src="/assets/img/start/start%20button.png"
               alt="Start"
               width={400}
               height={400}
               className="w-full transition-opacity h-auto"
               onClick={handleStart}
+            /> */}
+
+            <Image
+              src={"/assets/img/hub/Button blank.png"}
+              alt="button-bg"
+              width={400}
+              height={400}
+              className=" w-full h-auto pointer-events-none "
+              onClick={handleStart}
             />
+            <span className="absolute inset-0 flex items-center justify-center z-10 text-white font-bold text-3xl uppercase tracking-widest">
+              Play
+            </span>
           </motion.div>
         </div>
       </div>
