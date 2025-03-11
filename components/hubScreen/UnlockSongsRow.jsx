@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import useSound from "use-sound";
 import useClickSound from "../../hooks/useClickSound";
+import ParticleEffect from "./ParticleEffect";
 import "../styles.css";
 
 const UnlockSongsRow = ({ user_data, songs, loading }) => {
@@ -15,10 +16,16 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const [popupMessage, setPopupMessage] = useState("");
   const gemsRequiredToUnlockSong = 20; // As previously defined
 
+  // Particle Effect state
+  const [unlockedState, setUnlockedState] = useState({});
+  const [particleTrigger, setParticleTrigger] = useState({});
+
   const dispatch = useDispatch();
   const router = useRouter();
 
   const handleClickSound = useClickSound();
+
+  // CountdownTimer Component
   const CountdownTimer = ({ unlockTime, onExpire }) => {
     const [timeLeft, setTimeLeft] = useState(
       calculateTimeLeft(new Date(unlockTime))
@@ -38,10 +45,88 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       }, 1000);
 
       return () => clearTimeout(timer);
-    }, [timeLeft, unlockTime]);
+    }, [timeLeft, unlockTime, onExpire]);
+
+    // useEffect(() => {
+    //   if (typeof window !== "undefined") {
+    //     try {
+    //       const savedState =
+    //         JSON.parse(localStorage.getItem("unlockedState")) || {};
+
+    //       // Only update state if it's different to prevent unnecessary re-renders
+    //       setUnlockedState((prev) => {
+    //         if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
+    //           return savedState;
+    //         }
+    //         return prev;
+    //       });
+
+    //       setParticleTrigger((prev) => {
+    //         if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
+    //           return savedState;
+    //         }
+    //         return prev;
+    //       });
+    //     } catch (error) {
+    //       console.error("Failed to load unlock state:", error);
+    //       setUnlockedState({});
+    //       setParticleTrigger({});
+    //     }
+    //   }
+    // }, []);
+
+    // useEffect(() => {
+    //   if (typeof window !== "undefined") {
+    //     try {
+    //       const savedState =
+    //         JSON.parse(localStorage.getItem("unlockedState")) || {};
+
+    //       // Only update state if it's different to avoid unnecessary re-renders
+    //       if (Object.keys(savedState).length > 0) {
+    //         setUnlockedState((prev) => {
+    //           if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
+    //             return savedState;
+    //           }
+    //           return prev;
+    //         });
+
+    //         setParticleTrigger((prev) => {
+    //           if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
+    //             return savedState;
+    //           }
+    //           return prev;
+    //         });
+    //       }
+    //     } catch (error) {
+    //       console.error("Failed to load unlock state:", error);
+    //       setUnlockedState({});
+    //       setParticleTrigger({});
+    //     }
+    //   }
+    // }, []);
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        try {
+          const savedState =
+            JSON.parse(localStorage.getItem("unlockedState")) || {};
+
+          // ✅ Restore unlockedState from localStorage
+          setUnlockedState((prev) => {
+            if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
+              return savedState;
+            }
+            return prev;
+          });
+        } catch (error) {
+          console.error("Failed to load unlock state:", error);
+          setUnlockedState({});
+        }
+      }
+    }, []);
 
     return (
-      <p className="small:text-[6px] small:pb-[5px]  medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
+      <p className="small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
         {timeLeft.minutes}:{timeLeft.seconds}m
       </p>
     );
@@ -91,6 +176,15 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     } else {
       console.error("Song not found in song instances", song.id);
     }
+    // Clear the glow and particles when added to library
+    setUnlockedState((prev) => ({
+      ...prev,
+      [song.id]: false,
+    }));
+    setParticleTrigger((prev) => ({
+      ...prev,
+      [song.id]: false,
+    }));
     handleClickSound();
   };
 
@@ -126,21 +220,26 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       (item) => !item.unlocked
     ) || [];
 
-  // We always want to show 3 slots. Fill with locked songs or placeholders.
   const slots = 3;
   const slotsContent = [];
 
   for (let i = 0; i < slots; i++) {
-    const item = lockedSongs[i]; // item will be undefined if there's no locked song for this slot
+    const item = lockedSongs[i];
     if (item) {
-      // Render the song card
+      // Determine which frame image to use
       const frameImage =
         i % 2 === 0
           ? "/assets/img/hub/unlock_frame.png"
           : "/assets/img/hub/unlock_frame_2.png";
 
       slotsContent.push(
-        <div key={i} className="flex flex-col items-center unlock-card-wrapper">
+        // STEP 1: Add pulse-effect class conditionally here
+        <div
+          key={i}
+          className={`flex flex-col items-center unlock-card-wrapper ${
+            unlockedState[item.song.id] ? "pulse-effect" : ""
+          }`}
+        >
           <div
             className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px] xl"
             style={{
@@ -149,7 +248,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           >
             <div className="flex justify-center items-center">
               <div className="absolute small:top-[-6%] medium:top-[-6%] large:top-[-1%]">
-                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 small:text-xl  medium:text-xl large:text-xl xl:text-xl">
+                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 small:text-xl medium:text-xl large:text-xl xl:text-xl">
                   {item.song.song_name}
                 </p>
               </div>
@@ -168,14 +267,29 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 <p className="text-white font-bold ml-2">
                   {isUnlockTimePassed(item.unlock_time) ? (
                     <button onClick={() => addToLibrary(item.song)}>
-                      <p className="tracking-wide unlocked-text text-nowrap small:text-[6px] small:pb-[5px] medium:text-[7px]  medium:pb-[4px]  large:text-[10px] large:pb-[7px] large:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
+                      <p className="tracking-wide unlocked-text text-nowrap small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[10px] large:pb-[7px] large:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
                         Unlocked
                       </p>
                     </button>
                   ) : (
                     <CountdownTimer
                       unlockTime={item.unlock_time}
-                      onExpire={() => setTimerExpired(!timerExpired)}
+                      onExpire={() => {
+                        setUnlockedState((prev) => {
+                          const newState = { ...prev, [item.song.id]: true };
+                          localStorage.setItem(
+                            "unlockedState",
+                            JSON.stringify(newState)
+                          );
+
+                          return newState;
+                        });
+
+                        setParticleTrigger((prev) => ({
+                          ...prev,
+                          [item.song.id]: true, // ✅ Ensure this triggers for each song
+                        }));
+                      }}
                     />
                   )}
                 </p>
@@ -186,10 +300,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             <div className="relative mt-0.5">
               <button
                 className="w-full relative"
-                // disabled={
-                //   user_data?.profile?.player?.total_gems <
-                //   gemsRequiredToUnlockSong
-                // }
                 onClick={() => unlockSongWithGems(item.song)}
               >
                 <Image
@@ -209,7 +319,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px] xl:w-[20px] xl:h-[20px]"
                     />
                     <div className="flex items-center">
-                      <span className="text-yellow  small:text-[8px] medium:text-[10px] large:text-[14px] xl:text-[14px]">
+                      <span className="text-yellow small:text-[8px] medium:text-[10px] large:text-[14px] xl:text-[14px]">
                         {gemsRequiredToUnlockSong}
                       </span>
                     </div>
@@ -244,6 +354,18 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 </button>
               </div>
             </button>
+          )}
+          {/* STEP 2: Render the ParticleEffect if triggered */}
+          {particleTrigger[item.song.id] && (
+            <ParticleEffect
+              active={true}
+              onComplete={() => {
+                setParticleTrigger((prev) => ({
+                  ...prev,
+                  [item.song.id]: false,
+                }));
+              }}
+            />
           )}
         </div>
       );
@@ -282,10 +404,10 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           </p>
           <p className="text-white mb-3 tracking-wider">{popupMessage}</p>
           <button
-            className="text-white mt-2 w-full uppercase text-xl enough-gems-btn bg-no-repeat bg-center bg-contain
-            "
+            className="text-white mt-2 w-full uppercase text-xl enough-gems-btn bg-no-repeat bg-center bg-contain"
             onClick={() => {
-              setIsPopupOpen(false), handleClickSound();
+              setIsPopupOpen(false);
+              handleClickSound();
             }}
           >
             Ok

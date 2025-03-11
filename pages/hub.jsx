@@ -87,7 +87,6 @@ const HubScreen = () => {
       sessionStorage.setItem("sessionActive", "true");
 
       if (updatedLoginCount > 1) {
-        console.log("Second login. Showing popup.");
         setIsDailyPopupOpen(true);
       }
     } else {
@@ -269,45 +268,50 @@ const HubScreen = () => {
     // gotoGameDetail(song);
   };
 
-  const handleSongUnlock = (song) => {
-    if (song.isUnlocked) return;
+  // const handleSongUnlock = (song) => {
+  //   if (song.isUnlocked) return;
 
-    setUnlockedSong(song);
-    setIsUnlockPopupOpen(true);
+  //   setUnlockedSong(song);
+  //   setIsUnlockPopupOpen(true);
 
-    let unlockTime = moment().add(2, "minutes").toISOString();
+  //   const unlockedSongsCount =
+  //     user_data.profile.player.player_song_instances.length;
 
-    const newUserdata = JSON.parse(JSON.stringify(user_data));
-    let newSongInstance = {
-      date_added: new Date().toISOString(),
-      favourited: false,
-      high_score: 0,
-      maximum_progress: 0,
-      no_of_plays: 0,
-      paid_for_flag: false,
-      unlock_time: unlockTime,
-      unlocked: true,
-      song,
-    };
+  //   const additionalTime = Math.floor(unlockedSongsCount / 2) * 5;
 
-    newUserdata.profile.player.player_song_instances.push(newSongInstance);
-    newUserdata.profile.player.total_discs -= 30;
-    dispatch(updateUser(newUserdata));
+  //   let unlockTime = moment().add(5, "seconds").toISOString();
 
-    setUnlockableSongs((prev) => prev.filter((s) => s.id !== song.id));
-    setVisibleUnlockableSongs((prevVisible) => {
-      let updatedVisible = prevVisible.filter((s) => s.id !== song.id);
-      const remainingLockedSongs = unlockableSongs.filter(
-        (s) => s.id !== song.id
-      );
-      if (remainingLockedSongs.length > 0) {
-        updatedVisible.push(remainingLockedSongs[0]);
-      }
-      return updatedVisible;
-    });
+  //   const newUserdata = JSON.parse(JSON.stringify(user_data));
+  //   let newSongInstance = {
+  //     date_added: new Date().toISOString(),
+  //     favourited: false,
+  //     high_score: 0,
+  //     maximum_progress: 0,
+  //     no_of_plays: 0,
+  //     paid_for_flag: false,
+  //     unlock_time: unlockTime,
+  //     unlocked: true,
+  //     song,
+  //   };
 
-    setSongs((prevSongs) => [...prevSongs, song]);
-  };
+  //   newUserdata.profile.player.player_song_instances.push(newSongInstance);
+  //   newUserdata.profile.player.total_discs -= 30;
+  //   dispatch(updateUser(newUserdata));
+
+  //   setUnlockableSongs((prev) => prev.filter((s) => s.id !== song.id));
+  //   setVisibleUnlockableSongs((prevVisible) => {
+  //     let updatedVisible = prevVisible.filter((s) => s.id !== song.id);
+  //     const remainingLockedSongs = unlockableSongs.filter(
+  //       (s) => s.id !== song.id
+  //     );
+  //     if (remainingLockedSongs.length > 0) {
+  //       updatedVisible.push(remainingLockedSongs[0]);
+  //     }
+  //     return updatedVisible;
+  //   });
+
+  //   setSongs((prevSongs) => [...prevSongs, song]);
+  // };
 
   const toggleDailyPopup = () => {
     setIsDailyPopupOpen(!isDailyPopupOpen);
@@ -338,12 +342,15 @@ const HubScreen = () => {
           onClose={closeFtuePanel}
           paragraphs={[
             <>
-              This is the <span className="font-bold">Hubscreen</span>, where
-              you can play the songs you've unlocked and access the library to
-              unlock more.
+              <p className="text-lg">
+                This is the <span className="font-bold">Hubscreen</span>, where
+                you can play the songs you've unlocked and access the library to
+                unlock more.
+              </p>
+              <p className="mt-2 text-lg">
+                Press play now for your first song to get started!
+              </p>
             </>,
-            ,
-            "Press play now on your first song to get started!",
           ]}
         />
       )}
@@ -352,7 +359,7 @@ const HubScreen = () => {
       <div className="px-1 mx-auto max-w-7xl">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
-          <h1 className="your-songs text-center medium:mt-3.5 small:mt-1.5 small:mb-2.5 medium:mb-2 text-5xl uppercase tracking-wider">
+          <h1 className="your-songs text-center medium:mt-3.5 small:mt-1.5 small:mb-4 medium:mb-4 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
         </div>

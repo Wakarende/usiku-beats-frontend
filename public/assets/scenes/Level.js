@@ -689,9 +689,9 @@ class Level extends Phaser.Scene {
 
   initializeVisualizer() {
     const visualizerWidth = this.screenWidth;
-    const visualizerHeight = 40;
+    const visualizerHeight = 180;
 
-    const maxPixelRatio = 2;
+    const maxPixelRatio = 4;
     const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
 
     const canvasWidth = visualizerWidth * pixelRatio;
@@ -710,16 +710,16 @@ class Level extends Phaser.Scene {
       connectSpeakers: false,
       mode: 2,
       radial: false,
-      fftSize: 1024,
+      fftSize: 2048,
       smoothing: 0.2,
       showPeaks: false,
       showScaleX: false,
       showScaleY: false,
       showFPS: false,
-      minDecibels: -60,
-      maxDecibels: -25,
+      minDecibels: -75,
+      maxDecibels: -35,
       fillAlpha: 0.1,
-      lineWidth: 1.5,
+      lineWidth: 5,
       barSpace: 0.5,
       bgAlpha: 0,
       loRes: false,
@@ -734,8 +734,9 @@ class Level extends Phaser.Scene {
     //Custom visualizer color
     this.audioMotion.registerGradient("custom", {
       colorStops: [
-        { pos: 0, color: "#4fa3af", level: 0.5 },
-        { pos: 1, color: "#f2d469", level: 1 },
+        { pos: 0, color: "#f2d469", level: 0.3 },
+
+        { pos: 1, color: "#4fa3af", level: 1.5 },
       ],
     });
 
@@ -754,7 +755,7 @@ class Level extends Phaser.Scene {
       50,
       "visualizerTexture"
     );
-    this.visualizerImage.setOrigin(0.5, 0);
+    this.visualizerImage.setOrigin(0.5, 0.4);
 
     this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
 
@@ -858,7 +859,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }

@@ -55,7 +55,7 @@ export default function TitleScreen() {
               player: {
                 level: 1,
                 total_discs: 0,
-                total_gems: 30,
+                total_gems: 100,
                 total_stars: 0,
                 player_song_instances: [],
                 data: null,

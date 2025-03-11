@@ -126,7 +126,14 @@ const Library = () => {
     let unlockedFlag = true;
 
     if (!isFtue) {
-      unlockTime = moment().add(2, "minutes").toISOString();
+      const unlockedSongsCount =
+        user_data.profile.player.player_song_instances.length;
+
+      const additionalTime = unlockedSongsCount * 5;
+      unlockTime = moment()
+        .add(5, "seconds")
+        .add(additionalTime, "seconds")
+        .toISOString();
       unlockedFlag = false;
     }
 
@@ -239,26 +246,29 @@ const Library = () => {
           onClose={() => setShowFtuePanel(false)}
           paragraphs={[
             <>
-              This is the <span className="font-bold">Library</span> where you
-              can browse and unlock songs for your collection
+              <p className="text-lg">
+                This is the <span className="font-bold">Library</span> where you
+                can browse and unlock songs for your collection
+              </p>
+              <p className="mt-2 text-lg">Choose your first song now</p>
             </>,
-            "Choose your first song now!",
+            ,
           ]}
         />
       )}
       <div className="kayfo-body-content">
-        <div className="flex justify-center items-center mt-3 ">
+        <div className="flex justify-center items-center mt-4 ">
           <h1 className="uppercase lib-header text-7xl">Full Song Library</h1>
         </div>
-        <div className=" flex mt-4 justify-center items-center">
+        <div className=" flex mt-1 justify-center items-center">
           <div className="flex justify-center flex-col items-center ">
             <p className="text-library uppercase font-bold text-lg">
               You have {totalDiscs} discs!
             </p>
-            <p className="text-white mt-2">Each song costs 30 discs</p>
+            <p className="text-white mt-1">Each song costs 30 discs</p>
             <p className="text-white">Find your next song now!</p>
           </div>
-          <div className="mt-2">
+          <div className="mt-0">
             <Image
               src={"/assets/img/hub/Disc.png"}
               width={120}
@@ -267,17 +277,17 @@ const Library = () => {
             />
           </div>
         </div>
-        <div className="gradient-container item-stretch w-full">
+        <div className="gradient-container item-stretch w-full p-0">
           <Image
             src={"/assets/img/library/Gradient-copy.png"}
             alt="gradient-separator"
             width={150}
-            height={20}
-            className="gradient-image w-full"
+            height={10}
+            className="gradient-image w-full h-[40px]"
           />
         </div>
         {/* Songs List */}
-        <div className="flex flex-wrap justify-center items-stretch gap-8">
+        <div className="flex flex-wrap justify-center items-stretch ">
           {songs.map((song, index) => {
             const instance =
               user_data?.profile?.player?.player_song_instances.find(
@@ -345,7 +355,7 @@ const Library = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full">
+                <div className="w-full p-0">
                   <Image
                     src={"/assets/img/library/Divider.png"}
                     width={400}
@@ -399,7 +409,7 @@ const Library = () => {
             <>
               <div className="flex justify-center w-[80%]">
                 <p className="text-yellow text-center mb-2 text-lg">
-                  This song will unlock in
+                  This song will unlock after the timer
                   <Image
                     src="/assets/img/library/Timer_icon.png"
                     alt="timer-icon"
@@ -407,8 +417,7 @@ const Library = () => {
                     height={18}
                     className="inline-block mx-2 align-middle"
                   />
-                  <span className="text-white text-lg font-bold">2:00m</span> or
-                  use your gems to unlock it now
+                  runs out or use your gems to unlock it now
                 </p>
               </div>
               <button
