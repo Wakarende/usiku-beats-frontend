@@ -53,81 +53,23 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     //       const savedState =
     //         JSON.parse(localStorage.getItem("unlockedState")) || {};
 
-    //       // Only update state if it's different to prevent unnecessary re-renders
+    //       // ✅ Restore unlockedState from localStorage
     //       setUnlockedState((prev) => {
     //         if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
     //           return savedState;
     //         }
     //         return prev;
     //       });
-
-    //       setParticleTrigger((prev) => {
-    //         if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
-    //           return savedState;
-    //         }
-    //         return prev;
-    //       });
     //     } catch (error) {
     //       console.error("Failed to load unlock state:", error);
     //       setUnlockedState({});
-    //       setParticleTrigger({});
     //     }
     //   }
     // }, []);
-
-    // useEffect(() => {
-    //   if (typeof window !== "undefined") {
-    //     try {
-    //       const savedState =
-    //         JSON.parse(localStorage.getItem("unlockedState")) || {};
-
-    //       // Only update state if it's different to avoid unnecessary re-renders
-    //       if (Object.keys(savedState).length > 0) {
-    //         setUnlockedState((prev) => {
-    //           if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
-    //             return savedState;
-    //           }
-    //           return prev;
-    //         });
-
-    //         setParticleTrigger((prev) => {
-    //           if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
-    //             return savedState;
-    //           }
-    //           return prev;
-    //         });
-    //       }
-    //     } catch (error) {
-    //       console.error("Failed to load unlock state:", error);
-    //       setUnlockedState({});
-    //       setParticleTrigger({});
-    //     }
-    //   }
-    // }, []);
-
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        try {
-          const savedState =
-            JSON.parse(localStorage.getItem("unlockedState")) || {};
-
-          // ✅ Restore unlockedState from localStorage
-          setUnlockedState((prev) => {
-            if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
-              return savedState;
-            }
-            return prev;
-          });
-        } catch (error) {
-          console.error("Failed to load unlock state:", error);
-          setUnlockedState({});
-        }
-      }
-    }, []);
 
     return (
       <p className="small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
-        {timeLeft.minutes}:{timeLeft.seconds}m
+        {timeLeft.minutes}:{timeLeft.seconds} m
       </p>
     );
   };
@@ -236,9 +178,10 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         // STEP 1: Add pulse-effect class conditionally here
         <div
           key={i}
-          className={`flex flex-col items-center unlock-card-wrapper ${
-            unlockedState[item.song.id] ? "pulse-effect" : ""
-          }`}
+          // className={`flex flex-col items-center unlock-card-wrapper ${
+          //   unlockedState[item.song.id] ? "pulse-effect" : ""
+          // }`}
+          className={`flex flex-col items-center unlock-card-wrapper`}
         >
           <div
             className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px] xl"
@@ -356,7 +299,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             </button>
           )}
           {/* STEP 2: Render the ParticleEffect if triggered */}
-          {particleTrigger[item.song.id] && (
+          {/* {particleTrigger[item.song.id] && (
             <ParticleEffect
               active={true}
               onComplete={() => {
@@ -366,7 +309,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 }));
               }}
             />
-          )}
+          )} */}
         </div>
       );
     } else {
@@ -388,7 +331,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center small:text-xl medium:text-4xl large:text-6xl large:mb-3x xl:text-6xl xl:mb-3x">
+      <h1 className="text-[#6e6d6d] text-center small:text-xl medium:text-4xl  large:text-6xl large:mb-3 xl:text-6xl xl:mb-3">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>

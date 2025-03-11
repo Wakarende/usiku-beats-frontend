@@ -708,24 +708,26 @@ class Level extends Phaser.Scene {
       canvas: offscreenCanvas,
       audioCtx: this.sound.context,
       connectSpeakers: false,
-      mode: 2,
+      mode: 1,
       radial: false,
       fftSize: 2048,
-      smoothing: 0.2,
+      smoothing: 0.8,
       showPeaks: false,
       showScaleX: false,
       showScaleY: false,
       showFPS: false,
-      minDecibels: -75,
-      maxDecibels: -35,
-      fillAlpha: 0.1,
-      lineWidth: 5,
+      minDecibels: -85,
+      maxDecibels: -25,
+      frequencyScale: "log",
+      // fillAlpha: 0.1,
+      // lineWidth: 2,
+      // weightingFilter: "C",
       barSpace: 0.5,
       bgAlpha: 0,
       loRes: false,
       width: visualizerWidth,
       height: visualizerHeight,
-      pixelRatio: 1,
+      pixelRatio: 4,
       responsive: false,
       overlay: true,
       channelLayout: "single",
@@ -755,7 +757,7 @@ class Level extends Phaser.Scene {
       50,
       "visualizerTexture"
     );
-    this.visualizerImage.setOrigin(0.5, 0.4);
+    this.visualizerImage.setOrigin(0.5, 0.5);
 
     this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
 
@@ -859,7 +861,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          // this.checkOverlap(tile);
+          this.checkOverlap(tile);
         }
       });
     }
