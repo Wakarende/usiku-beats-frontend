@@ -547,15 +547,15 @@ class Preload extends Phaser.Scene {
 
     if (score <= 0) {
       starsCount = 0;
-    } else if (score < 5000) {
+    } else if (score < 10000) {
       starsCount = 1;
-    } else if (score >= 5000 && score < 10000) {
+    } else if (score >= 10000 && score < 20000) {
       starsCount = 2;
-    } else if (score >= 10000 && score < 15000) {
+    } else if (score >= 20000 && score < 30000) {
       starsCount = 3;
-    } else if (score >= 15000 && score < 20000) {
+    } else if (score >= 30000 && score < 40000) {
       starsCount = 4;
-    } else if (score >= 20000) {
+    } else if (score >= 40000) {
       starsCount = 5;
     } else {
       starsCount = 0; // Handle unexpected cases

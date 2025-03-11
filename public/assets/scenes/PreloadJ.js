@@ -38,16 +38,16 @@ class PreloadJ extends Phaser.Scene {
 		loading_thumbnail_text.setStyle({ "color": "#ff6a00", "fontFamily": "Carlito-Italic", "fontSize": "13px", "fontStyle": "bold", "stroke": "#ff6a00" });
 
 		// preloader_Top_banner
-		const preloader_Top_banner = this.add.image(180, 41.6625, "preloader_Top banner");
+		const preloader_Top_banner = this.add.image(180, 40.6625, "preloader_Top banner");
 		preloader_Top_banner.scaleX = 0.3333;
 		preloader_Top_banner.scaleY = 0.3333;
 
 		// thumbnail_image
-		const thumbnail_image = this.add.image(180, 230, "carousel_2");
+		const thumbnail_image = this.add.image(180, 227, "carousel_2");
 		thumbnail_image.visible = false;
 
 		// rectangle_1
-		const rectangle_1 = this.add.rectangle(148, 74, 128, 128);
+		const rectangle_1 = this.add.rectangle(148, 73, 128, 128);
 		rectangle_1.scaleX = 3.5006144584682515;
 		rectangle_1.scaleY = 0.1;
 		rectangle_1.angle = -1;
@@ -55,67 +55,69 @@ class PreloadJ extends Phaser.Scene {
 		rectangle_1.fillColor = 0;
 
 		// bio_text
-		const bio_text = this.add.text(180, 483, "", {});
+		const bio_text = this.add.text(180, 470, "", {});
 		bio_text.setOrigin(0.5, 0.5);
 		bio_text.text = "Feel the Rhythm, Own the Beat!\nUsiku Beats is the rhythm game that celebrates Africa’s music!\nTap, swipe, and groove to the hottest sounds from across the continent.\nReady to get started?\nFirst Let’s Learn How To Play…\n";
 		bio_text.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "20px", "maxLines":10});
+		bio_text.setLineSpacing(6);
 		bio_text.setWordWrapWidth(350);
 
 		// artist_name
-		const artist_name = this.add.text(180, 23, "", {});
+		const artist_name = this.add.text(180, 22, "", {});
 		artist_name.setOrigin(0.5, 0.5);
 		artist_name.text = "artist_name";
 		artist_name.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "14px", "stroke": "#faf05e" });
 
 		// song_name
-		const song_name = this.add.text(180, 46, "", {});
+		const song_name = this.add.text(180, 45, "", {});
 		song_name.setOrigin(0.5, 0.5);
 		song_name.text = "song_name";
 		song_name.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#ff6a00" });
 
 		// loading
-		const loading = this.add.image(115, 594, "beat_meter_empty");
+		const loading = this.add.image(115, 593, "beat_meter_empty");
 		loading.setOrigin(0, 0.5);
 		loading.visible = false;
 
 		// percentage
-		const percentage = this.add.text(180, 553, "", {});
+		const percentage = this.add.text(180, 552, "", {});
 		percentage.setOrigin(0.5, 0.5);
 		percentage.visible = false;
 		percentage.text = "0%";
 		percentage.setStyle({ "align": "center", "fontFamily": "DINPro-Medium", "fontSize": "15px" });
 
 		// current_asset
-		const current_asset = this.add.text(180, 602, "", {});
+		const current_asset = this.add.text(180, 601, "", {});
 		current_asset.setOrigin(0.5, 0.5);
 		current_asset.visible = false;
 		current_asset.text = "null";
 		current_asset.setStyle({ "align": "center", "fontSize": "13px" });
 
 		// loading_txt
-		const loading_txt = this.add.text(180, 597, "", {});
+		const loading_txt = this.add.text(180, 596, "", {});
 		loading_txt.setOrigin(0.5, 0.5);
 		loading_txt.text = "LOADING";
 		loading_txt.setStyle({ "color": "#ff6a00", "fontFamily": "Carlito-BoldItalic", "stroke": "#ff6a00" });
 
 		// play_button
-		const play_button = this.add.image(180, 593, "Button_blank");
+		const play_button = this.add.image(180, 592, "Button_blank");
 		play_button.scaleX = 0.4;
 		play_button.scaleY = 0.55;
 		play_button.visible = false;
 
 		// play_text
-		const play_text = this.add.text(180, 593, "", {});
+		const play_text = this.add.text(180, 592, "", {});
 		play_text.setOrigin(0.5, 0.5);
 		play_text.visible = false;
 		play_text.text = "SHOW ME!";
 		play_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "22px" });
 
 		// rectangle
-		const rectangle = this.add.rectangle(197, 387, 128, 128);
+		const rectangle = this.add.rectangle(197, 386, 128, 128);
 		rectangle.scaleX = 3.5006144584682515;
 		rectangle.scaleY = 0.12;
 		rectangle.angle = 2;
+		rectangle.visible = false;
 		rectangle.isFilled = true;
 		rectangle.fillColor = 0;
 
@@ -328,9 +330,9 @@ class PreloadJ extends Phaser.Scene {
 
   adjustThumbnailImage() {
     if (this.thumbnail_image) {
-      // Define the desired dimensions
-      const desiredWidth = 360;
-      const desiredHeight = 310;
+      // Define the desired dimensions - REDUCED SIZE
+      const desiredWidth = 280; // Reduced from 360
+      const desiredHeight = 240; // Reduced from 310
 
       // Get the original image dimensions
       const originalWidth = this.thumbnail_image.width;

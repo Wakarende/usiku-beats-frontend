@@ -58,6 +58,9 @@ class BeatMissedHeld extends Phaser.Scene {
   /* START-USER-CODE */
 
   // Write your code here
+  init(data) {
+    this.track = data.track;
+  }
 
   create() {
     this.editorCreate();
@@ -76,7 +79,9 @@ class BeatMissedHeld extends Phaser.Scene {
       this.scene.stop();
       this.button_sfx.play();
       this.background_music.stop();
-      this.scene.resume("Level");
+
+      this.scene.stop("BeatMissedHeld");
+      this.scene.start("Level", { track: this.track, midi: this.track.midi, isFTUE: true });
     });
   }
 

@@ -486,14 +486,7 @@ class Level extends Phaser.Scene {
       });
     });
 
-    this.totalTiles = this.soundMarkers.length;
-    this.streakThreshold = 10;
-    this.baseScore =
-      this.maxSongScore /
-      ((this.streakThreshold * (this.streakThreshold + 1)) / 2 +
-        (this.totalTiles - this.streakThreshold) * 5);
-    this.currentMultiplier = 1;
-    this.progress = 0;
+    this.initScoring();
 
     this.countDown();
 
@@ -597,6 +590,47 @@ class Level extends Phaser.Scene {
     // this.pattern.setDepth(2);
 
     this.scene.get("BeatMissed").continueCount = 0;
+  }
+
+  initScoring() {
+    this.totalTiles = this.soundMarkers.length;
+    this.streakThreshold = 10;
+
+    this.totalTiles = this.soundMarkers.length;
+
+    // NEW SCORING CALCULATION
+    // Calculate how many tiles will be hit at each multiplier level
+    let tiles1X = Math.min(this.streakThreshold, this.totalTiles);
+    let tiles2X =
+      this.totalTiles > this.streakThreshold
+        ? Math.min(this.streakThreshold, this.totalTiles - this.streakThreshold)
+        : 0;
+    let tiles3X =
+      this.totalTiles > 2 * this.streakThreshold
+        ? Math.min(
+            this.streakThreshold,
+            this.totalTiles - 2 * this.streakThreshold
+          )
+        : 0;
+    let tiles4X =
+      this.totalTiles > 3 * this.streakThreshold
+        ? Math.min(
+            this.streakThreshold,
+            this.totalTiles - 3 * this.streakThreshold
+          )
+        : 0;
+    let tiles5X =
+      this.totalTiles > 4 * this.streakThreshold
+        ? this.totalTiles - 4 * this.streakThreshold
+        : 0;
+
+    // Calculate total points worth if all tiles are hit perfectly
+    let totalPointsWorth =
+      tiles1X * 1 + tiles2X * 2 + tiles3X * 3 + tiles4X * 4 + tiles5X * 5;
+
+    this.baseScore = this.maxSongScore / totalPointsWorth;
+    this.currentMultiplier = 1;
+    this.progress = 0;
   }
 
   adjustViewport() {
@@ -861,7 +895,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }
@@ -1264,47 +1298,48 @@ class Level extends Phaser.Scene {
     // Hide the original overlay tile
     tile.overlayTile.setVisible(false);
 
-    if (swipe.up && swipe.right) {
-      // Up-right diagonal swipe
-      arrowSprite.angle -= 45;
-      this.tweens.add({
-        targets: arrowSprite,
-        x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
-        y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.up && swipe.left) {
-      // Up-left diagonal swipe
-      arrowSprite.angle -= 135;
-      this.tweens.add({
-        targets: arrowSprite,
-        x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
-        y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.down && swipe.right) {
-      // Down-right diagonal swipe
-      arrowSprite.angle += 45;
-      this.tweens.add({
-        targets: arrowSprite,
-        x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
-        y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.down && swipe.left) {
-      // Down-left diagonal swipe
-      arrowSprite.angle += 135;
-      this.tweens.add({
-        targets: arrowSprite,
-        x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
-        y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.up) {
+    // if (swipe.up && swipe.right) {
+    //   // Up-right diagonal swipe
+    //   arrowSprite.angle -= 45;
+    //   this.tweens.add({
+    //     targets: arrowSprite,
+    //     x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
+    //     y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+    //     alpha: 0,
+    //     ...tweenConfig,
+    //   });
+    // } else if (swipe.up && swipe.left) {
+    //   // Up-left diagonal swipe
+    //   arrowSprite.angle -= 135;
+    //   this.tweens.add({
+    //     targets: arrowSprite,
+    //     x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
+    //     y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+    //     alpha: 0,
+    //     ...tweenConfig,
+    //   });
+    // } else if (swipe.down && swipe.right) {
+    //   // Down-right diagonal swipe
+    //   arrowSprite.angle += 45;
+    //   this.tweens.add({
+    //     targets: arrowSprite,
+    //     x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
+    //     y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+    //     alpha: 0,
+    //     ...tweenConfig,
+    //   });
+    // } else if (swipe.down && swipe.left) {
+    //   // Down-left diagonal swipe
+    //   arrowSprite.angle += 135;
+    //   this.tweens.add({
+    //     targets: arrowSprite,
+    //     x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
+    //     y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+    //     alpha: 0,
+    //     ...tweenConfig,
+    //   });
+    // } else
+    if (swipe.up) {
       arrowSprite.angle -= 90;
       this.tweens.add({
         targets: arrowSprite,
@@ -1409,18 +1444,7 @@ class Level extends Phaser.Scene {
     // this.scene.launch("BeatMissed", { failedTileType: tileType });
 
     if (this.isFTUE) {
-      if (tileType == "tap") {
-        this.scene.bringToTop("BeatMissedTap");
-        this.scene.launch("BeatMissedTap");
-      }
-      if (tileType == "swipe") {
-        this.scene.bringToTop("BeatMissedSwipe");
-        this.scene.launch("BeatMissedSwipe");
-      }
-      if (tileType == "held") {
-        this.scene.bringToTop("BeatMissedHeld");
-        this.scene.launch("BeatMissedHeld");
-      }
+      this.ftueFail(tileType);
     } else {
       this.scene.bringToTop("BeatMissed");
       this.scene.launch("BeatMissed");
@@ -1431,7 +1455,8 @@ class Level extends Phaser.Scene {
     let accuracy = Math.abs(tile.lerp - 1);
 
     if (held) {
-      accuracy -= 0.04;
+      // accuracy -= 0.04;
+      accuracy -= 0.02 + 0.02 * Math.log10(1 + tile.duration);
     }
 
     // if (navigator.vibrate) {
@@ -1441,9 +1466,10 @@ class Level extends Phaser.Scene {
     this.tileClicked = true;
     let perfect_plus = false;
     let tile_score = 0;
+    console.log(accuracy);
 
     switch (true) {
-      case accuracy < 0.02:
+      case accuracy < 0.1:
         perfect_plus = true;
         tile_score = this.baseScore * this.currentMultiplier;
         this.score += tile_score;
@@ -1451,15 +1477,15 @@ class Level extends Phaser.Scene {
         this.feebackText("perfect+");
         this.highlightPath(tile.x, "green");
         break;
-      case accuracy < 0.06:
-      case accuracy >= 0.1 && accuracy <= 0.17:
+      case accuracy < 0.15:
+      case accuracy >= 0.15 && accuracy <= 0.2:
         tile_score = this.baseScore * this.currentMultiplier;
         this.score += tile_score * 0.7;
         this.progress += 1;
         this.feebackText("perfect");
         this.highlightPath(tile.x, "green");
         break;
-      case accuracy < 0.1:
+      case accuracy < 0.38:
         this.resetStreak();
         tile_score = this.baseScore * this.currentMultiplier;
         this.score += tile_score * 0.4;
@@ -1641,6 +1667,32 @@ class Level extends Phaser.Scene {
     this.cleanUp();
     this.scene.stop("Level");
     this.scene.start("GameOverScene", { track: this.track });
+  }
+
+  ftueFail(tileType) {
+    this.music.stop();
+    this.matchedMarkerTracker = [];
+    clearInterval(this.globalInterval);
+
+    this.track.current_score = this.score;
+    this.track.midi = this.midi;
+
+    let scores = JSON.parse(localStorage.getItem("scores") || "{}");
+    scores[this.track.song_name] = this.score;
+    localStorage.setItem("scores", JSON.stringify(scores));
+
+    this.cleanUp();
+    this.scene.stop("Level");
+
+    if (tileType == "tap") {
+      this.scene.start("BeatMissedTap", { track: this.track });
+    }
+    if (tileType == "swipe") {
+      this.scene.start("BeatMissedSwipe", { track: this.track });
+    }
+    if (tileType == "held") {
+      this.scene.start("BeatMissedHeld", { track: this.track });
+    }
   }
 
   ftueGameOver() {
