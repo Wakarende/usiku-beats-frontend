@@ -537,18 +537,13 @@ class Level extends Phaser.Scene {
       .setDepth(10);
 
     this.multiplier_emitter = this.add
-      .particles(
-        this.multiplier_text.x,
-        this.multiplier_text.y,
-        "Play_active",
-        {
-          lifespan: 750,
-          speed: { min: 50, max: 100 },
-          scale: { start: 0.5, end: 0 },
-          blendMode: "ADD",
-          emitting: false,
-        }
-      )
+      .particles(this.multiplier_text.x, this.multiplier_text.y, "Play_active", {
+        lifespan: 750,
+        speed: { min: 50, max: 100 },
+        scale: { start: 0.5, end: 0 },
+        blendMode: "ADD",
+        emitting: false,
+      })
       .setDepth(10);
 
     this.tileEmitter = this.add
@@ -585,7 +580,7 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    this.initializeVisualizer();
+    // this.initializeVisualizer();
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
@@ -607,26 +602,17 @@ class Level extends Phaser.Scene {
         : 0;
     let tiles3X =
       this.totalTiles > 2 * this.streakThreshold
-        ? Math.min(
-            this.streakThreshold,
-            this.totalTiles - 2 * this.streakThreshold
-          )
+        ? Math.min(this.streakThreshold, this.totalTiles - 2 * this.streakThreshold)
         : 0;
     let tiles4X =
       this.totalTiles > 3 * this.streakThreshold
-        ? Math.min(
-            this.streakThreshold,
-            this.totalTiles - 3 * this.streakThreshold
-          )
+        ? Math.min(this.streakThreshold, this.totalTiles - 3 * this.streakThreshold)
         : 0;
     let tiles5X =
-      this.totalTiles > 4 * this.streakThreshold
-        ? this.totalTiles - 4 * this.streakThreshold
-        : 0;
+      this.totalTiles > 4 * this.streakThreshold ? this.totalTiles - 4 * this.streakThreshold : 0;
 
     // Calculate total points worth if all tiles are hit perfectly
-    let totalPointsWorth =
-      tiles1X * 1 + tiles2X * 2 + tiles3X * 3 + tiles4X * 4 + tiles5X * 5;
+    let totalPointsWorth = tiles1X * 1 + tiles2X * 2 + tiles3X * 3 + tiles4X * 4 + tiles5X * 5;
 
     this.baseScore = this.maxSongScore / totalPointsWorth;
     this.currentMultiplier = 1;
@@ -654,12 +640,7 @@ class Level extends Phaser.Scene {
       var y = (targetHeight - newHeight) / 2;
 
       viewport.setTo(x, y, newWidth, newHeight);
-      this.cameras.main.setViewport(
-        viewport.x,
-        viewport.y,
-        viewport.width,
-        viewport.height
-      );
+      this.cameras.main.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
       this.cameras.main.setZoom(scale);
       this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
 
@@ -786,11 +767,7 @@ class Level extends Phaser.Scene {
       visualizerHeight
     );
 
-    this.visualizerImage = this.add.image(
-      this.screenCenterX,
-      50,
-      "visualizerTexture"
-    );
+    this.visualizerImage = this.add.image(this.screenCenterX, 50, "visualizerTexture");
     this.visualizerImage.setOrigin(0.5, 0.5);
 
     this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
@@ -838,38 +815,27 @@ class Level extends Phaser.Scene {
 
     const lowFpsThreshold = 50;
 
-    if (this.fps < lowFpsThreshold && this.audioMotion && !this.lowFpsMode) {
-      this.lowFpsMode = true;
-      console.log("Disabling visualizer due to low FPS");
-      this.audioMotion.disconnectInput();
-      this.visualizerImage.setVisible(false);
-    } else if (
-      this.fps >= lowFpsThreshold &&
-      this.audioMotion &&
-      this.lowFpsMode
-    ) {
-      this.lowFpsMode = false;
-      console.log("Re-enabling visualizer as FPS improved");
-      this.audioMotion.connectInput(this.sound.context);
-      this.visualizerImage.setVisible(true);
-    }
+    // if (this.fps < lowFpsThreshold && this.audioMotion && !this.lowFpsMode) {
+    //   this.lowFpsMode = true;
+    //   console.log("Disabling visualizer due to low FPS");
+    //   this.audioMotion.disconnectInput();
+    //   this.visualizerImage.setVisible(false);
+    // } else if (this.fps >= lowFpsThreshold && this.audioMotion && this.lowFpsMode) {
+    //   this.lowFpsMode = false;
+    //   console.log("Re-enabling visualizer as FPS improved");
+    //   this.audioMotion.connectInput(this.sound.context);
+    //   this.visualizerImage.setVisible(true);
+    // }
 
     if (Math.abs(this.scoreDisplay - this.score) > 1) {
-      this.scoreDisplay = Phaser.Math.Linear(
-        this.scoreDisplay,
-        this.score,
-        0.1
-      );
+      this.scoreDisplay = Phaser.Math.Linear(this.scoreDisplay, this.score, 0.1);
       this.score_text.setText(`${Math.trunc(this.scoreDisplay)}`);
     }
 
     let seek = this.music?.seek;
 
     if (seek >= 0) {
-      if (
-        this.soundMarkers.length > 0 &&
-        seek + this.tileDuration >= this.soundMarkers[0].start
-      ) {
+      if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
         var marker = this.soundMarkers.shift();
         this.creatOneDrum(marker);
       }
@@ -877,15 +843,10 @@ class Level extends Phaser.Scene {
       this.tileGroup.getChildren().forEach((tile) => {
         if (tile.swiped || tile.held) return;
 
-        tile.lerp = Math.max(
-          0,
-          (seek - tile.start + this.tileDuration) / this.tileDuration
-        );
+        tile.lerp = Math.max(0, (seek - tile.start + this.tileDuration) / this.tileDuration);
 
         // Update both base and overlay positions
-        tile.setY(
-          Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp)
-        );
+        tile.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, tile.lerp));
         tile.setAlpha(tile.lerp);
 
         if (tile.overlayTile) {
@@ -914,13 +875,7 @@ class Level extends Phaser.Scene {
 
     // Create base aesthetic tile with random texture
     let tile = this.tileGroup
-      .create(
-        0,
-        0,
-        this.baseTileTextures[
-          Math.floor(Math.random() * this.baseTileTextures.length)
-        ]
-      )
+      .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .setAlpha(0.2)
@@ -1075,16 +1030,12 @@ class Level extends Phaser.Scene {
 
     let normalizationFactor = slope * tileDuration + intercept;
 
-    let heldTileScaleFactor =
-      1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
+    let heldTileScaleFactor = 1 + Math.log1p(duration) / Math.log1p(normalizationFactor);
     return heldTileScaleFactor;
   }
 
   handleHeldTile(tile, duration) {
-    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(
-      duration,
-      this.tileDuration
-    );
+    let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
     // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
@@ -1262,8 +1213,7 @@ class Level extends Phaser.Scene {
     const sceneData = {
       track: this.track,
       score: this.score,
-      currentDiscs: JSON.parse(localStorage.getItem("user_data")).profile.player
-        .total_discs,
+      currentDiscs: JSON.parse(localStorage.getItem("user_data")).profile.player.total_discs,
       earnedDiscs: 45,
       isFTUE: this.isFTUE,
     };
@@ -1456,7 +1406,7 @@ class Level extends Phaser.Scene {
 
     if (held) {
       // accuracy -= 0.04;
-      accuracy -= 0.02 + 0.02 * Math.log10(1 + tile.duration);
+      accuracy -= 0.02 + 0.02 * Math.log10(1 + tile.duration || 0);
     }
 
     // if (navigator.vibrate) {
@@ -1466,7 +1416,7 @@ class Level extends Phaser.Scene {
     this.tileClicked = true;
     let perfect_plus = false;
     let tile_score = 0;
-    console.log(accuracy);
+    // console.log(accuracy);
 
     switch (true) {
       case accuracy < 0.1:
@@ -1508,9 +1458,7 @@ class Level extends Phaser.Scene {
     }
 
     if (this.progress >= this.streakThreshold) {
-      this.streak_text.setText(
-        `${this.streakThreshold * this.currentMultiplier} STREAK`
-      );
+      this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
       this.streakDisplay();
       this.progress = 0;
       this.currentMultiplier += 1;
