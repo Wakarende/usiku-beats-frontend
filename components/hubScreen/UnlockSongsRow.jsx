@@ -5,108 +5,91 @@ import { updateUser } from "../../redux/main/authActions";
 import Popup from "../library/Popup";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import useSound from "use-sound";
 import useClickSound from "../../hooks/useClickSound";
 import ParticleEffect from "./ParticleEffect";
 import "../styles.css";
 
 const UnlockSongsRow = ({ user_data, songs, loading }) => {
-  const [timerExpired, setTimerExpired] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
-  const gemsRequiredToUnlockSong = 20; // As previously defined
+  const gemsRequiredToUnlockSong = 20;
 
-  // Particle Effect state
+  // Use local state for whether each song is "pulsing" and "particle effect triggered"
   const [unlockedState, setUnlockedState] = useState({});
   const [particleTrigger, setParticleTrigger] = useState({});
 
   const dispatch = useDispatch();
   const router = useRouter();
-
   const handleClickSound = useClickSound();
 
-  // CountdownTimer Component
-  const CountdownTimer = ({ unlockTime, onExpire }) => {
-    const [timeLeft, setTimeLeft] = useState(
-      calculateTimeLeft(new Date(unlockTime))
-    );
-
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        const newTimeLeft = calculateTimeLeft(new Date(unlockTime));
-        setTimeLeft(newTimeLeft);
-
-        if (
-          Object.keys(newTimeLeft).length === 0 &&
-          typeof onExpire === "function"
-        ) {
-          onExpire();
-        }
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }, [timeLeft, unlockTime, onExpire]);
-
-    // useEffect(() => {
-    //   if (typeof window !== "undefined") {
-    //     try {
-    //       const savedState =
-    //         JSON.parse(localStorage.getItem("unlockedState")) || {};
-
-    //       // ✅ Restore unlockedState from localStorage
-    //       setUnlockedState((prev) => {
-    //         if (JSON.stringify(prev) !== JSON.stringify(savedState)) {
-    //           return savedState;
-    //         }
-    //         return prev;
-    //       });
-    //     } catch (error) {
-    //       console.error("Failed to load unlock state:", error);
-    //       setUnlockedState({});
-    //     }
-    //   }
-    // }, []);
-
-    return (
-      <p className="small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
-        {timeLeft.minutes}:{timeLeft.seconds} m
-      </p>
-    );
-  };
-
-  const calculateTimeLeft = (unlockTime) => {
-    const difference = +unlockTime - +new Date();
-    let timeLeft = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
-
-    return timeLeft;
-  };
-
-  const isUnlockTimePassed = (unlockTime) => {
-    if (!unlockTime) {
-      console.error("Invalid or missing unlock time:", unlockTime);
-      return false;
-    }
-
+  // On mount, read both states from localStorage (if any)
+  useEffect(() => {
+    if (typeof window === "undefined") return; // safeguard for SSR
     try {
-      const currentTimeUtc = new Date().toISOString();
-      const unlockTimeUtc = new Date(unlockTime).toISOString();
-      return unlockTimeUtc <= currentTimeUtc;
+      const savedUnlocked =
+        JSON.parse(localStorage.getItem("unlockedState")) || {};
+      const savedParticles =
+        JSON.parse(localStorage.getItem("particleTrigger")) || {};
+      setUnlockedState(savedUnlocked);
+      setParticleTrigger(savedParticles);
     } catch (error) {
-      console.error("Error processing dates:", error);
+      console.error("Failed to load from localStorage:", error);
+    }
+  }, []);
+
+  // Whenever unlockedState or particleTrigger changes, save them
+  useEffect(() => {
+    localStorage.setItem("unlockedState", JSON.stringify(unlockedState));
+  }, [unlockedState]);
+
+  useEffect(() => {
+    localStorage.setItem("particleTrigger", JSON.stringify(particleTrigger));
+  }, [particleTrigger]);
+
+  // ensures the user sees the pulse if they left the page and came back.
+  const lockedSongs =
+    user_data?.profile?.player?.player_song_instances?.filter(
+      (item) => !item.unlocked
+    ) || [];
+
+  useEffect(() => {
+    if (!lockedSongs.length) return;
+
+    let updatedUnlocked = { ...unlockedState };
+    let updatedParticles = { ...particleTrigger };
+    let changedUnlocked = false;
+    let changedParticles = false;
+
+    lockedSongs.forEach((locked) => {
+      const songId = locked.song.id;
+      if (isUnlockTimePassed(locked.unlock_time)) {
+        if (!updatedUnlocked[songId]) {
+          updatedUnlocked[songId] = true;
+          changedUnlocked = true;
+        }
+
+        if (!updatedParticles[songId]) {
+          updatedParticles[songId] = true;
+          changedParticles = true;
+        }
+      }
+    });
+
+    if (changedUnlocked) setUnlockedState(updatedUnlocked);
+    if (changedParticles) setParticleTrigger(updatedParticles);
+  }, [lockedSongs]);
+
+  function isUnlockTimePassed(unlockTime) {
+    if (!unlockTime) return false;
+    try {
+      return new Date(unlockTime) <= new Date();
+    } catch (error) {
+      console.error("Invalid or missing unlock time:", error);
       return false;
     }
-  };
+  }
 
-  const addToLibrary = (song) => {
+  function addToLibrary(song) {
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     const songInstance = newUserdata.profile.player.player_song_instances.find(
       (instance) => instance.song.id === song.id
@@ -118,21 +101,18 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     } else {
       console.error("Song not found in song instances", song.id);
     }
-    // Clear the glow and particles when added to library
-    setUnlockedState((prev) => ({
-      ...prev,
-      [song.id]: false,
-    }));
-    setParticleTrigger((prev) => ({
-      ...prev,
-      [song.id]: false,
-    }));
+    // Turn off pulse & particle effect
+    setUnlockedState((prev) => {
+      const newState = { ...prev, [song.id]: false };
+      localStorage.setItem("unlockedState", JSON.stringify(newState));
+      return newState;
+    });
+    setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
     handleClickSound();
-  };
+  }
 
-  const unlockSongWithGems = (song) => {
+  function unlockSongWithGems(song) {
     let newUserdata = JSON.parse(JSON.stringify(user_data));
-
     if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
       setPopupMessage(
         "You don't have enough gems to unlock this song right now."
@@ -154,37 +134,72 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }
 
     handleClickSound();
-  };
+  }
 
-  // Get locked (not yet unlocked) songs
-  const lockedSongs =
-    user_data?.profile?.player?.player_song_instances?.filter(
-      (item) => !item.unlocked
-    ) || [];
+  //Countdown timer
+  function CountdownTimer({ unlockTime, onExpire }) {
+    const [timeLeft, setTimeLeft] = useState(
+      calculateTimeLeft(new Date(unlockTime))
+    );
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        const newTime = calculateTimeLeft(new Date(unlockTime));
+        setTimeLeft(newTime);
+
+        if (
+          Object.keys(newTime).length === 0 &&
+          typeof onExpire === "function"
+        ) {
+          onExpire();
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }, [timeLeft, unlockTime, onExpire]);
+
+    return (
+      <p className="small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
+        {timeLeft.minutes}:{timeLeft.seconds} m
+      </p>
+    );
+  }
+
+  function calculateTimeLeft(unlockTime) {
+    const difference = +unlockTime - +new Date();
+    let timeLeft = {};
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+    return timeLeft;
+  }
+
+  //Generate up to 3 locked-song slots
   const slots = 3;
   const slotsContent = [];
 
   for (let i = 0; i < slots; i++) {
     const item = lockedSongs[i];
     if (item) {
-      // Determine which frame image to use
       const frameImage =
         i % 2 === 0
           ? "/assets/img/hub/unlock_frame.png"
           : "/assets/img/hub/unlock_frame_2.png";
 
       slotsContent.push(
-        // STEP 1: Add pulse-effect class conditionally here
         <div
           key={i}
-          // className={`flex flex-col items-center unlock-card-wrapper ${
-          //   unlockedState[item.song.id] ? "pulse-effect" : ""
-          // }`}
-          className={`flex flex-col items-center unlock-card-wrapper`}
+          className={`flex flex-col items-center unlock-card-wrapper ${
+            unlockedState[item.song.id] ? "pulse-effect" : ""
+          }`}
         >
           <div
-            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px] xl"
+            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px]"
             style={{
               backgroundImage: `url(${item.song.thumbnail_file})`,
             }}
@@ -224,13 +239,11 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                             "unlockedState",
                             JSON.stringify(newState)
                           );
-
                           return newState;
                         });
-
                         setParticleTrigger((prev) => ({
                           ...prev,
-                          [item.song.id]: true, // ✅ Ensure this triggers for each song
+                          [item.song.id]: true,
                         }));
                       }}
                     />
@@ -239,6 +252,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               </div>
             </div>
           </div>
+
           {!isUnlockTimePassed(item.unlock_time) ? (
             <div className="relative mt-0.5">
               <button
@@ -298,8 +312,9 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               </div>
             </button>
           )}
-          {/* STEP 2: Render the ParticleEffect if triggered */}
-          {/* {particleTrigger[item.song.id] && (
+
+          {/* Show particle effect if triggered */}
+          {particleTrigger[item.song.id] && (
             <ParticleEffect
               active={true}
               onComplete={() => {
@@ -309,7 +324,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 }));
               }}
             />
-          )} */}
+          )}
         </div>
       );
     } else {
