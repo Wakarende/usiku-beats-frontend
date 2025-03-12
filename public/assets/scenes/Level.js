@@ -68,14 +68,10 @@ class Level extends Phaser.Scene {
     pause_btn.scaleY = 0.4;
 
     // multiplier_text
-    const multiplier_text = this.add.text(180, 119.91874449363797, "", {});
+    const multiplier_text = this.add.text(180, 132.91874449363797, "", {});
     multiplier_text.setOrigin(0.5, 0.5);
     multiplier_text.text = "x 1";
-    multiplier_text.setStyle({
-      align: "center",
-      fontFamily: "Afolkalips",
-      fontSize: "25px",
-    });
+    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
 
     // tap_zone_area
     const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
@@ -96,6 +92,12 @@ class Level extends Phaser.Scene {
     feedback_text.scaleX = 0.7;
     feedback_text.scaleY = 0.7;
     feedback_text.visible = false;
+
+    // bar
+    const bar = this.add.image(180, 114, "Bar");
+    bar.scaleX = 0.3333;
+    bar.scaleY = 0.3333;
+    bar.visible = false;
 
     // streak_popup
     const streak_popup = this.add.container(0, 0);
@@ -180,11 +182,7 @@ class Level extends Phaser.Scene {
     const artist_name = this.add.text(180, 19, "", {});
     artist_name.setOrigin(0.5, 0.5);
     artist_name.text = "artist_name";
-    artist_name.setStyle({
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      stroke: "#faf05e",
-    });
+    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
     song_complete_overlay.add(artist_name);
 
     // song_name
@@ -270,43 +268,28 @@ class Level extends Phaser.Scene {
     const youve_earned_txt_1 = this.add.text(240, 392, "", {});
     youve_earned_txt_1.setOrigin(0.5, 0.5);
     youve_earned_txt_1.text = "45 discs";
-    youve_earned_txt_1.setStyle({
-      fontFamily: "Carlito-Regular",
-      fontSize: "20px",
-    });
+    youve_earned_txt_1.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
     song_complete_overlay.add(youve_earned_txt_1);
 
     // youve_earned_txt_2
     const youve_earned_txt_2 = this.add.text(180, 456.1981865735109, "", {});
     youve_earned_txt_2.setOrigin(0.5, 0.5);
     youve_earned_txt_2.text = "YOU NOW HAVE";
-    youve_earned_txt_2.setStyle({
-      align: "center",
-      fontFamily: "Carlito-Bold",
-      fontSize: "20px",
-    });
+    youve_earned_txt_2.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
     song_complete_overlay.add(youve_earned_txt_2);
 
     // disc_count_txt
     const disc_count_txt = this.add.text(150, 484, "", {});
     disc_count_txt.setOrigin(0.5, 0.5);
     disc_count_txt.text = "30";
-    disc_count_txt.setStyle({
-      align: "center",
-      fontFamily: "Carlito-Bold",
-      fontSize: "20px",
-    });
+    disc_count_txt.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
     song_complete_overlay.add(disc_count_txt);
 
     // disc_count_txt_1
     const disc_count_txt_1 = this.add.text(193, 484, "", {});
     disc_count_txt_1.setOrigin(0.5, 0.5);
     disc_count_txt_1.text = "DISCS";
-    disc_count_txt_1.setStyle({
-      align: "center",
-      fontFamily: "Carlito-Bold",
-      fontSize: "20px",
-    });
+    disc_count_txt_1.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
     song_complete_overlay.add(disc_count_txt_1);
 
     // lists
@@ -331,6 +314,7 @@ class Level extends Phaser.Scene {
     this.divider_1 = divider_1;
     this.divider_2 = divider_2;
     this.feedback_text = feedback_text;
+    this.bar = bar;
     this.streak_popup = streak_popup;
     this.streak_overlay = streak_overlay;
     this.streak_text = streak_text;
@@ -368,6 +352,8 @@ class Level extends Phaser.Scene {
   divider_2;
   /** @type {Phaser.GameObjects.Image} */
   feedback_text;
+  /** @type {Phaser.GameObjects.Image} */
+  bar;
   /** @type {Phaser.GameObjects.Container} */
   streak_popup;
   /** @type {Phaser.GameObjects.Image} */
@@ -487,6 +473,7 @@ class Level extends Phaser.Scene {
     });
 
     this.initScoring();
+    this.initStreakProgressBar(); // Add this line
 
     this.countDown();
 
@@ -617,6 +604,32 @@ class Level extends Phaser.Scene {
     this.baseScore = this.maxSongScore / totalPointsWorth;
     this.currentMultiplier = 1;
     this.progress = 0;
+  }
+
+  initStreakProgressBar() {
+    // Create container (background) for streak progress
+    this.streak_progress_container = this.add.rectangle(
+      180, // Same x position as multiplier_text (centered)
+      114, // Just above multiplier_text position
+      100, // Width
+      4, // Height
+      0x076366, // Dark gray background
+      0.6 // Alpha
+    );
+    this.streak_progress_container.setOrigin(0.5, 0.5).setDepth(3);
+
+    // Create the fill (orange part that grows)
+    this.streak_progress_fill = this.add.rectangle(
+      this.streak_progress_container.x - this.streak_progress_container.width / 2,
+      this.streak_progress_container.y,
+      0, // Initial width is 0
+      this.streak_progress_container.height,
+      0xfbf05e // Orange color
+    );
+    this.streak_progress_fill.setOrigin(0, 0.5).setDepth(3.1); // Slightly higher depth
+
+    // Track active tween to prevent conflicts
+    this.activeProgressTween = null;
   }
 
   adjustViewport() {
@@ -1343,6 +1356,22 @@ class Level extends Phaser.Scene {
     }
     this.currentMultiplier = 1;
     this.progress = 0;
+
+    // Reset progress bar
+    if (this.streak_progress_fill) {
+      // Stop any active tween
+      if (this.activeProgressTween) {
+        this.tweens.remove(this.activeProgressTween);
+      }
+
+      // Animate to zero width
+      this.activeProgressTween = this.tweens.add({
+        targets: this.streak_progress_fill,
+        width: 0,
+        duration: 300, // Slightly longer for reset animation
+        ease: "Power2",
+      });
+    }
   }
 
   streakDisplay() {
@@ -1463,9 +1492,42 @@ class Level extends Phaser.Scene {
       this.progress = 0;
       this.currentMultiplier += 1;
 
+      // Reset progress bar when reaching threshold
+      if (this.streak_progress_fill) {
+        if (this.activeProgressTween) {
+          this.tweens.remove(this.activeProgressTween);
+        }
+
+        this.activeProgressTween = this.tweens.add({
+          targets: this.streak_progress_fill,
+          width: 0,
+          duration: 300,
+          ease: "Power2",
+        });
+      }
+
       if (this.currentMultiplier > 5) {
         this.currentMultiplier = 5;
       }
+    }
+
+    // Update streak progress bar
+    if (this.streak_progress_fill && this.streak_progress_container) {
+      // Stop any active tween to prevent conflicts
+      if (this.activeProgressTween) {
+        this.tweens.remove(this.activeProgressTween);
+      }
+
+      const progressRatio = this.progress / this.streakThreshold;
+      const targetWidth = this.streak_progress_container.width * progressRatio;
+
+      // Create a tween for smooth animation
+      this.activeProgressTween = this.tweens.add({
+        targets: this.streak_progress_fill,
+        width: targetWidth,
+        duration: 200, // Animation duration in ms
+        ease: "Power1", // Easing function - can use different ones like 'Cubic', 'Elastic', etc.
+      });
     }
 
     this.multiplier_text.setText(`X ${this.currentMultiplier}`);
