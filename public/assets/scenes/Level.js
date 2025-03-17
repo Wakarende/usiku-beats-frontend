@@ -467,8 +467,10 @@ class Level extends Phaser.Scene {
     this.screenCenterY = this.cameras.main.worldView.y + this.screenHeight / 2;
 
     this.soundMarkers = [];
+    this.lineMarkers = [];
 
     this.tileDuration = this.midi.tracks[0].notes[0].velocity * 5 || 1.4;
+    this.lineDuration = this.tileDuration;
 
     this.midi.tracks.forEach((track) => {
       const notes = track.notes;
@@ -484,7 +486,11 @@ class Level extends Phaser.Scene {
             config: { loop: false },
           });
       });
+
+      this.detectWhiteLines(notes);
     });
+
+    this.createLineGroup();
 
     this.initScoring();
 
@@ -585,6 +591,71 @@ class Level extends Phaser.Scene {
     // this.pattern.setDepth(2);
 
     this.scene.get("BeatMissed").continueCount = 0;
+  }
+
+  detectWhiteLines(notes) {
+    let hasC3 = false;
+    this.lineMarkers = [];
+
+    notes.forEach((note, idx) => {
+      if (note.name === "C3" && note.velocity === 1.0) {
+        this.lineMarkers.push({
+          name: `lineMarker_${idx}`,
+          start: note.time,
+        });
+        hasC3 = true;
+      }
+    });
+
+    if (!hasC3) {
+      console.warn("No C3 notes found! Skipping white line logic.");
+    }
+  }
+
+  createLineGroup() {
+    this.lineGroup = this.add.group();
+  }
+  spawnLine(marker) {
+    if (!this.lineGroup) return;
+
+    let line = this.add.rectangle(
+      this.screenCenterX,
+      0, // Original starting position
+      this.screenWidth,
+      3,
+      0x848484 // Original white color
+    );
+
+    line.setDepth(2);
+    line.setAlpha(0.5);
+    line.start = marker.start;
+    this.lineGroup.add(line);
+  }
+
+  updateWhiteLines(seek) {
+    if (this.lineMarkers.length === 0) return;
+
+    while (this.lineMarkers.length > 0 && seek + this.lineDuration >= this.lineMarkers[0].start) {
+      let lineMarker = this.lineMarkers.shift();
+      this.spawnLine(lineMarker);
+    }
+
+    if (this.lineGroup) {
+      this.lineGroup.getChildren().forEach((line) => {
+        let lineLerp = Math.max(0, (seek - line.start + this.lineDuration) / this.lineDuration);
+
+        // Move line to the perfect zone (original behavior)
+        line.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, lineLerp));
+
+        // Apply gradual opacity change (original fading behavior)
+        line.setAlpha(lineLerp);
+
+        // Destroy the line when it reaches its final position
+        if (lineLerp >= 1) {
+          line.destroy();
+        }
+      });
+    }
   }
 
   initScoring() {
@@ -833,6 +904,8 @@ class Level extends Phaser.Scene {
     }
 
     let seek = this.music?.seek;
+
+    this.updateWhiteLines(seek);
 
     if (seek >= 0) {
       if (this.soundMarkers.length > 0 && seek + this.tileDuration >= this.soundMarkers[0].start) {
