@@ -610,7 +610,7 @@ class Level extends Phaser.Scene {
       0, // Original starting position
       this.screenWidth,
       3,
-      0x848484 // Original white color
+      0x848484
     );
 
     line.setDepth(2);
@@ -620,7 +620,12 @@ class Level extends Phaser.Scene {
   }
 
   updateWhiteLines(seek) {
-    if (this.lineMarkers.length === 0) return;
+    if (this.lineMarkers.length === 0 && this.lineGroup.getChildren().length === 0) return;
+
+    if (!this.music.isPlaying) {
+      console.log("music stopped, forcing remaining lines to finish");
+      seek = this.music.duration + 1;
+    }
 
     while (this.lineMarkers.length > 0 && seek + this.lineDuration >= this.lineMarkers[0].start) {
       let lineMarker = this.lineMarkers.shift();
@@ -628,16 +633,24 @@ class Level extends Phaser.Scene {
     }
 
     if (this.lineGroup) {
-      this.lineGroup.getChildren().forEach((line) => {
+      this.lineGroup.getChildren().forEach((line, index) => {
         let lineLerp = Math.max(0, (seek - line.start + this.lineDuration) / this.lineDuration);
 
-        line.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, lineLerp));
+        let startY = 0;
+        let targetY = this.screenHeight * this.tileTarget;
+        let bottomY = this.screenHeight;
 
-        // line.setY(Phaser.Math.Linear(0, this.screenHeight, lineLerp));
+        let adjustedY = Phaser.Math.Linear(startY, targetY, lineLerp);
 
-        line.setAlpha(lineLerp);
+        if (adjustedY >= targetY) {
+          let progressPastTarget = (adjustedY - targetY) / (bottomY - targetY);
+          adjustedY = Phaser.Math.Linear(targetY, bottomY, progressPastTarget);
+        }
 
-        if (lineLerp >= 1) {
+        line.setY(adjustedY);
+
+        if (!this.music.isPlaying && line.y >= this.screenHeight) {
+          console.log(`Destroying line ${index} at Y: ${line.y}`);
           line.destroy();
         }
       });
@@ -941,7 +954,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          // this.checkOverlap(tile);
+          this.checkOverlap(tile);
         }
       });
     }
