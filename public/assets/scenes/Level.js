@@ -1498,12 +1498,23 @@ class Level extends Phaser.Scene {
           this.tweens.remove(this.activeProgressTween);
         }
 
-        this.activeProgressTween = this.tweens.add({
-          targets: this.streak_progress_fill,
-          width: 0,
-          duration: 300,
-          ease: "Power2",
-        });
+        // If we just reached max multiplier (5), keep the bar full instead of resetting
+        if (this.currentMultiplier >= 5) {
+          this.activeProgressTween = this.tweens.add({
+            targets: this.streak_progress_fill,
+            width: this.streak_progress_container.width, // Full width
+            duration: 300,
+            ease: "Power2",
+          });
+        } else {
+          // Normal reset behavior
+          this.activeProgressTween = this.tweens.add({
+            targets: this.streak_progress_fill,
+            width: 0,
+            duration: 300,
+            ease: "Power2",
+          });
+        }
       }
 
       if (this.currentMultiplier > 5) {
@@ -1517,17 +1528,26 @@ class Level extends Phaser.Scene {
       if (this.activeProgressTween) {
         this.tweens.remove(this.activeProgressTween);
       }
+      // If at max multiplier, always keep the bar full
+      if (this.currentMultiplier >= 5) {
+        this.activeProgressTween = this.tweens.add({
+          targets: this.streak_progress_fill,
+          width: this.streak_progress_container.width, // Full width
+          duration: 200,
+          ease: "Power1",
+        });
+      } else {
+        // Normal progress tracking for multipliers 1-4
+        const progressRatio = this.progress / this.streakThreshold;
+        const targetWidth = this.streak_progress_container.width * progressRatio;
 
-      const progressRatio = this.progress / this.streakThreshold;
-      const targetWidth = this.streak_progress_container.width * progressRatio;
-
-      // Create a tween for smooth animation
-      this.activeProgressTween = this.tweens.add({
-        targets: this.streak_progress_fill,
-        width: targetWidth,
-        duration: 200, // Animation duration in ms
-        ease: "Power1", // Easing function - can use different ones like 'Cubic', 'Elastic', etc.
-      });
+        this.activeProgressTween = this.tweens.add({
+          targets: this.streak_progress_fill,
+          width: targetWidth,
+          duration: 200,
+          ease: "Power1",
+        });
+      }
     }
 
     this.multiplier_text.setText(`X ${this.currentMultiplier}`);
