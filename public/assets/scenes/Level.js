@@ -644,13 +644,12 @@ class Level extends Phaser.Scene {
       this.lineGroup.getChildren().forEach((line) => {
         let lineLerp = Math.max(0, (seek - line.start + this.lineDuration) / this.lineDuration);
 
-        // Move line to the perfect zone (original behavior)
         line.setY(Phaser.Math.Linear(0, this.screenHeight * this.tileTarget, lineLerp));
 
-        // Apply gradual opacity change (original fading behavior)
+        // line.setY(Phaser.Math.Linear(0, this.screenHeight, lineLerp));
+
         line.setAlpha(lineLerp);
 
-        // Destroy the line when it reaches its final position
         if (lineLerp >= 1) {
           line.destroy();
         }
