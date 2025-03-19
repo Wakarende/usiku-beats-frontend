@@ -401,6 +401,8 @@ class Level extends Phaser.Scene {
       url: "lib/rexgesturesplugin.min.js",
       sceneKey: "rexGestures",
     });
+
+    // this.load.image("rythm_line", "/assets/sprites/playscene/rythm_line.png");
   }
 
   create() {
@@ -605,13 +607,15 @@ class Level extends Phaser.Scene {
   spawnLine(marker) {
     if (!this.lineGroup) return;
 
-    let line = this.add.rectangle(
-      this.screenCenterX,
-      0, // Original starting position
-      this.screenWidth,
-      3,
-      0x848484
-    );
+    // let line = this.add.rectangle(
+    //   this.screenCenterX,
+    //   0, // Original starting position
+    //   this.screenWidth,
+    //   3,
+    //   0x848484
+    // );
+
+    let line = this.add.image(this.screenCenterX, 0, "rythm_line");
 
     line.setDepth(2);
     line.setAlpha(0.5);
