@@ -958,7 +958,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }
@@ -1171,6 +1171,7 @@ class Level extends Phaser.Scene {
 
     let clicked = false;
     let tween = null;
+    let activeEffect = null;
 
     ninesliceTile.setInteractive();
 
@@ -1180,13 +1181,45 @@ class Level extends Phaser.Scene {
         tween.stop();
       }
 
+      // Create active effect for held tile using nineslice
+      activeEffect = this.add.nineslice(
+        ninesliceTile.x,
+        ninesliceTile.y,
+        "tile_active",
+        null,
+        ninesliceTile.width,
+        ninesliceTile.height,
+        20,
+        20,
+        50,
+        50
+      );
+
+      activeEffect.setOrigin(0.5, 1);
+      activeEffect.setDepth(ninesliceTile.depth + 0.1); // Place in front with higher depth
+      ninesliceTile.activeEffect = activeEffect;
+
+      // Create a single tween that targets both objects to keep them in sync
       tween = this.tweens.add({
-        targets: ninesliceTile,
+        targets: [ninesliceTile, activeEffect],
         height: ninesliceTile.height / heldTileScaleFactor,
         ease: "Linear",
         duration: duration * 1000,
         onComplete: () => {
           if (!clicked) {
+            // Hide the original nineslice
+            ninesliceTile.setVisible(false);
+
+            // Calculate particle position (at the bottom of the held tile)
+            const particleY = ninesliceTile.y - ninesliceTile.height / 2;
+
+            // Trigger particle effect
+            this.tileEmitter.setPosition(ninesliceTile.x, particleY);
+            this.tileEmitter.explode(10);
+
+            // Also trigger active flash
+            this.tileActiveFlash(ninesliceTile, false);
+
             clicked = true;
             this.onClickInstrument(ninesliceTile, false, true);
           }
@@ -1195,19 +1228,49 @@ class Level extends Phaser.Scene {
     });
 
     ninesliceTile.on("pointerup", () => {
+      // Hide the original nineslice
+      ninesliceTile.setVisible(false);
+
+      // Calculate particle position (halfway up the current height)
+      const currentHeight = ninesliceTile.height;
+      const particleY = ninesliceTile.y - currentHeight / 2;
+
+      // Trigger particle effect at the calculated position
+      this.tileEmitter.setPosition(ninesliceTile.x, particleY);
+      this.tileEmitter.explode(10);
+
+      // Also trigger the tile active flash effect for visual feedback
+      this.tileActiveFlash(ninesliceTile, false);
+
+      // First stop the tween
       if (tween) {
-        tween.stop();
+        tween.remove(); // Use remove instead of stop to fully clean up
+        tween = null;
       }
+
+      // Then handle the click logic
       if (!clicked) {
         clicked = true;
         this.onClickInstrument(ninesliceTile, false, true);
+      }
+
+      // Then clean up the active effect
+      if (activeEffect && activeEffect.active) {
+        activeEffect.destroy();
+        activeEffect = null;
       }
     });
 
     // Handle cleanup
     ninesliceTile.on("destroy", () => {
       if (tween) {
-        tween.stop();
+        tween.remove(); // Use remove instead of stop
+        tween = null;
+      }
+
+      if (activeEffect && activeEffect.active) {
+        activeEffect.destroy();
+        activeEffect = null;
       }
     });
   }
