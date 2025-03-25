@@ -36,8 +36,6 @@ export default function AudioProvider({
     });
     howlsRef.current.bgMusic = bgMusic;
 
-    // bgMusic.play();
-
     bgMusic.once("playerror", (id, error) => {
       console.warn("Howler play error:", error);
     });
@@ -53,15 +51,13 @@ export default function AudioProvider({
     
   })
   useEffect(() => {
-  // Create once
+  
   const bgMusic = new Howl({
     src: ["/assets/sounds/ui/themeMusic.mp3"],
     loop: true,
     volume: 1,
   });
   howlsRef.current.bgMusic = bgMusic;
-
-  // NOTE: Do not call bgMusic.play() here unconditionally!
 
   bgMusic.once("playerror", (id, error) => {
     console.warn("Howler play error:", error);
@@ -72,7 +68,7 @@ export default function AudioProvider({
   };
 }, []);
 
-// A single effect that decides whether to play or stop:
+
 useEffect(() => {
   const bgMusic = howlsRef.current.bgMusic;
   if (!bgMusic) return;
