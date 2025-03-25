@@ -36,7 +36,7 @@ export default function AudioProvider({
     });
     howlsRef.current.bgMusic = bgMusic;
 
-    bgMusic.play();
+    // bgMusic.play();
 
     bgMusic.once("playerror", (id, error) => {
       console.warn("Howler play error:", error);
@@ -47,23 +47,50 @@ export default function AudioProvider({
     };
   }, []);
 
+  useEffect(()=>{
+    const bgMusic = howlsRef.current.bgMusic;
+    if(!bgMusic) return;
+    
+  })
   useEffect(() => {
-    if (!howlsRef.current.bgMusic) return;
+  // Create once
+  const bgMusic = new Howl({
+    src: ["/assets/sounds/ui/themeMusic.mp3"],
+    loop: true,
+    volume: 1,
+  });
+  howlsRef.current.bgMusic = bgMusic;
 
-    if (pathname === "/game") {
-      // Stop bgMusic when entering the game section
-      if (howlsRef.current.bgMusic.playing()) {
-        setWasPlaying(true);
-        howlsRef.current.bgMusic.stop();
-      }
-    } else if (pathname === "/hub" || pathname === "/library") {
-      // Resume bgMusic when returning to Hub or Library
-      if (!howlsRef.current.bgMusic.playing()) {
-        howlsRef.current.bgMusic.play();
-        setWasPlaying(false);
-      }
+  // NOTE: Do not call bgMusic.play() here unconditionally!
+
+  bgMusic.once("playerror", (id, error) => {
+    console.warn("Howler play error:", error);
+  });
+
+  return () => {
+    bgMusic.unload();
+  };
+}, []);
+
+// A single effect that decides whether to play or stop:
+useEffect(() => {
+  const bgMusic = howlsRef.current.bgMusic;
+  if (!bgMusic) return;
+
+  // If we’re in the Phaser route => stop
+  if (pathname === "/game") {
+    if (bgMusic.playing()) {
+      setWasPlaying(true);
+      bgMusic.stop();
     }
-  }, [pathname]);
+  } else {
+    // For all other Next.js routes => play
+    if (!bgMusic.playing()) {
+      bgMusic.play();
+      setWasPlaying(false);
+    }
+  }
+}, [pathname]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -75,7 +102,7 @@ export default function AudioProvider({
         }
       } else {
         // Tab is active again → Resume bgMusic
-        if (wasPlaying) {
+        if (wasPlaying && pathname !== "/game") {
           howlsRef.current.bgMusic?.play();
           setWasPlaying(false);
         }
@@ -87,7 +114,7 @@ export default function AudioProvider({
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [wasPlaying]);
+  }, [wasPlaying, pathname]);
 
   const playBgMusic = () => {
     howlsRef.current.bgMusic?.play();
