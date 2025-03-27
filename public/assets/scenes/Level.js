@@ -1140,7 +1140,7 @@ class Level extends Phaser.Scene {
     let heldTileScaleFactor = this.calculateHeldTileScaleFactor(duration, this.tileDuration);
     let initialHeight = heldTileScaleFactor * duration * tile.height;
 
-    // Create base nineslice tile with larger top/bottom areas (increased from 20 to 40)
+    // Create base nineslice tile with larger top/bottom areas
     let ninesliceTile = this.add.nineslice(
       tile.x,
       0, // x, y
@@ -1160,8 +1160,14 @@ class Level extends Phaser.Scene {
     ninesliceTile.start = tile.start;
     ninesliceTile.duration = duration;
     ninesliceTile.initialHeight = initialHeight;
-    ninesliceTile.setDepth(4);
+    ninesliceTile.setDepth(tile.depth);
     ninesliceTile.tileType = "held";
+
+    // Variables to track hold duration
+    ninesliceTile.holdStartTime = 0;
+    ninesliceTile.holdDuration = 0;
+    ninesliceTile.totalDuration = duration * 1000; // Convert to milliseconds
+
     // Replace the original tile with the nineslice tile in the tileGroup
     this.tileGroup.remove(tile);
     this.tileGroup.add(ninesliceTile);
@@ -1177,6 +1183,8 @@ class Level extends Phaser.Scene {
 
     ninesliceTile.on("pointerdown", () => {
       ninesliceTile.held = true;
+      ninesliceTile.holdStartTime = this.time.now; // Record start time
+
       if (tween) {
         tween.stop();
       }
@@ -1220,6 +1228,10 @@ class Level extends Phaser.Scene {
             // Also trigger active flash
             this.tileActiveFlash(ninesliceTile, false);
 
+            // Perfect hold - held for full duration
+            ninesliceTile.holdDuration = ninesliceTile.totalDuration;
+            ninesliceTile.holdPercentage = 1.0;
+
             clicked = true;
             this.onClickInstrument(ninesliceTile, false, true);
           }
@@ -1228,6 +1240,15 @@ class Level extends Phaser.Scene {
     });
 
     ninesliceTile.on("pointerup", () => {
+      // Calculate how long the user held the tile
+      if (ninesliceTile.holdStartTime > 0) {
+        ninesliceTile.holdDuration = this.time.now - ninesliceTile.holdStartTime;
+        ninesliceTile.holdPercentage = Math.min(
+          ninesliceTile.holdDuration / ninesliceTile.totalDuration,
+          1.0
+        );
+      }
+
       // Hide the original nineslice
       ninesliceTile.setVisible(false);
 
@@ -1583,61 +1604,131 @@ class Level extends Phaser.Scene {
   }
 
   onClickInstrument(tile, swiped = false, held = false) {
+    // Base accuracy calculation (timing of the initial tap)
     let accuracy = Math.abs(tile.lerp - 1);
-
-    if (held) {
-      // accuracy -= 0.04;
-      accuracy -= 0.02 + 0.02 * Math.log10(1 + tile.duration || 0);
-    }
-
-    // if (navigator.vibrate) {
-    //   navigator.vibrate(100);
-    // }
-
-    this.tileClicked = true;
-    let perfect_plus = false;
     let tile_score = 0;
-    // console.log(accuracy);
+    let perfect_plus = false;
+    this.tileClicked = true;
 
-    switch (true) {
-      case accuracy < 0.1:
+    // Special handling for held notes - combining initial tap accuracy with hold duration
+    if (held && tile.holdPercentage !== undefined) {
+      const holdPercent = tile.holdPercentage;
+
+      // Calculate combined accuracy that factors in both initial tap accuracy and hold percentage
+      // A perfect tap with a perfect hold should give the best accuracy
+      // Both poor timing and early release should reduce the score
+
+      // First, apply a penalty for releasing early
+      let holdAccuracy;
+      let feedbackType;
+
+      if (holdPercent < 0.25) {
+        // Severely penalize very early releases
+        holdAccuracy = 0.5; // Very poor accuracy
+        feedbackType = "too-early";
+      } else if (holdPercent < 0.5) {
+        holdAccuracy = 0.35;
+        feedbackType = "too-early";
+      } else if (holdPercent < 0.75) {
+        holdAccuracy = 0.25;
+        feedbackType = "great";
+      } else if (holdPercent < 1.0) {
+        holdAccuracy = 0.15;
+        feedbackType = "perfect";
+      } else {
+        // Perfect hold
+        holdAccuracy = 0.05;
+        feedbackType = "perfect+";
         perfect_plus = true;
-        tile_score = this.baseScore * this.currentMultiplier;
-        this.score += tile_score;
-        this.progress += 1;
-        this.feebackText("perfect+");
-        this.highlightPath(tile.x, "green");
-        break;
-      case accuracy < 0.15:
-      case accuracy >= 0.15 && accuracy <= 0.2:
-        tile_score = this.baseScore * this.currentMultiplier;
-        this.score += tile_score * 0.7;
-        this.progress += 1;
-        this.feebackText("perfect");
-        this.highlightPath(tile.x, "green");
-        break;
-      case accuracy < 0.38:
+      }
+
+      // Now combine with the initial tap accuracy (weighted averaging)
+      // Weight: 40% initial timing, 60% hold duration
+      const combinedAccuracy = accuracy * 0.5 + holdAccuracy * 0.5;
+
+      // Now apply scoring based on combined accuracy
+      switch (true) {
+        case combinedAccuracy < 0.1:
+          perfect_plus = true;
+          tile_score = this.baseScore * this.currentMultiplier;
+          this.score += tile_score;
+          this.progress += 1;
+          this.feebackText("perfect+");
+          this.highlightPath(tile.x, "green");
+          break;
+        case combinedAccuracy < 0.2:
+          tile_score = this.baseScore * this.currentMultiplier;
+          this.score += tile_score * 0.7;
+          this.progress += 1;
+          this.feebackText("perfect");
+          this.highlightPath(tile.x, "green");
+          break;
+        case combinedAccuracy < 0.3:
+          tile_score = this.baseScore * this.currentMultiplier;
+          this.score += tile_score * 0.4;
+          this.progress += 1;
+          this.feebackText("great");
+          this.highlightPath(tile.x, "green");
+          break;
+        default:
+          // Poor overall accuracy
+          this.resetStreak();
+          this.progress = 0;
+          this.currentMultiplier = 1;
+          this.feebackText(feedbackType); // Use feedback based on the hold duration
+          this.highlightPath(tile.x, "red");
+          return; // No points awarded
+      }
+
+      // For extremely early releases, always break streak regardless of initial tap accuracy
+      if (holdPercent < 0.4) {
         this.resetStreak();
-        tile_score = this.baseScore * this.currentMultiplier;
-        this.score += tile_score * 0.4;
         this.progress = 0;
         this.currentMultiplier = 1;
-        this.feebackText("great");
-        this.highlightPath(tile.x, "green");
-        break;
-      default:
-        this.resetStreak();
-        this.highlightPath(tile.x, "red");
-        if (tile.lerp < 1) {
-          this.feebackText("too-early");
-        } else {
-          console.log("missed");
-        }
-        this.progress = 0;
-        this.currentMultiplier = 1;
-        this.highlightPath(tile.x, "red");
+      }
+    } else {
+      // Original logic for tap and swipe notes
+      switch (true) {
+        case accuracy < 0.1:
+          perfect_plus = true;
+          tile_score = this.baseScore * this.currentMultiplier;
+          this.score += tile_score;
+          this.progress += 1;
+          this.feebackText("perfect+");
+          this.highlightPath(tile.x, "green");
+          break;
+        case accuracy < 0.15:
+        case accuracy >= 0.15 && accuracy <= 0.2:
+          tile_score = this.baseScore * this.currentMultiplier;
+          this.score += tile_score * 0.7;
+          this.progress += 1;
+          this.feebackText("perfect");
+          this.highlightPath(tile.x, "green");
+          break;
+        case accuracy < 0.38:
+          this.resetStreak();
+          tile_score = this.baseScore * this.currentMultiplier;
+          this.score += tile_score * 0.4;
+          this.progress = 0;
+          this.currentMultiplier = 1;
+          this.feebackText("great");
+          this.highlightPath(tile.x, "green");
+          break;
+        default:
+          this.resetStreak();
+          this.highlightPath(tile.x, "red");
+          if (tile.lerp < 1) {
+            this.feebackText("too-early");
+          } else {
+            console.log("missed");
+          }
+          this.progress = 0;
+          this.currentMultiplier = 1;
+          this.highlightPath(tile.x, "red");
+      }
     }
 
+    // Rest of the function remains the same
     if (this.progress >= this.streakThreshold) {
       this.streak_text.setText(`${this.streakThreshold * this.currentMultiplier} STREAK`);
       this.streakDisplay();
