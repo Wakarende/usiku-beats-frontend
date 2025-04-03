@@ -54,14 +54,6 @@ class PreloadJ extends Phaser.Scene {
 		rectangle_1.isFilled = true;
 		rectangle_1.fillColor = 0;
 
-		// bio_text
-		const bio_text = this.add.text(180, 470, "", {});
-		bio_text.setOrigin(0.5, 0.5);
-		bio_text.text = "Feel the Rhythm, Own the Beat!\nUsiku Beats is the rhythm game that celebrates Africa’s music!\nTap, swipe, and groove to the hottest sounds from across the continent.\nReady to get started?\nFirst Let’s Learn How To Play…\n";
-		bio_text.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "20px", "maxLines":10});
-		bio_text.setLineSpacing(6);
-		bio_text.setWordWrapWidth(350);
-
 		// artist_name
 		const artist_name = this.add.text(180, 22, "", {});
 		artist_name.setOrigin(0.5, 0.5);
@@ -93,25 +85,6 @@ class PreloadJ extends Phaser.Scene {
 		current_asset.text = "null";
 		current_asset.setStyle({ "align": "center", "fontSize": "13px" });
 
-		// loading_txt
-		const loading_txt = this.add.text(180, 596, "", {});
-		loading_txt.setOrigin(0.5, 0.5);
-		loading_txt.text = "LOADING";
-		loading_txt.setStyle({ "color": "#ff6a00", "fontFamily": "Carlito-BoldItalic", "stroke": "#ff6a00" });
-
-		// play_button
-		const play_button = this.add.image(180, 592, "Button_blank");
-		play_button.scaleX = 0.4;
-		play_button.scaleY = 0.55;
-		play_button.visible = false;
-
-		// play_text
-		const play_text = this.add.text(180, 592, "", {});
-		play_text.setOrigin(0.5, 0.5);
-		play_text.visible = false;
-		play_text.text = "SHOW ME!";
-		play_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "22px" });
-
 		// rectangle
 		const rectangle = this.add.rectangle(197, 386, 128, 128);
 		rectangle.scaleX = 3.5006144584682515;
@@ -121,11 +94,50 @@ class PreloadJ extends Phaser.Scene {
 		rectangle.isFilled = true;
 		rectangle.fillColor = 0;
 
+		// beats_2024_UI___Option_7_Load_song_BG
+		const beats_2024_UI___Option_7_Load_song_BG = this.add.image(180, 320, "Beats 2024 UI - Option 7_Load song_BG");
+		beats_2024_UI___Option_7_Load_song_BG.scaleX = 0.3333;
+		beats_2024_UI___Option_7_Load_song_BG.scaleY = 0.3333;
+
+		// loading_txt
+		const loading_txt = this.add.text(180, 565, "", {});
+		loading_txt.setOrigin(0.5, 0.5);
+		loading_txt.text = "LOADING";
+		loading_txt.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-BoldItalic", "stroke": "#faf05e" });
+
+		// play_button
+		const play_button = this.add.image(180, 565, "Button_blank");
+		play_button.scaleX = 0.5;
+		play_button.scaleY = 0.65;
+		play_button.visible = false;
+
+		// play_text
+		const play_text = this.add.text(180, 565, "", {});
+		play_text.setOrigin(0.5, 0.5);
+		play_text.visible = false;
+		play_text.text = "LEARN TO PLAY";
+		play_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "22px" });
+
+		// bio_text
+		const bio_text = this.add.text(180, 249, "", {});
+		bio_text.setOrigin(0.5, 0.5);
+		bio_text.text = "The rhythm game that\ncelebrates Africa's music!";
+		bio_text.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "20px", "maxLines":10});
+		bio_text.setLineSpacing(6);
+		bio_text.setWordWrapWidth(350);
+
+		// bio_text_1
+		const bio_text_1 = this.add.text(180, 488, "", {});
+		bio_text_1.setOrigin(0.5, 0.5);
+		bio_text_1.text = "Tap, Swipe and groove to the\nhottest sounds on the continent ";
+		bio_text_1.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "20px", "maxLines":10});
+		bio_text_1.setLineSpacing(6);
+		bio_text_1.setWordWrapWidth(350);
+
 		// lists
 		const stars = [];
 
 		this.thumbnail_image = thumbnail_image;
-		this.bio_text = bio_text;
 		this.artist_name = artist_name;
 		this.song_name = song_name;
 		this.loading = loading;
@@ -134,6 +146,8 @@ class PreloadJ extends Phaser.Scene {
 		this.loading_txt = loading_txt;
 		this.play_button = play_button;
 		this.play_text = play_text;
+		this.bio_text = bio_text;
+		this.bio_text_1 = bio_text_1;
 		this.stars = stars;
 
 		this.events.emit("scene-awake");
@@ -141,8 +155,6 @@ class PreloadJ extends Phaser.Scene {
 
 	/** @type {Phaser.GameObjects.Image} */
 	thumbnail_image;
-	/** @type {Phaser.GameObjects.Text} */
-	bio_text;
 	/** @type {Phaser.GameObjects.Text} */
 	artist_name;
 	/** @type {Phaser.GameObjects.Text} */
@@ -159,6 +171,10 @@ class PreloadJ extends Phaser.Scene {
 	play_button;
 	/** @type {Phaser.GameObjects.Text} */
 	play_text;
+	/** @type {Phaser.GameObjects.Text} */
+	bio_text;
+	/** @type {Phaser.GameObjects.Text} */
+	bio_text_1;
 	/** @type {Array<any>} */
 	stars;
 

@@ -1925,7 +1925,7 @@ class Level extends Phaser.Scene {
     this.scene.stop("Level");
   }
 
-  gameOver() {
+  gameOver(songComplete = false) {
     this.music.stop();
     this.matchedMarkerTracker = [];
     clearInterval(this.globalInterval);
@@ -1939,7 +1939,7 @@ class Level extends Phaser.Scene {
 
     this.cleanUp();
     this.scene.stop("Level");
-    this.scene.start("GameOverScene", { track: this.track });
+    this.scene.start("GameOverScene", { track: this.track, songComplete });
   }
 
   ftueFail(tileType) {

@@ -266,6 +266,7 @@
             "type": "Text",
             "id": "9356df75-151d-41eb-88ee-326fb4778326",
             "label": "main_menu_text",
+            "scope": "CLASS",
             "components": [],
             "x": 180,
             "y": 515,
@@ -278,7 +279,8 @@
         {
             "type": "Text",
             "id": "5e0333e4-321b-408e-8652-cf1782faee78",
-            "label": "main_menu_text_1",
+            "label": "retry_song_text",
+            "scope": "CLASS",
             "components": [],
             "x": 180,
             "y": 586.5756245511806,
