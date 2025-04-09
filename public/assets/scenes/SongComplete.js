@@ -470,7 +470,7 @@ class SongComplete extends Phaser.Scene {
       if (this.sceneData.isFTUE) {
         levelScene.ftueGameOver();
       } else {
-        levelScene.gameOver();
+        levelScene.gameOver(true);
       }
     });
   }

@@ -139,11 +139,11 @@ class GameOverScene extends Phaser.Scene {
     main_menu_text.text = "MAIN MENU";
     main_menu_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
 
-    // main_menu_text_1
-    const main_menu_text_1 = this.add.text(180, 586.5756245511806, "", {});
-    main_menu_text_1.setOrigin(0.5, 0.5);
-    main_menu_text_1.text = "RETRY SONG";
-    main_menu_text_1.setStyle({ fontFamily: "Carlito-Bold", fontSize: "26px" });
+    // retry_song_text
+    const retry_song_text = this.add.text(180, 586.5756245511806, "", {});
+    retry_song_text.setOrigin(0.5, 0.5);
+    retry_song_text.text = "RETRY SONG";
+    retry_song_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "26px" });
 
     // lists
     const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
@@ -157,6 +157,8 @@ class GameOverScene extends Phaser.Scene {
     this.continue_button = continue_button;
     this.difficulty_text = difficulty_text;
     this.total_stars_text = total_stars_text;
+    this.main_menu_text = main_menu_text;
+    this.retry_song_text = retry_song_text;
     this.stars = stars;
 
     this.events.emit("scene-awake");
@@ -180,6 +182,10 @@ class GameOverScene extends Phaser.Scene {
   difficulty_text;
   /** @type {Phaser.GameObjects.Text} */
   total_stars_text;
+  /** @type {Phaser.GameObjects.Text} */
+  main_menu_text;
+  /** @type {Phaser.GameObjects.Text} */
+  retry_song_text;
   /** @type {Phaser.GameObjects.Image[]} */
   stars;
 
@@ -188,6 +194,7 @@ class GameOverScene extends Phaser.Scene {
   // Write your code here
   init(data) {
     this.track = data.track;
+    this.songComplete = data.songComplete;
 
     this.current_track = this.sound.add(data.track.song_name);
     this.current_track.play();
@@ -258,6 +265,17 @@ class GameOverScene extends Phaser.Scene {
     this.background_music.play();
 
     this.cameras.main.fadeIn(500);
+
+    this.adjustButtons();
+  }
+
+  adjustButtons() {
+    if (this.songComplete) {
+      this.retry_button.setScale(0.3, 0.5);
+      this.retry_song_text.setScale(this.retry_song_text.scale * 0.65);
+      this.retry_button.setY(this.retry_button.y - 10);
+      this.retry_song_text.setY(this.retry_song_text.y - 10);
+    }
   }
 
   adjustThumbnailImage() {
