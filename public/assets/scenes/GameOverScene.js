@@ -92,9 +92,10 @@ class GameOverScene extends Phaser.Scene {
     star_empty.scaleY = 0.3333;
 
     // retry_button
-    const retry_button = this.add.image(180, 586, "Button_blank");
-    retry_button.scaleX = 0.6;
-    retry_button.scaleY = 0.8;
+    const retry_button = this.add.image(180, 551, "Button_blank");
+    retry_button.scaleX = 0.4;
+    retry_button.scaleY = 0.5;
+    retry_button.setOrigin(0.5, 0.6);
 
     // carousel
     const carousel = this.add.image(180, 238, "carousel_2");
@@ -102,9 +103,9 @@ class GameOverScene extends Phaser.Scene {
     carousel.scaleY = 0.6;
 
     // continue_button
-    const continue_button = this.add.image(180, 515, "Button_blank");
+    const continue_button = this.add.image(181, 496, "Button_blank");
     continue_button.scaleX = 0.4;
-    continue_button.scaleY = 0.6;
+    continue_button.scaleY = 0.5;
 
     // no_of_stars
     const no_of_stars = this.add.image(53, 22, "No of stars");
@@ -133,17 +134,28 @@ class GameOverScene extends Phaser.Scene {
       stroke: "#faf05e",
     });
 
-    // main_menu_text
-    const main_menu_text = this.add.text(180, 515, "", {});
-    main_menu_text.setOrigin(0.5, 0.5);
-    main_menu_text.text = "MAIN MENU";
-    main_menu_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
+    // continue_text
+    const continue_text = this.add.text(181, 496, "", {});
+    continue_text.setOrigin(0.5, 0.5);
+    continue_text.text = "MAIN MENU";
+    continue_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
 
     // retry_song_text
-    const retry_song_text = this.add.text(180, 586.5756245511806, "", {});
-    retry_song_text.setOrigin(0.5, 0.5);
+    const retry_song_text = this.add.text(180, 548, "", {});
+    retry_song_text.setOrigin(0.5, 0.6);
     retry_song_text.text = "RETRY SONG";
-    retry_song_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "26px" });
+    retry_song_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
+
+    // library_button
+    const library_button = this.add.image(180, 602, "Button_blank");
+    library_button.scaleX = 0.5;
+    library_button.scaleY = 0.7;
+
+    // library_button_text
+    const library_button_text = this.add.text(180, 599, "", {});
+    library_button_text.setOrigin(0.5, 0.5);
+    library_button_text.text = "SONG LIBRARY";
+    library_button_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "22px" });
 
     // lists
     const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
@@ -157,8 +169,10 @@ class GameOverScene extends Phaser.Scene {
     this.continue_button = continue_button;
     this.difficulty_text = difficulty_text;
     this.total_stars_text = total_stars_text;
-    this.main_menu_text = main_menu_text;
+    this.continue_text = continue_text;
     this.retry_song_text = retry_song_text;
+    this.library_button = library_button;
+    this.library_button_text = library_button_text;
     this.stars = stars;
 
     this.events.emit("scene-awake");
@@ -183,9 +197,13 @@ class GameOverScene extends Phaser.Scene {
   /** @type {Phaser.GameObjects.Text} */
   total_stars_text;
   /** @type {Phaser.GameObjects.Text} */
-  main_menu_text;
+  continue_text;
   /** @type {Phaser.GameObjects.Text} */
   retry_song_text;
+  /** @type {Phaser.GameObjects.Image} */
+  library_button;
+  /** @type {Phaser.GameObjects.Text} */
+  library_button_text;
   /** @type {Phaser.GameObjects.Image[]} */
   stars;
 
@@ -194,7 +212,7 @@ class GameOverScene extends Phaser.Scene {
   // Write your code here
   init(data) {
     this.track = data.track;
-    this.songComplete = data.songComplete;
+    this.isSongComplete = data.isSongComplete;
 
     this.current_track = this.sound.add(data.track.song_name);
     this.current_track.play();
@@ -257,6 +275,28 @@ class GameOverScene extends Phaser.Scene {
       });
     });
 
+    this.library_button.setInteractive();
+    this.library_button.on("pointerup", () => {
+      this.button_sfx.play();
+      this.background_music.stop();
+      this.current_track.stop();
+      this.scoreTickSound.stop();
+      this.scene.stop("GameOverScene");
+
+      const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+      const newLevel = updatedUserData.profile.player.level;
+
+      this.scene.manager.scenes.forEach((scene) => {
+        this.scene.stop(scene.scene.key);
+      });
+      this.game.events.emit("destroyGame");
+
+      router.push({
+        pathname: "/library",
+        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+      });
+    });
+
     this.buildScreen();
     this.animateScore();
 
@@ -270,11 +310,38 @@ class GameOverScene extends Phaser.Scene {
   }
 
   adjustButtons() {
-    if (this.songComplete) {
-      this.retry_button.setScale(0.3, 0.5);
-      this.retry_song_text.setScale(this.retry_song_text.scale * 0.65);
-      this.retry_button.setY(this.retry_button.y - 10);
-      this.retry_song_text.setY(this.retry_song_text.y - 10);
+    let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+
+    if (updatedUserData.profile.player.total_discs < 30) {
+      this.library_button.disableInteractive();
+      this.library_button.setVisible(false);
+      this.library_button_text.setVisible(false);
+
+      if (this.isSongComplete || this.fullStarsCount > 3) {
+        const retryButtonY = this.retry_button.y;
+        const retrySongTextY = this.retry_song_text.y;
+        const continueButtonY = this.continue_button.y + 3;
+        const continueTextY = this.continue_text.y + 2;
+
+        // Then set the new positions
+        this.retry_button.setY(continueButtonY);
+        this.retry_song_text.setY(continueTextY);
+
+        this.continue_button.setY(retryButtonY);
+        this.continue_text.setY(retrySongTextY);
+
+        this.continue_button.setScale(0.5, 0.7);
+        this.continue_text.setScale(this.continue_text.scale * 1.5);
+        this.continue_button.setY(this.continue_button.y + 10);
+        this.continue_text.setY(this.continue_text.y + 10);
+      }
+
+      if (this.fullStarsCount <= 3) {
+        this.retry_button.setScale(0.5, 0.7);
+        this.retry_song_text.setScale(this.retry_song_text.scale * 1.5);
+        this.retry_button.setY(this.retry_button.y + 10);
+        this.retry_song_text.setY(this.retry_song_text.y + 10);
+      }
     }
   }
 

@@ -2190,7 +2190,13 @@ class Level extends Phaser.Scene {
 
     this.cleanUp();
     this.scene.stop("Level");
-    this.scene.start("GameOverScene", { track: this.track, songComplete });
+
+    const sceneData = {
+      track: this.track,
+      isSongComplete: songComplete,
+    };
+
+    this.scene.start("GameOverScene", sceneData);
   }
 
   ftueFail(tileType) {

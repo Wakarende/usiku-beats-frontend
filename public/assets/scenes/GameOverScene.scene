@@ -185,9 +185,10 @@
                 "key": "Button_blank"
             },
             "x": 180,
-            "y": 586,
-            "scaleX": 0.6,
-            "scaleY": 0.8
+            "y": 551,
+            "scaleX": 0.4,
+            "scaleY": 0.5,
+            "originY": 0.6
         },
         {
             "type": "Image",
@@ -212,10 +213,10 @@
             "texture": {
                 "key": "Button_blank"
             },
-            "x": 180,
-            "y": 515,
+            "x": 181,
+            "y": 496,
             "scaleX": 0.4,
-            "scaleY": 0.6
+            "scaleY": 0.5
         },
         {
             "type": "Image",
@@ -265,11 +266,11 @@
         {
             "type": "Text",
             "id": "9356df75-151d-41eb-88ee-326fb4778326",
-            "label": "main_menu_text",
+            "label": "continue_text",
             "scope": "CLASS",
             "components": [],
-            "x": 180,
-            "y": 515,
+            "x": 181,
+            "y": 496,
             "originX": 0.5,
             "originY": 0.5,
             "text": "MAIN MENU",
@@ -283,12 +284,40 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 586.5756245511806,
+            "y": 548,
             "originX": 0.5,
-            "originY": 0.5,
+            "originY": 0.6,
             "text": "RETRY SONG",
             "fontFamily": "Carlito-Bold",
-            "fontSize": "26px"
+            "fontSize": "18px"
+        },
+        {
+            "type": "Image",
+            "id": "5c9e7483-17b8-4cb9-ab47-97e74f9bfe66",
+            "label": "library_button",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Button_blank"
+            },
+            "x": 180,
+            "y": 602,
+            "scaleX": 0.5,
+            "scaleY": 0.7
+        },
+        {
+            "type": "Text",
+            "id": "df231b8b-a7bb-4791-9f4a-87cd5d498539",
+            "label": "library_button_text",
+            "scope": "CLASS",
+            "components": [],
+            "x": 180,
+            "y": 599,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "SONG LIBRARY",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "22px"
         }
     ],
     "plainObjects": [],
