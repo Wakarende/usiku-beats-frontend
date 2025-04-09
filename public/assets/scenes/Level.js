@@ -475,23 +475,9 @@ class Level extends Phaser.Scene {
             duration: note.duration,
             config: { loop: false },
           });
-        if (note.name === "C2") {
-          this.pulseBeats.push({
-            start: note.time,
-          });
-
-          //sort pulses by time
-          this.pulseBeats.sort((a, b) => a.start - b.start);
-
-          //Label each beat with an integer index
-          this.pulseBeats.forEach((beatObj, i) => {
-            beatObj.index = i;
-          });
-        }
-        if (note.name === "F2") {
-          this.f2Beats.push(note.time);
-        }
+        this.detectWaveNotes(note);
       });
+
       this.detectWhiteLines(notes);
     });
 
@@ -619,13 +605,13 @@ class Level extends Phaser.Scene {
     this.waveTexture = this.textures.get("waveTexture");
     this.waveCtx = this.waveTexture.getContext();
 
-    //right divider  wave
+    //right divider wave
     this.textures.createCanvas("waveTextureRight", this.waveCanvas.width, this.waveCanvas.height);
 
     this.waveTextureRight = this.textures.get("waveTextureRight");
     this.waveCtxRight = this.waveTextureRight.getContext();
 
-    this.drawWaveToCanvas(); // initial render
+    this.drawWaveToCanvas();
 
     this.waveSprite = this.add
       .image(this.dividerX, 0, "waveTexture")
@@ -656,6 +642,23 @@ class Level extends Phaser.Scene {
     ];
     this.waveThickness = 4;
     this.lastF2Pulse = -999;
+  }
+
+  detectWaveNotes(note) {
+    //Waves
+    if (note.name === "C2") {
+      this.pulseBeats.push({ start: note.time });
+
+      this.pulseBeats.sort((a, b) => a.start - b.start);
+
+      this.pulseBeats.forEach((beatObj, i) => {
+        beatObj.index = i;
+      });
+    }
+    //Pulse
+    if (note.name === "F2") {
+      this.f2Beats.push(note.time);
+    }
   }
 
   detectWhiteLines(notes) {
@@ -690,7 +693,6 @@ class Level extends Phaser.Scene {
     line.start = marker.start;
     this.lineGroup.add(line);
   }
-
   updateWhiteLines(seek) {
     if (this.lineMarkers.length === 0 && this.lineGroup.getChildren().length === 0) return;
 
@@ -728,6 +730,7 @@ class Level extends Phaser.Scene {
       });
     }
   }
+
   drawWaveToCanvas(
     textureKey = "waveTexture",
     ctxOverride = null,
@@ -743,12 +746,10 @@ class Level extends Phaser.Scene {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
 
-    // Clear existing content
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     const baseX = canvasWidth / 2;
 
-    // If `showWave` is false, just draw a straight line instead of a wave
     if (!showWave) {
       ctx.beginPath();
       ctx.moveTo(baseX, 0);
@@ -761,16 +762,10 @@ class Level extends Phaser.Scene {
       return;
     }
 
-    // This amplitude scales up with your pulsing logic
     const amplitude = pulseAmp * 18;
-
-    // How many segments to make the line smoother
-    // Feel free to tweak higher/lower for more/less detail
     const segmentCount = 20;
     const segmentHeight = canvasHeight / segmentCount;
 
-    // Decide initial left vs. right zigzag
-    // (If `startDown` is true, we can flip the sign to invert initial direction)
     let direction = startDown ? 1 : -1;
 
     ctx.beginPath();
@@ -781,18 +776,13 @@ class Level extends Phaser.Scene {
       const midY = startY + segmentHeight / 2;
       const endY = (i + 1) * segmentHeight;
 
-      // Randomize each segment a bit so it doesn’t look too rigid
       const randomFactor = Phaser.Math.FloatBetween(0.8, 1.0);
       const offset = amplitude * randomFactor;
 
-      // Control point’s X is offset left or right from baseX
       const controlX = baseX + direction * offset;
 
-      // Draw one quadratic curve from (baseX, startY) to (baseX, endY)
-      // using (controlX, midY) as the control point
       ctx.quadraticCurveTo(controlX, midY, baseX, endY);
 
-      // Flip direction each segment, so it zigzags left, then right, etc.
       direction *= -1;
     }
 
@@ -801,26 +791,21 @@ class Level extends Phaser.Scene {
     ctx.lineCap = "round";
     ctx.stroke();
 
-    // Refresh so Phaser sees the new canvas image
     texture.refresh();
   }
   updateWaveLogic(seek, delta) {
-    // If the music isn’t started or seek < 0, nothing to do
     if (seek < 0) return;
 
     const pulseWindow = 0.1;
 
-    // 1) Check regular pulses (C2 or whatever you had as “pulseBeats”)
     this.pulseBeats.forEach((pulseBeat) => {
       if (
         Math.abs(seek - pulseBeat.start) < pulseWindow &&
         (!this.lastDividerPulse || pulseBeat.start > this.lastDividerPulse)
       ) {
-        // Create a fresh set of segments for both sides
         this.leftSegments = this.generateRandomSegments((10, 30));
         this.rightSegments = this.generateRandomSegments((10, 30));
 
-        // Keep amplitude / wave step logic as before
         this.dividerPulseAmplitudeLeft = 1;
         this.dividerPulseAmplitudeRight = 1;
 
@@ -832,23 +817,20 @@ class Level extends Phaser.Scene {
       }
     });
 
-    // 2) Check the F2 “thickness” pulses
     this.f2Beats.forEach((beatTime) => {
       if (
         Math.abs(seek - beatTime) < pulseWindow &&
         (!this.lastF2Pulse || beatTime > this.lastF2Pulse)
       ) {
-        // We haven't pulsed for this F2 yet
         this.lastF2Pulse = beatTime;
-        // Tween waveThickness from 6 --> 12 --> 6
+
         this.tweens.add({
-          targets: this, // 'this' = the scene
-          waveThickness: 12, // from your normal 6 up to 12
-          duration: 100, // short tween up
+          targets: this,
+          waveThickness: 12,
+          duration: 100,
           ease: "Sine.easeOut",
-          yoyo: true, // then back down
+          yoyo: true,
           onUpdate: () => {
-            // Redraw left wave
             this.drawWaveToCanvas(
               "waveTexture",
               this.waveCtx,
@@ -858,7 +840,7 @@ class Level extends Phaser.Scene {
               true,
               this.leftSegments
             );
-            // Redraw right wave
+
             this.drawWaveToCanvas(
               "waveTextureRight",
               this.waveCtxRight,
@@ -870,9 +852,8 @@ class Level extends Phaser.Scene {
             );
           },
           onComplete: () => {
-            // Make sure it ends back at 6
             this.waveThickness = 6;
-            // Final redraw
+
             this.drawWaveToCanvas(
               "waveTexture",
               this.waveCtx,
@@ -896,11 +877,9 @@ class Level extends Phaser.Scene {
       }
     });
 
-    // 3) Gradually decrease amplitude after each pulse
     const leftIsPulsing = this.dividerPulseAmplitudeLeft > 0.05;
     const rightIsPulsing = this.dividerPulseAmplitudeRight > 0.05;
 
-    // Re-draw with current amplitude
     this.drawWaveToCanvas(
       "waveTexture",
       this.waveCtx,
@@ -920,11 +899,9 @@ class Level extends Phaser.Scene {
       this.rightSegments
     );
 
-    // Slowly decay amplitude
     this.dividerPulseAmplitudeLeft *= 0.9;
     this.dividerPulseAmplitudeRight *= 0.9;
 
-    // 4) Move waves up or down if waveActive
     if (this.waveActive) {
       if (this.dividerWaveYLeft < -10) {
         this.dividerWaveYLeft = this.screenHeight;
@@ -1078,9 +1055,8 @@ class Level extends Phaser.Scene {
   generateRandomSegments(segmentCount = 12) {
     const segments = [];
     for (let i = 0; i < segmentCount; i++) {
-      // Random direction ±1
       const dir = Math.random() < 0.5 ? -1 : 1;
-      // Random height in some range (tweak as you like)
+
       const height = Phaser.Math.Between(8, 30);
 
       segments.push({ dir, height });
@@ -1233,7 +1209,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          // this.checkOverlap(tile);
+          this.checkOverlap(tile);
         }
       });
     }
