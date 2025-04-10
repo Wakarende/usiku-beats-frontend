@@ -162,9 +162,7 @@ const HubScreen = () => {
         ),
       }));
 
-      const lockedSongs = songsWithUnlockStatus.filter(
-        (song) => !song.isUnlocked
-      );
+      const lockedSongs = songsWithUnlockStatus.filter((song) => !song.isUnlocked);
       setUnlockableSongs(lockedSongs);
       setVisibleUnlockableSongs(lockedSongs.slice(0, 2));
       setLoading(false);
@@ -181,10 +179,12 @@ const HubScreen = () => {
   // };
 
   const gotoGameDetail = (track) => {
-    router.push({
-      pathname: "/game",
-      query: { track: JSON.stringify(track) },
-    });
+    // Create query parameter string with the track data
+    const queryParams = new URLSearchParams();
+    queryParams.append("track", JSON.stringify(track));
+
+    // Force a full page refresh by setting window.location.href
+    window.location.href = `/game?${queryParams.toString()}`;
   };
 
   const checkRedirect = () => {
@@ -195,20 +195,26 @@ const HubScreen = () => {
     if (trackId) {
       axios.get(`${BASE_URL}song-detail/${trackId}/`).then((d) => {
         let trackObject = d.data;
-        router.push({
-          pathname: "/game",
-          query: { track: JSON.stringify(trackObject) },
-        });
+
+        // Create query parameter string with the track data
+        const queryParams = new URLSearchParams();
+        queryParams.append("track", JSON.stringify(trackObject));
+
+        // Force a full page refresh
+        window.location.href = `/game?${queryParams.toString()}`;
       });
     }
 
     if (trackParam) {
       try {
         const trackObject = JSON.parse(decodeURIComponent(trackParam));
-        router.push({
-          pathname: "/game",
-          query: { track: JSON.stringify(trackObject) },
-        });
+
+        // Create query parameter string with the track data
+        const queryParams = new URLSearchParams();
+        queryParams.append("track", JSON.stringify(trackObject));
+
+        // Force a full page refresh
+        window.location.href = `/game?${queryParams.toString()}`;
       } catch (error) {
         console.error("Error parsing track JSON:", error);
       }
@@ -343,13 +349,10 @@ const HubScreen = () => {
           paragraphs={[
             <>
               <p className="text-lg">
-                This is the <span className="font-bold">Hubscreen</span>, where
-                you can play the songs you've unlocked and access the library to
-                unlock more.
+                This is the <span className="font-bold">Hubscreen</span>, where you can play the
+                songs you've unlocked and access the library to unlock more.
               </p>
-              <p className="mt-2 text-lg">
-                Press play now for your first song to get started!
-              </p>
+              <p className="mt-2 text-lg">Press play now for your first song to get started!</p>
             </>,
           ]}
         />
@@ -432,9 +435,7 @@ const HubScreen = () => {
         className="popup-overlay"
       >
         <div className="daily-reward-content mt-5">
-          <h1 className="daily-welcome uppercase text-8xl mb-4">
-            Welcome back
-          </h1>
+          <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
           <p className="daily-gift-title uppercase font-bold text-3xl text-yellow">
             Your Daily Gift
           </p>
@@ -449,9 +450,7 @@ const HubScreen = () => {
               height={100}
               className="daily-reward-gem"
             />
-            <h3 className="gem-value text-yellow text-6xl tracking-wider">
-              +10
-            </h3>
+            <h3 className="gem-value text-yellow text-6xl tracking-wider">+10</h3>
           </div>
           <motion.button
             className="daily-claim-button"
