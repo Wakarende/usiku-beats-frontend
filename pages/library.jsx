@@ -289,7 +289,9 @@ const Library = () => {
 
                   <div className="flex-grow ml-6">
                     <div className="flex items-center justify-between w-full">
-                      <p className="font-bold text-yellow text-lg md:text-md">{song.song_name}</p>
+                      <p className="font-bold text-yellow text-lg md:text-md text-nowrap">
+                        {song.song_name}
+                      </p>
                       <p className="text-yellow uppercase text-xs text-nowrap">
                         {song.country_name}
                       </p>
