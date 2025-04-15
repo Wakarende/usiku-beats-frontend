@@ -59,18 +59,31 @@ const PhaserGame = () => {
     dispatch(updateUser(data));
   };
 
+  // const sendMessageToParent = (data) => {
+  //   if (window.parent !== window) {
+  //     window.parent.postMessage(data, "*");
+  //   }
+  // };
+
+  // // Use this when you need to signal game events to parent
+  // // Example: When game ends or needs to navigate away
+  // const handleExitGame = () => {
+  //   sendMessageToParent({ type: "GAME_ACTION", action: "EXIT_GAME" });
+  // };
+
+  // You can modify your destroy game function to communicate with parent
   const destroyGame = () => {
     if (gameRef.current) {
-      // Object.keys(gameRef.current.scene.keys).forEach((key) => {
-      //   gameRef.current.scene.remove(key);
-      // });
-
       // Remove event listeners
       gameRef.current.events.off("updateUserEvent", updateUserEventListener);
       gameRef.current.events.off("destroyGame", destroyGame);
+
       // Destroy the game
       gameRef.current.destroy(true);
       gameRef.current = null;
+
+      // // Notify parent if needed
+      // sendMessageToParent({ type: "GAME_ACTION", action: "GAME_DESTROYED" });
     }
   };
 

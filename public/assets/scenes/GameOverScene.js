@@ -269,9 +269,11 @@ class GameOverScene extends Phaser.Scene {
       });
       this.game.events.emit("destroyGame");
 
+      localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
+      localStorage.setItem("newLevel", JSON.stringify(newLevel));
       router.push({
         pathname: "/hub",
-        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+        // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
     });
 
@@ -291,9 +293,11 @@ class GameOverScene extends Phaser.Scene {
       });
       this.game.events.emit("destroyGame");
 
+      localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
+      localStorage.setItem("newLevel", JSON.stringify(newLevel));
       router.push({
         pathname: "/library",
-        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+        // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
     });
 

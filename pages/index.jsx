@@ -204,7 +204,7 @@ export default function TitleScreen() {
           />
         </motion.div>
         {/* Start Button */}
-        <div className="absolute  small:bottom-[10%] small:left-[50%] medium:bottom-[11%] medium:left-[50%] small:transform -translate-x-[50%] small:w-[60%] medium:transform -translate-x-[50%] medium:w-[60%] large:bottom-[12%] large:left-[50%] large:transform -translate-x-[50%] large:w-[60%] xl:bottom-[12%] xl:left-[50%] xl:transform -translate-x-[50%] xl:w-[60%]">
+        <div className="absolute  small:bottom-[10%] small:left-[50%] medium:bottom-[11%] medium:left-[50%] small:transform -translate-x-[50%] small:w-[60%] medium:transform medium:w-[60%] large:bottom-[12%] large:left-[50%] large:transform large:w-[60%] xl:bottom-[12%] xl:left-[50%] xl:transform xl:w-[60%]">
           <motion.div
             onClick={handleStart}
             initial={{ x: "100vw", opacity: 0 }}
