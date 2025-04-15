@@ -86,20 +86,14 @@ const Library = () => {
     const ftueParam = params.get("ftueGameplayCompleted");
     const libraryTutorialSeen = localStorage.getItem("libraryTutorialSeen");
     const ftueCompleted = localStorage.getItem("ftueCompleted");
-    if (
-      ftueParam === "true" &&
-      ftueCompleted !== "true" &&
-      !libraryTutorialSeen
-    ) {
+    if (ftueParam === "true" && ftueCompleted !== "true" && !libraryTutorialSeen) {
       setIsFtue(true);
       setShowFtuePanel(true);
       localStorage.setItem("libraryTutorialSeen", "true");
     }
 
-    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142, 147];
-    const url = `${BASE_URL}/songs/?${songIds
-      .map((id) => `ids=${id}`)
-      .join("&")}`;
+    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142, 147, 149, 150, 151];
+    const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
     axios.get(url).then((res) => {
       const songsWithUnlockStatus = res.data.map((song) => ({
@@ -126,8 +120,7 @@ const Library = () => {
     let unlockedFlag = true;
 
     if (!isFtue) {
-      const unlockedSongsCount =
-        user_data.profile.player.player_song_instances.length;
+      const unlockedSongsCount = user_data.profile.player.player_song_instances.length;
 
       const additionalTime = unlockedSongsCount * 5;
       unlockTime = moment()
@@ -137,16 +130,11 @@ const Library = () => {
     }
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
-    const existingInstance =
-      newUserdata.profile.player.player_song_instances.find(
-        (instance) => instance.song.id === song.id
-      );
+    const existingInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
 
-    if (
-      existingInstance &&
-      !existingInstance.unlocked &&
-      isSongInQueue(existingInstance)
-    ) {
+    if (existingInstance && !existingInstance.unlocked && isSongInQueue(existingInstance)) {
       console.log("Song is already unlocking; cannot purchase again");
       return;
     }
@@ -232,10 +220,9 @@ const Library = () => {
     );
   }
 
-  const hasUnlockedSong =
-    user_data?.profile?.player?.player_song_instances?.some(
-      (instance) => instance.unlocked
-    );
+  const hasUnlockedSong = user_data?.profile?.player?.player_song_instances?.some(
+    (instance) => instance.unlocked
+  );
 
   return (
     <div className="cmd-page">
@@ -246,8 +233,8 @@ const Library = () => {
           paragraphs={[
             <>
               <p className="text-lg">
-                This is the <span className="font-bold">Library</span> where you
-                can browse and unlock songs for your collection
+                This is the <span className="font-bold">Library</span> where you can browse and
+                unlock songs for your collection
               </p>
               <p className="mt-2 text-lg">Choose your first song now</p>
             </>,
@@ -261,19 +248,12 @@ const Library = () => {
         </div>
         <div className=" flex mt-1 justify-center items-center">
           <div className="flex justify-center flex-col items-center ">
-            <p className="text-library uppercase font-bold text-lg">
-              You have {totalDiscs} discs!
-            </p>
+            <p className="text-library uppercase font-bold text-lg">You have {totalDiscs} discs!</p>
             <p className="text-white mt-1">Each song costs 30 discs</p>
             <p className="text-white">Find your next song now!</p>
           </div>
           <div className="mt-0">
-            <Image
-              src={"/assets/img/hub/Disc.png"}
-              width={120}
-              height={120}
-              alt="disc-icon"
-            />
+            <Image src={"/assets/img/hub/Disc.png"} width={120} height={120} alt="disc-icon" />
           </div>
         </div>
         <div className="gradient-container item-stretch w-full p-0">
@@ -288,10 +268,9 @@ const Library = () => {
         {/* Songs List */}
         <div className="flex flex-wrap justify-center items-stretch ">
           {songs.map((song, index) => {
-            const instance =
-              user_data?.profile?.player?.player_song_instances.find(
-                (inst) => inst.song.id === song.id
-              );
+            const instance = user_data?.profile?.player?.player_song_instances.find(
+              (inst) => inst.song.id === song.id
+            );
             const inQueue = isSongInQueue(instance);
             const showUnlocked = song.isUnlocked || inQueue;
 
@@ -310,10 +289,8 @@ const Library = () => {
 
                   <div className="flex-grow ml-6">
                     <div className="flex items-center justify-between w-full">
-                      <p className="font-bold text-yellow text-lg md:text-md">
-                        {song.song_name}
-                      </p>
-                      <p className="text-yellow uppercase text-xs">
+                      <p className="font-bold text-yellow text-lg md:text-md">{song.song_name}</p>
+                      <p className="text-yellow uppercase text-xs text-nowrap">
                         {song.country_name}
                       </p>
                     </div>
@@ -324,14 +301,12 @@ const Library = () => {
                       >
                         {song.artist_name}
                       </p>
-                      <p className="text-white uppercase text-xs">Medium</p>
+                      <p className="text-white uppercase text-xs">{song.difficulty}</p>
                     </div>
 
                     {/* Unlock Button */}
                     {showUnlocked ? (
-                      <div className="text-green-500 font-bold mt-4">
-                        Unlocked
-                      </div>
+                      <div className="text-green-500 font-bold mt-4">Unlocked</div>
                     ) : (
                       <div
                         className={`relative mt-3 cursor-pointer ${
@@ -371,9 +346,7 @@ const Library = () => {
         {/* Popup shown after user clicks unlock */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div className="flex justify-center flex-col items-center">
-            <h1 className="text-5xl popup-header tracking-wider">
-              You've Just Got
-            </h1>
+            <h1 className="text-5xl popup-header tracking-wider">You've Just Got</h1>
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
@@ -395,9 +368,7 @@ const Library = () => {
                   <p className="text-yellow uppercase text-xs text-nowrap ">
                     {unlockedSong?.artist_name}
                   </p>
-                  <p className="text-white text-sm">
-                    {unlockedSong?.song_name}
-                  </p>
+                  <p className="text-white text-sm">{unlockedSong?.song_name}</p>
                 </div>
               </div>
             </div>
@@ -421,25 +392,18 @@ const Library = () => {
               </div>
               <button
                 onClick={() => {
-                  if (
-                    user_data?.profile?.player?.total_gems >=
-                    gemsRequiredToUnlockSong
-                  ) {
+                  if (user_data?.profile?.player?.total_gems >= gemsRequiredToUnlockSong) {
                     unlockSongWithGems(unlockedSong);
                     setIsPopupOpen(false);
                     router.push("/hub");
                   }
                 }}
                 className={`mb-3 relative ${
-                  user_data?.profile?.player?.total_gems <
-                  gemsRequiredToUnlockSong
+                  user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong
                     ? "opacity-80 cursor-not-allowed"
                     : ""
                 }`}
-                disabled={
-                  user_data?.profile?.player?.total_gems <
-                  gemsRequiredToUnlockSong
-                }
+                disabled={user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong}
               >
                 <Image
                   src={"/assets/img/library/Continue.png"}
@@ -448,9 +412,7 @@ const Library = () => {
                   alt="unlocknow-btn"
                 />
                 <div className="absolute bottom-6">
-                  <p className="text-yellow ml-2 font-bold text-md">
-                    {gemsRequiredToUnlockSong}
-                  </p>
+                  <p className="text-yellow ml-2 font-bold text-md">{gemsRequiredToUnlockSong}</p>
                 </div>
               </button>
             </>
