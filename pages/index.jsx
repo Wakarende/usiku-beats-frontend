@@ -112,10 +112,9 @@ export default function TitleScreen() {
       try {
         const response = await axios.get(`${BASE_URL}song-detail/148/`);
         const tutorialTrack = response.data;
-        router.push({
-          pathname: "/game",
-          query: { track: JSON.stringify(tutorialTrack) },
-        });
+
+        localStorage.setItem("currentTrackData", JSON.stringify(tutorialTrack));
+        router.push("/game");
       } catch (err) {
         console.log("Error fetching tutorial track", err);
         router.push("/hub");
@@ -155,9 +154,7 @@ export default function TitleScreen() {
               <strong>Remember:</strong>
             </span>
           </div>
-          <p className="text-sm text-nowrap">
-            Turn on your sound and raise your volume!
-          </p>
+          <p className="text-sm text-nowrap">Turn on your sound and raise your volume!</p>
         </div>,
         {
           position: "top-left",
@@ -174,9 +171,7 @@ export default function TitleScreen() {
     <div>
       <ToastContainer />
       <div className="flex justify-end px-2 py-1">
-        <p className="text-white leading-wide small:text-[10px] medium:text-sm">
-          Version: 0.2.1
-        </p>
+        <p className="text-white leading-wide small:text-[10px] medium:text-sm">Version: 0.2.1</p>
       </div>
       <div className=" relative flex flex-col justify-between items-center h-[100vh] w-[100%] overflow-hidden">
         {/* Logo Section */}
@@ -214,9 +209,7 @@ export default function TitleScreen() {
             onClick={handleStart}
             initial={{ x: "100vw", opacity: 0 }}
             animate={
-              buttonVisible
-                ? { x: 0, opacity: 1, scale: [1, 1.05, 1] }
-                : { x: "100vw", opacity: 0 }
+              buttonVisible ? { x: 0, opacity: 1, scale: [1, 1.05, 1] } : { x: "100vw", opacity: 0 }
             }
             transition={{
               x: { type: "spring", stiffness: 100, damping: 10 },

@@ -179,14 +179,18 @@ const HubScreen = () => {
   // };
 
   const gotoGameDetail = (track) => {
-    // Create query parameter string with the track data
-    const queryParams = new URLSearchParams();
-    queryParams.append("track", JSON.stringify(track));
+    // Store track data in localStorage
+    localStorage.setItem("currentTrackData", JSON.stringify(track));
 
-    // Force a full page refresh by setting window.location.href
-    window.location.href = `/game?${queryParams.toString()}`;
+    router.push("/game");
+
+    // // Check if we're in development environment
+    // if (process.env.NODE_ENV === "development") {
+    //   router.push("/game");
+    // } else {
+    //   window.location.href = `/game.html`;
+    // }
   };
-
   const checkRedirect = () => {
     const params = new URLSearchParams(window.location.search);
     const trackParam = params.get("track");
@@ -196,12 +200,9 @@ const HubScreen = () => {
       axios.get(`${BASE_URL}song-detail/${trackId}/`).then((d) => {
         let trackObject = d.data;
 
-        // Create query parameter string with the track data
-        const queryParams = new URLSearchParams();
-        queryParams.append("track", JSON.stringify(trackObject));
-
-        // Force a full page refresh
-        window.location.href = `/game?${queryParams.toString()}`;
+        // Store track data in localStorage
+        localStorage.setItem("currentTrackData", JSON.stringify(trackObject));
+        router.push("/game");
       });
     }
 
@@ -209,12 +210,9 @@ const HubScreen = () => {
       try {
         const trackObject = JSON.parse(decodeURIComponent(trackParam));
 
-        // Create query parameter string with the track data
-        const queryParams = new URLSearchParams();
-        queryParams.append("track", JSON.stringify(trackObject));
-
-        // Force a full page refresh
-        window.location.href = `/game?${queryParams.toString()}`;
+        // Store track data in localStorage
+        localStorage.setItem("currentTrackData", JSON.stringify(trackObject));
+        router.push("/game");
       } catch (error) {
         console.error("Error parsing track JSON:", error);
       }

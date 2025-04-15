@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/main/authActions";
 import ViewportCoordinatePlugin from "phaser3-rex-plugins/plugins/viewportcoordinate-plugin.js";
 import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
+import { useAudio } from "../src/context/AudioProvider";
 
 class Boot extends Phaser.Scene {
   preload() {
@@ -49,7 +50,8 @@ const PhaserGame = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const { track } = router.query;
+  const { stopBgMusic } = useAudio();
+  stopBgMusic();
 
   const updateUserEventListener = ({ data, new_level }) => {
     // console.log(data);
@@ -75,7 +77,13 @@ const PhaserGame = () => {
   useEffect(() => {
     WebFont.load({
       custom: {
-        families: ["Afolkalips", "Carlito-Bold", "Carlito-BoldItalic", "Carlito-Italic", "Carlito-Regular"],
+        families: [
+          "Afolkalips",
+          "Carlito-Bold",
+          "Carlito-BoldItalic",
+          "Carlito-Italic",
+          "Carlito-Regular",
+        ],
       },
       active: () => {
         if (phaserGameRef.current) {
@@ -125,14 +133,34 @@ const PhaserGame = () => {
           gameRef.current.registry.set("router", router);
 
           let trackData = null;
-          if (track) {
-            const trackQuery = Array.isArray(track) ? track[0] : track;
+          try {
+            // Get track data from localStorage instead of query params
+            const trackDataString = localStorage.getItem("currentTrackData");
+            if (trackDataString) {
+              trackData = JSON.parse(trackDataString);
+              // Optional: Clear the localStorage item after retrieving to prevent stale data
+              // localStorage.removeItem("currentTrackData");
+            }
+          } catch (e) {
+            console.error("Error parsing track data from localStorage:", e);
+          }
+
+          // Fallback to query params if localStorage is empty (for backward compatibility)
+          if (!trackData && router.query.track) {
+            const trackQuery = Array.isArray(router.query.track)
+              ? router.query.track[0]
+              : router.query.track;
             try {
               trackData = JSON.parse(trackQuery);
             } catch (e) {
-              console.error("Error parsing track data:", e);
+              console.error("Error parsing track data from query:", e);
             }
           }
+
+          if (!trackData) {
+            console.warn("No track data found in localStorage or query params");
+          }
+
           gameRef.current.registry.set("trackData", trackData);
 
           gameRef.current.events.on("updateUserEvent", updateUserEventListener);
