@@ -92,7 +92,8 @@ const Library = () => {
       localStorage.setItem("libraryTutorialSeen", "true");
     }
 
-    const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142, 147, 149, 150, 151];
+    // const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142, 147, 149, 150, 151];
+    const songIds = [149, 150, 151, 152, 153, 154];
     const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
     axios.get(url).then((res) => {
