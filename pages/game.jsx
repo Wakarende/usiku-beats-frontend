@@ -48,16 +48,18 @@ const Game = () => {
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const iframeSrc =
     process.env.NODE_ENV === "production" ? `${origin}/game-iframe.html` : `${origin}/game-iframe`;
-
+  // In pages/game.jsx
   return (
     <div
       style={{
+        position: "fixed", // Change from relative to fixed
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
-        width: "100%",
-        position: "relative",
         backgroundColor: "black",
         zIndex: 1000,
         overflow: "hidden",
@@ -68,6 +70,7 @@ const Game = () => {
         key={iframeKey}
         src={iframeSrc}
         style={{
+          position: "absolute",
           width: "100%",
           height: "100%",
           border: "none",
