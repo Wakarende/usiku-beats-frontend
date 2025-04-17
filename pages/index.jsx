@@ -171,7 +171,7 @@ export default function TitleScreen() {
     <div>
       <ToastContainer />
       <div className="flex justify-end px-2 py-1">
-        <p className="text-white leading-wide small:text-[10px] medium:text-sm">Version: 0.2.1</p>
+        <p className="text-white leading-wide small:text-[10px] medium:text-sm">Version: 0.2.2</p>
       </div>
       <div className=" relative flex flex-col justify-between items-center h-[100vh] w-[100%] overflow-hidden">
         {/* Logo Section */}
