@@ -25,6 +25,40 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
+  const currentVersion = "0.2.2"; // Match the version displayed in the UI
+
+  // Version check
+  // Version check
+  useEffect(() => {
+    const checkVersion = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}version/`);
+        const serverVersion = response.data.version;
+        const localVersion = localStorage.getItem("gameVersion");
+
+        if (localVersion !== serverVersion) {
+          console.log("new version detected. reloading");
+
+          // Store new version
+          localStorage.setItem("gameVersion", serverVersion);
+
+          // Clear cache if supported
+          if (window.caches) {
+            const cacheNames = await window.caches.keys();
+            await Promise.all(cacheNames.map((cacheName) => window.caches.delete(cacheName)));
+          }
+
+          // Force reload of the page without clearing localStorage
+          window.location.reload(true);
+        }
+      } catch (error) {
+        console.error("Version check failed:", error);
+        // Game continues with current version if check fails
+      }
+    };
+
+    checkVersion();
+  }, []);
 
   // Password
   useEffect(() => {
@@ -171,7 +205,9 @@ export default function TitleScreen() {
     <div>
       <ToastContainer />
       <div className="flex justify-end px-2 py-1">
-        <p className="text-white leading-wide small:text-[10px] medium:text-sm">Version: 0.2.2</p>
+        <p className="text-white leading-wide small:text-[10px] medium:text-sm">
+          Version: {currentVersion}
+        </p>
       </div>
       <div className=" relative flex flex-col justify-between items-center h-[100vh] w-[100%] overflow-hidden">
         {/* Logo Section */}
@@ -221,14 +257,6 @@ export default function TitleScreen() {
               },
             }}
           >
-            {/* <Image
-              src="/assets/img/start/start%20button.png"
-              alt="Start"
-              width={400}
-              height={400}
-              className="w-full transition-opacity h-auto"
-              onClick={handleStart}
-            /> */}
             <Image
               src={"/assets/img/hub/Button blank.png"}
               alt="button-bg"
