@@ -178,32 +178,31 @@ export default function TitleScreen() {
     sequence();
   }, []);
 
-  useEffect(() => {
-    if (buttonVisible) {
-      toast(
-        <div>
-          <div className="flex items-center">
-            <InfoIcon className="mr-1" />
-            <span>
-              <strong>Remember:</strong>
-            </span>
-          </div>
-          <p className="text-sm text-nowrap">Turn on your sound and raise your volume!</p>
-        </div>,
-        {
-          position: "top-left",
-          autoClose: false,
-          closeOnClick: false,
-          draggable: false,
-          className: "toast-message",
-        }
-      );
-    }
-  }, [buttonVisible]);
+  // useEffect(() => {
+  //   if (buttonVisible) {
+  //     toast(
+  //       <div>
+  //         <div className="flex items-center">
+  //           <InfoIcon className="mr-1" />
+  //           <span>
+  //             <strong>Remember:</strong>
+  //           </span>
+  //         </div>
+  //         <p className="text-sm text-nowrap">Turn on your sound and raise your volume!</p>
+  //       </div>,
+  //       {
+  //         position: "top-left",
+  //         autoClose: false,
+  //         closeOnClick: false,
+  //         draggable: false,
+  //         className: "toast-message",
+  //       }
+  //     );
+  //   }
+  // }, [buttonVisible]);
 
   return (
     <div>
-      <ToastContainer />
       <div className="flex justify-end px-2 py-1">
         <p className="text-white leading-wide small:text-[10px] medium:text-sm">
           Version: {currentVersion}
