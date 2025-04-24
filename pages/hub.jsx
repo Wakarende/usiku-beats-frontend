@@ -383,8 +383,10 @@ const HubScreen = () => {
                 />
               ))
             ) : (
-              <div className="flex justify-center kayfo-filter-no-result-box">
-                No unlocked songs yet. Head to the Library!
+              <div className="flex justify-center items-center w-full h-40">
+                <pending className="text-center text-[#6c6b6b] tracking-wide">
+                  No unlocked songs yet. Head to the <span className="text-yellow">Library!</span>
+                </pending>
               </div>
             )}
           </div>

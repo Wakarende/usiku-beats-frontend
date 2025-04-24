@@ -6,6 +6,16 @@
 }
 
 /* INDEX PAGE END  */
+
+/* TURN ON YOUR SOUND PAGE  */
+.sound-page {
+    background-image: url('../public/assets/img/BG.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+}
+
+/* TURN ON YOUR SOUND PAGE END  */
 /* HUBSCREEN  */
 .cdm-page {
     min-height: 100vh;

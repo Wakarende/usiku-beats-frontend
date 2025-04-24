@@ -26,10 +26,8 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   useEffect(() => {
     if (typeof window === "undefined") return; // safeguard for SSR
     try {
-      const savedUnlocked =
-        JSON.parse(localStorage.getItem("unlockedState")) || {};
-      const savedParticles =
-        JSON.parse(localStorage.getItem("particleTrigger")) || {};
+      const savedUnlocked = JSON.parse(localStorage.getItem("unlockedState")) || {};
+      const savedParticles = JSON.parse(localStorage.getItem("particleTrigger")) || {};
       setUnlockedState(savedUnlocked);
       setParticleTrigger(savedParticles);
     } catch (error) {
@@ -48,9 +46,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   // ensures the user sees the pulse if they left the page and came back.
   const lockedSongs =
-    user_data?.profile?.player?.player_song_instances?.filter(
-      (item) => !item.unlocked
-    ) || [];
+    user_data?.profile?.player?.player_song_instances?.filter((item) => !item.unlocked) || [];
 
   useEffect(() => {
     if (!lockedSongs.length) return;
@@ -114,9 +110,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   function unlockSongWithGems(song) {
     let newUserdata = JSON.parse(JSON.stringify(user_data));
     if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
-      setPopupMessage(
-        "You don't have enough gems to unlock this song right now."
-      );
+      setPopupMessage("You don't have enough gems to unlock this song right now.");
       setIsPopupOpen(true);
       return;
     }
@@ -138,19 +132,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   //Countdown timer
   function CountdownTimer({ unlockTime, onExpire }) {
-    const [timeLeft, setTimeLeft] = useState(
-      calculateTimeLeft(new Date(unlockTime))
-    );
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(unlockTime)));
 
     useEffect(() => {
       const timer = setTimeout(() => {
         const newTime = calculateTimeLeft(new Date(unlockTime));
         setTimeLeft(newTime);
 
-        if (
-          Object.keys(newTime).length === 0 &&
-          typeof onExpire === "function"
-        ) {
+        if (Object.keys(newTime).length === 0 && typeof onExpire === "function") {
           onExpire();
         }
       }, 1000);
@@ -187,9 +176,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     const item = lockedSongs[i];
     if (item) {
       const frameImage =
-        i % 2 === 0
-          ? "/assets/img/hub/unlock_frame.png"
-          : "/assets/img/hub/unlock_frame_2.png";
+        i % 2 === 0 ? "/assets/img/hub/unlock_frame.png" : "/assets/img/hub/unlock_frame_2.png";
 
       slotsContent.push(
         <div
@@ -235,10 +222,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       onExpire={() => {
                         setUnlockedState((prev) => {
                           const newState = { ...prev, [item.song.id]: true };
-                          localStorage.setItem(
-                            "unlockedState",
-                            JSON.stringify(newState)
-                          );
+                          localStorage.setItem("unlockedState", JSON.stringify(newState));
                           return newState;
                         });
                         setParticleTrigger((prev) => ({
@@ -255,10 +239,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
           {!isUnlockTimePassed(item.unlock_time) ? (
             <div className="relative mt-0.5">
-              <button
-                className="w-full relative"
-                onClick={() => unlockSongWithGems(item.song)}
-              >
+              <button className="w-full relative" onClick={() => unlockSongWithGems(item.song)}>
                 <Image
                   src="/assets/img/hub/Button blank.png"
                   alt="Button"
@@ -350,11 +331,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
-      {songs?.length === 0 && (
-        <div className="kayfo-filter-no-result-box">
-          {!loading ? "No result" : "loading..."}
-        </div>
-      )}
+      {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
         <div className="bg-[#1a1a1a] p-4 text-center medium:w-2/3 rounded-lg small:w-[280px]">
           <p className="text-yellow font-bold text-2xl text-nowrap tracking-wide mb-3">

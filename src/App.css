@@ -304,63 +304,22 @@ h3 {
 }
 
 
-.kayfo-footer-box {
-  color: 'white';
-  display: flex;
-  flex-direction: column;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  background-color: var(--kayfo-violet);
-}
 
 
-.kayfo-social-link img {
-  width: 80%;
-}
-
-.kayfo-footer-links-nav {
-  display: flex;
-  justify-content: space-around;
-  color: 'white';
-  margin-top: 30px;
-}
-
-.kayfo-footer-links-nav * {
-  color: #fff;
-}
-
-.kayfo-filter-no-result-box {
-  padding: 25px 0px;
-  color: #fff;
-  background-color: #ffffff12;
-  text-indent: 15px;
-  margin: 15px 0px;
-}
-
-.kayfo-games-pagination-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  margin-top: 50px;
-}
 
 
-.kayfo-games-pagination * {
-  font-family: 'Nunito';
-  font-weight: normal;
-  margin: 5px;
-  border-radius: 15px !important;
-  /* background-color: var(--kayfo-dark-pink);
-  border: solid 1px #fff; */
-}
 
 
-.kayfo-games-pagination * a {
-  background-color: var(--kayfo-dark-pink);
-  border: solid 1px #fff;
-  text-decoration: none;
-}
+
+
+
+
+
+
+
+
+
+
 
 ul li.page-item span {
   color: #ffffff;

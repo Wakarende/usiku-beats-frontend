@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import InfoIcon from "@mui/icons-material/Info";
-import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "../redux/main/authActions";
@@ -107,29 +104,10 @@ export default function TitleScreen() {
     checkAnon();
   }, [user_data, dispatch]);
 
-  // const handleStart = () => {
-  //   if (document.documentElement.requestFullscreen) {
-  //     document.documentElement
-  //       .requestFullscreen()
-  //       .then(() => {
-  //         router.push("/intro");
-  //       })
-  //       .catch((err) => {
-  //         console.error("Error enabling full-screen mode:", err);
-  //         router.push("/intro");
-  //       });
-  //   } else {
-  //     console.warn("Fullscreen API is not supported");
-  //     router.push("/intro");
-  //   }
-  //   handleClickSound();
-  // };
-
   // Combined intro and index logic
   const handleStart = async () => {
     handleClickSound();
-    playBoom();
-
+    router.push("/sound");
     try {
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
@@ -139,24 +117,38 @@ export default function TitleScreen() {
     } catch (err) {
       console.error("Error enabling full-screen mode:", err);
     }
-
-    // Check FTUE
-    const ftueCompleted = localStorage.getItem("ftueCompleted");
-    if (!ftueCompleted || ftueCompleted === "false") {
-      try {
-        const response = await axios.get(`${BASE_URL}song-detail/148/`);
-        const tutorialTrack = response.data;
-
-        localStorage.setItem("currentTrackData", JSON.stringify(tutorialTrack));
-        router.push("/game");
-      } catch (err) {
-        console.log("Error fetching tutorial track", err);
-        router.push("/hub");
-      }
-    } else {
-      router.push("/hub");
-    }
   };
+  // const handleStart = async () => {
+  //   handleClickSound();
+  //   playBoom();
+
+  //   try {
+  //     if (document.documentElement.requestFullscreen) {
+  //       await document.documentElement.requestFullscreen();
+  //     } else {
+  //       console.warn("Fullscreen API is not supported");
+  //     }
+  //   } catch (err) {
+  //     console.error("Error enabling full-screen mode:", err);
+  //   }
+
+  //   // Check FTUE
+  //   const ftueCompleted = localStorage.getItem("ftueCompleted");
+  //   if (!ftueCompleted || ftueCompleted === "false") {
+  //     try {
+  //       const response = await axios.get(`${BASE_URL}song-detail/148/`);
+  //       const tutorialTrack = response.data;
+
+  //       localStorage.setItem("currentTrackData", JSON.stringify(tutorialTrack));
+  //       router.push("/game");
+  //     } catch (err) {
+  //       console.log("Error fetching tutorial track", err);
+  //       router.push("/hub");
+  //     }
+  //   } else {
+  //     router.push("/hub");
+  //   }
+  // };
 
   // Animation states
   const [backgroundVisible, setBackgroundVisible] = useState(false);
@@ -177,29 +169,6 @@ export default function TitleScreen() {
 
     sequence();
   }, []);
-
-  // useEffect(() => {
-  //   if (buttonVisible) {
-  //     toast(
-  //       <div>
-  //         <div className="flex items-center">
-  //           <InfoIcon className="mr-1" />
-  //           <span>
-  //             <strong>Remember:</strong>
-  //           </span>
-  //         </div>
-  //         <p className="text-sm text-nowrap">Turn on your sound and raise your volume!</p>
-  //       </div>,
-  //       {
-  //         position: "top-left",
-  //         autoClose: false,
-  //         closeOnClick: false,
-  //         draggable: false,
-  //         className: "toast-message",
-  //       }
-  //     );
-  //   }
-  // }, [buttonVisible]);
 
   return (
     <div className="fixed inset-0 overflow-hidden">
