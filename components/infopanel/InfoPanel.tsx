@@ -5,7 +5,7 @@ export default function InfoPanel({
   title = "How To Play?",
   paragraphs = [],
   onClose,
-  bgImage = "/assets/img/ftue/Info_panel.png",
+  bgImage = "/assets/img/ftue/info.png",
 }) {
   return (
     <div
@@ -14,17 +14,19 @@ export default function InfoPanel({
         inset: 0,
         backgroundColor: "rgba(0,0,0,0.5)",
         zIndex: 9999,
+
       }}
     >
       <div
-        className="flex flex-col absolute bottom-0 left-[50%] transform translate-x-[-50%] w-[100%] bg-[#1a1a1a] p-4 text-white tracking-widest rounded-lg text-center"
+        className="flex flex-col absolute translate-y-[90%] left-[50%] transform translate-x-[-50%] w-full h-auto  p-4 text-white tracking-widest rounded-lg text-center"
         style={{
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
+          backgroundPosition:"center"
         }}
       >
-        <motion.div
+        {/* <motion.div
           animate={{
             scale: [1, 1.2, 1],
           }}
@@ -44,7 +46,7 @@ export default function InfoPanel({
           >
             {title}
           </h1>
-        </motion.div>
+        </motion.div> */}
         <div className="text-xl mb-2 text-yellow small:text-xs medium:w-full large:w-[80%] xl:w-[60%] xl:text-2xl mx-auto">
           {paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>

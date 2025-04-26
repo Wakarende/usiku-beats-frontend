@@ -13,13 +13,7 @@ const getStarsFromScore = (score) => {
   return 0; // For unexpected cases
 };
 
-const OverlayCard = ({
-  isOpen,
-  onClose,
-  artistName,
-  bio,
-  socialMedia = {},
-}) => {
+const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => {
   if (!isOpen) return null;
 
   const socialIcons = {
@@ -81,7 +75,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
   const starCount = getStarsFromScore(song.high_score);
 
   return (
-    <div className="shrink-0 relative overflow-hidden flex justify-center items-center mx-1 small:w-[140px] small:h-[210px] medium:w-[160px] medium:h-[250px] large:w-[160px] large:h-[250px] xl:w-[160px] xl:h-[250px]">
+    <div className="shrink-0 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px]">
       {/* Frame */}
       <Image
         src="/assets/img/hub/Frame_.png"
@@ -91,13 +85,8 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
         className="z-2"
       />
       {/* Artist Image Container */}
-      <div className="absolute  overflow-hidden  small:left-[2%] small:w-[134px] small:h-[142px] small:top-[1.3%]  small:rounted-t-lg medium:left-1  medium:w-[152px] medium:h-[165px] medium:top-1.5 medium:rounded-t-lg large:top-1.5  large:left-1  large:w-[152px] large:h-[165px] large:rounded-t-lg xl:w-[152px] xl:h-[235px]  large:top-1.5 large:left-1 xl:rounded-t-lg">
-        <Image
-          src={song.thumbnail_file}
-          alt="Artist Image"
-          layout="fill"
-          objectFit="cover"
-        />
+      <div className="absolute  overflow-hidden  sm:left-[2%] sm:w-[134px] sm:h-[142px] sm:top-[1.3%]  sm:rounted-t-lg md:left-1  md:w-[152px] md:h-[165px] md:top-1.5 md:rounded-t-lg lg:top-1.5  lg:left-1  lg:w-[152px] lg:h-[165px] lg:rounded-t-lg xl:w-[152px] xl:h-[235px] lg:top-1.5 lg:left-1 xl:rounded-t-lg">
+        <Image src={song.thumbnail_file} alt="Artist Image" layout="fill" objectFit="cover" />
       </div>
 
       {/* Star Rating Overlay */}
@@ -106,7 +95,7 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
           {[...Array(5)].map((_, index) => (
             <div
               key={index}
-              className="relative medium:w-5 medium:h-5 small:w-4 small:h-4 large:w-5 large:h-5 xl:w-5 xl:h-5"
+              className="relative md:w-5 md:h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-5 xl:h-5"
             >
               <Image
                 src={
@@ -117,20 +106,20 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
                 alt="star"
                 width={15}
                 height={15}
-                className="stars object-contain medium:min-w-5 medium:min-h-5 small:min-w-4 small:min-h-4 large:min-w-5 large:min-h-5 xl:min-w-5 xl:min-h-5"
+                className="stars object-contain md:min-w-5 md:min-h-5 sm:min-w-4 sm:min-h-4 lg:min-w-5 lg:min-h-5 xl:min-w-5 xl:min-h-5"
               />
             </div>
           ))}
         </div>
       </div>
       {/* Country and Difficulty Labels */}
-      <div className="absolute w-full flex justify-start items-end z-20  small:bottom-[78px] small:left-[-10px]  medium:bottom-[92px] medium:left-0 large:bottom-[92px] large:left-0 xl:bottom-[92px] xl:left-0">
+      <div className="absolute w-full flex justify-start items-end z-20  sm:bottom-[78px] sm:left-[-10px]  md:bottom-[92px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
         <svg
           viewBox="0 0 450 70"
-          className="absolute medium:left-[-25px] small:left-[-16px] large:left-[-25px] xl:left-[-25px]"
+          className="absolute md:left-[-25px] sm:left-[-16px] lg:left-[-25px] xl:left-[-25px]"
         >
           <text
-            className="svgText uppercase tracking-normal  text-yellow medium:text-[8px] small:text-[8px] large:text-[8px] xl:text-[8px]"
+            className="svgText uppercase tracking-normal  text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
             x="1"
             y="45"
           >
@@ -139,10 +128,10 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
         </svg>
         <svg
           viewBox="0 0 450 70"
-          className="absolute medium:left-[91px] small:left-[81px] large:left-[91px] xl:left-[91px]"
+          className="absolute md:left-[91px] sm:left-[81px] lg:left-[91px] xl:left-[91px]"
         >
           <text
-            className="svgText uppercase tracking-normal  text-yellow medium:text-[8px] small:text-[8px] large:text-[8px] xl:text-[8px]"
+            className="svgText uppercase tracking-normal  text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
             x="3"
             y="45"
           >
@@ -151,18 +140,18 @@ const ArtistImage = ({ song, onArtistClick, onPlayClick, isPulsing }) => {
         </svg>
       </div>
       {/* Text (Artist and Song) and Play Button */}
-      <div className="absolute  left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight medium:bottom-[-1px]  small:bottom-[-1px] large:bottom-[-1px] xl:bottom-[-1px]">
-        <p className="text-yellow text-nowrap medium:text-base large:text-base small:text-sm leading-tight">
+      <div className="absolute  left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight md:bottom-[-1px]  sm:bottom-[-1px] lg:bottom-[-1px] xl:bottom-[-1px]">
+        <p className="text-yellow text-nowrap md:text-base lg:text-base sm:text-sm leading-tight">
           {song.song_name}
         </p>
         <p
           onClick={(e) => onArtistClick(e, song.artist)}
-          className="text-white uppercase text-nowrap leading-tight   small:text-[8px]  medium:text-[10px] large:text-[10px] xl:text-[10px]"
+          className="text-white uppercase text-nowrap leading-tight sm:text-[8px]  md:text-[10px] lg:text-[10px] xl:text-[10px]"
         >
           {song.artist_name}
         </p>
-        <div className="medium:w-[145px] small:w-[120px] large:w-[145px] xl:w-[145px]">
-          <button onClick={onPlayClick} className="medium:mt-1">
+        <div className="md:w-[145px] sm:w-[120px] lg:w-[145px] xl:w-[145px]">
+          <button onClick={onPlayClick} className="md:mt-1">
             <Image
               src="/assets/img/hub/Play_now.png"
               width={200}

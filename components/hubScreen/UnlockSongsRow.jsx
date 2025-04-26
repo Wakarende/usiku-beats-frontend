@@ -148,7 +148,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }, [timeLeft, unlockTime, onExpire]);
 
     return (
-      <p className="small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
+      <p className="sm:text-[6px] sm:pb-[5px] md:text-[7px] md:pb-[4px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px]">
         {timeLeft.minutes}:{timeLeft.seconds} m
       </p>
     );
@@ -186,14 +186,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           }`}
         >
           <div
-            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px]"
+            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[116px] lg:w-[200px] lg:h-[180px]"
             style={{
               backgroundImage: `url(${item.song.thumbnail_file})`,
             }}
           >
             <div className="flex justify-center items-center">
-              <div className="absolute small:top-[-6%] medium:top-[-6%] large:top-[-1%]">
-                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 small:text-xl medium:text-xl large:text-xl xl:text-xl">
+              <div className="absolute sm:top-[-6%] md:top-[-6%] lg:top-[-1%]">
+                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-xl lg:text-xl xl:text-xl">
                   {item.song.song_name}
                 </p>
               </div>
@@ -212,7 +212,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 <p className="text-white font-bold ml-2">
                   {isUnlockTimePassed(item.unlock_time) ? (
                     <button onClick={() => addToLibrary(item.song)}>
-                      <p className="tracking-wide unlocked-text text-nowrap small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[10px] large:pb-[7px] large:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
+                      <p className="tracking-wide unlocked-text text-nowrap sm:text-[6px] sm:pb-[5px] md:text-[7px] md:pb-[4px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
                         Unlocked
                       </p>
                     </button>
@@ -245,7 +245,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                   alt="Button"
                   width={160}
                   height={40}
-                  className="small:h-[20px] small:w-[120px] medium:w-[200px] medium:h-[25px] large:w-[200px] large:h-[35px] xl:w-[200px] xl:h-[35px]"
+                  className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
                 />
                 <div className="absolute inset-0 flex items-center justify-between px-1">
                   <div className="flex items-center gap-0.5">
@@ -254,15 +254,15 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                       alt="Gem"
                       width={16}
                       height={16}
-                      className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px] xl:w-[20px] xl:h-[20px]"
+                      className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
                     />
                     <div className="flex items-center">
-                      <span className="text-yellow small:text-[8px] medium:text-[10px] large:text-[14px] xl:text-[14px]">
+                      <span className="text-yellow sm:text-[8px] md:text-[10px] lg:text-[14px] xl:text-[14px]">
                         {gemsRequiredToUnlockSong}
                       </span>
                     </div>
                   </div>
-                  <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text small:text-[8px] medium:text-[10px] large:text-lg xl:text-lg">
+                  <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
                     unlock now
                   </p>
                   <Image
@@ -270,7 +270,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                     alt="Unlock"
                     width={16}
                     height={16}
-                    className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px] xl:w-[20px] xl:h-[20px]"
+                    className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
                   />
                 </div>
               </button>
@@ -282,18 +282,17 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 alt="Unlock Button Background"
                 width={160}
                 height={100}
-                className="small:h-[20px] small:w-[120px] medium:w-[200px] medium:h-[25px] large:w-[200px] large:h-[35px] xl:w-[200px] xl:h-[35px]"
+                className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
               />
               <div className="absolute gem-wrapper">
                 <button onClick={() => addToLibrary(item.song)}>
-                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center small:text-[8px] medium:text-[10px] large:text-lg xl:text-lg">
+                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
                     Add to Library
                   </p>
                 </button>
               </div>
             </button>
           )}
-
           {/* Show particle effect if triggered */}
           {particleTrigger[item.song.id] && (
             <ParticleEffect
@@ -312,9 +311,9 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       // Render the placeholder slot card
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
-          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[140px] large:h-[220px] large:w-[202px] xl:w-[202px] xl:h-[220px]">
+          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[140px] lg:h-[220px] lg:w-[202px] xl:w-[202px] xl:h-[220px]">
             <Image
-              src="/assets/img/hub/No_song_unlock_.png"
+              src="/assets/img/hub/empty_slot.png"
               width={200}
               height={100}
               alt="no-song-to-unlock-card"
@@ -327,13 +326,13 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center small:text-xl medium:text-4xl  large:text-6xl large:mb-3 xl:text-6xl xl:mb-3">
+      <h1 className="text-[#6e6d6d] text-center sm:text-xl md:text-4xl  lg:text-6xl lg:mb-3 xl:text-6xl xl:mb-3">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
       {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-        <div className="bg-[#1a1a1a] p-4 text-center medium:w-2/3 rounded-lg small:w-[280px]">
+        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg sm:w-[280px]">
           <p className="text-yellow font-bold text-2xl text-nowrap tracking-wide mb-3">
             Not Enough Gems!
           </p>

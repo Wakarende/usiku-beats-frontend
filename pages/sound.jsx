@@ -27,7 +27,7 @@ const Sound = () => {
     //Right star
     {
       className:
-        "absolute medium:bottom-80 medium:right-44 small:bottom-80 small:right-40 large:bottom-96 large:right-80 z-0",
+        "absolute md:bottom-80 md:right-44 sm:bottom-80 sm:right-40 lg:bottom-96 lg:right-80 z-0",
       width: 30,
       height: 30,
       animation: "animate-pulse",

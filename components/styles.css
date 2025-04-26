@@ -427,11 +427,11 @@ svg {
 /* END ARTIST INFO OVERLAY  */
 
 /* HUBSCREEN FOOTER  */
-.hub-footer {
+/* .hub-footer {
   background-image: url("/assets/img/bg/Bottom banner BG.png");
-}
+} */
 
-@media only screen and (max-width: 395px) {
+/* @media only screen and (max-width: 395px) {
 
   .bottom-text {
     font-size: 8px;
@@ -455,33 +455,33 @@ svg {
 
   .discs-text-container {
     left: 61%;
-    top: 10%;
+    top: 38%;
   }
 
   .discs-text {
     font-size: 12px;
   }
-}
+} */
 
-@media only screen and (min-width: 400px) and (max-width: 640px) {
+/* @media only screen and (min-width: 400px) and (max-width: 640px) {
   .bottom-text {
     font-size: 9px;
   }
 
-  .hub-footer {
-    height: 8rem;
-  }
+  /* .hub-footer {
+    height: 100%
+  } */
 
-  .footer-text {
-    font-size: 12px;
-  }
+/* .footer-text {
+    font-size: 10px;
+  } */
 
-  .discs-text-container {
+/* .discs-text-container {
     left: 62%;
-    top: 10%;
-  }
+    top: 50%;
+  } */
 
-  .disc-text {
+/* .disc-text {
     font-size: 14px;
   }
 
@@ -489,11 +489,11 @@ svg {
     max-width: 40%;
     right: 32%;
     bottom: 4%;
-  }
+  } */
 
-}
+/* }  */
 
-@media only screen and (min-width: 700px) and (max-width: 1023px) {
+/* @media only screen and (min-width: 700px) and (max-width: 1023px) {
   .bottom-text-container {
     right: -1%;
     bottom: -5%
@@ -559,7 +559,7 @@ svg {
     right: 33%;
     bottom: 2%;
   }
-}
+} */
 
 /* HUBSCREEN END  */
 

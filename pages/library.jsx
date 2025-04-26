@@ -92,7 +92,6 @@ const Library = () => {
       localStorage.setItem("libraryTutorialSeen", "true");
     }
 
-    // const songIds = [14, 54, 65, 56, 143, 144, 119, 136, 142, 147, 149, 150, 151];
     const songIds = [149, 150, 151, 152, 153, 154];
     const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
@@ -267,7 +266,7 @@ const Library = () => {
           />
         </div>
         {/* Songs List */}
-        <div className="flex flex-wrap justify-center items-stretch ">
+        <div className="w-full flex flex-wrap justify-center  ">
           {songs.map((song, index) => {
             const instance = user_data?.profile?.player?.player_song_instances.find(
               (inst) => inst.song.id === song.id
@@ -284,11 +283,10 @@ const Library = () => {
                       alt="Song Cover"
                       width={150}
                       height={150}
-                      className="rounded"
+                      className="rounded-md"
                     />
                   </div>
-
-                  <div className="flex-grow ml-6">
+                  <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <p className="font-bold text-yellow text-lg md:text-md text-nowrap">
                         {song.song_name}

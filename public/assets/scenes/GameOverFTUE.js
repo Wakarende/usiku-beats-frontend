@@ -67,7 +67,7 @@ class GameOverFTUE extends Phaser.Scene {
       this.game.events.emit("destroyGame");
 
       router.push({
-        pathname: "/library",
+        pathname: "/hub",
         query: { ftueGameplayCompleted: this.ftueCompleted },
       });
     });

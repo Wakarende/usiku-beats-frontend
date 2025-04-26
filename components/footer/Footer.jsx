@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import useSound from "use-sound";
 import useClickSound from "../../hooks/useClickSound";
 
 const LibraryFooter = () => {
@@ -12,64 +11,52 @@ const LibraryFooter = () => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const canUnlockSongs = totalDiscs >= 30;
 
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
   const handleClickSound = useClickSound();
 
   return (
-    <Link href={"/library"} onClick={handleClickSound}>
-      <footer className="fixed hub-footer bottom-0 bg-center bg-no-repeat bg-contain w-full ">
-        <div className="relative medium:h-[100px] medium:top-[15%] ">
-          <Image
-            src="/assets/img/footer/footer-bg.png"
-            alt="Footer background pattern"
-            height={100}
-            width={100}
-            className="small:object-contain medium:object-contain large:object-contain z-1 bg-no-repeat w-full"
-            priority
-          />
-          <div className="absolute inset-0 z-1">
-            <div className="flex flex-col justify-between">
-              <div className="absolute p-2 more-songs-container">
-                <p className=" more-songs-text small:font-medium medium:font-medium large:font-medium text-white leading-tight medium:text-[12px] large:text-lg xl:text-2xl">
-                  Add more songs to your collection by earning discs
-                </p>
-              </div>
-            </div>
-            {/* Right Section */}
-            <div className="text-white text-right absolute inset-0">
-              <div className="absolute flex flex-col discs-text-container">
-                <motion.p
-                  className="text-sm large:text-3xl font-bold uppercase mb-1 discs-text text-center text-nowrap leading-tight"
-                  animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
-                  transition={
-                    canUnlockSongs
-                      ? {
-                          duration: 0.8,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          ease: "easeInOut",
-                        }
-                      : {}
-                  }
-                >
-                  You now have <br />
-                  {totalDiscs} discs
-                </motion.p>
-              </div>
-              <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[5%] medium: right-[-4%] medium:bottom-[15%] leading-tight">
-                <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
-                  Each song costs 30 discs.
-                </p>
-                <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
-                  Get discs by playing your song
-                </p>
-              </div>
-            </div>
+    <footer
+      style={{
+        backgroundImage: "url('/assets/img/footer/Bottom_banner_bg.png')",
+      }}
+      className="fixed bottom-0 left-0 right-0 w-full bg-bottom bg-no-repeat bg-contain h-full overflow-hidden"
+    >
+      <Link href={"/library"} onClick={handleClickSound}>
+        <button className="absolute sm:bottom-[6.6rem] md:bottom-28 left-0 right-0 max-w-[1000px] w-full px-4">
+          <div className="relative mx-auto w-[1000px]">
+            <Image
+              src={"/assets/img/footer/song_library_btn.png"}
+              width={500}
+              height={100}
+              className="w-full sm:h-8 md:h-10 "
+              alt="Button background"
+            />
+          </div>
+        </button>
+      </Link>
+      <div className="absolute sm:bottom-14 md:bottom-16 sm:left-[14rem] md:left-[15.5rem]">
+        <div className="relative inset-0 flex justify-end items-center">
+          <div className="">
+            <motion.p
+              className="sm:text-xs md:text-sm lg:text-3xl font-bold uppercase mb-1 text-center text-white whitespace-nowrap leading-tight"
+              animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
+              transition={
+                canUnlockSongs
+                  ? {
+                      duration: 0.8,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                    }
+                  : {}
+              }
+            >
+              You now have <br />
+              {totalDiscs} discs
+            </motion.p>
           </div>
         </div>
-      </footer>
-    </Link>
+      </div>
+    </footer>
   );
 };
 
