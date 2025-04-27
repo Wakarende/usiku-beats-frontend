@@ -55,6 +55,8 @@ const HubScreen = () => {
   //   playBgMusic();
   // }, [playBgMusic]);
 
+  const [footerGlowActive, setFooterGlowActive] = useState(false);
+
   useEffect(() => {
     checkAnonUser();
     checkRedirect();
@@ -134,11 +136,19 @@ const HubScreen = () => {
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
     const ftueCompleted = localStorage.getItem("ftueCompleted");
-
+    const footerGlowCleared = localStorage.getItem("footerGlowCleared");
     if (ftueParam === "true" && ftueCompleted !== "true") {
       setShowFtuePanel(true);
     }
+    if (!footerGlowCleared) {
+      setFooterGlowActive(true);
+    }
   }, []);
+
+  const clearFooterGlow = () => {
+    setFooterGlowActive(false);
+    localStorage.setItem("footerGlowCleared", "true");
+  };
 
   const closeFtuePanel = () => {
     localStorage.setItem("ftueCompleted", "true");
@@ -343,15 +353,19 @@ const HubScreen = () => {
       {/* The FTUE panel if needed */}
       {showFtuePanel && (
         <InfoPanel
-          className="w-full"
+          className=""
           onClose={closeFtuePanel}
           paragraphs={[
             <>
-              <p className="text-lg">
-                This is the <span className="font-bold">Hubscreen</span>, where you can play the
-                songs you've unlocked and access the library to unlock more.
+              <p className="font-bold sm:text-md mb-4">
+                Usiku Beats is all about collecting great songs to play and master!
               </p>
-              <p className="mt-2 text-lg">Press play now for your first song to get started!</p>
+              <p className="text-lg sm:text-md">
+                This page is where you access all <span className="font-bold">Your Songs...</span>{" "}
+                but right now it's empty! To get your first song, tap this button to open the
+                <br />
+                <span className="font-bold"> Song Library!</span>
+              </p>
             </>,
           ]}
         />
@@ -468,7 +482,7 @@ const HubScreen = () => {
         </div>
       </DailyRewardPopup>
 
-      <LibraryFooter />
+      <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
     </div>
   );
 };
