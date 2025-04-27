@@ -50,6 +50,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             onClick={() => {
               handleClickSound();
               clearFooterGlow();
+              localStorage.setItem("ftueStep", "2");
             }}
           >
             <button className="absolute sm:bottom-[6.6rem] md:bottom-28 left-0 right-0 max-w-[1000px] w-full px-4">

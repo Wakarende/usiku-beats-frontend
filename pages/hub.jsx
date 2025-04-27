@@ -56,6 +56,12 @@ const HubScreen = () => {
   // }, [playBgMusic]);
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
+  const [ftueStep, setFtueStep] = useState(0);
+
+  useEffect(() => {
+    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    setFtueStep(storedStep);
+  }, []);
 
   useEffect(() => {
     checkAnonUser();
@@ -151,7 +157,7 @@ const HubScreen = () => {
   };
 
   const closeFtuePanel = () => {
-    localStorage.setItem("ftueCompleted", "true");
+    localStorage.setItem("ftueCompleted", "false");
     setShowFtuePanel(false);
 
     const currentQuery = { ...router.query };

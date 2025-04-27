@@ -42,6 +42,18 @@ const Library = () => {
   const [isFtue, setIsFtue] = useState(false); // Are we in tutorial flow?
   const [showFtuePanel, setShowFtuePanel] = useState(false); // Show info panel?
 
+  const [ftueStep, setFtueStep] = useState(0);
+  const [showLibraryFtuePanel, setShowLibraryFtuePanel] = useState(false);
+
+  useEffect(() => {
+    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    setFtueStep(storedStep);
+
+    if (storedStep === 2) {
+      setShowLibraryFtuePanel(true);
+    }
+  }, []);
+
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
@@ -114,6 +126,10 @@ const Library = () => {
     if (song.isUnlocked) return;
 
     setUnlockedSong(song);
+    if (ftueStep === 2) {
+      localStorage.setItem("ftueStep", "3");
+      setFtueStep(3);
+    }
     setIsPopupOpen(true);
 
     let unlockTime = null;
@@ -228,21 +244,7 @@ const Library = () => {
   return (
     <div className="cmd-page">
       <Header />
-      {showFtuePanel && (
-        <InfoPanel
-          onClose={() => setShowFtuePanel(false)}
-          paragraphs={[
-            <>
-              <p className="text-lg">
-                This is the <span className="font-bold">Library</span> where you can browse and
-                unlock songs for your collection
-              </p>
-              <p className="mt-2 text-lg">Choose your first song now</p>
-            </>,
-            ,
-          ]}
-        />
-      )}
+
       <div className="kayfo-body-content">
         <div className="flex justify-center items-center mt-4 ">
           <h1 className="uppercase lib-header text-7xl">Full Song Library</h1>
@@ -311,22 +313,38 @@ const Library = () => {
                       <div className="text-green-500 font-bold mt-4">Unlocked</div>
                     ) : (
                       <div
-                        className={`relative mt-3 cursor-pointer ${
-                          !unlockable ? "pointer-events-none opacity-50" : ""
-                        }`}
+                        className={`
+    relative flex justify-center items-center mt-3 cursor-pointer overflow-visible z-20
+    ${isFtue && ftueStep === 2 ? "p-4 ftue-highlight-frame" : ""}
+    ${!unlockable ? "pointer-events-none opacity-50" : ""}
+  `}
                         onClick={() => unlockable && handleSongUnlock(song)}
                       >
-                        <div className="md:w-[400px]">
+                        {/* Inner wrapper is slightly smaller so the glow has room */}
+                        <div className="relative flex justify-center items-center p-2 rounded-lg">
                           <Image
                             src="/assets/img/library/Get song button.png"
-                            width={200}
-                            height={80}
                             alt="get-song-btn"
+                            width={460}
+                            height={110}
+                            className="object-contain"
                           />
-                          <span className="text-yellow font-bold text-lg absolute top-0 left-[7%] md:text-md sm:text-xs">
+                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%]">
                             30
                           </span>
                         </div>
+
+                        {isFtue && ftueStep === 2 && (
+                          <div className="absolute top-[-40px] right-[-20px] animate-bounce z-[10000] pointer-events-none">
+                            <Image
+                              src="/assets/img/ftue/hand icon.png"
+                              width={80}
+                              height={80}
+                              alt="Hand pointing to get song"
+                              className="w-20 h-20 object-contain"
+                            />
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -435,6 +453,22 @@ const Library = () => {
           </button>
         </Popup>
       </div>
+      {ftueStep === 2 && showLibraryFtuePanel && (
+        <InfoPanel
+          onClose={() => setShowLibraryFtuePanel(false)}
+          paragraphs={[
+            <>
+              <p className="text-lg">
+                This is the <span className="font-bold">Song Library</span>, where you get new songs
+                for your collection. Scroll the list and tap on the one you want for your first
+                song. Watch out... some are harder than others!
+              </p>
+            </>,
+          ]}
+          bottomPosition={true}
+          transparentBg={true}
+        />
+      )}
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
         {isFtue && !hasUnlockedSong ? (
           <Image
