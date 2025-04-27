@@ -358,7 +358,7 @@ const HubScreen = () => {
       )}
 
       {/* Container */}
-      <div className="px-1 mx-auto max-w-7xl">
+      <div className="px-1 mx-auto max-w-7xl hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
           <h1 className="your-songs text-center md:mt-4 sm:mt-1.5 sm:mb-4 md:mb-3 text-5xl uppercase tracking-wider">
@@ -402,10 +402,8 @@ const HubScreen = () => {
             className="w-full"
           />
         </div>
-
         {/* Horizontal Cards Row */}
         <UnlockSongsRow user_data={user_data} songs={songs} loading={loading} />
-
         <div className="w-full">
           <Image
             src={"/assets/img/library/Divider.png"}

@@ -97,7 +97,38 @@
 
 /* DAILY REWARD POPUP END  */
 
+/* UNLOCK SONGS ROW  */
+/* Base: normal screens (no scroll needed) */
+.hub-content-wrapper {
+    overflow: visible;
+}
+
+/* Small screens (≤ 395px): allow scrolling */
+@media (max-width: 395px) {
+    .hub-content-wrapper {
+        height: calc(100vh - 20px);
+        /* 80px = approximate height of footer */
+        overflow-y: auto;
+        padding-bottom: 90px;
+        /* Make sure you can scroll enough past the footer */
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* Edge */
+    }
+
+    .hub-content-wrapper::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+    }
+}
+
+
+
+
+
 /* FOOTER  */
+
 
 /* HUBSCREEN PAGE END  */
 

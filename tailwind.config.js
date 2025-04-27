@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         library: "#fcdc73",
         yellow: "#f1ea5c",
+        orange: "#e6c24c",
       },
     },
     screens: {

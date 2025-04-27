@@ -124,7 +124,8 @@ const Library = () => {
 
       const additionalTime = unlockedSongsCount * 5;
       unlockTime = moment()
-        .add(5 + additionalTime, "seconds")
+        .add(30, "minutes")
+        .add(additionalTime, "seconds") // 👈 ADD ON TOP of 1 min
         .toISOString();
       unlockedFlag = false;
     }
