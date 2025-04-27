@@ -45,12 +45,20 @@ const Library = () => {
   const [ftueStep, setFtueStep] = useState(0);
   const [showLibraryFtuePanel, setShowLibraryFtuePanel] = useState(false);
 
+  //Debugging
+  useEffect(() => {
+    console.log("FTUE Step:", ftueStep);
+    console.log("Is FTUE:", isFtue);
+    console.log("Show Library FTUE Panel:", showLibraryFtuePanel);
+  }, [ftueStep, isFtue, showLibraryFtuePanel]);
+
   useEffect(() => {
     const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
     setFtueStep(storedStep);
 
     if (storedStep === 2) {
       setShowLibraryFtuePanel(true);
+      setIsFtue(true);
     }
   }, []);
 
@@ -183,6 +191,9 @@ const Library = () => {
     setIsPopupOpen(false);
 
     if (isFtue) {
+      if (ftueStep === 3) {
+        localStorage.setItem("ftueStep", "4");
+      }
       router.push("/hub?ftueGameplayCompleted=true");
     } else {
       router.push("/hub");
@@ -314,14 +325,13 @@ const Library = () => {
                     ) : (
                       <div
                         className={`
-    relative flex justify-center items-center mt-3 cursor-pointer overflow-visible z-20
-    ${isFtue && ftueStep === 2 ? "p-4 ftue-highlight-frame" : ""}
-    ${!unlockable ? "pointer-events-none opacity-50" : ""}
-  `}
+                        relative flex justify-center items-center mt-3 cursor-pointer overflow-visible z-10
+                        ${ftueStep === 2 ? "ftue-lib-highlight-frame" : ""}
+                        ${!unlockable ? "pointer-events-none opacity-50" : ""}
+                        `}
                         onClick={() => unlockable && handleSongUnlock(song)}
                       >
-                        {/* Inner wrapper is slightly smaller so the glow has room */}
-                        <div className="relative flex justify-center items-center p-2 rounded-lg">
+                        <div className="relative flex justify-center items-center p-1 rounded-lg">
                           <Image
                             src="/assets/img/library/Get song button.png"
                             alt="get-song-btn"
@@ -334,8 +344,8 @@ const Library = () => {
                           </span>
                         </div>
 
-                        {isFtue && ftueStep === 2 && (
-                          <div className="absolute top-[-40px] right-[-20px] animate-bounce z-[10000] pointer-events-none">
+                        {ftueStep === 2 && (
+                          <div className="absolute top-[50px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
                             <Image
                               src="/assets/img/ftue/hand icon.png"
                               width={80}
@@ -366,7 +376,7 @@ const Library = () => {
         {/* Popup shown after user clicks unlock */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div className="flex justify-center flex-col items-center">
-            <h1 className="text-5xl popup-header tracking-wider">You've Just Got</h1>
+            <h1 className="text-5xl popup-header tracking-wider">You've Just Chose</h1>
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
@@ -393,56 +403,16 @@ const Library = () => {
               </div>
             </div>
           </div>
-
-          {/* If NOT in FTUE, show the usual timer & gem unlock. If FTUE, skip this section. */}
+          {/* If NOT in FTUE, show the usual timer & gem unlock. If FTUE, skip this section.
           {!isFtue && (
-            <>
-              <div className="flex justify-center w-[80%]">
-                <p className="text-yellow text-center mb-2 text-lg">
-                  This song will unlock after the timer
-                  <Image
-                    src="/assets/img/library/Timer_icon.png"
-                    alt="timer-icon"
-                    width={18}
-                    height={18}
-                    className="inline-block mx-2 align-middle"
-                  />
-                  runs out or use your gems to unlock it now
-                </p>
-              </div>
-              <button
-                onClick={() => {
-                  if (user_data?.profile?.player?.total_gems >= gemsRequiredToUnlockSong) {
-                    unlockSongWithGems(unlockedSong);
-                    setIsPopupOpen(false);
-                    router.push("/hub");
-                  }
-                }}
-                className={`mb-3 relative ${
-                  user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong
-                    ? "opacity-80 cursor-not-allowed"
-                    : ""
-                }`}
-                disabled={user_data?.profile?.player?.total_gems < gemsRequiredToUnlockSong}
-              >
-                <Image
-                  src={"/assets/img/library/Continue.png"}
-                  width={250}
-                  height={100}
-                  alt="unlocknow-btn"
-                />
-                <div className="absolute bottom-6">
-                  <p className="text-yellow ml-2 font-bold text-md">{gemsRequiredToUnlockSong}</p>
-                </div>
-              </button>
-            </>
+           
           )}
-
+           */}
           <button
             onClick={() => {
               handlePopupContinue();
             }}
-            className=""
+            className={`relative ${ftueStep === 3 ? "ftue-continue-highlight-frame" : ""}`}
           >
             <Image
               src={"/assets/img/library/Continue_button copy.png"}
@@ -450,6 +420,18 @@ const Library = () => {
               height={100}
               alt="continue-btn"
             />
+            {/* Bouncing hand for step 3 */}
+            {ftueStep === 3 && (
+              <div className="absolute bottom-[-70px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+                <Image
+                  src="/assets/img/ftue/hand icon.png"
+                  width={80}
+                  height={80}
+                  alt="Hand pointing to continue"
+                  className="w-20 h-20 object-contain"
+                />
+              </div>
+            )}
           </button>
         </Popup>
       </div>
@@ -469,7 +451,7 @@ const Library = () => {
           transparentBg={true}
         />
       )}
-      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center">
+      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-60">
         {isFtue && !hasUnlockedSong ? (
           <Image
             src="/assets/img/ftue/Footer_pattern.png"
