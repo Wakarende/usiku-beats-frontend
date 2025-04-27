@@ -54,11 +54,16 @@ const Library = () => {
 
   useEffect(() => {
     const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+
     setFtueStep(storedStep);
 
     if (storedStep === 2) {
       setShowLibraryFtuePanel(true);
       setIsFtue(true);
+    } else if (ftueCompleted) {
+      setIsFtue(false);
+      setShowFtuePanel(false);
     }
   }, []);
 
@@ -140,18 +145,19 @@ const Library = () => {
     }
     setIsPopupOpen(true);
 
+    // Set the unlock time - even during FTUE
     let unlockTime = null;
-    let unlockedFlag = true;
+    let unlockedFlag = false; // Default to false (song needs to be unlocked via timer)
 
-    if (!isFtue) {
+    // During FTUE, set a short timer (2 minutes) instead of immediate unlock
+    if (isFtue) {
+      // For FTUE, set a short countdown (2 minutes) to teach the concept
+      unlockTime = moment().add(2, "minutes").toISOString();
+    } else {
+      // Normal non-FTUE behavior - longer countdown
       const unlockedSongsCount = user_data.profile.player.player_song_instances.length;
-
       const additionalTime = unlockedSongsCount * 5;
-      unlockTime = moment()
-        .add(30, "minutes")
-        .add(additionalTime, "seconds") // 👈 ADD ON TOP of 1 min
-        .toISOString();
-      unlockedFlag = false;
+      unlockTime = moment().add(30, "minutes").add(additionalTime, "seconds").toISOString();
     }
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
@@ -172,7 +178,7 @@ const Library = () => {
       no_of_plays: 0,
       paid_for_flag: false,
       unlock_time: unlockTime,
-      unlocked: unlockedFlag,
+      unlocked: unlockedFlag, // This is now false even during FTUE
       song,
     };
 
@@ -326,7 +332,11 @@ const Library = () => {
                       <div
                         className={`
                         relative flex justify-center items-center mt-3 cursor-pointer overflow-visible z-10
-                        ${ftueStep === 2 ? "ftue-lib-highlight-frame" : ""}
+                        ${
+                          ftueStep === 2 && localStorage.getItem("ftueCompleted") !== "true"
+                            ? "ftue-lib-highlight-frame"
+                            : ""
+                        }
                         ${!unlockable ? "pointer-events-none opacity-50" : ""}
                         `}
                         onClick={() => unlockable && handleSongUnlock(song)}
@@ -344,7 +354,7 @@ const Library = () => {
                           </span>
                         </div>
 
-                        {ftueStep === 2 && (
+                        {ftueStep === 2 && !localStorage.getItem("ftueCompleted") !== "true" && (
                           <div className="absolute top-[50px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
                             <Image
                               src="/assets/img/ftue/hand icon.png"
@@ -412,7 +422,11 @@ const Library = () => {
             onClick={() => {
               handlePopupContinue();
             }}
-            className={`relative ${ftueStep === 3 ? "ftue-continue-highlight-frame" : ""}`}
+            className={`relative ${
+              ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true"
+                ? "ftue-continue-highlight-frame"
+                : ""
+            }`}
           >
             <Image
               src={"/assets/img/library/Continue_button copy.png"}
@@ -421,7 +435,7 @@ const Library = () => {
               alt="continue-btn"
             />
             {/* Bouncing hand for step 3 */}
-            {ftueStep === 3 && (
+            {ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true" && (
               <div className="absolute bottom-[-70px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
                 <Image
                   src="/assets/img/ftue/hand icon.png"
@@ -435,22 +449,24 @@ const Library = () => {
           </button>
         </Popup>
       </div>
-      {ftueStep === 2 && showLibraryFtuePanel && (
-        <InfoPanel
-          onClose={() => setShowLibraryFtuePanel(false)}
-          paragraphs={[
-            <>
-              <p className="text-lg">
-                This is the <span className="font-bold">Song Library</span>, where you get new songs
-                for your collection. Scroll the list and tap on the one you want for your first
-                song. Watch out... some are harder than others!
-              </p>
-            </>,
-          ]}
-          bottomPosition={true}
-          transparentBg={true}
-        />
-      )}
+      {ftueStep === 2 &&
+        showLibraryFtuePanel &&
+        localStorage.getItem("ftueCompleted") !== "true" && (
+          <InfoPanel
+            onClose={() => setShowLibraryFtuePanel(false)}
+            paragraphs={[
+              <>
+                <p className="text-lg">
+                  This is the <span className="font-bold">Song Library</span>, where you get new
+                  songs for your collection. Scroll the list and tap on the one you want for your
+                  first song. Watch out... some are harder than others!
+                </p>
+              </>,
+            ]}
+            bottomPosition={true}
+            transparentBg={true}
+          />
+        )}
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-60">
         {isFtue && !hasUnlockedSong ? (
           <Image

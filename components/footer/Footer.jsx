@@ -17,13 +17,13 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
     <>
       {/* ✋ Hand Layer (OUTSIDE Footer) */}
       {footerGlowActive && (
-        <div className="fixed bottom-[110px] right-6 z-[2000] rotate-[250deg] animate-bounce-slow pointer-events-none">
+        <div className="fixed bottom-[110px] right-6 z-[2000]  animate-bounce pointer-events-none">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={100}
             height={100}
             alt="Hand pointing to Song Library"
-            className="w-24 h-24 object-contain"
+            className="w-24 h-24 object-contain transform -rotate-[120deg]"
           />
         </div>
       )}

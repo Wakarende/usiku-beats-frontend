@@ -10,8 +10,7 @@ const Sound = () => {
   const router = useRouter();
   const stars = [
     {
-      className:
-        "absolute medium:top-72 medium:right-72 small:top-1/3 small:left-20 large:top-96 large:left-32 z-10 ",
+      className: "absolute md:top-72 md:right-72 sm:top-1/3 sm:left-20 lg:top-96 lg:left-32 z-10 ",
       width: 22,
       height: 22,
       animation: "animate-pulse",
@@ -19,7 +18,7 @@ const Sound = () => {
     //Left star
     {
       className:
-        "absolute medium:bottom-1/2 medium:left-36 small:top-72 small:left-36 large:bottom-96 large:left-80 z-0",
+        "absolute md:bottom-1/2 md:left-36 sm:top-72 sm:left-36 lg:bottom-96 lg:left-80 z-0",
       width: 10,
       height: 10,
       animation: "animate-pulse",
@@ -66,22 +65,22 @@ const Sound = () => {
           />
         </div>
       ))}
-      <div className="uppercase text-yellow text-7xl mt-10 text-center z-10 large:text-9xl ">
+      <div className="uppercase text-yellow text-7xl mt-10 text-center z-10 lg:text-9xl ">
         <h2>Turn Your</h2>
         <h2>sound on</h2>
       </div>
       <div className="flex justify-center">
-        <div className="absolute bottom-56 large:bottom-72 flex justify-center ">
+        <div className="absolute bottom-56 lg:bottom-72 flex justify-center ">
           <Image
             src={"/assets/img/sound/headphone.png"}
             width={50}
             height={50}
-            className="small:w-3/4 medium:w-11/12 large:w-1/2 h-auto"
+            className="sm:w-3/4 md:w-11/12 lg:w-1/2 h-auto"
           />
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="text-center text-xl font-medium tracking-wider absolute bottom-36 large:text-2xl large:bottom-48">
+        <div className="text-center text-xl font-medium tracking-wider absolute bottom-36 lg:text-2xl lg:bottom-48">
           <p className="text-[#cab05a]">This is a music game!</p>
           <p className="text-[#cab05a]">You need your sound on</p>
           <p className="text-[#cab05a]">to hear the beats.</p>
@@ -98,7 +97,7 @@ const Sound = () => {
             viewBox="0 0 713 187"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-80 h-auto large:w-8/12"
+            className="w-80 h-auto lg:w-8/12"
           >
             <path d="M0 0H713V187H0V0Z" fill="url(#pattern0_188_2)" />
             <path d="M181 33H532V125H181V33Z" fill="#1FA5B1" />
@@ -120,7 +119,7 @@ const Sound = () => {
               />
             </defs>
           </svg>
-          <span className="absolute inset-0 flex items-center justify-center z-10 text-white font-bold text-3xl uppercase tracking-widest large:text-5xl">
+          <span className="absolute inset-0 flex items-center justify-center z-10 text-white font-bold text-3xl uppercase tracking-widest lg:text-5xl">
             Yes, its on!
           </span>
         </button>

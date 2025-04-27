@@ -304,4 +304,19 @@
 
 }
 
+/* Define or ensure glow pulse animation exists */
+@keyframes ftueGlowPulse {
+    0% {
+        box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.6) !important;
+    }
+
+    50% {
+        box-shadow: 0 0 30px 15px rgba(0, 245, 255, 0.8) !important;
+    }
+
+    100% {
+        box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.6) !important;
+    }
+}
+
 /* LIBRARY PAGE END  */

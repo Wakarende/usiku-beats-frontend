@@ -16,7 +16,7 @@ import LevelUpPopup from "../components/leveluppopup/LevelUpPopup";
 import LibraryFooter from "../components/footer/Footer";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
-import InfoPanel from "../components/infopanel/InfoPanel"; // <--- import your info panel
+import InfoPanel from "../components/infopanel/InfoPanel";
 
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
@@ -57,12 +57,61 @@ const HubScreen = () => {
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
   const [ftueStep, setFtueStep] = useState(0);
+  const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false);
+  const [showAddToLibraryPanel, setShowAddToLibraryPanel] = useState(false);
+  const [showPlaySongPanel, setShowPlaySongPanel] = useState(false);
+  const [highlightedSongId, setHighlightedSongId] = useState(null);
 
+  useEffect(() => {
+    console.log("FTUE Debug Log:");
+    console.log("Current FTUE Step:", ftueStep);
+    console.log("Highlighted Song ID:", highlightedSongId);
+    console.log("Show Play Song Panel:", showPlaySongPanel);
+    console.log(
+      "All Songs:",
+      songs.map((s) => ({ id: s.id, name: s.song_name }))
+    );
+    console.log("FTUE Completed:", localStorage.getItem("ftueCompleted") === "true");
+  }, [ftueStep, highlightedSongId, showPlaySongPanel, songs]);
+
+  //ftue step 4 and 5
   useEffect(() => {
     const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
     setFtueStep(storedStep);
+    if (storedStep === 4 && !localStorage.getItem("unlockingInfoSeen")) {
+      setShowUnlockingInfoPanel(true);
+    }
+
+    if (storedStep === 5 && !localStorage.getItem("addToLibrarySeen")) {
+      setShowAddToLibraryPanel(true);
+    }
   }, []);
 
+  // In HubScreen component, update the useEffect that handles step 6:
+
+  // Modify the useEffect that forces step 6 highlighting
+  useEffect(() => {
+    const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    const isCompleted = localStorage.getItem("ftueCompleted") === "true";
+
+    // Only show highlighting if FTUE is not completed
+    if (currentStep === 6 && !isCompleted) {
+      console.log("FORCING STEP 6 HIGHLIGHTING");
+
+      // Force show play panel
+      setShowPlaySongPanel(true);
+
+      // Find the latest song to highlight
+      if (songs && songs.length > 0) {
+        const latestSong = songs[0];
+        setHighlightedSongId(latestSong.id);
+      }
+    } else if (isCompleted) {
+      // Clear highlighting when FTUE is completed
+      setShowPlaySongPanel(false);
+      setHighlightedSongId(null);
+    }
+  }, [ftueStep, songs, localStorage.getItem("ftueCompleted")]);
   useEffect(() => {
     checkAnonUser();
     checkRedirect();
@@ -77,6 +126,22 @@ const HubScreen = () => {
       setIsPulsing(false);
     }
   }, [songs]);
+
+  useEffect(() => {
+    // Force show the play song panel when step 6 is active and there are songs
+    if (ftueStep === 6 && songs.length > 0 && !localStorage.getItem("ftueCompleted")) {
+      console.log("FORCING PLAY SONG PANEL TO SHOW");
+      setShowPlaySongPanel(true);
+
+      // Also force highlight the song
+      const recentSong = songs[0];
+      if (recentSong) {
+        console.log("Forcing song highlight:", recentSong.id);
+        setHighlightedSongId(recentSong.id);
+      }
+    }
+  }, [ftueStep, songs]);
+
   const checkFirstLoginOfDay = () => {
     const lastLoginDate = localStorage.getItem("lastLoginDate");
     const loginCount = parseInt(localStorage.getItem("loginCount") || "0", 10);
@@ -128,12 +193,19 @@ const HubScreen = () => {
         console.log("error creating anon user", error);
       }
     } else {
-      setSongs(
-        user_data?.profile?.player?.player_song_instances
-          ?.filter((item) => item.unlocked)
-          .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
-          .map(({ song, ...rest }) => ({ ...song, ...rest }))
-      );
+      const sortedSongs = user_data?.profile?.player?.player_song_instances
+        ?.filter((item) => item.unlocked)
+        .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
+        .map(({ song, ...rest }) => ({ ...song, ...rest }));
+
+      setSongs(sortedSongs || []);
+
+      // If we're in step 6 and we just set the songs, immediately check for the song to highlight
+      const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
+      if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
+        console.log("Setting highlighted song in checkAnonUser");
+        setHighlightedSongId(sortedSongs[0].id);
+      }
       setLoading(false);
     }
   };
@@ -142,23 +214,58 @@ const HubScreen = () => {
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
     const ftueCompleted = localStorage.getItem("ftueCompleted");
+    const hubTutorialSeen = localStorage.getItem("hubTutorialSeen");
     const footerGlowCleared = localStorage.getItem("footerGlowCleared");
-    if (ftueParam === "true" && ftueCompleted !== "true") {
+
+    if (ftueParam === "true" && ftueCompleted !== "true" && !hubTutorialSeen) {
       setShowFtuePanel(true);
+      // Mark that we've seen the hub tutorial
+      localStorage.setItem("hubTutorialSeen", "true");
     }
+
     if (!footerGlowCleared) {
       setFooterGlowActive(true);
     }
   }, []);
 
+  const closeUnlockingInfoPanel = () => {
+    setShowUnlockingInfoPanel(false);
+    localStorage.setItem("unlockingInfoSeen", "true");
+
+    // Progress to step 5 (if you have that defined)
+    localStorage.setItem("ftueStep", "5");
+    setFtueStep(5);
+  };
+
+  const closeAddToLibraryPanel = () => {
+    setShowAddToLibraryPanel(false);
+    localStorage.setItem("addToLibrarySeen", "true");
+
+    // Don't complete FTUE yet - prepare for step 6 instead
+    localStorage.setItem("ftueStep", "6");
+    setFtueStep(6);
+
+    // Note: We don't set ftueCompleted to true here since there's one more step
+  };
+
+  const closePlaySongPanel = () => {
+    setShowPlaySongPanel(false);
+    localStorage.setItem("playSongPanelSeen", "true");
+  };
   const clearFooterGlow = () => {
     setFooterGlowActive(false);
     localStorage.setItem("footerGlowCleared", "true");
   };
 
   const closeFtuePanel = () => {
-    localStorage.setItem("ftueCompleted", "false");
+    // localStorage.setItem("ftueCompleted", "false");
     setShowFtuePanel(false);
+
+    const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    if (currentStep === 3) {
+      localStorage.setItem("ftueStep", "4");
+      setFtueStep(4);
+    }
 
     const currentQuery = { ...router.query };
     delete currentQuery.ftueGameplayCompleted;
@@ -398,9 +505,16 @@ const HubScreen = () => {
                   song={item}
                   onArtistClick={(e, artist) => openOverlay(artist.id)}
                   onPlayClick={() => {
-                    handlePlayClick(item, index), playBoom();
+                    handlePlayClick(item, index);
+                    playBoom();
                   }}
                   isPulsing={isPulsing && index === 0}
+                  // This is the important part - explicitly pass this prop:
+                  isHighlightedForFtue={
+                    ftueStep === 6 &&
+                    highlightedSongId === item.id &&
+                    localStorage.getItem("ftueCompleted") !== "true"
+                  }
                 />
               ))
             ) : (
@@ -412,7 +526,36 @@ const HubScreen = () => {
             )}
           </div>
         </div>
+        {showPlaySongPanel && (
+          <div
+            className="fixed inset-0 flex items-center justify-center z-[9999] bg-black/80 play-song-panel"
+            onClick={closePlaySongPanel}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div className="w-full max-w-4xl px-4 text-center">
+              <h1 className="text-5xl mb-8 text-white font-bold">
+                Your new song is now ready to play!
+              </h1>
 
+              <p className="text-2xl text-white mb-8">
+                When you're ready, tap the song's <span className="font-bold">Play Now</span>{" "}
+                button, and have a great time!
+              </p>
+
+              <p className="text-lg text-white opacity-70 mt-16">
+                Tap anywhere to close this message.
+              </p>
+            </div>
+          </div>
+        )}
         <div className="w-full">
           <Image
             src={"/assets/img/library/Divider.png"}
@@ -422,7 +565,6 @@ const HubScreen = () => {
             className="w-full"
           />
         </div>
-        {/* Horizontal Cards Row */}
         <UnlockSongsRow user_data={user_data} songs={songs} loading={loading} />
         <div className="w-full">
           <Image
@@ -487,6 +629,22 @@ const HubScreen = () => {
           </motion.button>
         </div>
       </DailyRewardPopup>
+      {showUnlockingInfoPanel && (
+        <InfoPanel
+          onClose={closeUnlockingInfoPanel}
+          paragraphs={[
+            <>
+              <p className="text-lg">
+                Your song is <span className="font-bold">unlocking!</span> Songs take time to
+                unlock, but you can speed it up with gems. When the timer runs out, you can add the
+                song to your collection at the top of the screen.
+              </p>
+            </>,
+          ]}
+          bottomPosition={false}
+          transparentBg={false}
+        />
+      )}
 
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
     </div>

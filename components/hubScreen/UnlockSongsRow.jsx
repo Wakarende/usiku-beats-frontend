@@ -374,11 +374,27 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   const [particleTrigger, setParticleTrigger] = useState({});
   const [lockedSongs, setLockedSongs] = useState([]);
 
+  //FTUE
+  const [ftueStep, setFtueStep] = useState(0);
+
   const gemsRequiredToUnlockSong = 20;
 
   const dispatch = useDispatch();
   const handleClickSound = useClickSound();
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("UnlockSongsRow rendered, FTUE status:", {
+      step: localStorage.getItem("ftueStep"),
+      completed: localStorage.getItem("ftueCompleted"),
+    });
+  }, []);
+
+  //Track Ftue step
+  useEffect(() => {
+    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    setFtueStep(storedStep);
+  }, []);
 
   // Load local storage on mount
   useEffect(() => {
@@ -447,7 +463,18 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }
   }
 
+  // Update the addToLibrary function to handle FTUE progression
+
+  // In UnlockSongsRow component, update the addToLibrary function:
+
   function addToLibrary(song) {
+    console.log("Add to library clicked for song:", song.id);
+
+    // Get current FTUE step
+    const currentFtueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    console.log("Current FTUE step:", currentFtueStep);
+
+    // Update user data
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     const songInstance = newUserdata.profile.player.player_song_instances.find(
       (instance) => instance.song.id === song.id
@@ -457,17 +484,31 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       songInstance.unlocked = true;
       songInstance.unlock_time = null;
       dispatch(updateUser(newUserdata));
+      console.log("Song unlocked and added to library:", song.id);
     } else {
       console.error("Song not found in song instances", song.id);
     }
 
+    // Reset UI states
     setUnlockedState((prev) => {
       const newState = { ...prev, [song.id]: false };
       localStorage.setItem("unlockedState", JSON.stringify(newState));
       return newState;
     });
-
     setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
+
+    // Handle FTUE step 5 progression
+    if (currentFtueStep === 5) {
+      console.log("FTUE progressing from step 5 to 6");
+
+      // IMPORTANT: These need to be set in this specific order
+      localStorage.setItem("addToLibraryCompleted", "true");
+      localStorage.setItem("ftueStep", "6");
+
+      // Force reload to ensure UI updates properly
+      window.location.href = "/hub";
+      return; // Exit early
+    }
 
     handleClickSound();
   }
@@ -489,23 +530,86 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       return;
     }
 
+    // Deduct gems
     newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
 
+    const songId = selectedSong.id || selectedSong.song?.id;
     const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) =>
-        instance.song.id === selectedSong.id || instance.song.id === selectedSong.song?.id
+      (instance) => instance.song.id === songId
+    );
+
+    if (songInstance) {
+      // For FTUE or normal flow: Instead of setting unlocked=true immediately,
+      // set the unlock_time to now, which will keep it in the "Currently Unlocking" section
+      // but show it as ready to be added to library
+      songInstance.unlock_time = new Date().toISOString();
+
+      // Don't set unlocked=true yet - that will happen when they click "Add to Library"
+      // songInstance.unlocked = true;
+
+      dispatch(updateUser(newUserdata));
+
+      // Update the UI to show this song as "unlocked" in the countdown section
+      setUnlockedState((prev) => {
+        const newState = { ...prev, [songId]: true };
+        localStorage.setItem("unlockedState", JSON.stringify(newState));
+        return newState;
+      });
+
+      // Trigger particle effect
+      setParticleTrigger((prev) => ({
+        ...prev,
+        [songId]: true,
+      }));
+    } else {
+      console.error("Song not found in song instances", songId);
+    }
+
+    handleClickSound();
+    setConfirmPopupOpen(false);
+  }
+
+  function addToLibrary(song) {
+    console.log("Add to library clicked for song:", song.id);
+
+    // Get current FTUE step
+    const currentFtueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+
+    // Update user data
+    const newUserdata = JSON.parse(JSON.stringify(user_data));
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
     );
 
     if (songInstance) {
       songInstance.unlocked = true;
       songInstance.unlock_time = null;
       dispatch(updateUser(newUserdata));
-    } else {
-      console.error("Song not found in song instances", selectedSong.id || selectedSong.song?.id);
+    }
+
+    // Reset UI states
+    setUnlockedState((prev) => {
+      const newState = { ...prev, [song.id]: false };
+      localStorage.setItem("unlockedState", JSON.stringify(newState));
+      return newState;
+    });
+    setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
+
+    // FTUE step 5 progression - MOST IMPORTANT PART
+    if (currentFtueStep === 5) {
+      console.log("FTUE progressing from step 5 to 6");
+
+      // Critical: set these flags in order
+      localStorage.setItem("addToLibraryCompleted", "true");
+      localStorage.setItem("ftueStep", "6");
+
+      // IMPORTANT: Don't force reload the page!
+      // Instead use router to navigate
+      router.push("/hub"); // Use router instead of window.location
+      return;
     }
 
     handleClickSound();
-    setConfirmPopupOpen(false);
   }
 
   function CountdownTimer({ unlockTime, onExpire }) {
@@ -559,7 +663,9 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           key={i}
           className={`flex flex-col items-center unlock-card-wrapper ${
             unlockedState[item.song.id] ? "pulse-effect" : ""
-          }`}
+          }
+           ${ftueStep === 4 && i === 0 ? "ftue-hub-highlight-frame" : ""}
+          `}
         >
           <div
             className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[116px] lg:w-[200px] lg:h-[180px]"
@@ -612,7 +718,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               </div>
             </div>
           </div>
-
           {!isUnlockTimePassed(item.unlock_time) ? (
             <div className="relative mt-0.5">
               <button className="w-full relative" onClick={() => handleUnlockNowClick(item.song)}>
@@ -652,24 +757,51 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               </button>
             </div>
           ) : (
-            <button className="unlock-button flex items-center justify-center">
-              <Image
-                src="/assets/img/hub/Button blank.png"
-                alt="Unlock Button Background"
-                width={160}
-                height={100}
-                className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
-              />
-              <div className="absolute gem-wrapper">
-                <button onClick={() => addToLibrary(item.song)}>
-                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
-                    Add to Library
-                  </p>
-                </button>
-              </div>
-            </button>
+            <div
+              className={`relative ${
+                ftueStep === 5 && i === 0 ? "ftue-add-library-highlight-frame" : ""
+              }`}
+            >
+              <button className="unlock-button flex items-center justify-center w-full">
+                <Image
+                  src="/assets/img/hub/Button blank.png"
+                  alt="Unlock Button Background"
+                  width={160}
+                  height={100}
+                  className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                />
+                <div className="absolute gem-wrapper">
+                  <button onClick={() => addToLibrary(item.song)}>
+                    <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
+                      Add to Library
+                    </p>
+                  </button>
+                </div>
+              </button>
+              {ftueStep === 5 && i === 0 && (
+                <div className="absolute bottom-[-30px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+                  <Image
+                    src="/assets/img/ftue/hand icon.png"
+                    width={80}
+                    height={80}
+                    alt="Hand pointing to Add to Library"
+                    className="w-20 h-20 object-contain transform rotate-45"
+                  />
+                </div>
+              )}
+            </div>
           )}
-
+          {ftueStep === 4 && i === 0 && (
+            <div className="absolute top-[-40px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+              <Image
+                src="/assets/img/ftue/hand icon.png"
+                width={80}
+                height={80}
+                alt="Hand pointing to unlocking song"
+                className="w-20 h-20 object-contain"
+              />
+            </div>
+          )}
           {particleTrigger[item.song.id] && (
             <ParticleEffect
               active={true}

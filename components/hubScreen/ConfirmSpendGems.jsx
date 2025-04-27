@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import "../styles.css";
 
 const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) => {
+  const [ftueStep, setFtueStep] = useState(0);
+
+  useEffect(() => {
+    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    setFtueStep(storedStep);
+  }, []);
+
+  const handleConfirm = () => {
+    // If in FTUE step 4, advance to step 5 before confirming
+    if (ftueStep === 4) {
+      localStorage.setItem("ftueStep", "5");
+    }
+    onConfirm();
+  };
+
   if (!isOpen || !selectedSong) return null;
 
   return (
@@ -43,19 +59,32 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
 
         {/* Confirm / Cancel buttons */}
         <div className="flex justify-center gap-4 pb-4">
-          <button className="relative text-white font-bold w-24 h-20" onClick={onConfirm}>
-            <Image
-              src="/assets/img/spendgems/Left button.png"
-              width={50}
-              height={50}
-              className="w-24 h-20"
-              alt="Yes Button"
-            />
-            <span className="absolute -inset-7 flex items-center justify-center text-4xl tracking-widest uppercase">
-              Yes
-            </span>
-          </button>
-
+          <div className={`relative ${ftueStep === 4 ? "ftue-gems-highlight-frame" : ""}`}>
+            <button className="relative text-white font-bold w-24 h-20" onClick={handleConfirm}>
+              <Image
+                src="/assets/img/spendgems/Left button.png"
+                width={50}
+                height={50}
+                className="w-24 h-20"
+                alt="Yes Button"
+              />
+              <span className="absolute -inset-7 flex items-center justify-center text-4xl tracking-widest uppercase">
+                Yes
+              </span>
+            </button>
+            {/* Bouncing hand for FTUE step 4 */}
+            {ftueStep === 4 && (
+              <div className="absolute top-[-40px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+                <Image
+                  src="/assets/img/ftue/hand icon.png"
+                  width={80}
+                  height={80}
+                  alt="Hand pointing to yes button"
+                  className="w-20 h-20 object-contain transform rotate-45"
+                />
+              </div>
+            )}
+          </div>
           <button className="relative text-white font-bold w-24 h-20" onClick={onCancel}>
             <Image
               src="/assets/img/spendgems/Right button.png"

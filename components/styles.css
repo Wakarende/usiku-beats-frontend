@@ -455,6 +455,91 @@ svg {
   }
 }
 
+/* Unlock songs row  */
+.ftue-hub-highlight-frame {
+  position: relative !important;
+  border: 6px solid #00f5ff !important;
+  border-radius: 20px !important;
+  background-color: rgba(255, 255, 255, 0.01) !important;
+  box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7) !important;
+  animation: ftueGlowPulse 2s infinite !important;
+  z-index: 10 !important;
+  margin: -4px !important;
+}
+
+.ftue-hub-highlight-frame .unlock-card {
+  position: relative;
+  z-index: 5;
+}
+
+.ftue-gems-highlight-frame {
+  position: relative !important;
+  border: 6px solid #00f5ff !important;
+  border-radius: 20px !important;
+  background-color: rgba(255, 255, 255, 0.01) !important;
+  box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7) !important;
+  animation: ftueGlowPulse 2s infinite !important;
+  z-index: 10 !important;
+  margin: -4px !important;
+  overflow: visible !important;
+}
+
+/* Make sure the button is visible and clickable within the highlight frame */
+.ftue-gems-highlight-frame button {
+  position: relative;
+  z-index: 15;
+}
+
+
+/* Song card  */
+/* Add this to your pages.css file */
+
+/* Song card highlight effect for FTUE step 6 */
+/* Make sure these CSS classes are properly defined with !important */
+.ftue-song-highlight-frame {
+  position: relative !important;
+  border: 6px solid #00f5ff !important;
+  border-radius: 20px !important;
+  background-color: rgba(255, 255, 255, 0.01) !important;
+  box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7) !important;
+  animation: ftueGlowPulse 2s infinite !important;
+  z-index: 50 !important;
+  /* Increase z-index to make sure it's on top */
+  margin: -8px !important;
+  overflow: visible !important;
+}
+
+.ftue-play-button-highlight {
+  position: relative !important;
+  z-index: 60 !important;
+  /* Even higher z-index */
+  transform: scale(1.1) !important;
+}
+
+.ftue-play-button-highlight img {
+  animation: playButtonPulse 1.5s infinite !important;
+}
+
+/* Make sure song cards can have a higher z-index */
+/* .kayfo-masonry-main .shrink-0 {
+  position: relative;
+} */
+
+/* Additional animation for the play button when highlighted */
+@keyframes playButtonPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 
 /* HUBSCREEN END  */
 
