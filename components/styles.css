@@ -431,30 +431,37 @@ svg {
 .ftue-highlight-frame {
   border: 10px solid #00f5ff;
   border-radius: 20px;
-  padding: 0;
-  box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.6);
-  animation: ftueGlowPulse 2s infinite;
-  z-index: 1100;
+  padding-top: 10px;
+  z-index: 90;
 }
 
 /* Unlock songs row  */
 .ftue-hub-highlight-frame {
   position: relative;
-  border: 6px solid #00f5ff;
+  border: 10px solid #00f5ff;
   border-radius: 20px !important;
-  z-index: 10 !important;
+  z-index: 91 !important;
+  display: inline-block;
 }
 
-.ftue-hub-highlight-frame .unlock-card {
+.ftue-add-library-highlight-frame {
   position: relative;
-  z-index: 5;
+  border: 10px solid #00f5ff;
+  border-radius: 20px !important;
+  z-index: 91 !important;
+  display: inline-block;
+}
+
+.ftue-add-library-highlight-frame button {
+  position: relative;
+  z-index: 92;
 }
 
 .ftue-gems-highlight-frame {
   position: relative !important;
   border: 10px solid #00f5ff !important;
   border-radius: 20px !important;
-  z-index: 10 !important;
+  padding: 2px;
   overflow: visible !important;
 }
 
@@ -468,17 +475,15 @@ svg {
 
 .ftue-song-highlight-frame {
   position: relative !important;
-  outline: 10px solid #00f5ff !important;
+  outline: 8px solid #00f5ff !important;
   border-radius: 20px !important;
-  background-color: transparent !important;
-  padding: 3px;
   z-index: 91;
   overflow: visible !important;
 }
 
 .ftue-song-highlight-frame .hand-icon {
   position: absolute;
-  z-index: 10000 !important;
+
   pointer-events: none;
 }
 

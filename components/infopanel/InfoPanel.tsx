@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 export default function InfoPanel({
   title = "How To Play?",
@@ -9,35 +8,48 @@ export default function InfoPanel({
   bgImage = "/assets/img/ftue/info.png",
   bottomPosition = false,
   transparentBg = false,
-  customStyle = {}, 
+  customStyle = {},
   positionOffset = 0,
+  customClassName = "",
+  customPosition = false,
 }) {
   return (
     <div
+    className="bg-black/50"
       style={{
         position: "fixed",
-        inset: 0,
-        backgroundColor: transparentBg ? "transparent" : "rgba(0,0,0,0.5)",
+        inset: 0,  
         zIndex: 90,
       }}
       onClick={onClose}
     >
-       <div
-        className={`flex flex-col absolute left-1/2 w-[100%] max-w-3xl transform -translate-x-1/2 
-        ${bottomPosition ? "" : "-translate-y-1/2"} text-white tracking-widest text-center`}
+      <div
+        className={`flex flex-col text-white tracking-widest text-center ${customClassName}`}
         style={{
           backgroundImage: `url(${bgImage})`,
           backgroundSize: "100% 100%",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           padding: "2rem",
-          top: bottomPosition ? "auto" : "50%",
-          bottom: bottomPosition ? `${positionOffset}px` : "auto",
+          position: "absolute",
+          
+          // Apply either custom positioning or default centered positioning
+          ...(customPosition 
+            ? {} // Empty object because customStyle will have all positioning values
+            : {
+                left: "50%",
+                top: bottomPosition ? "auto" : "50%",
+                bottom: bottomPosition ? `${positionOffset}px` : "auto",
+                transform: `translateX(-50%) ${!bottomPosition ? "translateY(-50%)" : ""}`,
+                 maxWidth: "3xl",
+                width: "100%",
+              }),
+          
           ...customStyle,
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-xl text-white md:w-full lg:w-[80%] xl:w-[60%] xl:text-2xl mx-auto">
+        <div className="text-lg text-white w-full mx-auto">
           {paragraphs.map((paragraph, index) => (
             <p key={index} className="mb-2">{paragraph}</p>
           ))}

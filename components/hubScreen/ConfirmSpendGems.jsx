@@ -11,7 +11,6 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
   }, []);
 
   const handleConfirm = () => {
-    // If in FTUE step 4, advance to step 5 before confirming
     if (ftueStep === 4) {
       localStorage.setItem("ftueStep", "5");
     }
@@ -21,7 +20,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
   if (!isOpen || !selectedSong) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-30 bg-black/80 mt-10">
+    <div className="fixed inset-0 flex items-center justify-center z-[99] bg-black/80 mt-10">
       <div
         style={{ backgroundImage: `url("/assets/img/dailyreward/BG.png")` }}
         className=" p-6 rounded-lg text-center relative w-[320px] md:w-[400px] h-auto bg-no-repeat bg-center bg-contain"
@@ -56,7 +55,6 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             />
           </span>
         </div>
-
         {/* Confirm / Cancel buttons */}
         <div className="flex justify-center gap-4 pb-4">
           <div className={`relative ${ftueStep === 4 ? "ftue-gems-highlight-frame" : ""}`}>
@@ -65,7 +63,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
                 src="/assets/img/spendgems/Left button.png"
                 width={50}
                 height={50}
-                className="w-24 h-20"
+                className="w-full h-20"
                 alt="Yes Button"
               />
               <span className="absolute -inset-7 flex items-center justify-center text-4xl tracking-widest uppercase">
@@ -74,13 +72,13 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             </button>
             {/* Bouncing hand for FTUE step 4 */}
             {ftueStep === 4 && (
-              <div className="absolute top-[-20px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+              <div className="absolute top-[80px] right-[-60px] animate-bounce z-[10000] pointer-events-none">
                 <Image
                   src="/assets/img/ftue/hand icon.png"
                   width={80}
                   height={80}
                   alt="Hand pointing to yes button"
-                  className="w-20 h-20 object-contain transform -rotate-45"
+                  className="w-20 h-20 object-contain transform "
                 />
               </div>
             )}

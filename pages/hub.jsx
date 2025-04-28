@@ -124,12 +124,10 @@ const HubScreen = () => {
   }, [songs]);
 
   useEffect(() => {
-    // Force show the play song panel when step 6 is active and there are songs
     if (ftueStep === 6 && songs.length > 0 && !localStorage.getItem("ftueCompleted")) {
       console.log("FORCING PLAY SONG PANEL TO SHOW");
       setShowPlaySongPanel(true);
 
-      // Also force highlight the song
       const recentSong = songs[0];
       if (recentSong) {
         console.log("Forcing song highlight:", recentSong.id);
@@ -479,12 +477,11 @@ const HubScreen = () => {
           ]}
         />
       )}
-
       {/* Container */}
       <div className="px-1 mx-auto max-w-7xl hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
-          <h1 className="your-songs text-center md:mt-4 sm:mt-1.5 sm:mb-4 md:mb-3 text-5xl uppercase tracking-wider">
+          <h1 className="text-[#ff6b03] text-center md:mt-4 sm:mt-1.5 sm:mb-4 md:mb-3 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
         </div>
@@ -612,23 +609,35 @@ const HubScreen = () => {
           </motion.button>
         </div>
       </DailyRewardPopup>
+      {/* Daily Reward Popup 
       {showUnlockingInfoPanel && (
         <InfoPanel
           onClose={closeUnlockingInfoPanel}
           paragraphs={[
             <>
               <p className="text-lg">
-                We're' now back at <span className="font-bold">You Songs,</span> and the song you
+                We're now back at <span className="font-bold">Your Songs,</span> and the song you
                 chose is unlocking, and will be available soon. But let's not wait! Get it now, by
                 tapping the <span className="font-bold">Finish Now</span> button!
               </p>
             </>,
           ]}
-          bottomPosition={false}
-          transparentBg={false}
+          customPosition={true}
+          customStyle={{
+            width: "220px",
+            maxWidth: "350px",
+            right: "10px",
+            left: "auto",
+            top: "60%",
+            transform: "translateY(-50%)",
+            borderRadius: "15px",
+            padding: "1.5rem",
+          }}
+          customClassName="unlock-info-panel"
+          transparentBg={true}
         />
       )}
-
+      */}
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
     </div>
   );
