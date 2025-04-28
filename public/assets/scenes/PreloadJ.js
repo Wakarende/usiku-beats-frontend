@@ -3,182 +3,209 @@
 /* START OF COMPILED CODE */
 
 class PreloadJ extends Phaser.Scene {
+  constructor() {
+    super("PreloadJ");
 
-	constructor() {
-		super("PreloadJ");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorPreload() {
+  /** @returns {void} */
+  editorPreload() {
+    this.load.pack("asset-pack", "assets/asset-pack.json");
+  }
 
-		this.load.pack("asset-pack", "assets/asset-pack.json");
-	}
+  /** @returns {void} */
+  editorCreate() {
+    // logos_background
+    const logos_background = this.add.image(180, 320, "BG_1");
+    logos_background.scaleX = 0.3333;
+    logos_background.scaleY = 0.3333;
 
-	/** @returns {void} */
-	editorCreate() {
+    // preloader_bottom_banner
+    const preloader_bottom_banner = this.add.image(180, 506.0135, "preloader_bottom_banner");
+    preloader_bottom_banner.scaleX = 0.3333;
+    preloader_bottom_banner.scaleY = 0.3333;
 
-		// logos_background
-		const logos_background = this.add.image(180, 320, "BG_1");
-		logos_background.scaleX = 0.3333;
-		logos_background.scaleY = 0.3333;
+    // loading_thumbnail_text
+    const loading_thumbnail_text = this.add.text(180, 229, "", {});
+    loading_thumbnail_text.setOrigin(0.5, 0.5);
+    loading_thumbnail_text.text = "LOADING COVER...";
+    loading_thumbnail_text.setStyle({
+      color: "#ff6a00",
+      fontFamily: "Carlito-Italic",
+      fontSize: "13px",
+      fontStyle: "bold",
+      stroke: "#ff6a00",
+    });
 
-		// preloader_bottom_banner
-		const preloader_bottom_banner = this.add.image(180, 506.0135, "preloader_bottom_banner");
-		preloader_bottom_banner.scaleX = 0.3333;
-		preloader_bottom_banner.scaleY = 0.3333;
+    // preloader_Top_banner
+    const preloader_Top_banner = this.add.image(180, 40.6625, "preloader_Top banner");
+    preloader_Top_banner.scaleX = 0.3333;
+    preloader_Top_banner.scaleY = 0.3333;
 
-		// loading_thumbnail_text
-		const loading_thumbnail_text = this.add.text(180, 229, "", {});
-		loading_thumbnail_text.setOrigin(0.5, 0.5);
-		loading_thumbnail_text.text = "LOADING COVER...";
-		loading_thumbnail_text.setStyle({ "color": "#ff6a00", "fontFamily": "Carlito-Italic", "fontSize": "13px", "fontStyle": "bold", "stroke": "#ff6a00" });
+    // thumbnail_image
+    const thumbnail_image = this.add.image(180, 227, "carousel_2");
+    thumbnail_image.visible = false;
 
-		// preloader_Top_banner
-		const preloader_Top_banner = this.add.image(180, 40.6625, "preloader_Top banner");
-		preloader_Top_banner.scaleX = 0.3333;
-		preloader_Top_banner.scaleY = 0.3333;
+    // rectangle_1
+    const rectangle_1 = this.add.rectangle(148, 73, 128, 128);
+    rectangle_1.scaleX = 3.5006144584682515;
+    rectangle_1.scaleY = 0.1;
+    rectangle_1.angle = -1;
+    rectangle_1.isFilled = true;
+    rectangle_1.fillColor = 0;
 
-		// thumbnail_image
-		const thumbnail_image = this.add.image(180, 227, "carousel_2");
-		thumbnail_image.visible = false;
+    // artist_name
+    const artist_name = this.add.text(180, 22, "", {});
+    artist_name.setOrigin(0.5, 0.5);
+    artist_name.text = "artist_name";
+    artist_name.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "14px",
+      stroke: "#faf05e",
+    });
 
-		// rectangle_1
-		const rectangle_1 = this.add.rectangle(148, 73, 128, 128);
-		rectangle_1.scaleX = 3.5006144584682515;
-		rectangle_1.scaleY = 0.1;
-		rectangle_1.angle = -1;
-		rectangle_1.isFilled = true;
-		rectangle_1.fillColor = 0;
+    // song_name
+    const song_name = this.add.text(180, 45, "", {});
+    song_name.setOrigin(0.5, 0.5);
+    song_name.text = "song_name";
+    song_name.setStyle({
+      color: "#ff6a00",
+      fontFamily: "Afolkalips",
+      fontSize: "30px",
+      stroke: "#ff6a00",
+    });
 
-		// artist_name
-		const artist_name = this.add.text(180, 22, "", {});
-		artist_name.setOrigin(0.5, 0.5);
-		artist_name.text = "artist_name";
-		artist_name.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "14px", "stroke": "#faf05e" });
+    // loading
+    const loading = this.add.image(115, 593, "beat_meter_empty");
+    loading.setOrigin(0, 0.5);
+    loading.visible = false;
 
-		// song_name
-		const song_name = this.add.text(180, 45, "", {});
-		song_name.setOrigin(0.5, 0.5);
-		song_name.text = "song_name";
-		song_name.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#ff6a00" });
+    // percentage
+    const percentage = this.add.text(180, 552, "", {});
+    percentage.setOrigin(0.5, 0.5);
+    percentage.visible = false;
+    percentage.text = "0%";
+    percentage.setStyle({ align: "center", fontFamily: "DINPro-Medium", fontSize: "15px" });
 
-		// loading
-		const loading = this.add.image(115, 593, "beat_meter_empty");
-		loading.setOrigin(0, 0.5);
-		loading.visible = false;
+    // current_asset
+    const current_asset = this.add.text(180, 601, "", {});
+    current_asset.setOrigin(0.5, 0.5);
+    current_asset.visible = false;
+    current_asset.text = "null";
+    current_asset.setStyle({ align: "center", fontSize: "13px" });
 
-		// percentage
-		const percentage = this.add.text(180, 552, "", {});
-		percentage.setOrigin(0.5, 0.5);
-		percentage.visible = false;
-		percentage.text = "0%";
-		percentage.setStyle({ "align": "center", "fontFamily": "DINPro-Medium", "fontSize": "15px" });
+    // rectangle
+    const rectangle = this.add.rectangle(197, 386, 128, 128);
+    rectangle.scaleX = 3.5006144584682515;
+    rectangle.scaleY = 0.12;
+    rectangle.angle = 2;
+    rectangle.visible = false;
+    rectangle.isFilled = true;
+    rectangle.fillColor = 0;
 
-		// current_asset
-		const current_asset = this.add.text(180, 601, "", {});
-		current_asset.setOrigin(0.5, 0.5);
-		current_asset.visible = false;
-		current_asset.text = "null";
-		current_asset.setStyle({ "align": "center", "fontSize": "13px" });
+    // beats_2024_UI___Option_7_Load_song_BG
+    const beats_2024_UI___Option_7_Load_song_BG = this.add.image(
+      180,
+      320,
+      "Beats 2024 UI - Option 7_Load song_BG"
+    );
+    beats_2024_UI___Option_7_Load_song_BG.scaleX = 0.3333;
+    beats_2024_UI___Option_7_Load_song_BG.scaleY = 0.3333;
 
-		// rectangle
-		const rectangle = this.add.rectangle(197, 386, 128, 128);
-		rectangle.scaleX = 3.5006144584682515;
-		rectangle.scaleY = 0.12;
-		rectangle.angle = 2;
-		rectangle.visible = false;
-		rectangle.isFilled = true;
-		rectangle.fillColor = 0;
+    // loading_txt
+    const loading_txt = this.add.text(180, 565, "", {});
+    loading_txt.setOrigin(0.5, 0.5);
+    loading_txt.text = "LOADING";
+    loading_txt.setStyle({ color: "#faf05e", fontFamily: "Carlito-BoldItalic", stroke: "#faf05e" });
 
-		// beats_2024_UI___Option_7_Load_song_BG
-		const beats_2024_UI___Option_7_Load_song_BG = this.add.image(180, 320, "Beats 2024 UI - Option 7_Load song_BG");
-		beats_2024_UI___Option_7_Load_song_BG.scaleX = 0.3333;
-		beats_2024_UI___Option_7_Load_song_BG.scaleY = 0.3333;
+    // play_button
+    const play_button = this.add.image(180, 565, "Button_blank");
+    play_button.scaleX = 0.5;
+    play_button.scaleY = 0.65;
+    play_button.visible = false;
 
-		// loading_txt
-		const loading_txt = this.add.text(180, 565, "", {});
-		loading_txt.setOrigin(0.5, 0.5);
-		loading_txt.text = "LOADING";
-		loading_txt.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-BoldItalic", "stroke": "#faf05e" });
+    // play_text
+    const play_text = this.add.text(180, 565, "", {});
+    play_text.setOrigin(0.5, 0.5);
+    play_text.visible = false;
+    play_text.text = "LEARN TO PLAY";
+    play_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "22px" });
 
-		// play_button
-		const play_button = this.add.image(180, 565, "Button_blank");
-		play_button.scaleX = 0.5;
-		play_button.scaleY = 0.65;
-		play_button.visible = false;
+    // bio_text
+    const bio_text = this.add.text(180, 249, "", {});
+    bio_text.setOrigin(0.5, 0.5);
+    bio_text.text = "The rhythm game that\ncelebrates Africa's music!";
+    bio_text.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      maxLines: 10,
+    });
+    bio_text.setLineSpacing(6);
+    bio_text.setWordWrapWidth(350);
 
-		// play_text
-		const play_text = this.add.text(180, 565, "", {});
-		play_text.setOrigin(0.5, 0.5);
-		play_text.visible = false;
-		play_text.text = "LEARN TO PLAY";
-		play_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "22px" });
+    // bio_text_1
+    const bio_text_1 = this.add.text(180, 488, "", {});
+    bio_text_1.setOrigin(0.5, 0.5);
+    bio_text_1.text = "Tap, Swipe and groove to the\nhottest sounds on the continent ";
+    bio_text_1.setStyle({
+      align: "center",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      maxLines: 10,
+    });
+    bio_text_1.setLineSpacing(6);
+    bio_text_1.setWordWrapWidth(350);
 
-		// bio_text
-		const bio_text = this.add.text(180, 249, "", {});
-		bio_text.setOrigin(0.5, 0.5);
-		bio_text.text = "The rhythm game that\ncelebrates Africa's music!";
-		bio_text.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "20px", "maxLines":10});
-		bio_text.setLineSpacing(6);
-		bio_text.setWordWrapWidth(350);
+    // lists
+    const stars = [];
 
-		// bio_text_1
-		const bio_text_1 = this.add.text(180, 488, "", {});
-		bio_text_1.setOrigin(0.5, 0.5);
-		bio_text_1.text = "Tap, Swipe and groove to the\nhottest sounds on the continent ";
-		bio_text_1.setStyle({ "align": "center", "fontFamily": "Carlito-Regular", "fontSize": "20px", "maxLines":10});
-		bio_text_1.setLineSpacing(6);
-		bio_text_1.setWordWrapWidth(350);
+    this.thumbnail_image = thumbnail_image;
+    this.artist_name = artist_name;
+    this.song_name = song_name;
+    this.loading = loading;
+    this.percentage = percentage;
+    this.current_asset = current_asset;
+    this.loading_txt = loading_txt;
+    this.play_button = play_button;
+    this.play_text = play_text;
+    this.bio_text = bio_text;
+    this.bio_text_1 = bio_text_1;
+    this.stars = stars;
 
-		// lists
-		const stars = [];
+    this.events.emit("scene-awake");
+  }
 
-		this.thumbnail_image = thumbnail_image;
-		this.artist_name = artist_name;
-		this.song_name = song_name;
-		this.loading = loading;
-		this.percentage = percentage;
-		this.current_asset = current_asset;
-		this.loading_txt = loading_txt;
-		this.play_button = play_button;
-		this.play_text = play_text;
-		this.bio_text = bio_text;
-		this.bio_text_1 = bio_text_1;
-		this.stars = stars;
+  /** @type {Phaser.GameObjects.Image} */
+  thumbnail_image;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_name;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name;
+  /** @type {Phaser.GameObjects.Image} */
+  loading;
+  /** @type {Phaser.GameObjects.Text} */
+  percentage;
+  /** @type {Phaser.GameObjects.Text} */
+  current_asset;
+  /** @type {Phaser.GameObjects.Text} */
+  loading_txt;
+  /** @type {Phaser.GameObjects.Image} */
+  play_button;
+  /** @type {Phaser.GameObjects.Text} */
+  play_text;
+  /** @type {Phaser.GameObjects.Text} */
+  bio_text;
+  /** @type {Phaser.GameObjects.Text} */
+  bio_text_1;
+  /** @type {Array<any>} */
+  stars;
 
-		this.events.emit("scene-awake");
-	}
-
-	/** @type {Phaser.GameObjects.Image} */
-	thumbnail_image;
-	/** @type {Phaser.GameObjects.Text} */
-	artist_name;
-	/** @type {Phaser.GameObjects.Text} */
-	song_name;
-	/** @type {Phaser.GameObjects.Image} */
-	loading;
-	/** @type {Phaser.GameObjects.Text} */
-	percentage;
-	/** @type {Phaser.GameObjects.Text} */
-	current_asset;
-	/** @type {Phaser.GameObjects.Text} */
-	loading_txt;
-	/** @type {Phaser.GameObjects.Image} */
-	play_button;
-	/** @type {Phaser.GameObjects.Text} */
-	play_text;
-	/** @type {Phaser.GameObjects.Text} */
-	bio_text;
-	/** @type {Phaser.GameObjects.Text} */
-	bio_text_1;
-	/** @type {Array<any>} */
-	stars;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
   preload() {

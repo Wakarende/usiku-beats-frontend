@@ -51,10 +51,6 @@ const HubScreen = () => {
 
   const { fadeOutBgMusic, playBoom } = useAudio();
 
-  // useEffect(() => {
-  //   playBgMusic();
-  // }, [playBgMusic]);
-
   const [footerGlowActive, setFooterGlowActive] = useState(false);
   const [ftueStep, setFtueStep] = useState(0);
   const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false);
@@ -509,7 +505,6 @@ const HubScreen = () => {
                     playBoom();
                   }}
                   isPulsing={isPulsing && index === 0}
-                  // This is the important part - explicitly pass this prop:
                   isHighlightedForFtue={
                     ftueStep === 6 &&
                     highlightedSongId === item.id &&
@@ -527,34 +522,22 @@ const HubScreen = () => {
           </div>
         </div>
         {showPlaySongPanel && (
-          <div
-            className="fixed inset-0 flex items-center justify-center z-[9999] bg-black/80 play-song-panel"
-            onClick={closePlaySongPanel}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 9999,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div className="w-full max-w-4xl px-4 text-center">
-              <h1 className="text-5xl mb-8 text-white font-bold">
-                Your new song is now ready to play!
-              </h1>
-
-              <p className="text-2xl text-white mb-8">
-                When you're ready, tap the song's <span className="font-bold">Play Now</span>{" "}
-                button, and have a great time!
-              </p>
-
-              <p className="text-lg text-white opacity-70 mt-16">
-                Tap anywhere to close this message.
-              </p>
-            </div>
-          </div>
+          <InfoPanel
+            onClose={closePlaySongPanel}
+            bottomPosition={true}
+            positionOffset={40}
+            paragraphs={[
+              <>
+                <p className="font-bold sm:text-sm mb-4">Your new song is now ready to play!</p>
+                <p className="text-lg sm:text-sm mb-2">
+                  When you're' ready, tap the song's'{" "}
+                  <span className="font-bold sm:text-sm">Play Now</span> button, and have a great
+                  time!
+                </p>
+                <p className="sm:text-sm">Tap anywhere else to close this message.</p>
+              </>,
+            ]}
+          />
         )}
         <div className="w-full">
           <Image
@@ -635,9 +618,9 @@ const HubScreen = () => {
           paragraphs={[
             <>
               <p className="text-lg">
-                Your song is <span className="font-bold">unlocking!</span> Songs take time to
-                unlock, but you can speed it up with gems. When the timer runs out, you can add the
-                song to your collection at the top of the screen.
+                We're' now back at <span className="font-bold">You Songs,</span> and the song you
+                chose is unlocking, and will be available soon. But let's not wait! Get it now, by
+                tapping the <span className="font-bold">Finish Now</span> button!
               </p>
             </>,
           ]}

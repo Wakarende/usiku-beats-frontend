@@ -152,7 +152,7 @@ const Library = () => {
     // During FTUE, set a short timer (2 minutes) instead of immediate unlock
     if (isFtue) {
       // For FTUE, set a short countdown (2 minutes) to teach the concept
-      unlockTime = moment().add(2, "minutes").toISOString();
+      unlockTime = moment().add(10, "minutes").toISOString();
     } else {
       // Normal non-FTUE behavior - longer countdown
       const unlockedSongsCount = user_data.profile.player.player_song_instances.length;
@@ -385,8 +385,10 @@ const Library = () => {
 
         {/* Popup shown after user clicks unlock */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-          <div className="flex justify-center flex-col items-center">
-            <h1 className="text-5xl popup-header tracking-wider">You've Just Chose</h1>
+          <div className="flex justify-start flex-col items-center">
+            <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap">
+              You've Just Chose
+            </h1>
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
@@ -413,16 +415,11 @@ const Library = () => {
               </div>
             </div>
           </div>
-          {/* If NOT in FTUE, show the usual timer & gem unlock. If FTUE, skip this section.
-          {!isFtue && (
-           
-          )}
-           */}
           <button
             onClick={() => {
               handlePopupContinue();
             }}
-            className={`relative ${
+            className={`relative p-2 mt-4 ${
               ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true"
                 ? "ftue-continue-highlight-frame"
                 : ""
@@ -436,13 +433,13 @@ const Library = () => {
             />
             {/* Bouncing hand for step 3 */}
             {ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true" && (
-              <div className="absolute bottom-[-70px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+              <div className="absolute bottom-[20px] right-[-70px] animate-bounce z-[10000] pointer-events-none">
                 <Image
                   src="/assets/img/ftue/hand icon.png"
                   width={80}
                   height={80}
                   alt="Hand pointing to continue"
-                  className="w-20 h-20 object-contain"
+                  className="w-20 h-20 object-contain -rotate-[120deg]"
                 />
               </div>
             )}

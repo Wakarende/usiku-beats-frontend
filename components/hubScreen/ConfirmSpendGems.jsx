@@ -74,13 +74,13 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             </button>
             {/* Bouncing hand for FTUE step 4 */}
             {ftueStep === 4 && (
-              <div className="absolute top-[-40px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+              <div className="absolute top-[-20px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
                 <Image
                   src="/assets/img/ftue/hand icon.png"
                   width={80}
                   height={80}
                   alt="Hand pointing to yes button"
-                  className="w-20 h-20 object-contain transform rotate-45"
+                  className="w-20 h-20 object-contain transform -rotate-45"
                 />
               </div>
             )}

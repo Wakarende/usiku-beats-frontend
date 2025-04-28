@@ -236,15 +236,6 @@
     margin: 0;
 }
 
-.popup-header {
-    color: rgb(255, 106, 0);
-    text-shadow: 1.636px 1.673px 0px #faf05d;
-    -moz-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    -webkit-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    -ms-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-}
-
 .popup-frame {
     background-image: url("/assets/img/library/popup-frame.png");
     width: 100%;
@@ -253,11 +244,9 @@
 
 /* FTUE Library */
 .ftue-highlight-frame {
-    /* position: relative; */
     border: 6px solid #00f5ff;
     border-radius: 20px;
-    /* padding: 10px; */
-    background-color: rgba(255, 255, 255, 0.01);
+    /* background-color: rgba(255, 255, 255, 0.01); */
     box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7);
     animation: ftueGlowPulse 2s infinite;
 }
@@ -281,8 +270,8 @@
     border: 6px solid #00f5ff !important;
     border-radius: 20px !important;
     background-color: rgba(255, 255, 255, 0.01) !important;
-    box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7) !important;
-    animation: ftueGlowPulse 2s infinite !important;
+    /* box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7) !important; */
+    animation: ftueLibPulse 2s infinite !important;
     z-index: 10 !important;
     margin: -4px !important;
     /* Negative margin to make the glow more visible */
@@ -293,19 +282,13 @@
 }
 
 .ftue-continue-highlight-frame {
-    position: relative !important;
-    border: 6px solid #00f5ff !important;
-    border-radius: 20px !important;
-    background-color: rgba(255, 255, 255, 0.01) !important;
-    box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.7) !important;
-    animation: ftueGlowPulse 2s infinite !important;
-    z-index: 1000 !important;
-    margin: -8px !important;
-
+    position: relative;
+    border: 6px solid #00f5ff;
+    border-radius: 20px;
 }
 
 /* Define or ensure glow pulse animation exists */
-@keyframes ftueGlowPulse {
+@keyframes ftueLibPulse {
     0% {
         box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.6) !important;
     }

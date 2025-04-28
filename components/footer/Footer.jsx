@@ -17,7 +17,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
     <>
       {/* ✋ Hand Layer (OUTSIDE Footer) */}
       {footerGlowActive && (
-        <div className="fixed bottom-[110px] right-6 z-[2000]  animate-bounce pointer-events-none">
+        <div className="fixed bottom-[120px] right-6 z-[2000]  animate-bounce pointer-events-none">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={100}
