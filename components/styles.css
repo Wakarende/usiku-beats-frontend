@@ -427,138 +427,57 @@ svg {
 /* END ARTIST INFO OVERLAY  */
 
 /* HUBSCREEN FOOTER  */
-.hub-footer {
-  background-image: url("/assets/img/bg/Bottom banner BG.png");
+
+/* Unlock songs row  */
+.ftue-hub-highlight-frame {
+  position: relative !important;
+  z-index: 95 !important;
 }
 
-@media only screen and (max-width: 395px) {
-
-  .bottom-text {
-    font-size: 8px;
-  }
-
-  .hub-footer {
-    height: 6rem;
-  }
-
-  .more-songs-container {
-    max-width: 40%;
-    font-size: 10px;
-    right: 32%;
-    bottom: -5%;
-  }
-
-  .bottom-text-container {
-    right: -5%;
-    bottom: 0;
-  }
-
-  .discs-text-container {
-    left: 61%;
-    top: 10%;
-  }
-
-  .discs-text {
-    font-size: 12px;
-  }
+.ftue-hub-highlight-frame>.unlock-card-wrapper {
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
 }
 
-@media only screen and (min-width: 400px) and (max-width: 640px) {
-  .bottom-text {
-    font-size: 9px;
-  }
-
-  .hub-footer {
-    height: 8rem;
-  }
-
-  .footer-text {
-    font-size: 12px;
-  }
-
-  .discs-text-container {
-    left: 62%;
-    top: 10%;
-  }
-
-  .disc-text {
-    font-size: 14px;
-  }
-
-  .more-songs-container {
-    max-width: 40%;
-    right: 32%;
-    bottom: 4%;
-  }
-
+.ftue-add-library-highlight-frame {
+  position: relative !important;
+  z-index: 95 !important;
 }
 
-@media only screen and (min-width: 700px) and (max-width: 1023px) {
-  .bottom-text-container {
-    right: -1%;
-    bottom: -5%
-  }
-
-  .bottom-text {
-    font-size: 18px;
-  }
-
-  .hub-footer {
-    height: 14rem;
-  }
-
-  .discs-text {
-    font-size: 22px;
-  }
-
-  .discs-text-container {
-    left: 68%;
-    top: 10%;
-  }
-
-  .footer-text {
-    font-size: 20px;
-  }
-
-  .more-songs-container {
-    max-width: 35%;
-    right: 32%;
-    bottom: 0%;
-  }
+.ftue-add-library-highlight-frame>.unlock-card,
+.ftue-add-library-highlight-frame>.unlock-button,
+.ftue-add-library-highlight-frame>div>.unlock-button {
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
 }
 
-@media only screen and (min-width: 1024px) {
-  .hub-footer {
-    height: 20rem;
-  }
+.ftue-add-library-highlight-frame button {
+  position: relative;
+  z-index: 92;
+}
 
-  .footer-text {
-    font-size: 22px;
-  }
+.ftue-gems-highlight-frame {
+  position: relative;
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
+  overflow: visible;
+}
 
-  .bottom-text-container {
-    right: 1%;
-    bottom: 0%
-  }
+.ftue-gems-highlight-frame button {
+  position: relative;
+  z-index: 150;
+}
 
-  .bottom-text {
-    font-size: 22px;
-  }
+.ftue-song-highlight-frame {
+  position: relative;
+  overflow: visible;
+}
 
-  .discs-text-container {
-    left: 70%;
-    top: 15%;
-  }
+.ftue-song-highlight-frame> :first-child {
+  filter: drop-shadow(0 0 5px rgba(0, 245, 255, 0.8));
+  z-index: 91;
+}
 
-  .discs-text {
-    font-size: 24px;
-  }
-
-  .more-songs-container {
-    max-width: 35%;
-    right: 33%;
-    bottom: 2%;
-  }
+.ftue-song-highlight-frame .hand-icon {
+  position: absolute;
+  pointer-events: none;
 }
 
 /* HUBSCREEN END  */

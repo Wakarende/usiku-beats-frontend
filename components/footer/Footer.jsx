@@ -1,76 +1,120 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import useSound from "use-sound";
 import useClickSound from "../../hooks/useClickSound";
 
-const LibraryFooter = () => {
+const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const canUnlockSongs = totalDiscs >= 30;
-
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [inFtue, setInFtue] = useState(false);
 
   const handleClickSound = useClickSound();
 
+  // Check if we're in FTUE step 1
+  useEffect(() => {
+    const checkFtueStatus = () => {
+      const ftueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+      const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+
+      setInFtue(ftueStep === 1 && !ftueCompleted);
+    };
+
+    checkFtueStatus();
+
+    window.addEventListener("storage", checkFtueStatus);
+    return () => {
+      window.removeEventListener("storage", checkFtueStatus);
+    };
+  }, []);
+
+  const footerZIndex = inFtue ? 61 : 10;
+  const handZIndex = inFtue ? 62 : 11;
+  const footerBgZIndex = inFtue ? 61 : 5;
+  const contentZIndex = inFtue ? 62 : 10;
+
   return (
-    <Link href={"/library"} onClick={handleClickSound}>
-      <footer className="fixed hub-footer bottom-0 bg-center bg-no-repeat bg-contain w-full ">
-        <div className="relative medium:h-[100px] medium:top-[15%] ">
+    <>
+      {footerGlowActive && (
+        <div
+          className="fixed bottom-[120px] right-6 animate-bounce pointer-events-none"
+          style={{ zIndex: handZIndex }}
+        >
           <Image
-            src="/assets/img/footer/footer-bg.png"
-            alt="Footer background pattern"
-            height={100}
+            src="/assets/img/ftue/hand icon.png"
             width={100}
-            className="small:object-contain medium:object-contain large:object-contain z-1 bg-no-repeat w-full"
-            priority
+            height={100}
+            alt="Hand pointing to Song Library"
+            className="w-24 h-24 object-contain transform -rotate-[120deg]"
           />
-          <div className="absolute inset-0 z-1">
-            <div className="flex flex-col justify-between">
-              <div className="absolute p-2 more-songs-container">
-                <p className=" more-songs-text small:font-medium medium:font-medium large:font-medium text-white leading-tight medium:text-[12px] large:text-lg xl:text-2xl">
-                  Add more songs to your collection by earning discs
-                </p>
-              </div>
-            </div>
-            {/* Right Section */}
-            <div className="text-white text-right absolute inset-0">
-              <div className="absolute flex flex-col discs-text-container">
-                <motion.p
-                  className="text-sm large:text-3xl font-bold uppercase mb-1 discs-text text-center text-nowrap leading-tight"
-                  animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
-                  transition={
-                    canUnlockSongs
-                      ? {
-                          duration: 0.8,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          ease: "easeInOut",
-                        }
-                      : {}
-                  }
-                >
-                  You now have <br />
-                  {totalDiscs} discs
-                </motion.p>
-              </div>
-              <div className="absolute flex flex-col text-yellow text-nowrap bottom-text-container small:right-[-5%] small:bottom-[5%] medium: right-[-4%] medium:bottom-[15%] leading-tight">
-                <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
-                  Each song costs 30 discs.
-                </p>
-                <p className="text-sm md:text-base font-medium bottom-text text-nowrap leading-tight">
-                  Get discs by playing your song
-                </p>
-              </div>
+        </div>
+      )}
+      <div className="h-[120px]"></div>
+      <footer
+        className="fixed bottom-0 left-0 right-0 w-full pointer-events-none"
+        style={{ zIndex: footerZIndex }}
+      >
+        <div
+          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] overflow-visible`}
+          style={{
+            zIndex: footerBgZIndex,
+            filter: footerGlowActive ? "drop-shadow(0 -10px 10px rgba(0, 245, 255, 0.8))" : "none",
+          }}
+        >
+          <Image
+            src="/assets/img/footer/hub_banner_BG.png"
+            fill
+            sizes="100vw"
+            priority
+            alt="Footer background"
+            className="object-fill"
+            style={{
+              objectPosition: "center bottom",
+            }}
+          />
+        </div>
+        <div
+          className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] pointer-events-auto"
+          style={{ zIndex: contentZIndex }}
+        >
+          <Link
+            href="/library"
+            onClick={() => {
+              handleClickSound();
+              clearFooterGlow();
+              localStorage.setItem("ftueStep", "2");
+            }}
+            className="absolute inset-0 w-full h-full"
+          ></Link>
+
+          <div className="absolute bottom-8 sm:bottom-12 md:bottom-12 right-[0rem] tracking-widest leading-tight">
+            <div className="flex flex-col items-center">
+              <motion.p
+                className="text-xs sm:text-xs md:text-base font-bold uppercase text-center text-white leading-tight"
+                animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
+                transition={
+                  canUnlockSongs
+                    ? {
+                        duration: 0.8,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                      }
+                    : {}
+                }
+              >
+                YOU HAVE
+                <br />
+                <span className="">{totalDiscs} DISCS</span>
+              </motion.p>
             </div>
           </div>
         </div>
       </footer>
-    </Link>
+    </>
   );
 };
-
 export default LibraryFooter;

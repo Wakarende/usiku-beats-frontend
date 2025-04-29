@@ -37,9 +37,8 @@ const Header = () => {
     };
     dispatch(updateUser(updatedUser));
   };
-
   return (
-    <Navbar expand="lg" className="navbar">
+    <Navbar expand="lg" className="navbar" style={{ zIndex: 21 }}>
       <Container fluid className="flex items-center justify-between">
         {/* Stars and Gems Section */}
         <div className="header-left flex flex-col items-center gap-x-">
@@ -104,12 +103,7 @@ const Header = () => {
             />
           </Link>
           <Link href={"/login"} className="flex items-center">
-            <Image
-              src="/assets/img/header/Settings.png"
-              alt="Settings"
-              width={50}
-              height={50}
-            />
+            <Image src="/assets/img/header/Settings.png" alt="Settings" width={50} height={50} />
           </Link>
         </div>
       </Container>

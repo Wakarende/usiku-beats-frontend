@@ -1,0 +1,162 @@
+// Initialize with placeholders for server-side rendering
+let gameanalytics = null;
+let initialized = false;
+
+// Only import GameAnalytics on the client side
+if (typeof window !== "undefined") {
+  // We use require instead of import to make this conditional
+  // This prevents the server from trying to load gameanalytics
+  try {
+    gameanalytics = require("gameanalytics");
+  } catch (e) {
+    console.error("Error loading GameAnalytics:", e);
+  }
+}
+
+export const AnalyticsService = {
+  init: () => {
+    // Only initialize once and only on client-side
+    if (!initialized && typeof window !== "undefined" && gameanalytics) {
+      try {
+        gameanalytics.GameAnalytics.initialize(
+          "ee0454adaf47527b1972a5a530e570b6",
+          "f5ed2b53cbad4d76d4f481b0b423bc4a0937c5bd",
+          "0.2.2"
+        );
+        // gameanalytics.GameAnalytics.configureBuild("0.2.2");
+        initialized = true;
+        console.log("GameAnalytics initialized");
+      } catch (error) {
+        console.error("Failed to initialize GameAnalytics:", error);
+      }
+    }
+  },
+
+  // Game lifecycle events
+  trackGameStart: () => {
+    if (!initialized || !gameanalytics) return;
+    gameanalytics.GameAnalytics.addProgressionEvent(
+      gameanalytics.EGAProgressionStatus.Start,
+      "Game"
+    );
+  },
+
+  trackGameEnd: (score) => {
+    if (!initialized || !gameanalytics) return;
+    gameanalytics.GameAnalytics.addProgressionEvent(
+      gameanalytics.EGAProgressionStatus.Complete,
+      "Game",
+      "",
+      "",
+      score
+    );
+  },
+
+  // Song events for rhythm game
+  trackSongStart: (songName) => {
+    if (!initialized || !gameanalytics) return;
+    gameanalytics.GameAnalytics.addProgressionEvent(
+      gameanalytics.EGAProgressionStatus.Start,
+      "Song",
+      songName
+    );
+  },
+
+  trackTileMiss: (songName, tileType) => {
+    if (!initialized || !gameanalytics) return;
+
+    // Since tileType is always a string, include it in the event ID
+    gameanalytics.GameAnalytics.addDesignEvent(`Song:Miss:${songName}:${tileType}`);
+
+    // Also track general misses for the song (without tile type) for easier aggregation
+    gameanalytics.GameAnalytics.addDesignEvent(`Song:Miss:${songName}`);
+  },
+
+  trackSongEnd: (songName, score, wasSuccessful) => {
+    if (!initialized || !gameanalytics) return;
+
+    // Use Complete status for successful completion, Fail status for failures
+    const progressionStatus = wasSuccessful
+      ? gameanalytics.EGAProgressionStatus.Complete
+      : gameanalytics.EGAProgressionStatus.Fail;
+
+    gameanalytics.GameAnalytics.addProgressionEvent(progressionStatus, "Song", songName, "", score);
+  },
+
+  // UI events
+  trackUIEvent: (uiElement, action) => {
+    if (!initialized || !gameanalytics) return;
+    gameanalytics.GameAnalytics.addDesignEvent(`UI:${uiElement}:${action}`);
+  },
+
+  // Resource events
+  trackResourceGain: (resourceType, amount, itemId) => {
+    if (!initialized || !gameanalytics) return;
+    gameanalytics.GameAnalytics.addResourceEvent(
+      gameanalytics.EGAResourceFlowType.Source,
+      resourceType,
+      amount,
+      "items",
+      itemId
+    );
+  },
+
+  trackResourceUse: (resourceType, amount, itemId) => {
+    if (!initialized || !gameanalytics) return;
+    gameanalytics.GameAnalytics.addResourceEvent(
+      gameanalytics.EGAResourceFlowType.Sink,
+      resourceType,
+      amount,
+      "items",
+      itemId
+    );
+  },
+
+  // Custom events
+  trackCustomEvent: (eventCategory, eventAction, value = null) => {
+    if (!initialized || !gameanalytics) return;
+    const eventId = `${eventCategory}:${eventAction}`;
+    gameanalytics.GameAnalytics.addDesignEvent(eventId, value);
+  },
+
+  // FTUE events (First Time User Experience)
+  trackFTUEStep: (stepName, isComplete = false) => {
+    if (!initialized || !gameanalytics) return;
+    const eventId = isComplete ? `FTUE:Complete:${stepName}` : `FTUE:Start:${stepName}`;
+    gameanalytics.GameAnalytics.addDesignEvent(eventId);
+  },
+
+  // Add this to your AnalyticsService object
+  trackFTUEFail: (stepName) => {
+    if (!initialized || !gameanalytics) return;
+    // Track the basic fail event
+    const eventId = `FTUE:Fail:${stepName}`;
+    gameanalytics.GameAnalytics.addDesignEvent(eventId);
+  },
+
+  trackFTUETileMiss: (stepName, tileType, attemptCount = null) => {
+    if (!initialized || !gameanalytics) return;
+
+    // Always track with tile type since it's available
+    const eventId = `FTUE:TileMiss:${stepName}:${tileType}`;
+
+    // If attempt count is provided, include it as a value
+    if (attemptCount !== null) {
+      gameanalytics.GameAnalytics.addDesignEvent(eventId, attemptCount);
+    } else {
+      gameanalytics.GameAnalytics.addDesignEvent(eventId);
+    }
+
+    // Also track aggregated miss events for the tutorial step
+    const stepEventId = `FTUE:TileMiss:${stepName}`;
+    gameanalytics.GameAnalytics.addDesignEvent(stepEventId);
+  },
+};
+
+// // Auto-initialize on client side
+// if (typeof window !== "undefined") {
+//   // Wait for next tick to ensure window is fully available
+//   setTimeout(() => {
+//     AnalyticsService.init();
+//   }, 0);
+// }

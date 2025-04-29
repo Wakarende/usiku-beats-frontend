@@ -217,12 +217,17 @@ class GameOverScene extends Phaser.Scene {
     this.current_track = this.sound.add(data.track.song_name);
     this.current_track.play();
     this.current_track.pause();
-
+    this.analytics = this.registry.get("analytics");
     // console.log(this.track);
   }
 
   create() {
     console.log("GameOverScene.js create()");
+    this.analytics.trackSongEnd(
+      this.track.song_name,
+      this.track.current_score,
+      this.isSongComplete
+    );
 
     this.editorCreate();
     this.adjustViewport();
@@ -269,10 +274,14 @@ class GameOverScene extends Phaser.Scene {
       });
       this.game.events.emit("destroyGame");
 
-      router.push({
-        pathname: "/hub",
-        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
-      });
+      localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
+      localStorage.setItem("newLevel", JSON.stringify(newLevel));
+      localStorage.setItem("ftueCompleted", "true"),
+        router.push({
+          pathname: "/hub",
+
+          // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+        });
     });
 
     this.library_button.setInteractive();
@@ -291,9 +300,11 @@ class GameOverScene extends Phaser.Scene {
       });
       this.game.events.emit("destroyGame");
 
+      localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
+      localStorage.setItem("newLevel", JSON.stringify(newLevel));
       router.push({
         pathname: "/library",
-        query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+        // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
     });
 

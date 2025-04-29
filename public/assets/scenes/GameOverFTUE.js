@@ -49,6 +49,9 @@ class GameOverFTUE extends Phaser.Scene {
   // Write your code here
 
   create() {
+    this.analytics = this.registry.get("analytics");
+    this.analytics.trackFTUEStep("2 - SongComplete");
+
     this.editorCreate();
     this.adjustViewport();
     const router = this.registry.get("router");
@@ -67,7 +70,7 @@ class GameOverFTUE extends Phaser.Scene {
       this.game.events.emit("destroyGame");
 
       router.push({
-        pathname: "/library",
+        pathname: "/hub",
         query: { ftueGameplayCompleted: this.ftueCompleted },
       });
     });

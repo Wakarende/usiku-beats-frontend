@@ -1,69 +1,57 @@
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+
 export default function InfoPanel({
   title = "How To Play?",
   paragraphs = [],
   onClose,
-  bgImage = "/assets/img/ftue/Info_panel.png",
+  bgImage = "/assets/img/ftue/Info_panel_blue.png",
+  bottomPosition = false,
+  transparentBg = false,
+  customStyle = {},
+  positionOffset = 0,
+  customClassName = "",
+  customPosition = false,
 }) {
   return (
     <div
+    className={transparentBg ? "" : "bg-black/70"}
       style={{
         position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        zIndex: 9999,
+        inset: 0,  
+        zIndex: 60,
       }}
+      onClick={onClose}
     >
       <div
-        className="flex flex-col absolute bottom-0 left-[50%] transform translate-x-[-50%] w-[100%] bg-[#1a1a1a] p-4 text-white tracking-widest rounded-lg text-center"
+        className={`flex flex-col text-white tracking-widest text-center ${customClassName}`}
         style={{
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
+          backgroundSize: "100% 100%",
           backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          padding: "2rem",
+          position: "absolute",
+          ...(customPosition 
+            ? {} 
+            : {
+                left: "50%",
+                top: bottomPosition ? "auto" : "50%",
+                bottom: bottomPosition ? `${positionOffset}px` : "auto",
+                transform: `translateX(-50%) ${!bottomPosition ? "translateY(-50%)" : ""}`,
+                 maxWidth: "3xl",
+                width: "100%",
+              }),
+          ...customStyle,
         }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <h1
-            className="text-5xl mb-3 tracking-widest text-[rgb(255,106,0)]  font-bold "
-            style={{
-              textShadow: "1.5px 1.5px 0px #faf05d",
-              transform:
-                "matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0)",
-            }}
-          >
-            {title}
-          </h1>
-        </motion.div>
-        <div className="text-xl mb-2 text-yellow small:text-xs medium:w-full large:w-[80%] xl:w-[60%] xl:text-2xl mx-auto">
+        <div
+         className="text-lg text-white w-full mx-auto">
           {paragraphs.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+            <p key={index} className="mb-2">{paragraph}</p>
           ))}
         </div>
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3, duration: 1 }}
-          className="mt-3"
-          onClick={onClose}
-        >
-          <Image
-            src="/assets/img/ftue/Close_button.png"
-            width={250}
-            height={100}
-            alt="continue-btn"
-          />
-        </motion.button>
       </div>
     </div>
   );

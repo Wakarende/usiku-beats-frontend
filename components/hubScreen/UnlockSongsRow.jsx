@@ -1,35 +1,61 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/main/authActions";
 import Popup from "../library/Popup";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import useClickSound from "../../hooks/useClickSound";
+import ConfirmSpendGemsPopup from "./ConfirmSpendGems";
 import ParticleEffect from "./ParticleEffect";
+import { useRouter } from "next/router";
+import useClickSound from "../../hooks/useClickSound";
+import InfoPanel from "../infopanel/InfoPanel";
+import Image from "next/image";
 import "../styles.css";
 
-const UnlockSongsRow = ({ user_data, songs, loading }) => {
+const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
-  const gemsRequiredToUnlockSong = 20;
-
-  // Use local state for whether each song is "pulsing" and "particle effect triggered"
+  const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
+  const [selectedSong, setSelectedSong] = useState(null);
   const [unlockedState, setUnlockedState] = useState({});
   const [particleTrigger, setParticleTrigger] = useState({});
+  const [lockedSongs, setLockedSongs] = useState([]);
+
+ 
+  const [ftueStep, setFtueStep] = useState(0);
+  const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false); // Moved from HubScreen
+  const [showUnlockOverlayPanel, setShowUnlockOverlayPanel] = useState(false);
+  const [unlockOverlaySong, setUnlockOverlaySong] = useState(null);
+
+  const gemsRequiredToUnlockSong = 20;
 
   const dispatch = useDispatch();
-  const router = useRouter();
   const handleClickSound = useClickSound();
+  const router = useRouter();
 
-  // On mount, read both states from localStorage (if any)
+  // Log FTUE status on render
   useEffect(() => {
-    if (typeof window === "undefined") return; // safeguard for SSR
+    console.log("UnlockSongsRow rendered, FTUE status:", {
+      step: localStorage.getItem("ftueStep"),
+      completed: localStorage.getItem("ftueCompleted"),
+    });
+  }, []);
+
+  // Track FTUE step and show appropriate panels
+  useEffect(() => {
+    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    setFtueStep(storedStep);
+
+    // Show "Finish Now" panel for step 4 if not seen yet
+    if (storedStep === 4 && !localStorage.getItem("unlockingInfoSeen")) {
+      setShowUnlockingInfoPanel(true);
+    }
+  }, []);
+
+  // Load local storage on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     try {
-      const savedUnlocked =
-        JSON.parse(localStorage.getItem("unlockedState")) || {};
-      const savedParticles =
-        JSON.parse(localStorage.getItem("particleTrigger")) || {};
+      const savedUnlocked = JSON.parse(localStorage.getItem("unlockedState")) || {};
+      const savedParticles = JSON.parse(localStorage.getItem("particleTrigger")) || {};
       setUnlockedState(savedUnlocked);
       setParticleTrigger(savedParticles);
     } catch (error) {
@@ -37,7 +63,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }
   }, []);
 
-  // Whenever unlockedState or particleTrigger changes, save them
+  // Save local storage whenever states change
   useEffect(() => {
     localStorage.setItem("unlockedState", JSON.stringify(unlockedState));
   }, [unlockedState]);
@@ -46,12 +72,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     localStorage.setItem("particleTrigger", JSON.stringify(particleTrigger));
   }, [particleTrigger]);
 
-  // ensures the user sees the pulse if they left the page and came back.
-  const lockedSongs =
-    user_data?.profile?.player?.player_song_instances?.filter(
-      (item) => !item.unlocked
-    ) || [];
+  // Update locked songs when user_data changes
+  useEffect(() => {
+    const newLockedSongs =
+      user_data?.profile?.player?.player_song_instances?.filter((item) => !item.unlocked) || [];
+    setLockedSongs(newLockedSongs);
+  }, [user_data]);
 
+  // Update unlocked and particle state based on unlock time
   useEffect(() => {
     if (!lockedSongs.length) return;
 
@@ -89,68 +117,144 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }
   }
 
+  const closeUnlockingInfoPanel = () => {
+    setShowUnlockingInfoPanel(false);
+    localStorage.setItem("unlockingInfoSeen", "true");
+
+    // Progress to step 5
+    localStorage.setItem("ftueStep", "5");
+    setFtueStep(5);
+  };
+
   function addToLibrary(song) {
+    console.log("Add to library clicked for song:", song.id);
+
+    // Get current FTUE step
+    const currentFtueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    console.log("Current FTUE step before update:", currentFtueStep);
+
+    // Update user data
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     const songInstance = newUserdata.profile.player.player_song_instances.find(
       (instance) => instance.song.id === song.id
     );
+
     if (songInstance) {
       songInstance.unlocked = true;
       songInstance.unlock_time = null;
       dispatch(updateUser(newUserdata));
+      console.log("Song unlocked and added to library:", song.id);
     } else {
       console.error("Song not found in song instances", song.id);
     }
-    // Turn off pulse & particle effect
+
+    // Reset UI states
     setUnlockedState((prev) => {
       const newState = { ...prev, [song.id]: false };
       localStorage.setItem("unlockedState", JSON.stringify(newState));
       return newState;
     });
     setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
+
+    if (currentFtueStep === 5 && localStorage.getItem("ftueCompleted") !== "true") {
+      console.log("FTUE progressing from step 5 to 6");
+
+      localStorage.setItem("addToLibraryCompleted", "true");
+      localStorage.setItem("ftueStep", "6");
+      setFtueStep(6);
+
+      if (showUnlockOverlayPanel) {
+        setShowUnlockOverlayPanel(false);
+      }
+
+      if (onFtueProgressToStep6) {
+        onFtueProgressToStep6(song);
+      }
+
+      return;
+    }
+
+    // Normal behavior for non-FTUE
+    if (showUnlockOverlayPanel) {
+      setShowUnlockOverlayPanel(false);
+    }
+
     handleClickSound();
   }
 
-  function unlockSongWithGems(song) {
-    let newUserdata = JSON.parse(JSON.stringify(user_data));
-    if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
-      setPopupMessage(
-        "You don't have enough gems to unlock this song right now."
-      );
+  function handleUnlockNowClick(song) {
+    setShowUnlockingInfoPanel(false);
+
+    if (user_data.profile.player.total_gems < gemsRequiredToUnlockSong) {
+      setPopupMessage("You don't have enough gems to unlock this song right now.");
       setIsPopupOpen(true);
       return;
     }
 
+    setSelectedSong(song);
+    setConfirmPopupOpen(true);
+  }
+
+  function confirmUnlockNow() {
+    if (!selectedSong) return;
+
+    let newUserdata = JSON.parse(JSON.stringify(user_data));
+
+    if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
+      setPopupMessage("You don't have enough gems to unlock this song right now.");
+      setIsPopupOpen(true);
+      setConfirmPopupOpen(false);
+      return;
+    }
+
     newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
+
+    const songId = selectedSong.id || selectedSong.song?.id;
     const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
+      (instance) => instance.song.id === songId
     );
+
     if (songInstance) {
-      songInstance.unlocked = true;
-      songInstance.unlock_time = null;
+      songInstance.unlock_time = new Date().toISOString();
       dispatch(updateUser(newUserdata));
+
+      setUnlockedState((prev) => {
+        const newState = { ...prev, [songId]: true };
+        localStorage.setItem("unlockedState", JSON.stringify(newState));
+        return newState;
+      });
+
+      setParticleTrigger((prev) => ({
+        ...prev,
+        [songId]: true,
+      }));
+
+      if (ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true") {
+        localStorage.setItem("ftueStep", "5");
+        setFtueStep(5);
+
+        setUnlockOverlaySong(selectedSong);
+
+        setShowUnlockingInfoPanel(false);
+        setShowUnlockOverlayPanel(true);
+      }
     } else {
-      console.error("Song not found in song instances", song.id);
+      console.error("Song not found in song instances", songId);
     }
 
     handleClickSound();
+    setConfirmPopupOpen(false);
   }
 
-  //Countdown timer
   function CountdownTimer({ unlockTime, onExpire }) {
-    const [timeLeft, setTimeLeft] = useState(
-      calculateTimeLeft(new Date(unlockTime))
-    );
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(unlockTime)));
 
     useEffect(() => {
       const timer = setTimeout(() => {
         const newTime = calculateTimeLeft(new Date(unlockTime));
         setTimeLeft(newTime);
 
-        if (
-          Object.keys(newTime).length === 0 &&
-          typeof onExpire === "function"
-        ) {
+        if (Object.keys(newTime).length === 0 && typeof onExpire === "function") {
           onExpire();
         }
       }, 1000);
@@ -159,7 +263,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }, [timeLeft, unlockTime, onExpire]);
 
     return (
-      <p className="small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[12px] large:pb-[7px] xl:text-[12px] xl:pb-[7px]">
+      <p className="sm:text-[6px] sm:pb-[5px] md:text-[7px] md:pb-[4px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px]">
         {timeLeft.minutes}:{timeLeft.seconds} m
       </p>
     );
@@ -179,7 +283,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     return timeLeft;
   }
 
-  //Generate up to 3 locked-song slots
   const slots = 3;
   const slotsContent = [];
 
@@ -187,182 +290,213 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     const item = lockedSongs[i];
     if (item) {
       const frameImage =
-        i % 2 === 0
-          ? "/assets/img/hub/unlock_frame.png"
-          : "/assets/img/hub/unlock_frame_2.png";
+        i % 2 === 0 ? "/assets/img/hub/unlock_frame.png" : "/assets/img/hub/unlock_frame_2.png";
 
       slotsContent.push(
-        <div
-          key={i}
-          className={`flex flex-col items-center unlock-card-wrapper ${
-            unlockedState[item.song.id] ? "pulse-effect" : ""
-          }`}
-        >
+        <div key={i} className="relative">
           <div
-            className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[116px] large:w-[200px] large:h-[180px]"
-            style={{
-              backgroundImage: `url(${item.song.thumbnail_file})`,
-            }}
+            className={`${
+              ftueStep === 4 && i === 0 && localStorage.getItem("ftueCompleted") !== "true"
+                ? "ftue-hub-highlight-frame"
+                : ""
+            }`}
           >
-            <div className="flex justify-center items-center">
-              <div className="absolute small:top-[-6%] medium:top-[-6%] large:top-[-1%]">
-                <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 small:text-xl medium:text-xl large:text-xl xl:text-xl">
-                  {item.song.song_name}
-                </p>
-              </div>
-            </div>
-            <div className="relative justify-center items-center">
-              <Image
-                src={frameImage}
-                alt="Title Bar"
-                width={300}
-                height={200}
-                className="h-[7.3rem] large:h-[180px] xl:h-[180px]"
-              />
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center">
-              <div className="flex items-center justify-center z-1 w-full">
-                <p className="text-white font-bold ml-2">
-                  {isUnlockTimePassed(item.unlock_time) ? (
-                    <button onClick={() => addToLibrary(item.song)}>
-                      <p className="tracking-wide unlocked-text text-nowrap small:text-[6px] small:pb-[5px] medium:text-[7px] medium:pb-[4px] large:text-[10px] large:pb-[7px] large:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
-                        Unlocked
-                      </p>
-                    </button>
-                  ) : (
-                    <CountdownTimer
-                      unlockTime={item.unlock_time}
-                      onExpire={() => {
-                        setUnlockedState((prev) => {
-                          const newState = { ...prev, [item.song.id]: true };
-                          localStorage.setItem(
-                            "unlockedState",
-                            JSON.stringify(newState)
-                          );
-                          return newState;
-                        });
-                        setParticleTrigger((prev) => ({
-                          ...prev,
-                          [item.song.id]: true,
-                        }));
-                      }}
-                    />
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {!isUnlockTimePassed(item.unlock_time) ? (
-            <div className="relative mt-0.5">
-              <button
-                className="w-full relative"
-                onClick={() => unlockSongWithGems(item.song)}
+            <div
+              className={`flex flex-col items-center unlock-card-wrapper 
+          ${unlockedState[item.song.id] ? "pulse-effect" : ""}
+          ${
+            ftueStep === 5 &&
+            i === 0 &&
+            isUnlockTimePassed(item.unlock_time) &&
+            localStorage.getItem("ftueCompleted") !== "true"
+              ? "ftue-add-library-highlight-frame"
+              : ""
+          }`}
+            >
+              {/* Card content - the song image and info */}
+              <div
+                className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[116px] lg:w-[200px] lg:h-[180px]"
+                style={{
+                  backgroundImage: `url(${item.song.thumbnail_file})`,
+                }}
               >
-                <Image
-                  src="/assets/img/hub/Button blank.png"
-                  alt="Button"
-                  width={160}
-                  height={40}
-                  className="small:h-[20px] small:w-[120px] medium:w-[200px] medium:h-[25px] large:w-[200px] large:h-[35px] xl:w-[200px] xl:h-[35px]"
-                />
-                <div className="absolute inset-0 flex items-center justify-between px-1">
-                  <div className="flex items-center gap-0.5">
-                    <Image
-                      src="/assets/img/hub/Gem.png"
-                      alt="Gem"
-                      width={16}
-                      height={16}
-                      className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px] xl:w-[20px] xl:h-[20px]"
-                    />
-                    <div className="flex items-center">
-                      <span className="text-yellow small:text-[8px] medium:text-[10px] large:text-[14px] xl:text-[14px]">
-                        {gemsRequiredToUnlockSong}
-                      </span>
-                    </div>
+                <div className="flex justify-center items-center">
+                  <div className="absolute sm:top-[-6%] md:top-[-6%] lg:top-[-1%]">
+                    <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-xl lg:text-xl xl:text-xl">
+                      {item.song.song_name}
+                    </p>
                   </div>
-                  <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text small:text-[8px] medium:text-[10px] large:text-lg xl:text-lg">
-                    unlock now
-                  </p>
+                </div>
+                <div className="relative justify-center items-center">
                   <Image
-                    src="/assets/img/hub/Unlock.png"
-                    alt="Unlock"
-                    width={16}
-                    height={16}
-                    className="small:w-[16px] small:h-[16px] medium:w-[16px] medium:h-[16px] large:w-[20px] large:h-[20px] xl:w-[20px] xl:h-[20px]"
+                    src={frameImage}
+                    alt="Title Bar"
+                    width={300}
+                    height={200}
+                    className="h-[7.3rem] large:h-[180px] xl:h-[180px]"
                   />
                 </div>
-              </button>
-            </div>
-          ) : (
-            <button className="unlock-button flex items-center justify-center">
-              <Image
-                src="/assets/img/hub/Button blank.png"
-                alt="Unlock Button Background"
-                width={160}
-                height={100}
-                className="small:h-[20px] small:w-[120px] medium:w-[200px] medium:h-[25px] large:w-[200px] large:h-[35px] xl:w-[200px] xl:h-[35px]"
-              />
-              <div className="absolute gem-wrapper">
-                <button onClick={() => addToLibrary(item.song)}>
-                  <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center small:text-[8px] medium:text-[10px] large:text-lg xl:text-lg">
-                    Add to Library
-                  </p>
-                </button>
+                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center">
+                  <div className="flex items-center justify-center z-1 w-full">
+                    <p className="text-white font-bold ml-2">
+                      {isUnlockTimePassed(item.unlock_time) ? (
+                        <button onClick={() => addToLibrary(item.song)}>
+                          <p className="tracking-wide unlocked-text text-nowrap sm:text-[6px] sm:pb-[5px] md:text-[7px] md:pb-[4px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
+                            Unlocked
+                          </p>
+                        </button>
+                      ) : (
+                        <CountdownTimer
+                          unlockTime={item.unlock_time}
+                          onExpire={() => {
+                            setUnlockedState((prev) => {
+                              const newState = { ...prev, [item.song.id]: true };
+                              localStorage.setItem("unlockedState", JSON.stringify(newState));
+                              return newState;
+                            });
+                            setParticleTrigger((prev) => ({
+                              ...prev,
+                              [item.song.id]: true,
+                            }));
+                          }}
+                        />
+                      )}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </button>
-          )}
 
-          {/* Show particle effect if triggered */}
-          {particleTrigger[item.song.id] && (
-            <ParticleEffect
-              active={true}
-              onComplete={() => {
-                setParticleTrigger((prev) => ({
-                  ...prev,
-                  [item.song.id]: false,
-                }));
-              }}
-            />
+              {/* Button section - either "Unlock Now" or "Add to Library" */}
+              {!isUnlockTimePassed(item.unlock_time) ? (
+                <div className="relative mt-0.5">
+                  <button
+                    className="w-full relative"
+                    onClick={() => handleUnlockNowClick(item.song)}
+                  >
+                    <Image
+                      src="/assets/img/hub/Button blank.png"
+                      alt="Button"
+                      width={160}
+                      height={40}
+                      className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-between px-1">
+                      <div className="flex items-center gap-0.5">
+                        <Image
+                          src="/assets/img/hub/Gem.png"
+                          alt="Gem"
+                          width={16}
+                          height={16}
+                          className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
+                        />
+                        <div className="flex items-center">
+                          <span className="text-yellow sm:text-[8px] md:text-[10px] lg:text-[14px] xl:text-[14px]">
+                            {gemsRequiredToUnlockSong}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
+                        unlock now
+                      </p>
+                      <Image
+                        src="/assets/img/hub/Unlock.png"
+                        alt="Unlock"
+                        width={16}
+                        height={16}
+                        className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
+                      />
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <div className="relative">
+                  <button className="unlock-button flex items-center justify-center w-full">
+                    <Image
+                      src="/assets/img/hub/Button blank.png"
+                      alt="Unlock Button Background"
+                      width={160}
+                      height={100}
+                      className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                    />
+                    <div className="absolute gem-wrapper">
+                      <button onClick={() => addToLibrary(item.song)}>
+                        <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
+                          Add to Library
+                        </p>
+                      </button>
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* Particle effect */}
+              {particleTrigger[item.song.id] && (
+                <ParticleEffect
+                  active={true}
+                  onComplete={() => {
+                    setParticleTrigger((prev) => ({
+                      ...prev,
+                      [item.song.id]: false,
+                    }));
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          {/* Hand pointer for step 5 */}
+          {ftueStep === 5 &&
+            i === 0 &&
+            isUnlockTimePassed(item.unlock_time) &&
+            localStorage.getItem("ftueCompleted") !== "true" && (
+              <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
+                <Image
+                  src="/assets/img/ftue/hand icon.png"
+                  width={80}
+                  height={80}
+                  alt="Hand pointing to Add to Library"
+                  className="w-20 h-20 object-contain transform"
+                />
+              </div>
+            )}
+          {/* Hand pointer for step 4 */}
+          {ftueStep === 4 && i === 0 && localStorage.getItem("ftueCompleted") !== "true" && (
+            <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
+              <Image
+                src="/assets/img/ftue/hand icon.png"
+                width={80}
+                height={80}
+                alt="Hand pointing to unlocking song"
+                className="w-20 h-20 object-contain "
+              />
+            </div>
           )}
         </div>
       );
     } else {
-      // Render the placeholder slot card
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
-          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg small:w-[120px] medium:w-[132px] medium:h-[140px] large:h-[220px] large:w-[202px] xl:w-[202px] xl:h-[220px]">
-            <Image
-              src="/assets/img/hub/No_song_unlock_.png"
-              width={200}
-              height={100}
-              alt="no-song-to-unlock-card"
-            />
+          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[140px] lg:h-[220px] lg:w-[202px] xl:w-[202px] xl:h-[220px]">
+            <Image src="/assets/img/hub/empty_slot.png" width={200} height={100} alt="Empty Slot" />
           </div>
         </div>
       );
     }
   }
-
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center small:text-xl medium:text-4xl  large:text-6xl large:mb-3 xl:text-6xl xl:mb-3">
+      <h1 className="text-[#6e6d6d] text-center sm:text-xl md:text-4xl lg:text-6xl xl:text-6xl mb-3">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
-      {songs?.length === 0 && (
-        <div className="kayfo-filter-no-result-box">
-          {!loading ? "No result" : "loading..."}
-        </div>
-      )}
+      {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
+
+      {/* Popups */}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-        <div className="bg-[#1a1a1a] p-4 text-center medium:w-2/3 rounded-lg small:w-[280px]">
-          <p className="text-yellow font-bold text-2xl text-nowrap tracking-wide mb-3">
-            Not Enough Gems!
-          </p>
-          <p className="text-white mb-3 tracking-wider">{popupMessage}</p>
+        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg sm:w-[280px]">
+          <p className="text-yellow font-bold text-2xl mb-3">Not Enough Gems!</p>
+          <p className="text-white mb-3">{popupMessage}</p>
           <button
-            className="text-white mt-2 w-full uppercase text-xl enough-gems-btn bg-no-repeat bg-center bg-contain"
+            className="text-white bg-yellow-600 hover:bg-yellow-700 py-2 px-6 rounded uppercase font-bold"
             onClick={() => {
               setIsPopupOpen(false);
               handleClickSound();
@@ -372,6 +506,72 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           </button>
         </div>
       </Popup>
+
+      <ConfirmSpendGemsPopup
+        isOpen={confirmPopupOpen}
+        onConfirm={confirmUnlockNow}
+        onCancel={() => setConfirmPopupOpen(false)}
+        selectedSong={selectedSong}
+      />
+
+      {/* "Finish Now" overlay panel (moved from HubScreen) */}
+      {showUnlockingInfoPanel && localStorage.getItem("ftueCompleted") !== "true" && (
+        <InfoPanel
+          onClose={closeUnlockingInfoPanel}
+          paragraphs={[
+            <>
+              <p className="text-lg sm:text-sm">
+                We're now back at <span className="font-bold">Your Songs,</span> and the song you
+                chose is unlocking, and will be available soon. But let's not wait! Get it now, by
+                tapping the <span className="font-bold">Unlock Now</span> button!
+              </p>
+            </>,
+          ]}
+          customPosition={true}
+          customStyle={{
+            width: "220px",
+            maxWidth: "350px",
+            right: "10px",
+            left: "auto",
+            top: "50%",
+            transform: "translateY(-50%)",
+            borderRadius: "15px",
+            padding: "1.5rem",
+            zIndex: "10000",
+          }}
+          customClassName="unlock-info-panel"
+          transparentBg={false}
+        />
+      )}
+
+      {/* "Add to Library" overlay panel */}
+      {showUnlockOverlayPanel && (
+        <InfoPanel
+          onClose={() => setShowUnlockOverlayPanel(false)}
+          paragraphs={[
+            <>
+              <p className="text-lg">
+                Your new song is now unlocked, so tap{" "}
+                <span className="font-bold">'Add to Library'</span> to make it playable!
+              </p>
+            </>,
+          ]}
+          customPosition={true}
+          customStyle={{
+            width: "220px",
+            maxWidth: "350px",
+            right: "10px",
+            left: "auto",
+            top: "60%",
+            transform: "translateY(-50%)",
+            borderRadius: "15px",
+            padding: "1.5rem",
+            zIndex: "10001",
+          }}
+          customClassName="unlock-info-panel ftue-add-library-overlay"
+          transparentBg={false}
+        />
+      )}
     </div>
   );
 };

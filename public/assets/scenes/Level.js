@@ -394,6 +394,7 @@ class Level extends Phaser.Scene {
         this.sound.unlock();
       }
     });
+    this.analytics = this.registry.get("analytics");
   }
   preload() {
     this.load.scenePlugin({
@@ -1354,7 +1355,7 @@ class Level extends Phaser.Scene {
         );
 
         if (isValidSwipe) {
-          this.handleSwipe(tile, swipe);
+          this.handleSwipe(tile, swipe, swipeDirection.direction);
         }
       });
     } else if (velocity === 0.007874015748031496) {
@@ -1659,7 +1660,7 @@ class Level extends Phaser.Scene {
     this.scene.launch("SongComplete", sceneData);
   }
 
-  handleSwipe(tile, swipe) {
+  handleSwipe(tile, swipe, expectedDirection) {
     tile.swiped = true;
     tile.tileType = "swipe";
 
@@ -1679,84 +1680,97 @@ class Level extends Phaser.Scene {
     // Create a new arrow sprite for the swipe effect
     let arrowSprite = this.add
       .image(tile.x, tile.y, "Right")
-      .setScale(0.3) // Match the scale used in placeTile
+      .setScale(0.3)
       .setDepth(tile.depth + 1);
 
     // Hide the original overlay tile
     tile.overlayTile.setVisible(false);
 
-    // if (swipe.up && swipe.right) {
-    //   // Up-right diagonal swipe
-    //   arrowSprite.angle -= 45;
-    //   this.tweens.add({
-    //     targets: arrowSprite,
-    //     x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
-    //     y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
-    //     alpha: 0,
-    //     ...tweenConfig,
-    //   });
-    // } else if (swipe.up && swipe.left) {
-    //   // Up-left diagonal swipe
-    //   arrowSprite.angle -= 135;
-    //   this.tweens.add({
-    //     targets: arrowSprite,
-    //     x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
-    //     y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
-    //     alpha: 0,
-    //     ...tweenConfig,
-    //   });
-    // } else if (swipe.down && swipe.right) {
-    //   // Down-right diagonal swipe
-    //   arrowSprite.angle += 45;
-    //   this.tweens.add({
-    //     targets: arrowSprite,
-    //     x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
-    //     y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
-    //     alpha: 0,
-    //     ...tweenConfig,
-    //   });
-    // } else if (swipe.down && swipe.left) {
-    //   // Down-left diagonal swipe
-    //   arrowSprite.angle += 135;
-    //   this.tweens.add({
-    //     targets: arrowSprite,
-    //     x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
-    //     y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
-    //     alpha: 0,
-    //     ...tweenConfig,
-    //   });
-    // } else
-    if (swipe.up) {
-      arrowSprite.angle -= 90;
-      this.tweens.add({
-        targets: arrowSprite,
-        y: tile.y - movementDistance * 2,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.down) {
-      arrowSprite.angle += 90;
-      this.tweens.add({
-        targets: arrowSprite,
-        y: tile.y + movementDistance * 4,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.left) {
-      arrowSprite.angle -= 180;
-      this.tweens.add({
-        targets: arrowSprite,
-        x: tile.x - movementDistance,
-        alpha: 0,
-        ...tweenConfig,
-      });
-    } else if (swipe.right) {
-      this.tweens.add({
-        targets: arrowSprite,
-        x: tile.x + movementDistance,
-        alpha: 0,
-        ...tweenConfig,
-      });
+    // Animate based on the expected direction
+    switch (expectedDirection) {
+      case "up":
+        arrowSprite.angle = -90;
+        this.tweens.add({
+          targets: arrowSprite,
+          y: tile.y - movementDistance * 2,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "down":
+        arrowSprite.angle = 90;
+        this.tweens.add({
+          targets: arrowSprite,
+          y: tile.y + movementDistance * 4,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "left":
+        arrowSprite.angle = 180;
+        this.tweens.add({
+          targets: arrowSprite,
+          x: tile.x - movementDistance,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "right":
+        arrowSprite.angle = 0;
+        this.tweens.add({
+          targets: arrowSprite,
+          x: tile.x + movementDistance,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "upleft":
+        arrowSprite.angle = -135;
+        this.tweens.add({
+          targets: arrowSprite,
+          x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
+          y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "upright":
+        arrowSprite.angle = -45;
+        this.tweens.add({
+          targets: arrowSprite,
+          x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
+          y: tile.y - (movementDistance * Math.sqrt(2)) / 2,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "downleft":
+        arrowSprite.angle = 135;
+        this.tweens.add({
+          targets: arrowSprite,
+          x: tile.x - (movementDistance * Math.sqrt(2)) / 2,
+          y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
+
+      case "downright":
+        arrowSprite.angle = 45;
+        this.tweens.add({
+          targets: arrowSprite,
+          x: tile.x + (movementDistance * Math.sqrt(2)) / 2,
+          y: tile.y + (movementDistance * Math.sqrt(2)) / 2,
+          alpha: 0,
+          ...tweenConfig,
+        });
+        break;
     }
 
     // Fade out the base tile
@@ -1840,15 +1854,13 @@ class Level extends Phaser.Scene {
       tile.destroy();
     });
 
-    console.log("tileType", tileType);
-
-    // Pass the tile type to the BeatMissed scene
-
-    // this.scene.launch("BeatMissed", { failedTileType: tileType });
+    // console.log("tileType", tileType);
 
     if (this.isFTUE) {
+      this.analytics.trackFTUETileMiss("Gameplay", tileType);
       this.ftueFail(tileType);
     } else {
+      this.analytics.trackTileMiss(this.track.song_name, tileType);
       this.scene.bringToTop("BeatMissed");
       this.scene.launch("BeatMissed");
     }

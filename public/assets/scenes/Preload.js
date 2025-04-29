@@ -270,7 +270,9 @@ class Preload extends Phaser.Scene {
 
     this.song_name.setText(this.track.song_name);
     this.artist_name.setText(this.track.artist_name.toUpperCase());
-    this.bio_text.setText(this.track.artist.bio.toUpperCase());
+
+    let infoText = this.track.artist.bio || this.track.data?.description;
+    this.bio_text.setText(infoText.toUpperCase());
     // console.log("this.track.artist.bio", this.track.artist.bio);
 
     let scores = JSON.parse(localStorage.getItem("scores") || "{}");
@@ -310,6 +312,7 @@ class Preload extends Phaser.Scene {
     // this.track.mp3_url = "./assets/sounds/SoundScape/Score_Counter_Sfx.mp3";
     // this.track.midi_url = "./assets/sounds/davido.mid"
     this.track.thumbnail = `${this.track.song_name}-thumbnail`;
+    this.analytics = this.registry.get("analytics");
 
     // this.editorCreate();
   }
@@ -378,6 +381,7 @@ class Preload extends Phaser.Scene {
 
     this.play_button.setInteractive();
     this.play_button.on("pointerup", () => {
+      this.analytics.trackSongStart(this.track.song_name);
       let tutorialShown = localStorage.getItem("tutorialShown");
       let nextScene = "Level";
 

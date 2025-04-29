@@ -6,12 +6,13 @@ module.exports = {
       colors: {
         library: "#fcdc73",
         yellow: "#f1ea5c",
+        orange: "#e6c24c",
       },
     },
     screens: {
-      small: { max: "395px" },
-      medium: { min: "400px", max: "640px" },
-      large: { min: "641px", max: "1023px" },
+      sm: { max: "395px" },
+      md: { min: "400px", max: "640px" },
+      lg: { min: "641px", max: "1023px" },
       xl: { min: "1024px" },
     },
   },
