@@ -7,6 +7,7 @@ import { updateUser } from "../redux/main/authActions";
 import ViewportCoordinatePlugin from "phaser3-rex-plugins/plugins/viewportcoordinate-plugin.js";
 import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
 import { useAudio } from "../src/context/AudioProvider";
+import { AnalyticsService } from "../services/analytics.service";
 
 class Boot extends Phaser.Scene {
   preload() {
@@ -145,6 +146,7 @@ const PhaserGame = () => {
           gameRef.current = new Phaser.Game(config);
           gameRef.current.registry.set("router", router);
 
+          gameRef.current.registry.set("analytics", AnalyticsService);
           let trackData = null;
           try {
             // Get track data from localStorage instead of query params

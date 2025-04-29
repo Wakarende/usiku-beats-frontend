@@ -394,6 +394,7 @@ class Level extends Phaser.Scene {
         this.sound.unlock();
       }
     });
+    this.analytics = this.registry.get("analytics");
   }
   preload() {
     this.load.scenePlugin({
@@ -1853,15 +1854,13 @@ class Level extends Phaser.Scene {
       tile.destroy();
     });
 
-    console.log("tileType", tileType);
-
-    // Pass the tile type to the BeatMissed scene
-
-    // this.scene.launch("BeatMissed", { failedTileType: tileType });
+    // console.log("tileType", tileType);
 
     if (this.isFTUE) {
+      this.analytics.trackFTUETileMiss("Gameplay", tileType);
       this.ftueFail(tileType);
     } else {
+      this.analytics.trackTileMiss(this.track.song_name, tileType);
       this.scene.bringToTop("BeatMissed");
       this.scene.launch("BeatMissed");
     }
