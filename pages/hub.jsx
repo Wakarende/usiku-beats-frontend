@@ -90,7 +90,6 @@ const HubScreen = () => {
     const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
     const isCompleted = localStorage.getItem("ftueCompleted") === "true";
 
-    // Only show highlighting if FTUE is not completed
     if (currentStep === 6 && !isCompleted) {
       console.log("FORCING STEP 6 HIGHLIGHTING");
 
@@ -102,11 +101,9 @@ const HubScreen = () => {
         setHighlightedSongId(latestSong.id);
       }
     } else if (isCompleted) {
-      // Clear highlighting when FTUE is completed
       setShowPlaySongPanel(false);
       setHighlightedSongId(null);
 
-      // Ensure we never show FTUE elements after completion
       if (showPlaySongPanel || highlightedSongId !== null) {
         console.log("CLEANUP: Removing FTUE elements after completion");
         setShowPlaySongPanel(false);
@@ -130,7 +127,6 @@ const HubScreen = () => {
   }, [songs]);
 
   useEffect(() => {
-    // Debug highlight state
     if (ftueStep === 6 && !localStorage.getItem("ftueCompleted") === "true") {
       console.log("FTUE Step 6 active, highlight song:", highlightedSongId);
       console.log(
@@ -200,7 +196,6 @@ const HubScreen = () => {
 
       setSongs(sortedSongs || []);
 
-      // If we're in step 6 and we just set the songs, immediately check for the song to highlight
       const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
       if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
         console.log("Setting highlighted song in checkAnonUser");
@@ -219,7 +214,7 @@ const HubScreen = () => {
 
     if (ftueParam === "true" && ftueCompleted !== "true" && !hubTutorialSeen) {
       setShowFtuePanel(true);
-      // Mark that we've seen the hub tutorial
+
       localStorage.setItem("hubTutorialSeen", "true");
     }
 
@@ -232,7 +227,6 @@ const HubScreen = () => {
     setShowUnlockingInfoPanel(false);
     localStorage.setItem("unlockingInfoSeen", "true");
 
-    // Progress to step 5 (if you have that defined)
     localStorage.setItem("ftueStep", "5");
     setFtueStep(5);
   };
@@ -241,11 +235,8 @@ const HubScreen = () => {
     setShowAddToLibraryPanel(false);
     localStorage.setItem("addToLibrarySeen", "true");
 
-    // Don't complete FTUE yet - prepare for step 6 instead
     localStorage.setItem("ftueStep", "6");
     setFtueStep(6);
-
-    // Note: We don't set ftueCompleted to true here since there's one more step
   };
 
   const closePlaySongPanel = () => {
@@ -254,7 +245,7 @@ const HubScreen = () => {
     if (ftueStep === 6) {
       console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
       localStorage.setItem("ftueCompleted", "true");
-      setHighlightedSongId(null); // Remove any highlighting
+      setHighlightedSongId(null);
     }
   };
   const clearFooterGlow = () => {
@@ -263,7 +254,6 @@ const HubScreen = () => {
   };
 
   const closeFtuePanel = () => {
-    // localStorage.setItem("ftueCompleted", "false");
     setShowFtuePanel(false);
 
     const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
@@ -301,10 +291,8 @@ const HubScreen = () => {
     console.log("MANUALLY TRIGGERING STEP 6 SETUP");
     console.log("Song passed to callback:", song);
 
-    // Force-update the step in state
     setFtueStep(6);
 
-    // Force step 6 UI
     setShowPlaySongPanel(true);
 
     // Set the highlighted song explicitly
@@ -312,7 +300,6 @@ const HubScreen = () => {
       console.log("Setting highlighted song ID to:", song.id);
       setHighlightedSongId(song.id);
     } else if (songs && songs.length > 0) {
-      // Fallback to latest song if no song provided
       const latestSong = songs[0];
       console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
       setHighlightedSongId(latestSong.id);
@@ -423,51 +410,6 @@ const HubScreen = () => {
 
     // gotoGameDetail(song);
   };
-
-  // const handleSongUnlock = (song) => {
-  //   if (song.isUnlocked) return;
-
-  //   setUnlockedSong(song);
-  //   setIsUnlockPopupOpen(true);
-
-  //   const unlockedSongsCount =
-  //     user_data.profile.player.player_song_instances.length;
-
-  //   const additionalTime = Math.floor(unlockedSongsCount / 2) * 5;
-
-  //   let unlockTime = moment().add(5, "seconds").toISOString();
-
-  //   const newUserdata = JSON.parse(JSON.stringify(user_data));
-  //   let newSongInstance = {
-  //     date_added: new Date().toISOString(),
-  //     favourited: false,
-  //     high_score: 0,
-  //     maximum_progress: 0,
-  //     no_of_plays: 0,
-  //     paid_for_flag: false,
-  //     unlock_time: unlockTime,
-  //     unlocked: true,
-  //     song,
-  //   };
-
-  //   newUserdata.profile.player.player_song_instances.push(newSongInstance);
-  //   newUserdata.profile.player.total_discs -= 30;
-  //   dispatch(updateUser(newUserdata));
-
-  //   setUnlockableSongs((prev) => prev.filter((s) => s.id !== song.id));
-  //   setVisibleUnlockableSongs((prevVisible) => {
-  //     let updatedVisible = prevVisible.filter((s) => s.id !== song.id);
-  //     const remainingLockedSongs = unlockableSongs.filter(
-  //       (s) => s.id !== song.id
-  //     );
-  //     if (remainingLockedSongs.length > 0) {
-  //       updatedVisible.push(remainingLockedSongs[0]);
-  //     }
-  //     return updatedVisible;
-  //   });
-
-  //   setSongs((prevSongs) => [...prevSongs, song]);
-  // };
 
   const toggleDailyPopup = () => {
     setIsDailyPopupOpen(!isDailyPopupOpen);

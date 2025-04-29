@@ -10,7 +10,7 @@ const getStarsFromScore = (score) => {
   if (score >= 10000 && score < 15000) return 3;
   if (score >= 15000 && score < 20000) return 4;
   if (score >= 20000) return 5;
-  return 0; // For unexpected cases
+  return 0; 
 };
 
 const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => {
@@ -80,7 +80,7 @@ const ArtistImage = ({
 }) => {
   const [ftueStep, setFtueStep] = useState(0);
 
-  // Change this useEffect
+  
   useEffect(() => {
     const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
     const isFtueCompleted = localStorage.getItem("ftueCompleted") === "true";
@@ -100,13 +100,12 @@ const ArtistImage = ({
       ftueCompleted: localStorage.getItem("ftueCompleted"),
     });
 
-    // Force complete FTUE when play is clicked on any song in step 6
+    
     if (ftueStep === 6 || isHighlightedForFtue) {
-      console.log("COMPLETING FTUE!");
+      // console.log("COMPLETING FTUE!");
       localStorage.setItem("ftueCompleted", "true");
       localStorage.setItem("playSongPanelSeen", "true");
-      // Force reload after game screen
-      // sessionStorage.setItem("reloadAfterGame", "true");
+      
     }
 
     onPlayClick();

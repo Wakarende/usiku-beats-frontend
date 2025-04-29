@@ -39,8 +39,8 @@ const Library = () => {
     socialMedia: [],
   });
 
-  const [isFtue, setIsFtue] = useState(false); // Are we in tutorial flow?
-  const [showFtuePanel, setShowFtuePanel] = useState(false); // Show info panel?
+  const [isFtue, setIsFtue] = useState(false);
+  const [showFtuePanel, setShowFtuePanel] = useState(false); //
 
   const [ftueStep, setFtueStep] = useState(0);
   const [showLibraryFtuePanel, setShowLibraryFtuePanel] = useState(false);
@@ -148,14 +148,11 @@ const Library = () => {
     let unlockTime = null;
     let unlockedFlag = false;
 
-    // Check if FTUE is completed directly from localStorage rather than using isFtue state
     const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
 
     if (!ftueCompleted && ftueStep <= 5) {
       unlockTime = moment().add(15, "minutes").toISOString();
     } else {
-      // After FTUE - incremental timer starting at 20 seconds
-      // Only count unlocked songs (not songs in the unlocking queue)
       const unlockedSongsCount = user_data.profile.player.player_song_instances.filter(
         (instance) => instance.unlocked
       ).length;

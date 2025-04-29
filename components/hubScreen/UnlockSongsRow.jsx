@@ -19,7 +19,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   const [particleTrigger, setParticleTrigger] = useState({});
   const [lockedSongs, setLockedSongs] = useState([]);
 
-  // FTUE state
+ 
   const [ftueStep, setFtueStep] = useState(0);
   const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false); // Moved from HubScreen
   const [showUnlockOverlayPanel, setShowUnlockOverlayPanel] = useState(false);

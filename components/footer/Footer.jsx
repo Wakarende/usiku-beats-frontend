@@ -20,20 +20,17 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
       const ftueStep = parseInt(localStorage.getItem("ftueStep") || "1");
       const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
 
-      // Only set high z-index during step 1 of FTUE and when not completed
       setInFtue(ftueStep === 1 && !ftueCompleted);
     };
 
     checkFtueStatus();
 
-    // Also listen for localStorage changes
     window.addEventListener("storage", checkFtueStatus);
     return () => {
       window.removeEventListener("storage", checkFtueStatus);
     };
   }, []);
 
-  // Calculate z-indices based on FTUE state
   const footerZIndex = inFtue ? 61 : 10;
   const handZIndex = inFtue ? 62 : 11;
   const footerBgZIndex = inFtue ? 61 : 5;

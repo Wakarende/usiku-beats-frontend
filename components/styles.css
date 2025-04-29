@@ -446,7 +446,7 @@ svg {
 .ftue-add-library-highlight-frame>.unlock-card,
 .ftue-add-library-highlight-frame>.unlock-button,
 .ftue-add-library-highlight-frame>div>.unlock-button {
-  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
 }
 
 .ftue-add-library-highlight-frame button {
@@ -457,7 +457,7 @@ svg {
 .ftue-gems-highlight-frame {
   position: relative;
   filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .ftue-gems-highlight-frame button {
