@@ -8,11 +8,16 @@ import mainStore from "../redux/main/mainStore";
 
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
-
+import { AnalyticsService } from "../services/analytics.service";
+import { useEffect } from "react";
 import AudioProvider from "../src/context/AudioProvider";
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   const currentRouter = useRouter();
+  useEffect(() => {
+    // Initialize analytics on client-side
+    AnalyticsService.init();
+  }, []);
 
   return (
     <Provider store={mainStore}>

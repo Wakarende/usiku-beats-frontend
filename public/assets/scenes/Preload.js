@@ -312,6 +312,7 @@ class Preload extends Phaser.Scene {
     // this.track.mp3_url = "./assets/sounds/SoundScape/Score_Counter_Sfx.mp3";
     // this.track.midi_url = "./assets/sounds/davido.mid"
     this.track.thumbnail = `${this.track.song_name}-thumbnail`;
+    this.analytics = this.registry.get("analytics");
 
     // this.editorCreate();
   }
@@ -380,6 +381,7 @@ class Preload extends Phaser.Scene {
 
     this.play_button.setInteractive();
     this.play_button.on("pointerup", () => {
+      this.analytics.trackSongStart(this.track.song_name);
       let tutorialShown = localStorage.getItem("tutorialShown");
       let nextScene = "Level";
 

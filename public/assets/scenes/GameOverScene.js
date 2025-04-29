@@ -217,12 +217,17 @@ class GameOverScene extends Phaser.Scene {
     this.current_track = this.sound.add(data.track.song_name);
     this.current_track.play();
     this.current_track.pause();
-
+    this.analytics = this.registry.get("analytics");
     // console.log(this.track);
   }
 
   create() {
     console.log("GameOverScene.js create()");
+    this.analytics.trackSongEnd(
+      this.track.song_name,
+      this.track.current_score,
+      this.isSongComplete
+    );
 
     this.editorCreate();
     this.adjustViewport();

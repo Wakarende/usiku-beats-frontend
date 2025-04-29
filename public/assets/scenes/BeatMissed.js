@@ -126,6 +126,8 @@ class BeatMissed extends Phaser.Scene {
   // Write your code here
 
   create() {
+    this.analytics = this.registry.get("analytics");
+
     this.editorCreate();
     this.adjustViewport();
     console.log("BeatMissed create.js()");
@@ -296,6 +298,13 @@ class BeatMissed extends Phaser.Scene {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     user_data.profile.player.total_gems -= amount;
     this.game.events.emit("updateUserEvent", { data: user_data });
+
+    // Get the current song from the Level scene
+    const levelScene = this.scene.get("Level");
+    const currentSong = levelScene.songItem || "unknown";
+
+    // Track resource use in analytics, tied to the specific song
+    this.analytics.trackResourceUse("Gems", amount, "continue-" + currentSong);
 
     this.continueCount++; // Increment the continue count
   }
