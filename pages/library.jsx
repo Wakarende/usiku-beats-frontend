@@ -261,14 +261,13 @@ const Library = () => {
   return (
     <div className="cmd-page">
       <Header />
-
-      <div className="kayfo-body-content">
-        <div className="flex justify-center items-center mt-4 ">
-          <h1 className="uppercase lib-header text-7xl">Full Song Library</h1>
+      <div>
+        <div className="flex justify-center items-center mt-4 w-full ">
+          <h1 className="uppercase lib-header text-7xl sm:text-5xl">Full Song Library</h1>
         </div>
-        <div className=" flex mt-1 justify-center items-center">
-          <div className="flex justify-center flex-col items-center ">
-            <p className="text-library uppercase font-bold text-lg">You have {totalDiscs} discs!</p>
+        <div className=" flex  justify-center items-center">
+          <div className="flex justify-center flex-col items-center sm:text-sm text-lg ">
+            <p className="text-library uppercase font-bold">You have {totalDiscs} discs!</p>
             <p className="text-white mt-1">Each song costs 30 discs</p>
             <p className="text-white">Find your next song now!</p>
           </div>
@@ -282,7 +281,7 @@ const Library = () => {
             alt="gradient-separator"
             width={150}
             height={10}
-            className="gradient-image w-full h-[40px]"
+            className="gradient-image w-full h-[20px]"
           />
         </div>
         {/* Songs List */}
@@ -293,7 +292,6 @@ const Library = () => {
             );
             const inQueue = isSongInQueue(instance);
             const showUnlocked = song.isUnlocked || inQueue;
-
             return (
               <div key={index} className="w-full max-w-xl ">
                 <div className="p-4 flex flex-row justify-center items-center">
@@ -308,21 +306,21 @@ const Library = () => {
                   </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
-                      <p className="font-bold text-yellow text-lg md:text-md text-nowrap">
+                      <p className="font-bold text-yellow text-lg md:text-md sm:text-sm text-nowrap">
                         {song.song_name}
                       </p>
-                      <p className="text-yellow uppercase text-xs text-nowrap">
-                        {song.country_name}
-                      </p>
+                      <p className="text-yellow uppercase text-xs text-nowrap">{song.difficulty}</p>
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <p
-                        className="text-white uppercase text-xs cursor-pointer"
+                        className="text-white uppercase text-xs sm:text-[10px] cursor-pointer text-nowrap"
                         onClick={() => handleArtistClick(song.artist?.id)}
                       >
                         {song.artist_name}
                       </p>
-                      <p className="text-white uppercase text-xs">{song.difficulty}</p>
+                      <p className="text-white uppercase text-xs sm:text-[10px] text-nowrap">
+                        {song.country_name}
+                      </p>
                     </div>
 
                     {/* Unlock Button */}
@@ -349,12 +347,11 @@ const Library = () => {
                             height={110}
                             className="object-contain"
                           />
-                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%]">
+                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%] sm:top-[25%] sm:left-[6%] sm:text-sm">
                             30
                           </span>
                         </div>
-
-                        {ftueStep === 2 && !localStorage.getItem("ftueCompleted") !== "true" && (
+                        {ftueStep === 2 && localStorage.getItem("ftueCompleted") !== "true" && (
                           <div className="absolute top-[50px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
                             <Image
                               src="/assets/img/ftue/hand icon.png"
@@ -382,8 +379,7 @@ const Library = () => {
             );
           })}
         </div>
-
-        {/* Popup shown after user clicks unlock */}
+        {/* Popup shown after user clicks get song */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div className="flex justify-start flex-col items-center">
             <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap">
@@ -450,7 +446,6 @@ const Library = () => {
           </div>
         </Popup>
       </div>
-      {/**/}
       {ftueStep === 2 &&
         showLibraryFtuePanel &&
         localStorage.getItem("ftueCompleted") !== "true" && (
@@ -503,7 +498,6 @@ const Library = () => {
           </motion.div>
         )}
       </footer>
-
       <OverlayCard
         isOpen={isOverlayOpen}
         onClose={closeOverlay}

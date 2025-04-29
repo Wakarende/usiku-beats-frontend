@@ -16,7 +16,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   return (
     <>
       {footerGlowActive && (
-        <div className="fixed bottom-[120px] right-6 z-20 animate-bounce pointer-events-none">
+        <div className="fixed bottom-[120px] right-6 z-[61] animate-bounce pointer-events-none">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={100}
@@ -27,8 +27,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
         </div>
       )}
       <div className="h-[120px]"></div>
-
-      <footer className="fixed bottom-0 left-0 right-0 w-full pointer-events-none z-[10]">
+      <footer className="fixed bottom-0 left-0 right-0 w-full pointer-events-none z-[60]">
         <div
           className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] overflow-visible`}
           style={{

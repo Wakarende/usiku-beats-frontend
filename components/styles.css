@@ -428,13 +428,6 @@ svg {
 
 /* HUBSCREEN FOOTER  */
 
-/* .ftue-highlight-frame {
-  border: 10px solid #00f5ff;
-  border-radius: 20px;
-  padding-top: 10px;
-  z-index: 90;
-} */
-
 /* Unlock songs row  */
 .ftue-hub-highlight-frame {
   position: relative !important;
@@ -465,9 +458,10 @@ svg {
 
 .ftue-gems-highlight-frame {
   position: relative !important;
-  border: 10px solid #00f5ff !important;
-  border-radius: 20px !important;
-  padding: 2px;
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
+  /* border: 10px solid #00f5ff !important; */
+  /* border-radius: 20px !important; */
+  /* padding: 2px; */
   overflow: visible !important;
 }
 

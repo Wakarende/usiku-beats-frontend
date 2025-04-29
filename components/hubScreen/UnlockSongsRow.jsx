@@ -425,7 +425,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           </div>
           {/* Hand pointer for step 5 */}
           {ftueStep === 5 && i === 0 && isUnlockTimePassed(item.unlock_time) && (
-            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
               <Image
                 src="/assets/img/ftue/hand icon.png"
                 width={80}
@@ -437,13 +437,13 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           )}
           {/* Hand pointer for step 4 */}
           {ftueStep === 4 && i === 0 && (
-            <div className="absolute bottom-[-70px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+            <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
                 src="/assets/img/ftue/hand icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to unlocking song"
-                className="w-20 h-20 object-contain"
+                className="w-20 h-20 object-contain "
               />
             </div>
           )}
@@ -497,7 +497,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
           onClose={closeUnlockingInfoPanel}
           paragraphs={[
             <>
-              <p className="text-lg">
+              <p className="text-lg sm:text-sm">
                 We're now back at <span className="font-bold">Your Songs,</span> and the song you
                 chose is unlocking, and will be available soon. But let's not wait! Get it now, by
                 tapping the <span className="font-bold">Unlock Now</span> button!
@@ -510,14 +510,14 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             maxWidth: "350px",
             right: "10px",
             left: "auto",
-            top: "60%",
+            top: "50%",
             transform: "translateY(-50%)",
             borderRadius: "15px",
             padding: "1.5rem",
             zIndex: "10000",
           }}
           customClassName="unlock-info-panel"
-          transparentBg={true}
+          transparentBg={false}
         />
       )}
 

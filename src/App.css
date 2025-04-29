@@ -241,10 +241,6 @@ h3 {
   max-height: 20px;
 }
 
-.kayfo-body-content {
-  padding-bottom: 0px;
-}
-
 .kayfo-masonry-container {
   display: flex;
   flex-direction: column;

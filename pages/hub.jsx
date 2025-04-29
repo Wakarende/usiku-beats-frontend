@@ -453,7 +453,6 @@ const HubScreen = () => {
       </div>
     );
   }
-
   return (
     <div className="hubscreen-container">
       <Header />
@@ -464,10 +463,10 @@ const HubScreen = () => {
           onClose={closeFtuePanel}
           paragraphs={[
             <>
-              <p className="font-bold sm:text-md mb-4">
+              <p className="font-bold text-md sm:text-sm  mb-4">
                 Usiku Beats is all about collecting great songs to play and master!
               </p>
-              <p className="text-lg sm:text-md">
+              <p className="text-lg sm:text-sm">
                 This page is where you access all <span className="font-bold">Your Songs...</span>{" "}
                 but right now it's empty! To get your first song, tap this button to open the
                 <br />
