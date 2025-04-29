@@ -145,19 +145,29 @@ const Library = () => {
     }
     setIsPopupOpen(true);
 
-    // Set the unlock time - even during FTUE
     let unlockTime = null;
-    let unlockedFlag = false; // Default to false (song needs to be unlocked via timer)
+    let unlockedFlag = false;
 
-    // During FTUE, set a short timer (2 minutes) instead of immediate unlock
-    if (isFtue) {
-      // For FTUE, set a short countdown (2 minutes) to teach the concept
-      unlockTime = moment().add(10, "minutes").toISOString();
+    // Check if FTUE is completed directly from localStorage rather than using isFtue state
+    const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+
+    if (!ftueCompleted && ftueStep <= 5) {
+      unlockTime = moment().add(15, "minutes").toISOString();
     } else {
-      // Normal non-FTUE behavior - longer countdown
-      const unlockedSongsCount = user_data.profile.player.player_song_instances.length;
-      const additionalTime = unlockedSongsCount * 5;
-      unlockTime = moment().add(30, "minutes").add(additionalTime, "seconds").toISOString();
+      // After FTUE - incremental timer starting at 20 seconds
+      // Only count unlocked songs (not songs in the unlocking queue)
+      const unlockedSongsCount = user_data.profile.player.player_song_instances.filter(
+        (instance) => instance.unlocked
+      ).length;
+
+      const baseTime = 20;
+      const additionalTime = unlockedSongsCount * 50;
+      const totalUnlockTime = baseTime + additionalTime;
+
+      console.log(
+        `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${unlockedSongsCount} previous unlocks)`
+      );
+      unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
     }
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
@@ -178,7 +188,7 @@ const Library = () => {
       no_of_plays: 0,
       paid_for_flag: false,
       unlock_time: unlockTime,
-      unlocked: unlockedFlag, // This is now false even during FTUE
+      unlocked: unlockedFlag,
       song,
     };
 
@@ -464,7 +474,7 @@ const Library = () => {
             transparentBg={true}
           />
         )}
-      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-0">
+      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-10">
         {isFtue && !hasUnlockedSong ? (
           <Image
             src="/assets/img/ftue/Footer_pattern.png"

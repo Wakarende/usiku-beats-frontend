@@ -436,7 +436,6 @@ svg {
 
 .ftue-hub-highlight-frame>.unlock-card-wrapper {
   filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
-  border-radius: 12px !important;
 }
 
 .ftue-add-library-highlight-frame {
@@ -448,7 +447,6 @@ svg {
 .ftue-add-library-highlight-frame>.unlock-button,
 .ftue-add-library-highlight-frame>div>.unlock-button {
   filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
-  border-radius: 12px !important;
 }
 
 .ftue-add-library-highlight-frame button {
@@ -457,54 +455,30 @@ svg {
 }
 
 .ftue-gems-highlight-frame {
-  position: relative !important;
+  position: relative;
   filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
-  /* border: 10px solid #00f5ff !important; */
-  /* border-radius: 20px !important; */
-  /* padding: 2px; */
   overflow: visible !important;
 }
 
-/* Make sure the button is visible and clickable within the highlight frame */
 .ftue-gems-highlight-frame button {
   position: relative;
   z-index: 150;
 }
 
-/* Add this to your pages.css file */
-
 .ftue-song-highlight-frame {
-  position: relative !important;
-  outline: 8px solid #00f5ff !important;
-  border-radius: 20px !important;
+  position: relative;
+  overflow: visible;
+}
+
+.ftue-song-highlight-frame> :first-child {
+  filter: drop-shadow(0 0 5px rgba(0, 245, 255, 0.8));
   z-index: 91;
-  overflow: visible !important;
 }
 
 .ftue-song-highlight-frame .hand-icon {
   position: absolute;
-
   pointer-events: none;
 }
-
-/* Update the animation for better visual effect */
-/* @keyframes ftueGlowPulse {
-  0% {
-    box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.6) !important;
-    outline-color: rgba(0, 245, 255, 0.8) !important;
-  }
-
-  50% {
-    box-shadow: 0 0 35px 15px rgba(0, 245, 255, 0.8) !important;
-    outline-color: rgba(0, 245, 255, 1) !important;
-  }
-
-  100% {
-    box-shadow: 0 0 20px 8px rgba(0, 245, 255, 0.6) !important;
-    outline-color: rgba(0, 245, 255, 0.8) !important;
-  }
-} */
-
 
 /* HUBSCREEN END  */
 

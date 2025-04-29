@@ -10,7 +10,7 @@ import InfoPanel from "../infopanel/InfoPanel";
 import Image from "next/image";
 import "../styles.css";
 
-const UnlockSongsRow = ({ user_data, songs, loading }) => {
+const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
@@ -117,7 +117,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     }
   }
 
-  // Handle "Finish Now" panel closure
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
     localStorage.setItem("unlockingInfoSeen", "true");
@@ -132,7 +131,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
     // Get current FTUE step
     const currentFtueStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    console.log("Current FTUE step:", currentFtueStep);
+    console.log("Current FTUE step before update:", currentFtueStep);
 
     // Update user data
     const newUserdata = JSON.parse(JSON.stringify(user_data));
@@ -157,18 +156,25 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
     });
     setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
 
-    // Handle FTUE step 5 progression
-    if (currentFtueStep === 5) {
+    if (currentFtueStep === 5 && localStorage.getItem("ftueCompleted") !== "true") {
       console.log("FTUE progressing from step 5 to 6");
 
       localStorage.setItem("addToLibraryCompleted", "true");
       localStorage.setItem("ftueStep", "6");
+      setFtueStep(6);
 
-      // Use router instead of window.location
-      router.push("/hub");
+      if (showUnlockOverlayPanel) {
+        setShowUnlockOverlayPanel(false);
+      }
+
+      if (onFtueProgressToStep6) {
+        onFtueProgressToStep6(song);
+      }
+
       return;
     }
 
+    // Normal behavior for non-FTUE
     if (showUnlockOverlayPanel) {
       setShowUnlockOverlayPanel(false);
     }
@@ -178,6 +184,12 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
   function handleUnlockNowClick(song) {
     setShowUnlockingInfoPanel(false);
+
+    if (user_data.profile.player.total_gems < gemsRequiredToUnlockSong) {
+      setPopupMessage("You don't have enough gems to unlock this song right now.");
+      setIsPopupOpen(true);
+      return;
+    }
 
     setSelectedSong(song);
     setConfirmPopupOpen(true);
@@ -195,7 +207,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       return;
     }
 
-    // Deduct gems
     newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
 
     const songId = selectedSong.id || selectedSong.song?.id;
@@ -218,7 +229,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         [songId]: true,
       }));
 
-      if (ftueStep === 4) {
+      if (ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true") {
         localStorage.setItem("ftueStep", "5");
         setFtueStep(5);
 
@@ -283,12 +294,21 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
       slotsContent.push(
         <div key={i} className="relative">
-          <div className={`${ftueStep === 4 && i === 0 ? "ftue-hub-highlight-frame" : ""}`}>
+          <div
+            className={`${
+              ftueStep === 4 && i === 0 && localStorage.getItem("ftueCompleted") !== "true"
+                ? "ftue-hub-highlight-frame"
+                : ""
+            }`}
+          >
             <div
               className={`flex flex-col items-center unlock-card-wrapper 
           ${unlockedState[item.song.id] ? "pulse-effect" : ""}
           ${
-            ftueStep === 5 && i === 0 && isUnlockTimePassed(item.unlock_time)
+            ftueStep === 5 &&
+            i === 0 &&
+            isUnlockTimePassed(item.unlock_time) &&
+            localStorage.getItem("ftueCompleted") !== "true"
               ? "ftue-add-library-highlight-frame"
               : ""
           }`}
@@ -424,19 +444,22 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             </div>
           </div>
           {/* Hand pointer for step 5 */}
-          {ftueStep === 5 && i === 0 && isUnlockTimePassed(item.unlock_time) && (
-            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
-              <Image
-                src="/assets/img/ftue/hand icon.png"
-                width={80}
-                height={80}
-                alt="Hand pointing to Add to Library"
-                className="w-20 h-20 object-contain transform"
-              />
-            </div>
-          )}
+          {ftueStep === 5 &&
+            i === 0 &&
+            isUnlockTimePassed(item.unlock_time) &&
+            localStorage.getItem("ftueCompleted") !== "true" && (
+              <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
+                <Image
+                  src="/assets/img/ftue/hand icon.png"
+                  width={80}
+                  height={80}
+                  alt="Hand pointing to Add to Library"
+                  className="w-20 h-20 object-contain transform"
+                />
+              </div>
+            )}
           {/* Hand pointer for step 4 */}
-          {ftueStep === 4 && i === 0 && (
+          {ftueStep === 4 && i === 0 && localStorage.getItem("ftueCompleted") !== "true" && (
             <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
                 src="/assets/img/ftue/hand icon.png"
@@ -492,7 +515,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
       />
 
       {/* "Finish Now" overlay panel (moved from HubScreen) */}
-      {showUnlockingInfoPanel && (
+      {showUnlockingInfoPanel && localStorage.getItem("ftueCompleted") !== "true" && (
         <InfoPanel
           onClose={closeUnlockingInfoPanel}
           paragraphs={[
@@ -546,7 +569,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             zIndex: "10001",
           }}
           customClassName="unlock-info-panel ftue-add-library-overlay"
-          transparentBg={true}
+          transparentBg={false}
         />
       )}
     </div>

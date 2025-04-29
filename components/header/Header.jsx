@@ -37,9 +37,8 @@ const Header = () => {
     };
     dispatch(updateUser(updatedUser));
   };
-
   return (
-    <Navbar expand="lg" className="navbar" style={{ zIndex: 20 }}>
+    <Navbar expand="lg" className="navbar" style={{ zIndex: 21 }}>
       <Container fluid className="flex items-center justify-between">
         {/* Stars and Gems Section */}
         <div className="header-left flex flex-col items-center gap-x-">

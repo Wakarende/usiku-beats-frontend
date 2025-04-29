@@ -56,7 +56,13 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
         </div>
         {/* Confirm / Cancel buttons */}
         <div className="flex justify-center gap-4 pb-4">
-          <div className={`relative ${ftueStep === 4 ? "ftue-gems-highlight-frame" : ""}`}>
+          <div
+            className={`relative ${
+              ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"
+                ? "ftue-gems-highlight-frame"
+                : ""
+            }`}
+          >
             <button className="relative text-white font-bold w-24 h-20" onClick={handleConfirm}>
               <Image
                 src="/assets/img/spendgems/Left button.png"
@@ -71,7 +77,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             </button>
             {/* Bouncing hand for FTUE step 4 */}
           </div>
-          {ftueStep === 4 && (
+          {ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true" && (
             <div className="absolute sm:bottom-[0rem] sm:left-[4rem] md:bottom-[-1rem] md:left-[6rem] animate-bounce z-[10000] pointer-events-none">
               <Image
                 src="/assets/img/ftue/hand icon.png"
@@ -84,19 +90,27 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
           )}
           <button
             className="relative text-white font-bold w-24 h-20"
-            onClick={ftueStep === 4 ? null : onCancel}
-            disabled={ftueStep === 4}
+            onClick={
+              ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true" ? null : onCancel
+            }
+            disabled={ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"}
           >
             <Image
               src="/assets/img/spendgems/Right button.png"
               width={50}
               height={50}
-              className={`w-24 h-20 ${ftueStep === 4 ? "opacity-50 brightness-50" : ""}`}
+              className={`w-24 h-20 ${
+                ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"
+                  ? "opacity-50 brightness-50"
+                  : ""
+              }`}
               alt="No Button"
             />
             <span
               className={`absolute -inset-3 flex items-center justify-center text-4xl uppercase tracking-widest  ${
-                ftueStep === 4 ? "opacity-50 brightness-50" : ""
+                ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"
+                  ? "opacity-50 brightness-50"
+                  : ""
               }`}
             >
               No

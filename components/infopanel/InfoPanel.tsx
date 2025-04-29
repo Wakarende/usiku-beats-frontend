@@ -15,7 +15,7 @@ export default function InfoPanel({
 }) {
   return (
     <div
-    className={transparentBg ? "" : "bg-black/50"}
+    className={transparentBg ? "" : "bg-black/70"}
       style={{
         position: "fixed",
         inset: 0,  

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -10,13 +10,42 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   const { user_data } = auth;
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const canUnlockSongs = totalDiscs >= 30;
+  const [inFtue, setInFtue] = useState(false);
 
   const handleClickSound = useClickSound();
+
+  // Check if we're in FTUE step 1
+  useEffect(() => {
+    const checkFtueStatus = () => {
+      const ftueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+      const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+
+      // Only set high z-index during step 1 of FTUE and when not completed
+      setInFtue(ftueStep === 1 && !ftueCompleted);
+    };
+
+    checkFtueStatus();
+
+    // Also listen for localStorage changes
+    window.addEventListener("storage", checkFtueStatus);
+    return () => {
+      window.removeEventListener("storage", checkFtueStatus);
+    };
+  }, []);
+
+  // Calculate z-indices based on FTUE state
+  const footerZIndex = inFtue ? 61 : 10;
+  const handZIndex = inFtue ? 62 : 11;
+  const footerBgZIndex = inFtue ? 61 : 5;
+  const contentZIndex = inFtue ? 62 : 10;
 
   return (
     <>
       {footerGlowActive && (
-        <div className="fixed bottom-[120px] right-6 z-[61] animate-bounce pointer-events-none">
+        <div
+          className="fixed bottom-[120px] right-6 animate-bounce pointer-events-none"
+          style={{ zIndex: handZIndex }}
+        >
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={100}
@@ -27,11 +56,14 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
         </div>
       )}
       <div className="h-[120px]"></div>
-      <footer className="fixed bottom-0 left-0 right-0 w-full pointer-events-none z-[60]">
+      <footer
+        className="fixed bottom-0 left-0 right-0 w-full pointer-events-none"
+        style={{ zIndex: footerZIndex }}
+      >
         <div
           className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] overflow-visible`}
           style={{
-            zIndex: 0,
+            zIndex: footerBgZIndex,
             filter: footerGlowActive ? "drop-shadow(0 -10px 10px rgba(0, 245, 255, 0.8))" : "none",
           }}
         >
@@ -47,7 +79,10 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             }}
           />
         </div>
-        <div className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] pointer-events-auto z-[5]">
+        <div
+          className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] pointer-events-auto"
+          style={{ zIndex: contentZIndex }}
+        >
           <Link
             href="/library"
             onClick={() => {
@@ -85,5 +120,4 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
     </>
   );
 };
-
 export default LibraryFooter;

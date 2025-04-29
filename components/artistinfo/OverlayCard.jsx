@@ -80,22 +80,19 @@ const ArtistImage = ({
 }) => {
   const [ftueStep, setFtueStep] = useState(0);
 
+  // Change this useEffect
   useEffect(() => {
     const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    const isFtueCompleted = localStorage.getItem("ftueCompleted") === "true";
     setFtueStep(storedStep);
 
-    // Debug logging
-    if (isHighlightedForFtue) {
+    if (isFtueCompleted && isHighlightedForFtue) {
       console.log("HIGHLIGHT ACTIVE for song:", song.id, song.song_name);
     }
   }, [isHighlightedForFtue, song]);
 
   const starCount = getStarsFromScore(song.high_score);
 
-  // const isHighlightedForFtue = ftueStep === 6;
-
-  // Handle Play click with FTUE completion logic
-  // In ArtistImage component, update the handlePlay function:
   const handlePlay = () => {
     console.log("Play button clicked, FTUE status:", {
       isHighlightedForFtue,
@@ -114,19 +111,22 @@ const ArtistImage = ({
 
     onPlayClick();
   };
-
   useEffect(() => {
     if (isHighlightedForFtue) {
       console.log("Song highlighted for FTUE:", song.id, song.song_name);
     }
   }, [isHighlightedForFtue, song]);
-
   return (
-    <div className={`   ${isHighlightedForFtue ? "ftue-song-highlight-frame" : ""}`}>
+    <div
+      className={`   ${
+        isHighlightedForFtue && localStorage.getItem("ftueCompleted") !== "true"
+          ? "ftue-song-highlight-frame"
+          : ""
+      }`}
+    >
       <div
-        className={`shrink-0 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
+        className={`shrink-0 mt-1 sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
       >
-        {/* Frame */}
         <Image
           src="/assets/img/hub/Frame_.png"
           width={240}
@@ -138,7 +138,6 @@ const ArtistImage = ({
         <div className="absolute overflow-hidden sm:left-[2%] sm:w-[134px] sm:h-[142px] sm:top-[1.3%] sm:rounted-t-lg md:left-1 md:w-[152px] md:h-[165px] md:top-1.5 md:rounded-t-lg lg:top-1.5 lg:left-1 lg:w-[152px] lg:h-[165px] lg:rounded-t-lg xl:w-[152px] xl:h-[235px] lg:top-1.5 lg:left-1 xl:rounded-t-lg">
           <Image src={song.thumbnail_file} alt="Artist Image" layout="fill" objectFit="cover" />
         </div>
-
         {/* Star Rating Overlay */}
         <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-black/60 rounded-2xl to-transparent z-20">
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex mt-2">
@@ -219,8 +218,8 @@ const ArtistImage = ({
           </div>
         </div>
       </div>
-      {isHighlightedForFtue && (
-        <div className="absolute bottom-[-10px] right-[-90px] animate-bounce pointer-events-none z-[20]">
+      {isHighlightedForFtue && localStorage.getItem("ftueCompleted") !== "true" && (
+        <div className="absolute bottom-[-10px] right-[-90px] animate-bounce pointer-events-none z-[100]">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={80}

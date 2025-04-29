@@ -89,7 +89,6 @@
 }
 
 /* DAILY REWARD POPUP END  */
-
 /* UNLOCK SONGS ROW  */
 /* Base: normal screens (no scroll needed) */
 .hub-content-wrapper {
@@ -116,12 +115,7 @@
     }
 }
 
-
-
-
-
 /* FOOTER  */
-
 
 /* HUBSCREEN PAGE END  */
 
@@ -170,7 +164,6 @@
     box-sizing: border-box;
 }
 
-
 .intro-header {
     color: rgb(255, 106, 0);
     text-shadow: 1.636px 1.673px 0px #faf05d;
@@ -179,7 +172,6 @@
     -ms-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
     transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
 }
-
 
 @keyframes pulse {
     0% {
@@ -245,17 +237,15 @@
     border-radius: 12px;
 }
 
-
 .ftue-strong-highlight {
     filter: drop-shadow(0 0 15px rgba(0, 245, 255, 0.9));
 }
 
-/* If you need a pulsing effect for important elements */
-.ftue-pulse-highlight {
+/* .ftue-pulse-highlight {
     animation: pulseHighlight 2s infinite alternate;
-}
+} */
 
-@keyframes pulseHighlight {
+/* @keyframes pulseHighlight {
     0% {
         filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
     }
@@ -263,11 +253,9 @@
     100% {
         filter: drop-shadow(0 0 20px rgba(0, 245, 255, 1.0));
     }
-}
+} */
 
-.library-footer {
-    z-index: 50 !important;
-}
+
 
 .ftue-continue-highlight-frame {
     position: relative;
@@ -275,9 +263,6 @@
 
 .ftue-continue-highlight-frame .button-image-container {
     filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
-    border-radius: 20px;
 }
-
-
 
 /* LIBRARY PAGE END  */
