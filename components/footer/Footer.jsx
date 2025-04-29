@@ -15,9 +15,8 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
 
   return (
     <>
-      {/* Hand Layer (OUTSIDE Footer) */}
       {footerGlowActive && (
-        <div className="fixed bottom-[120px] right-6 z-[2000] animate-bounce pointer-events-none">
+        <div className="fixed bottom-[120px] right-6 z-20 animate-bounce pointer-events-none">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={100}
@@ -27,9 +26,9 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
           />
         </div>
       )}
+      <div className="h-[120px]"></div>
 
-      {/*  Footer Content */}
-      <footer className="fixed bottom-0 left-0 right-0 w-full pointer-events-none">
+      <footer className="fixed bottom-0 left-0 right-0 w-full pointer-events-none z-[10]">
         <div
           className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] overflow-visible`}
           style={{
@@ -59,11 +58,11 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             }}
             className="absolute inset-0 w-full h-full"
           ></Link>
-          {/* Disc Counter - Fixed positioning */}
-          <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 right-4 sm:right-8">
+
+          <div className="absolute bottom-8 sm:bottom-12 md:bottom-12 right-[0rem] tracking-widest leading-tight">
             <div className="flex flex-col items-center">
               <motion.p
-                className="text-xs sm:text-sm md:text-base font-bold uppercase text-center text-white whitespace-nowrap leading-tight"
+                className="text-xs sm:text-xs md:text-base font-bold uppercase text-center text-white leading-tight"
                 animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
                 transition={
                   canUnlockSongs
@@ -76,8 +75,9 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
                     : {}
                 }
               >
-                YOU NOW HAVE <br />
-                <span className="text-sm sm:text-base md:text-lg">{totalDiscs} DISCS</span>
+                YOU HAVE
+                <br />
+                <span className="">{totalDiscs} DISCS</span>
               </motion.p>
             </div>
           </div>

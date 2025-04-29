@@ -481,7 +481,7 @@ const HubScreen = () => {
       <div className="px-1 mx-auto max-w-7xl hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex align-center justify-center">
-          <h1 className="text-[#ff6b03] text-center md:mt-4 sm:mt-1.5 sm:mb-4 md:mb-3 text-5xl uppercase tracking-wider">
+          <h1 className="text-[#ff6b03] text-center md:mt-4 sm:mt-1.5 sm:mb-4 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
         </div>

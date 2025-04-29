@@ -457,7 +457,7 @@ const Library = () => {
           <InfoPanel
             onClose={() => setShowLibraryFtuePanel(false)}
             paragraphs={[
-              <div key="wrapper" style={{ position: "relative", zIndex: 999 }}>
+              <div key="wrapper">
                 <p className="md:text-lg sm:text-sm">
                   This is the <span className="font-bold">Song Library</span>, where you get new
                   songs for your collection. Scroll the list and tap on the one you want for your
@@ -469,7 +469,7 @@ const Library = () => {
             transparentBg={true}
           />
         )}
-      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-60">
+      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-0">
         {isFtue && !hasUnlockedSong ? (
           <Image
             src="/assets/img/ftue/Footer_pattern.png"

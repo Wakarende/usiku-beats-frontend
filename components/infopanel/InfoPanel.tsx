@@ -19,7 +19,7 @@ export default function InfoPanel({
       style={{
         position: "fixed",
         inset: 0,  
-        zIndex: 92,
+        zIndex: 60,
       }}
       onClick={onClose}
     >
@@ -32,7 +32,6 @@ export default function InfoPanel({
           backgroundPosition: "center",
           padding: "2rem",
           position: "absolute",
-          zIndex:98,
           ...(customPosition 
             ? {} 
             : {

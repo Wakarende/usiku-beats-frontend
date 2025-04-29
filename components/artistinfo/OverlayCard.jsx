@@ -122,7 +122,7 @@ const ArtistImage = ({
   }, [isHighlightedForFtue, song]);
 
   return (
-    <div className={`m-2   ${isHighlightedForFtue ? "ftue-song-highlight-frame" : ""}`}>
+    <div className={`   ${isHighlightedForFtue ? "ftue-song-highlight-frame" : ""}`}>
       <div
         className={`shrink-0 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
       >
