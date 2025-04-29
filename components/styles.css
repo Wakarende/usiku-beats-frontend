@@ -428,28 +428,34 @@ svg {
 
 /* HUBSCREEN FOOTER  */
 
-.ftue-highlight-frame {
+/* .ftue-highlight-frame {
   border: 10px solid #00f5ff;
   border-radius: 20px;
   padding-top: 10px;
   z-index: 90;
-}
+} */
 
 /* Unlock songs row  */
 .ftue-hub-highlight-frame {
-  position: relative;
-  border: 10px solid #00f5ff;
-  border-radius: 20px !important;
-  z-index: 91 !important;
-  display: inline-block;
+  position: relative !important;
+  z-index: 95 !important;
+}
+
+.ftue-hub-highlight-frame>.unlock-card-wrapper {
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
+  border-radius: 12px !important;
 }
 
 .ftue-add-library-highlight-frame {
-  position: relative;
-  border: 10px solid #00f5ff;
-  border-radius: 20px !important;
-  z-index: 91 !important;
-  display: inline-block;
+  position: relative !important;
+  z-index: 95 !important;
+}
+
+.ftue-add-library-highlight-frame>.unlock-card,
+.ftue-add-library-highlight-frame>.unlock-button,
+.ftue-add-library-highlight-frame>div>.unlock-button {
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
+  border-radius: 12px !important;
 }
 
 .ftue-add-library-highlight-frame button {

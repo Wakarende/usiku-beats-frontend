@@ -15,9 +15,9 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
 
   return (
     <>
-      {/* ✋ Hand Layer (OUTSIDE Footer) */}
+      {/* Hand Layer (OUTSIDE Footer) */}
       {footerGlowActive && (
-        <div className="fixed bottom-[120px] right-6 z-[2000]  animate-bounce pointer-events-none">
+        <div className="fixed bottom-[120px] right-6 z-[2000] animate-bounce pointer-events-none">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={100}
@@ -28,65 +28,57 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
         </div>
       )}
 
-      {/* 🎵 Footer Content */}
-      <footer
-        className={`fixed bottom-0 left-0 right-0 w-full pointer-events-none ${
-          footerGlowActive ? "ftue-highlight-frame" : ""
-        }`}
-      >
+      {/*  Footer Content */}
+      <footer className="fixed bottom-0 left-0 right-0 w-full pointer-events-none">
         <div
-          className="absolute inset-0 w-full h-full bg-bottom bg-no-repeat"
+          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] overflow-visible`}
           style={{
-            backgroundImage: "url('/assets/img/footer/Bottom_banner_bg.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "bottom",
             zIndex: 0,
+            filter: footerGlowActive ? "drop-shadow(0 -10px 10px rgba(0, 245, 255, 0.8))" : "none",
           }}
-        ></div>
-
-        <div className="relative w-full h-[150px] pointer-events-auto z-[5]">
+        >
+          <Image
+            src="/assets/img/footer/hub_banner_BG.png"
+            fill
+            sizes="100vw"
+            priority
+            alt="Footer background"
+            className="object-fill"
+            style={{
+              objectPosition: "center bottom",
+            }}
+          />
+        </div>
+        <div className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] pointer-events-auto z-[5]">
           <Link
-            href={"/library"}
+            href="/library"
             onClick={() => {
               handleClickSound();
               clearFooterGlow();
               localStorage.setItem("ftueStep", "2");
             }}
-          >
-            <button className="absolute sm:bottom-[6.6rem] md:bottom-28 left-0 right-0 max-w-[1000px] w-full px-4">
-              <div className="relative mx-auto w-[1000px]">
-                <Image
-                  src={"/assets/img/footer/song_library_btn.png"}
-                  width={500}
-                  height={100}
-                  className="w-full sm:h-8 md:h-10"
-                  alt="Button background"
-                />
-              </div>
-            </button>
-          </Link>
-
-          <div className="absolute sm:bottom-14 md:bottom-16 sm:left-[14rem] md:left-[15.5rem]">
-            <div className="relative inset-0 flex justify-end items-center">
-              <div>
-                <motion.p
-                  className="sm:text-xs md:text-sm lg:text-3xl font-bold uppercase mb-1 text-center text-white whitespace-nowrap leading-tight"
-                  animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
-                  transition={
-                    canUnlockSongs
-                      ? {
-                          duration: 0.8,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          ease: "easeInOut",
-                        }
-                      : {}
-                  }
-                >
-                  You now have <br />
-                  {totalDiscs} discs
-                </motion.p>
-              </div>
+            className="absolute inset-0 w-full h-full"
+          ></Link>
+          {/* Disc Counter - Fixed positioning */}
+          <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 right-4 sm:right-8">
+            <div className="flex flex-col items-center">
+              <motion.p
+                className="text-xs sm:text-sm md:text-base font-bold uppercase text-center text-white whitespace-nowrap leading-tight"
+                animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
+                transition={
+                  canUnlockSongs
+                    ? {
+                        duration: 0.8,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                      }
+                    : {}
+                }
+              >
+                YOU NOW HAVE <br />
+                <span className="text-sm sm:text-base md:text-lg">{totalDiscs} DISCS</span>
+              </motion.p>
             </div>
           </div>
         </div>

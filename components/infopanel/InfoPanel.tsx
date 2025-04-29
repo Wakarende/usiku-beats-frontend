@@ -5,7 +5,7 @@ export default function InfoPanel({
   title = "How To Play?",
   paragraphs = [],
   onClose,
-  bgImage = "/assets/img/ftue/info.png",
+  bgImage = "/assets/img/ftue/Info_panel_blue.png",
   bottomPosition = false,
   transparentBg = false,
   customStyle = {},
@@ -19,7 +19,7 @@ export default function InfoPanel({
       style={{
         position: "fixed",
         inset: 0,  
-        zIndex: 90,
+        zIndex: 92,
       }}
       onClick={onClose}
     >
@@ -32,10 +32,9 @@ export default function InfoPanel({
           backgroundPosition: "center",
           padding: "2rem",
           position: "absolute",
-          
-          // Apply either custom positioning or default centered positioning
+          zIndex:98,
           ...(customPosition 
-            ? {} // Empty object because customStyle will have all positioning values
+            ? {} 
             : {
                 left: "50%",
                 top: bottomPosition ? "auto" : "50%",
@@ -44,12 +43,12 @@ export default function InfoPanel({
                  maxWidth: "3xl",
                 width: "100%",
               }),
-          
           ...customStyle,
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-lg text-white w-full mx-auto">
+        <div
+         className="text-lg text-white w-full mx-auto">
           {paragraphs.map((paragraph, index) => (
             <p key={index} className="mb-2">{paragraph}</p>
           ))}

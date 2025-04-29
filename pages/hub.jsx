@@ -609,35 +609,7 @@ const HubScreen = () => {
           </motion.button>
         </div>
       </DailyRewardPopup>
-      {/* Daily Reward Popup 
-      {showUnlockingInfoPanel && (
-        <InfoPanel
-          onClose={closeUnlockingInfoPanel}
-          paragraphs={[
-            <>
-              <p className="text-lg">
-                We're now back at <span className="font-bold">Your Songs,</span> and the song you
-                chose is unlocking, and will be available soon. But let's not wait! Get it now, by
-                tapping the <span className="font-bold">Finish Now</span> button!
-              </p>
-            </>,
-          ]}
-          customPosition={true}
-          customStyle={{
-            width: "220px",
-            maxWidth: "350px",
-            right: "10px",
-            left: "auto",
-            top: "60%",
-            transform: "translateY(-50%)",
-            borderRadius: "15px",
-            padding: "1.5rem",
-          }}
-          customClassName="unlock-info-panel"
-          transparentBg={true}
-        />
-      )}
-      */}
+
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
     </div>
   );

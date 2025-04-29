@@ -415,23 +415,27 @@ const Library = () => {
               </div>
             </div>
           </div>
-          <button
-            onClick={() => {
-              handlePopupContinue();
-            }}
+          <div
             className={`relative p-2 mt-4 ${
               ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true"
                 ? "ftue-continue-highlight-frame"
                 : ""
             }`}
           >
-            <Image
-              src={"/assets/img/library/Continue_button copy.png"}
-              width={150}
-              height={100}
-              alt="continue-btn"
-            />
-            {/* Bouncing hand for step 3 */}
+            <button
+              onClick={() => {
+                handlePopupContinue();
+              }}
+              className="button-image-container"
+            >
+              <Image
+                src={"/assets/img/library/Continue_button copy.png"}
+                width={150}
+                height={100}
+                alt="continue-btn"
+              />
+              {/* Bouncing hand for step 3 */}
+            </button>
             {ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true" && (
               <div className="absolute bottom-[20px] right-[-70px] animate-bounce z-[10000] pointer-events-none">
                 <Image
@@ -443,22 +447,23 @@ const Library = () => {
                 />
               </div>
             )}
-          </button>
+          </div>
         </Popup>
       </div>
+      {/**/}
       {ftueStep === 2 &&
         showLibraryFtuePanel &&
         localStorage.getItem("ftueCompleted") !== "true" && (
           <InfoPanel
             onClose={() => setShowLibraryFtuePanel(false)}
             paragraphs={[
-              <>
-                <p className="text-lg">
+              <div key="wrapper" style={{ position: "relative", zIndex: 999 }}>
+                <p className="md:text-lg sm:text-sm">
                   This is the <span className="font-bold">Song Library</span>, where you get new
                   songs for your collection. Scroll the list and tap on the one you want for your
                   first song. Watch out... some are harder than others!
                 </p>
-              </>,
+              </div>,
             ]}
             bottomPosition={true}
             transparentBg={true}

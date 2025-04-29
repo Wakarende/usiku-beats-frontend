@@ -166,7 +166,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
 
       // Use router instead of window.location
       router.push("/hub");
-      return; // Exit early
+      return;
     }
 
     if (showUnlockOverlayPanel) {
@@ -177,7 +177,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
   }
 
   function handleUnlockNowClick(song) {
-    // Hide the "Finish Now" panel when Unlock Now is clicked
     setShowUnlockingInfoPanel(false);
 
     setSelectedSong(song);
@@ -214,20 +213,17 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         return newState;
       });
 
-      // Trigger particle effect
       setParticleTrigger((prev) => ({
         ...prev,
         [songId]: true,
       }));
 
       if (ftueStep === 4) {
-        // Special handling for FTUE progression
         localStorage.setItem("ftueStep", "5");
         setFtueStep(5);
 
         setUnlockOverlaySong(selectedSong);
 
-        // Ensure "Finish Now" panel is hidden and show "Add to Library" panel
         setShowUnlockingInfoPanel(false);
         setShowUnlockOverlayPanel(true);
       }
@@ -286,9 +282,8 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
         i % 2 === 0 ? "/assets/img/hub/unlock_frame.png" : "/assets/img/hub/unlock_frame_2.png";
 
       slotsContent.push(
-        <div key={i}>
+        <div key={i} className="relative">
           <div className={`${ftueStep === 4 && i === 0 ? "ftue-hub-highlight-frame" : ""}`}>
-            {/* This is the main card wrapper - we need to add the highlight class here */}
             <div
               className={`flex flex-col items-center unlock-card-wrapper 
           ${unlockedState[item.song.id] ? "pulse-effect" : ""}
@@ -414,32 +409,6 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
                 </div>
               )}
 
-              {/* Hand pointer for step 5 */}
-              {ftueStep === 5 && i === 0 && isUnlockTimePassed(item.unlock_time) && (
-                <div className="absolute bottom-[-80px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
-                  <Image
-                    src="/assets/img/ftue/hand icon.png"
-                    width={80}
-                    height={80}
-                    alt="Hand pointing to Add to Library"
-                    className="w-20 h-20 object-contain transform"
-                  />
-                </div>
-              )}
-
-              {/* Hand pointer for step 4 */}
-              {ftueStep === 4 && i === 0 && (
-                <div className="absolute bottom-[-70px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
-                  <Image
-                    src="/assets/img/ftue/hand icon.png"
-                    width={80}
-                    height={80}
-                    alt="Hand pointing to unlocking song"
-                    className="w-20 h-20 object-contain"
-                  />
-                </div>
-              )}
-
               {/* Particle effect */}
               {particleTrigger[item.song.id] && (
                 <ParticleEffect
@@ -454,6 +423,30 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
               )}
             </div>
           </div>
+          {/* Hand pointer for step 5 */}
+          {ftueStep === 5 && i === 0 && isUnlockTimePassed(item.unlock_time) && (
+            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+              <Image
+                src="/assets/img/ftue/hand icon.png"
+                width={80}
+                height={80}
+                alt="Hand pointing to Add to Library"
+                className="w-20 h-20 object-contain transform"
+              />
+            </div>
+          )}
+          {/* Hand pointer for step 4 */}
+          {ftueStep === 4 && i === 0 && (
+            <div className="absolute bottom-[-70px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+              <Image
+                src="/assets/img/ftue/hand icon.png"
+                width={80}
+                height={80}
+                alt="Hand pointing to unlocking song"
+                className="w-20 h-20 object-contain"
+              />
+            </div>
+          )}
         </div>
       );
     } else {
@@ -550,7 +543,7 @@ const UnlockSongsRow = ({ user_data, songs, loading }) => {
             transform: "translateY(-50%)",
             borderRadius: "15px",
             padding: "1.5rem",
-            zIndex: "10001", // Higher z-index to ensure it appears above other elements
+            zIndex: "10001",
           }}
           customClassName="unlock-info-panel ftue-add-library-overlay"
           transparentBg={true}
