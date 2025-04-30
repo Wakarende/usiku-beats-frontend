@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import moment from "moment-timezone";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
+import Link from "next/link";
 import Header from "../components/header/Header";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
@@ -454,12 +454,26 @@ const HubScreen = () => {
         />
       )}
       {/* Container */}
-      <div className="px-1 mx-auto max-w-7xl hub-content-wrapper">
+      <div className=" mx-auto max-w-7xl hub-content-wrapper">
         {/* Your Songs Section */}
-        <div className="flex align-center justify-center">
-          <h1 className="text-[#ff6b03] text-center md:mt-4 sm:mt-1.5 sm:mb-4 text-5xl uppercase tracking-wider">
+        <div className="flex items-center w-full relative">
+          <h1 className="text-[#ff6b03] text-center w-full md:mt-4 sm:mt-1.5 sm:mb-4 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
+          <Link href={"/library"}>
+            <button className="absolute right-[-2rem] top-1/2 transform -translate-y-1/2 h-10">
+              <Image
+                src={"/assets/img/hub/Button blank.png"}
+                alt="your-songs-btn"
+                width={120}
+                height={40}
+                className="h-full w-24"
+              />
+              <span className="absolute inset-1.5 flex items-center justify-center text-white font-bold tracking-widest text-xs uppercase text-nowrap ">
+                +ADD SONGS
+              </span>
+            </button>
+          </Link>
         </div>
         <div className="">
           <div
