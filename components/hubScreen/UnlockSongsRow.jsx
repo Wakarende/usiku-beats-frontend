@@ -10,6 +10,8 @@ import InfoPanel from "../infopanel/InfoPanel";
 import Image from "next/image";
 import "../styles.css";
 
+
+
 const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
