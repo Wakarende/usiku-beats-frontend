@@ -19,7 +19,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   const [particleTrigger, setParticleTrigger] = useState({});
   const [lockedSongs, setLockedSongs] = useState([]);
 
- 
   const [ftueStep, setFtueStep] = useState(0);
   const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false); // Moved from HubScreen
   const [showUnlockOverlayPanel, setShowUnlockOverlayPanel] = useState(false);
@@ -484,7 +483,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   }
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center sm:text-xl md:text-4xl lg:text-6xl xl:text-6xl mb-3">
+      <h1 className="text-[#6e6d6d] text-center sm:text-2xl md:text-4xl lg:text-6xl xl:text-6xl mb-3">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
@@ -520,10 +519,11 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           onClose={closeUnlockingInfoPanel}
           paragraphs={[
             <>
+              <p className="text-lg sm:text-sm font-bold"> Nice Choice!</p>
               <p className="text-lg sm:text-sm">
-                We're now back at <span className="font-bold">Your Songs,</span> and the song you
-                chose is unlocking, and will be available soon. But let's not wait! Get it now, by
-                tapping the <span className="font-bold">Unlock Now</span> button!
+                {" "}
+                Your new song is now <span className="font-bold">unlocking</span>. But let's not
+                wait! Tap here to get it now.
               </p>
             </>,
           ]}
@@ -550,7 +550,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           onClose={() => setShowUnlockOverlayPanel(false)}
           paragraphs={[
             <>
-              <p className="text-lg">
+              <p className="text-lg sm:text-sm">
                 Your new song is now unlocked, so tap{" "}
                 <span className="font-bold">'Add to Library'</span> to make it playable!
               </p>

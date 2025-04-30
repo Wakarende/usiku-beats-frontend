@@ -37,6 +37,14 @@ const Header = () => {
     };
     dispatch(updateUser(updatedUser));
   };
+
+  function resetGame() {
+    // Clear all items in localStorage
+    localStorage.clear();
+
+    // Navigate to the start of the game (root path)
+    window.location.href = "/";
+  }
   return (
     <Navbar expand="lg" className="navbar" style={{ zIndex: 21 }}>
       <Container fluid className="flex items-center justify-between">
@@ -89,19 +97,19 @@ const Header = () => {
             alt="Star Level"
             width={75}
             height={75}
-            className="star-levels"
+            className="logo "
           />
         </div>
         {/* Header Icons Section */}
         <div className="header-right flex items-center gap-x-2 h-full">
-          <Link href={"#"} className="flex items-center">
+          <button onClick={resetGame} className="flex items-center">
             <Image
               src="/assets/img/header/Leaderboard_icon.png"
               alt="Leaderboard"
               width={50}
               height={50}
             />
-          </Link>
+          </button>
           <Link href={"/login"} className="flex items-center">
             <Image src="/assets/img/header/Settings.png" alt="Settings" width={50} height={50} />
           </Link>

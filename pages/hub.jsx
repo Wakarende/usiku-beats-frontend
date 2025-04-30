@@ -457,7 +457,7 @@ const HubScreen = () => {
       <div className=" mx-auto max-w-7xl hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex items-center w-full relative">
-          <h1 className="text-[#ff6b03] text-center w-full md:mt-4 sm:mt-1.5 sm:mb-4 text-5xl uppercase tracking-wider">
+          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5 sm:mt-4 sm:mb-1 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
           <Link href={"/library"}>

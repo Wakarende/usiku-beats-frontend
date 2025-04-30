@@ -10,7 +10,7 @@ const getStarsFromScore = (score) => {
   if (score >= 10000 && score < 15000) return 3;
   if (score >= 15000 && score < 20000) return 4;
   if (score >= 20000) return 5;
-  return 0; 
+  return 0;
 };
 
 const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => {
@@ -80,7 +80,6 @@ const ArtistImage = ({
 }) => {
   const [ftueStep, setFtueStep] = useState(0);
 
-  
   useEffect(() => {
     const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
     const isFtueCompleted = localStorage.getItem("ftueCompleted") === "true";
@@ -100,12 +99,10 @@ const ArtistImage = ({
       ftueCompleted: localStorage.getItem("ftueCompleted"),
     });
 
-    
     if (ftueStep === 6 || isHighlightedForFtue) {
       // console.log("COMPLETING FTUE!");
       localStorage.setItem("ftueCompleted", "true");
       localStorage.setItem("playSongPanelSeen", "true");
-      
     }
 
     onPlayClick();
@@ -124,7 +121,7 @@ const ArtistImage = ({
       }`}
     >
       <div
-        className={`shrink-0 mt-1 sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
+        className={`shrink-0  sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
       >
         <Image
           src="/assets/img/hub/Frame_.png"
