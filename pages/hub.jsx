@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +20,36 @@ import InfoPanel from "../components/infopanel/InfoPanel";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
 import "./pages.css";
+
+// Helper function to safely access localStorage
+const getLocalStorage = (key, defaultValue) => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(key) || defaultValue;
+  }
+  return defaultValue;
+};
+
+// Helper function to safely set localStorage
+const setLocalStorage = (key, value) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(key, value);
+  }
+};
+
+// Helper function to safely access sessionStorage
+const getSessionStorage = (key, defaultValue) => {
+  if (typeof window !== "undefined") {
+    return sessionStorage.getItem(key) || defaultValue;
+  }
+  return defaultValue;
+};
+
+// Helper function to safely set sessionStorage
+const setSessionStorage = (key, value) => {
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(key, value);
+  }
+};
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -58,7 +87,10 @@ const HubScreen = () => {
   const [showPlaySongPanel, setShowPlaySongPanel] = useState(false);
   const [highlightedSongId, setHighlightedSongId] = useState(null);
 
+  // Client-side only code
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     console.log("FTUE Debug Log:");
     console.log("Current FTUE Step:", ftueStep);
     console.log("Highlighted Song ID:", highlightedSongId);
@@ -67,19 +99,21 @@ const HubScreen = () => {
       "All Songs:",
       songs.map((s) => ({ id: s.id, name: s.song_name }))
     );
-    console.log("FTUE Completed:", localStorage.getItem("ftueCompleted") === "true");
+    console.log("FTUE Completed:", getLocalStorage("ftueCompleted", "false") === "true");
   }, [ftueStep, highlightedSongId, showPlaySongPanel, songs]);
 
   useEffect(() => {
-    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    if (typeof window === "undefined") return;
+
+    const storedStep = parseInt(getLocalStorage("ftueStep", "1"));
     setFtueStep(storedStep);
-    if (storedStep === 4 && !localStorage.getItem("unlockingInfoSeen")) {
+    if (storedStep === 4 && !getLocalStorage("unlockingInfoSeen", "")) {
       setShowUnlockingInfoPanel(true);
     } else {
       setShowUnlockingInfoPanel(false);
     }
 
-    if (storedStep === 5 && !localStorage.getItem("addToLibrarySeen")) {
+    if (storedStep === 5 && !getLocalStorage("addToLibrarySeen", "")) {
       setShowAddToLibraryPanel(true);
     } else {
       setShowAddToLibraryPanel(false);
@@ -87,8 +121,10 @@ const HubScreen = () => {
   }, []);
 
   useEffect(() => {
-    const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    const isCompleted = localStorage.getItem("ftueCompleted") === "true";
+    if (typeof window === "undefined") return;
+
+    const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
+    const isCompleted = getLocalStorage("ftueCompleted", "false") === "true";
 
     if (currentStep === 6 && !isCompleted) {
       console.log("FORCING STEP 6 HIGHLIGHTING");
@@ -110,8 +146,11 @@ const HubScreen = () => {
         setHighlightedSongId(null);
       }
     }
-  }, [ftueStep, songs, localStorage.getItem("ftueCompleted")]);
+  }, [ftueStep, songs]);
+
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     checkAnonUser();
     checkRedirect();
     checkFirstLoginOfDay();
@@ -127,7 +166,9 @@ const HubScreen = () => {
   }, [songs]);
 
   useEffect(() => {
-    if (ftueStep === 6 && !localStorage.getItem("ftueCompleted") === "true") {
+    if (typeof window === "undefined") return;
+
+    if (ftueStep === 6 && getLocalStorage("ftueCompleted", "false") !== "true") {
       console.log("FTUE Step 6 active, highlight song:", highlightedSongId);
       console.log(
         "Songs available:",
@@ -139,21 +180,23 @@ const HubScreen = () => {
   }, [ftueStep, highlightedSongId, songs]);
 
   const checkFirstLoginOfDay = () => {
-    const lastLoginDate = localStorage.getItem("lastLoginDate");
-    const loginCount = parseInt(localStorage.getItem("loginCount") || "0", 10);
+    if (typeof window === "undefined") return;
+
+    const lastLoginDate = getLocalStorage("lastLoginDate", "");
+    const loginCount = parseInt(getLocalStorage("loginCount", "0"), 10);
     const today = new Date().toISOString().split("T")[0];
 
-    const sessionActive = sessionStorage.getItem("sessionActive");
+    const sessionActive = getSessionStorage("sessionActive", "");
 
     if (lastLoginDate !== today) {
-      localStorage.setItem("lastLoginDate", today);
-      localStorage.setItem("loginCount", "1");
-      sessionStorage.setItem("sessionActive", "true");
+      setLocalStorage("lastLoginDate", today);
+      setLocalStorage("loginCount", "1");
+      setSessionStorage("sessionActive", "true");
       console.log("First login of the day. Count reset to 1.");
     } else if (!sessionActive) {
       const updatedLoginCount = loginCount + 1;
-      localStorage.setItem("loginCount", updatedLoginCount.toString());
-      sessionStorage.setItem("sessionActive", "true");
+      setLocalStorage("loginCount", updatedLoginCount.toString());
+      setSessionStorage("sessionActive", "true");
 
       if (updatedLoginCount > 1) {
         setIsDailyPopupOpen(true);
@@ -196,26 +239,30 @@ const HubScreen = () => {
 
       setSongs(sortedSongs || []);
 
-      const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
-      if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
-        console.log("Setting highlighted song in checkAnonUser");
-        setHighlightedSongId(sortedSongs[0].id);
+      if (typeof window !== "undefined") {
+        const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
+        if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
+          console.log("Setting highlighted song in checkAnonUser");
+          setHighlightedSongId(sortedSongs[0].id);
+        }
       }
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
-    const ftueCompleted = localStorage.getItem("ftueCompleted");
-    const hubTutorialSeen = localStorage.getItem("hubTutorialSeen");
-    const footerGlowCleared = localStorage.getItem("footerGlowCleared");
+    const ftueCompleted = getLocalStorage("ftueCompleted", "");
+    const hubTutorialSeen = getLocalStorage("hubTutorialSeen", "");
+    const footerGlowCleared = getLocalStorage("footerGlowCleared", "");
 
     if (ftueParam === "true" && ftueCompleted !== "true" && !hubTutorialSeen) {
       setShowFtuePanel(true);
 
-      localStorage.setItem("hubTutorialSeen", "true");
+      setLocalStorage("hubTutorialSeen", "true");
     }
 
     if (!footerGlowCleared) {
@@ -225,41 +272,45 @@ const HubScreen = () => {
 
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
-    localStorage.setItem("unlockingInfoSeen", "true");
+    setLocalStorage("unlockingInfoSeen", "true");
 
-    localStorage.setItem("ftueStep", "5");
+    setLocalStorage("ftueStep", "5");
     setFtueStep(5);
   };
 
   const closeAddToLibraryPanel = () => {
     setShowAddToLibraryPanel(false);
-    localStorage.setItem("addToLibrarySeen", "true");
+    setLocalStorage("addToLibrarySeen", "true");
 
-    localStorage.setItem("ftueStep", "6");
+    setLocalStorage("ftueStep", "6");
     setFtueStep(6);
   };
 
   const closePlaySongPanel = () => {
     console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
 
+    setShowPlaySongPanel(false);
     if (ftueStep === 6) {
       console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
-      localStorage.setItem("ftueCompleted", "true");
+      setLocalStorage("ftueCompleted", "true");
       setHighlightedSongId(null);
     }
   };
+
   const clearFooterGlow = () => {
     setFooterGlowActive(false);
-    localStorage.setItem("footerGlowCleared", "true");
+    setLocalStorage("footerGlowCleared", "true");
   };
 
   const closeFtuePanel = () => {
     setShowFtuePanel(false);
 
-    const currentStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    if (currentStep === 3) {
-      localStorage.setItem("ftueStep", "4");
-      setFtueStep(4);
+    if (typeof window !== "undefined") {
+      const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
+      if (currentStep === 3) {
+        setLocalStorage("ftueStep", "4");
+        setFtueStep(4);
+      }
     }
 
     const currentQuery = { ...router.query };
@@ -308,29 +359,18 @@ const HubScreen = () => {
     checkAnonUser();
   };
 
-  // const checkNewLevel = () => {
-  //   const { newLevelAchieved } = router.query;
-  //   if (newLevelAchieved === "true") {
-  //     const level = parseInt(router.query.newLevel, 10);
-  //     setNewLevel(level);
-  //     setIsLevelUpPopupOpen(true);
-  //   }
-  // };
-
   const gotoGameDetail = (track) => {
+    if (typeof window === "undefined") return;
+
     // Store track data in localStorage
-    localStorage.setItem("currentTrackData", JSON.stringify(track));
+    setLocalStorage("currentTrackData", JSON.stringify(track));
 
     router.push("/game");
-
-    // // Check if we're in development environment
-    // if (process.env.NODE_ENV === "development") {
-    //   router.push("/game");
-    // } else {
-    //   window.location.href = `/game.html`;
-    // }
   };
+
   const checkRedirect = () => {
+    if (typeof window === "undefined") return;
+
     const params = new URLSearchParams(window.location.search);
     const trackParam = params.get("track");
     const trackId = params.get("id");
@@ -340,7 +380,7 @@ const HubScreen = () => {
         let trackObject = d.data;
 
         // Store track data in localStorage
-        localStorage.setItem("currentTrackData", JSON.stringify(trackObject));
+        setLocalStorage("currentTrackData", JSON.stringify(trackObject));
         router.push("/game");
       });
     }
@@ -350,25 +390,13 @@ const HubScreen = () => {
         const trackObject = JSON.parse(decodeURIComponent(trackParam));
 
         // Store track data in localStorage
-        localStorage.setItem("currentTrackData", JSON.stringify(trackObject));
+        setLocalStorage("currentTrackData", JSON.stringify(trackObject));
         router.push("/game");
       } catch (error) {
         console.error("Error parsing track JSON:", error);
       }
     }
   };
-
-  // const closeLevelUpPopup = () => {
-  //   setIsLevelUpPopupOpen(false);
-  //   const currentPath = router.pathname;
-  //   const currentQuery = { ...router.query };
-  //   delete currentQuery.newLevelAchieved;
-  //   delete currentQuery.newLevel;
-  //   router.replace({
-  //     pathname: currentPath,
-  //     query: currentQuery,
-  //   });
-  // };
 
   const openOverlay = async (artistId) => {
     handleClickSound();
@@ -398,17 +426,11 @@ const HubScreen = () => {
     setIsOverlayOpen(false);
   };
 
-  // const handleArtistClick = (e, artist) => {
-  //   openOverlay(artist.id);
-  // };
-
   const handlePlayClick = (song, index) => {
     if (index === 0 && songs.length === 1) {
       setIsPulsing(false);
     }
     gotoGameDetail(song);
-
-    // gotoGameDetail(song);
   };
 
   const toggleDailyPopup = () => {
@@ -495,7 +517,7 @@ const HubScreen = () => {
                   isHighlightedForFtue={
                     ftueStep === 6 &&
                     highlightedSongId === item.id &&
-                    localStorage.getItem("ftueCompleted") !== "true"
+                    getLocalStorage("ftueCompleted", "") !== "true"
                   }
                 />
               ))
@@ -513,7 +535,7 @@ const HubScreen = () => {
             onClose={() => {
               closePlaySongPanel();
               if (ftueStep === 6) {
-                localStorage.setItem("ftueCompleted", "true");
+                setLocalStorage("ftueCompleted", "true");
               }
             }}
             bottomPosition={true}
@@ -565,9 +587,6 @@ const HubScreen = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-
-      {/* (Optional) LevelUpPopup, etc. */}
-      {/* <LevelUpPopup isOpen={isLevelUpPopupOpen} ... /> */}
 
       {/* Daily Reward Popup */}
       <DailyRewardPopup
