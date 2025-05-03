@@ -17,12 +17,12 @@
 
 /* TURN ON YOUR SOUND PAGE END  */
 /* HUBSCREEN  */
-.cdm-page {
+/* .cdm-page {
     min-height: 100vh;
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-}
+} */
 
 
 
@@ -90,7 +90,7 @@
 
 /* DAILY REWARD POPUP END  */
 /* UNLOCK SONGS ROW  */
-/* Base: normal screens (no scroll needed) */
+
 .hub-content-wrapper {
     overflow: visible;
 }

@@ -19,11 +19,7 @@ class BottomTabNav extends Component<{}, State> {
 
   render(): React.ReactNode {
     return (
-      <Navbar
-        expand="lg"
-        fixed="bottom"
-        className="bg-body-tertiary  kayfo-bottom-nav"
-      >
+      <Navbar expand="lg" fixed="bottom" className="bg-body-tertiary  kayfo-bottom-nav">
         <Nav
           fill
           variant="tabs"
@@ -38,23 +34,13 @@ class BottomTabNav extends Component<{}, State> {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link
-              className="kayfo-bottom-nav-link"
-              eventKey="link-1"
-              href="/"
-              as={Link}
-            >
+            <Nav.Link className="kayfo-bottom-nav-link" eventKey="link-1" href="/" as={Link}>
               <Image src={require("../assets/icons/search-icon.png")} alt="" />
               Search
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link
-              className="kayfo-bottom-nav-link"
-              eventKey="link-2"
-              href="/"
-              as={Link}
-            >
+            <Nav.Link className="kayfo-bottom-nav-link" eventKey="link-2" href="/" as={Link}>
               <Image src={require("../assets/icons/favs-icon.png")} alt="" />
               Favourites
             </Nav.Link>
