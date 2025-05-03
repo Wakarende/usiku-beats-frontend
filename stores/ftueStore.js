@@ -3,13 +3,13 @@ import { persist } from "zustand/middleware";
 
 /**
  * FTUE (First Time User Experience) store
- * This store manages the state for the user onboarding flow
+ * Manages the state for the user onboarding flow
  */
 const useFTUEStore = create(
   persist(
     (set, get) => ({
       // State
-      currentStep: 1, // Current step in the FTUE flow (1-6)
+      currentStep: 1, // Current step in the FTUE flow (1-7)
       isCompleted: false, // Whether FTUE is completed
       hubTutorialSeen: false, // Whether hub tutorial has been seen
       libraryTutorialSeen: false, // Whether library tutorial has been seen

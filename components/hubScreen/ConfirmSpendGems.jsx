@@ -4,20 +4,9 @@ import "../styles.css";
 import useFTUEStore from "../../stores/ftueStore";
 
 const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) => {
-  // const [ftueStep, setFtueStep] = useState(0);
-
-  // useEffect(() => {
-  //   const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
-  //   setFtueStep(storedStep);
-  // }, []);
-
   const { currentStep, isCompleted, setCurrentStep, completeStep } = useFTUEStore();
 
   const handleConfirm = () => {
-    // if (currentStep === 4) {
-    //   setCurrentStep(5);
-    // }
-    // completeStep(currentStep);
     onConfirm();
   };
 

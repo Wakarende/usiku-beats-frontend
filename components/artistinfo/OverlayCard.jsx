@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import useFTUEStore from "../../stores/ftueStore";
+import useStorageStore from "../../stores/storageStore";
 import "../styles.css";
 
 const getStarsFromScore = (score) => {
@@ -78,6 +79,7 @@ const ArtistImage = ({
   isPulsing,
   isHighlightedForFtue = false,
 }) => {
+  const { setPlaySongPanelSeen } = useStorageStore();
   const { currentStep, isCompleted, completeFTUE } = useFTUEStore();
 
   useEffect(() => {
@@ -96,10 +98,8 @@ const ArtistImage = ({
     });
 
     if (currentStep === 7 || isHighlightedForFtue) {
-      // console.log("COMPLETING FTUE!");
-      // localStorage.setItem("ftueCompleted", "true");
       completeFTUE();
-      localStorage.setItem("playSongPanelSeen", "true");
+      setPlaySongPanelSeen(true);
     }
 
     onPlayClick();

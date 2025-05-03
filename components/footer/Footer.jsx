@@ -16,22 +16,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   const handleClickSound = useClickSound();
 
   const { currentStep, completeStep, isCompleted } = useFTUEStore();
-  // Check if we're in FTUE step 1
-  // useEffect(() => {
-  //   const checkFtueStatus = () => {
-  //     const ftueStep = parseInt(localStorage.getItem("ftueStep") || "1");
-  //     const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
 
-  //     setInFtue(ftueStep === 1 && !ftueCompleted);
-  //   };
-
-  //   checkFtueStatus();
-
-  //   window.addEventListener("storage", checkFtueStatus);
-  //   return () => {
-  //     window.removeEventListener("storage", checkFtueStatus);
-  //   };
-  // }, []);
   useEffect(() => {
     setInFtue(currentStep === 1 && !isCompleted);
   }, [currentStep, isCompleted]);

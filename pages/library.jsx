@@ -17,7 +17,7 @@ import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
-import ZustandDebug from "../components/zustandDebug";
+// import ZustandDebug from "../components/zustandDebug";
 ("./pages.css");
 
 const isSongInQueue = (songInstance) => {
@@ -42,17 +42,8 @@ const Library = () => {
   });
 
   const [isFtue, setIsFtue] = useState(false);
-  // const [showFtuePanel, setShowFtuePanel] = useState(false); //
 
-  // const [ftueStep, setFtueStep] = useState(0);
   const [showLibraryFtuePanel, setShowLibraryFtuePanel] = useState(false);
-
-  //Debugging
-  // useEffect(() => {
-  //   console.log("FTUE Step:", ftueStep);
-  //   console.log("Is FTUE:", isFtue);
-  //   console.log("Show Library FTUE Panel:", showLibraryFtuePanel);
-  // }, [ftueStep, isFtue, showLibraryFtuePanel]);
 
   const {
     currentStep,
@@ -69,21 +60,6 @@ const Library = () => {
   const router = useRouter();
 
   const gemsRequiredToUnlockSong = 20;
-
-  // useEffect(() => {
-  //   const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
-  //   const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
-
-  //   setFtueStep(storedStep);
-
-  //   if (storedStep === 2) {
-  //     setShowLibraryFtuePanel(true);
-  //     setIsFtue(true);
-  //   } else if (ftueCompleted) {
-  //     setIsFtue(false);
-  //     setShowFtuePanel(false);
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (currentStep === 2) {
@@ -130,14 +106,11 @@ const Library = () => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
-    // const libraryTutorialSeen = localStorage.getItem("libraryTutorialSeen");
-    // const ftueCompleted = localStorage.getItem("ftueCompleted");
+
     if (ftueParam === "true" && !isCompleted && !libraryTutorialSeen) {
       setIsFtue(true);
       setShowLibraryFtuePanel(true);
       setLibraryTutorialSeen(true);
-      // setShowFtuePanel(true);
-      // localStorage.setItem("libraryTutorialSeen", "true");
     }
 
     const songIds = [149, 150, 151, 152, 153, 154];
@@ -163,15 +136,12 @@ const Library = () => {
 
     setUnlockedSong(song);
     if (currentStep === 2) {
-      // setCurrentStep(3);
       completeStep(currentStep);
     }
     setIsPopupOpen(true);
 
     let unlockTime = null;
     let unlockedFlag = false;
-
-    // const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
 
     if (!isCompleted && currentStep <= 5) {
       unlockTime = moment().add(15, "minutes").toISOString();
@@ -228,7 +198,6 @@ const Library = () => {
 
     if (isFtue) {
       if (currentStep === 3) {
-        // setCurrentStep(4);
         completeStep(currentStep);
       }
       router.push("/hub?ftueGameplayCompleted=true");
@@ -528,7 +497,7 @@ const Library = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-      <ZustandDebug />
+      {/* <ZustandDebug /> */}
     </div>
   );
 };

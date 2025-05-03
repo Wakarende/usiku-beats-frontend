@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import useFTUEStore from "../stores/ftueStore";
-// import { use } from "matter";
+
 const Sound = () => {
   const { playBoom } = useAudio();
   const router = useRouter();
@@ -40,9 +40,6 @@ const Sound = () => {
   const handleFtue = async () => {
     playBoom();
 
-    // Check FTUE
-    // const ftueStep = useFTUEStore.getState().currentStep;
-    // const ftueCompleted = ftueStep.isCompleted;
     if (!isCompleted) {
       try {
         const response = await axios.get(`${BASE_URL}song-detail/148/`);

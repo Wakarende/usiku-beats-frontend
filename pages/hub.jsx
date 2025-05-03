@@ -20,39 +20,9 @@ import useFTUEStore from "../stores/ftueStore";
 import useUnlockSongsStore from "../stores/unlockSongsStore";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
-// import useFTUEDebug from "../components/zustandDebug";
 import "./pages.css";
-import ZustandDebug from "../components/zustandDebug";
-
-// Helper function to safely access localStorage
-const getLocalStorage = (key, defaultValue) => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem(key) || defaultValue;
-  }
-  return defaultValue;
-};
-
-// Helper function to safely set localStorage
-const setLocalStorage = (key, value) => {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(key, value);
-  }
-};
-
-// Helper function to safely access sessionStorage
-const getSessionStorage = (key, defaultValue) => {
-  if (typeof window !== "undefined") {
-    return sessionStorage.getItem(key) || defaultValue;
-  }
-  return defaultValue;
-};
-
-// Helper function to safely set sessionStorage
-const setSessionStorage = (key, value) => {
-  if (typeof window !== "undefined") {
-    sessionStorage.setItem(key, value);
-  }
-};
+// import ZustandDebug from "../components/zustandDebug";
+import useStorageStore from "../stores/storageStore";
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -84,7 +54,7 @@ const HubScreen = () => {
   const { fadeOutBgMusic, playBoom } = useAudio();
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
-  // const [ftueStep, setFtueStep] = useState(0);
+
   const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false);
   const [showAddToLibraryPanel, setShowAddToLibraryPanel] = useState(false);
   const [showPlaySongPanel, setShowPlaySongPanel] = useState(false);
@@ -106,6 +76,20 @@ const HubScreen = () => {
     completeStep,
     completeFTUE,
   } = useFTUEStore();
+
+  const {
+    lastLoginDate,
+    loginCount,
+    sessionActive,
+    currentTrackData,
+    playSongPanelSeen,
+    setLastLoginDate,
+    setLoginCount,
+    setSessionActive,
+    setCurrentTrackData,
+    setPlaySongPanelSeen,
+    trackDailyLogin,
+  } = useStorageStore();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -171,30 +155,38 @@ const HubScreen = () => {
     }
   }, [currentStep, highlightedSongId, songs]);
 
+  // const checkFirstLoginOfDay = () => {
+  //   if (typeof window === "undefined") return;
+
+  //   const lastLoginDate = getLocalStorage("lastLoginDate", "");
+  //   const loginCount = parseInt(getLocalStorage("loginCount", "0"), 10);
+  //   const today = new Date().toISOString().split("T")[0];
+
+  //   const sessionActive = getSessionStorage("sessionActive", "");
+
+  //   if (lastLoginDate !== today) {
+  //     setLocalStorage("lastLoginDate", today);
+  //     setLocalStorage("loginCount", "1");
+  //     setSessionStorage("sessionActive", "true");
+  //     console.log("First login of the day. Count reset to 1.");
+  //   } else if (!sessionActive) {
+  //     const updatedLoginCount = loginCount + 1;
+  //     setLocalStorage("loginCount", updatedLoginCount.toString());
+  //     setSessionStorage("sessionActive", "true");
+
+  //     if (updatedLoginCount > 1) {
+  //       setIsDailyPopupOpen(true);
+  //     }
+  //   } else {
+  //     console.log("Session already active. No increment.");
+  //   }
+  // };
+
   const checkFirstLoginOfDay = () => {
-    if (typeof window === "undefined") return;
+    const { isFirstLogin, loginCount } = trackDailyLogin();
 
-    const lastLoginDate = getLocalStorage("lastLoginDate", "");
-    const loginCount = parseInt(getLocalStorage("loginCount", "0"), 10);
-    const today = new Date().toISOString().split("T")[0];
-
-    const sessionActive = getSessionStorage("sessionActive", "");
-
-    if (lastLoginDate !== today) {
-      setLocalStorage("lastLoginDate", today);
-      setLocalStorage("loginCount", "1");
-      setSessionStorage("sessionActive", "true");
-      console.log("First login of the day. Count reset to 1.");
-    } else if (!sessionActive) {
-      const updatedLoginCount = loginCount + 1;
-      setLocalStorage("loginCount", updatedLoginCount.toString());
-      setSessionStorage("sessionActive", "true");
-
-      if (updatedLoginCount > 1) {
-        setIsDailyPopupOpen(true);
-      }
-    } else {
-      console.log("Session already active. No increment.");
+    if (!isFirstLogin && loginCount > 1) {
+      setIsDailyPopupOpen(true);
     }
   };
 
@@ -247,15 +239,10 @@ const HubScreen = () => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
-    // const ftueCompleted = getLocalStorage("ftueCompleted", "");
-    // const hubTutorialSeen = getLocalStorage("hubTutorialSeen", "");
-    // const footerGlowCleared = getLocalStorage("footerGlowCleared", "");
 
     if (ftueParam === "true" && !isCompleted && !hubTutorialSeen) {
       setShowFtuePanel(true);
       setHubTutorialSeen(true);
-
-      // setLocalStorage("hubTutorialSeen", "true");
     }
 
     if (!footerGlowCleared) {
@@ -263,46 +250,19 @@ const HubScreen = () => {
     }
   }, [isCompleted, hubTutorialSeen, footerGlowCleared]);
 
-  // const closeUnlockingInfoPanel = () => {
-  //   setShowUnlockingInfoPanel(false);
-  //   setLocalStorage("unlockingInfoSeen", "true");
-
-  //   setLocalStorage("ftueStep", "5");
-  //   setFtueStep(5);
-  // };
-
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
     setUnlockingInfoSeen(true);
-    // setCurrentStep(5);
+
     completeStep(currentStep);
   };
-
-  // const closeAddToLibraryPanel = () => {
-  //   setShowAddToLibraryPanel(false);
-  //   setLocalStorage("addToLibrarySeen", "true");
-
-  //   setLocalStorage("ftueStep", "6");
-  //   setFtueStep(6);
-  // };
 
   const closeAddToLibraryPanel = () => {
     setShowAddToLibraryPanel(false);
     setAddToLibrarySeen(true);
-    // setCurrentStep(6);
+
     completeStep(currentStep);
   };
-
-  // const closePlaySongPanel = () => {
-  //   console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
-
-  //   setShowPlaySongPanel(false);
-  //   if (ftueStep === 6) {
-  //     console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
-  //     setLocalStorage("ftueCompleted", "true");
-  //     setHighlightedSongId(null);
-  //   }
-  // };
 
   const closePlaySongPanel = () => {
     setShowPlaySongPanel(false);
@@ -320,12 +280,6 @@ const HubScreen = () => {
   const closeFtuePanel = () => {
     console.log("Closing FTUE panel. Current step:", currentStep);
     setShowFtuePanel(false);
-    // completeStep(currentStep);
-
-    // if (typeof window !== "undefined") {
-    //   const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
-
-    // }
 
     const currentQuery = { ...router.query };
     delete currentQuery.ftueGameplayCompleted;
@@ -356,7 +310,6 @@ const HubScreen = () => {
     console.log("MANUALLY TRIGGERING STEP 6 SETUP");
     console.log("Song passed to callback:", song);
 
-    // setCurrentStep(6);
     completeStep(currentStep);
 
     setShowPlaySongPanel(true);
@@ -377,8 +330,7 @@ const HubScreen = () => {
   const gotoGameDetail = (track) => {
     if (typeof window === "undefined") return;
 
-    // Store track data in localStorage
-    setLocalStorage("currentTrackData", JSON.stringify(track));
+    setCurrentTrackData(JSON.stringify(track));
 
     router.push("/game");
   };
@@ -394,7 +346,6 @@ const HubScreen = () => {
       axios.get(`${BASE_URL}song-detail/${trackId}/`).then((d) => {
         let trackObject = d.data;
 
-        // Store track data in localStorage
         setLocalStorage("currentTrackData", JSON.stringify(trackObject));
         router.push("/game");
       });
@@ -404,7 +355,6 @@ const HubScreen = () => {
       try {
         const trackObject = JSON.parse(decodeURIComponent(trackParam));
 
-        // Store track data in localStorage
         setLocalStorage("currentTrackData", JSON.stringify(trackObject));
         router.push("/game");
       } catch (error) {
@@ -641,9 +591,8 @@ const HubScreen = () => {
           </motion.button>
         </div>
       </DailyRewardPopup>
-
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
-      <ZustandDebug />
+      {/* <ZustandDebug /> */}
     </div>
   );
 };
