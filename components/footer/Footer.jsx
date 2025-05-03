@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import useClickSound from "../../hooks/useClickSound";
-
+import useFTUEStore from "../../stores/ftueStore";
+import { current } from "immer";
 const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
@@ -14,22 +15,26 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
 
   const handleClickSound = useClickSound();
 
+  const { currentStep, completeStep, isCompleted } = useFTUEStore();
   // Check if we're in FTUE step 1
+  // useEffect(() => {
+  //   const checkFtueStatus = () => {
+  //     const ftueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+  //     const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+
+  //     setInFtue(ftueStep === 1 && !ftueCompleted);
+  //   };
+
+  //   checkFtueStatus();
+
+  //   window.addEventListener("storage", checkFtueStatus);
+  //   return () => {
+  //     window.removeEventListener("storage", checkFtueStatus);
+  //   };
+  // }, []);
   useEffect(() => {
-    const checkFtueStatus = () => {
-      const ftueStep = parseInt(localStorage.getItem("ftueStep") || "1");
-      const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
-
-      setInFtue(ftueStep === 1 && !ftueCompleted);
-    };
-
-    checkFtueStatus();
-
-    window.addEventListener("storage", checkFtueStatus);
-    return () => {
-      window.removeEventListener("storage", checkFtueStatus);
-    };
-  }, []);
+    setInFtue(currentStep === 1 && !isCompleted);
+  }, [currentStep, isCompleted]);
 
   const footerZIndex = inFtue ? 61 : 10;
   const handZIndex = inFtue ? 62 : 11;
@@ -85,7 +90,9 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             onClick={() => {
               handleClickSound();
               clearFooterGlow();
-              localStorage.setItem("ftueStep", "2");
+              if (currentStep === 1) {
+                completeStep(currentStep);
+              }
             }}
             className="absolute inset-0 w-full h-full"
           ></Link>

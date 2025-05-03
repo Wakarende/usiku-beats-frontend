@@ -18,7 +18,10 @@ const useFTUEStore = create(
       footerGlowCleared: false, // Whether footer glow has been cleared
 
       // Actions
-      setCurrentStep: (step) => set({ currentStep: step }),
+      setCurrentStep: (step) => {
+        console.log("Setting current step to:", step);
+        set({ currentStep: step });
+      },
 
       completeStep: (step) =>
         set((state) => ({

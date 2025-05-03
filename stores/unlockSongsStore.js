@@ -45,19 +45,17 @@ const useUnlockSongsStore = create(
           },
         })),
 
-      // Helper to check if a song is unlocked in the UI state
+      // Helper methods
       isSongUnlocked: (songId) => {
         const { unlockedState } = get();
         return unlockedState[songId] || false;
       },
 
-      // Helper to check if particles should be shown
       shouldShowParticles: (songId) => {
         const { particleTrigger } = get();
         return particleTrigger[songId] || false;
       },
 
-      // Reset all unlocked states
       resetAllUnlockedStates: () => set({ unlockedState: {}, particleTrigger: {} }),
     }),
     {

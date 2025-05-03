@@ -16,7 +16,9 @@ import { OverlayCard } from "../components/artistinfo/OverlayCard";
 import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
-import "./pages.css";
+import useFTUEStore from "../stores/ftueStore";
+import ZustandDebug from "../components/zustandDebug";
+("./pages.css");
 
 const isSongInQueue = (songInstance) => {
   if (!songInstance) return false;
@@ -40,32 +42,26 @@ const Library = () => {
   });
 
   const [isFtue, setIsFtue] = useState(false);
-  const [showFtuePanel, setShowFtuePanel] = useState(false); //
+  // const [showFtuePanel, setShowFtuePanel] = useState(false); //
 
-  const [ftueStep, setFtueStep] = useState(0);
+  // const [ftueStep, setFtueStep] = useState(0);
   const [showLibraryFtuePanel, setShowLibraryFtuePanel] = useState(false);
 
   //Debugging
-  useEffect(() => {
-    console.log("FTUE Step:", ftueStep);
-    console.log("Is FTUE:", isFtue);
-    console.log("Show Library FTUE Panel:", showLibraryFtuePanel);
-  }, [ftueStep, isFtue, showLibraryFtuePanel]);
+  // useEffect(() => {
+  //   console.log("FTUE Step:", ftueStep);
+  //   console.log("Is FTUE:", isFtue);
+  //   console.log("Show Library FTUE Panel:", showLibraryFtuePanel);
+  // }, [ftueStep, isFtue, showLibraryFtuePanel]);
 
-  useEffect(() => {
-    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
-
-    setFtueStep(storedStep);
-
-    if (storedStep === 2) {
-      setShowLibraryFtuePanel(true);
-      setIsFtue(true);
-    } else if (ftueCompleted) {
-      setIsFtue(false);
-      setShowFtuePanel(false);
-    }
-  }, []);
+  const {
+    currentStep,
+    isCompleted,
+    libraryTutorialSeen,
+    setCurrentStep,
+    setLibraryTutorialSeen,
+    completeStep,
+  } = useFTUEStore();
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -73,6 +69,31 @@ const Library = () => {
   const router = useRouter();
 
   const gemsRequiredToUnlockSong = 20;
+
+  // useEffect(() => {
+  //   const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+  //   const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+
+  //   setFtueStep(storedStep);
+
+  //   if (storedStep === 2) {
+  //     setShowLibraryFtuePanel(true);
+  //     setIsFtue(true);
+  //   } else if (ftueCompleted) {
+  //     setIsFtue(false);
+  //     setShowFtuePanel(false);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    if (currentStep === 2) {
+      setShowLibraryFtuePanel(true);
+      setIsFtue(true);
+    } else if (isCompleted) {
+      setIsFtue(false);
+      setShowLibraryFtuePanel(false);
+    }
+  }, [currentStep, isCompleted]);
 
   const unlockSongWithGems = (song) => {
     let newUserdata = JSON.parse(JSON.stringify(user_data));
@@ -109,12 +130,14 @@ const Library = () => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
-    const libraryTutorialSeen = localStorage.getItem("libraryTutorialSeen");
-    const ftueCompleted = localStorage.getItem("ftueCompleted");
-    if (ftueParam === "true" && ftueCompleted !== "true" && !libraryTutorialSeen) {
+    // const libraryTutorialSeen = localStorage.getItem("libraryTutorialSeen");
+    // const ftueCompleted = localStorage.getItem("ftueCompleted");
+    if (ftueParam === "true" && !isCompleted && !libraryTutorialSeen) {
       setIsFtue(true);
-      setShowFtuePanel(true);
-      localStorage.setItem("libraryTutorialSeen", "true");
+      setShowLibraryFtuePanel(true);
+      setLibraryTutorialSeen(true);
+      // setShowFtuePanel(true);
+      // localStorage.setItem("libraryTutorialSeen", "true");
     }
 
     const songIds = [149, 150, 151, 152, 153, 154];
@@ -139,18 +162,18 @@ const Library = () => {
     if (song.isUnlocked) return;
 
     setUnlockedSong(song);
-    if (ftueStep === 2) {
-      localStorage.setItem("ftueStep", "3");
-      setFtueStep(3);
+    if (currentStep === 2) {
+      // setCurrentStep(3);
+      completeStep(currentStep);
     }
     setIsPopupOpen(true);
 
     let unlockTime = null;
     let unlockedFlag = false;
 
-    const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
+    // const ftueCompleted = localStorage.getItem("ftueCompleted") === "true";
 
-    if (!ftueCompleted && ftueStep <= 5) {
+    if (!isCompleted && currentStep <= 5) {
       unlockTime = moment().add(15, "minutes").toISOString();
     } else {
       const unlockedSongsCount = user_data.profile.player.player_song_instances.filter(
@@ -204,8 +227,9 @@ const Library = () => {
     setIsPopupOpen(false);
 
     if (isFtue) {
-      if (ftueStep === 3) {
-        localStorage.setItem("ftueStep", "4");
+      if (currentStep === 3) {
+        // setCurrentStep(4);
+        completeStep(currentStep);
       }
       router.push("/hub?ftueGameplayCompleted=true");
     } else {
@@ -337,11 +361,7 @@ const Library = () => {
                       <div
                         className={`
                         relative flex justify-center items-center mt-3 cursor-pointer overflow-visible z-10
-                        ${
-                          ftueStep === 2 && localStorage.getItem("ftueCompleted") !== "true"
-                            ? "ftue-lib-highlight-frame"
-                            : ""
-                        }
+                        ${currentStep === 2 && !isCompleted ? "ftue-lib-highlight-frame" : ""}
                         ${!unlockable ? "pointer-events-none opacity-50" : ""}
                         `}
                         onClick={() => unlockable && handleSongUnlock(song)}
@@ -358,7 +378,7 @@ const Library = () => {
                             30
                           </span>
                         </div>
-                        {ftueStep === 2 && localStorage.getItem("ftueCompleted") !== "true" && (
+                        {currentStep === 2 && !isCompleted && (
                           <div className="absolute top-[50px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
                             <Image
                               src="/assets/img/ftue/hand icon.png"
@@ -420,9 +440,7 @@ const Library = () => {
           </div>
           <div
             className={`relative p-2 mt-4 ${
-              ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true"
-                ? "ftue-continue-highlight-frame"
-                : ""
+              currentStep === 3 && !isCompleted ? "ftue-continue-highlight-frame" : ""
             }`}
           >
             <button
@@ -439,7 +457,7 @@ const Library = () => {
               />
               {/* Bouncing hand for step 3 */}
             </button>
-            {ftueStep === 3 && localStorage.getItem("ftueCompleted") !== "true" && (
+            {currentStep === 3 && !isCompleted && (
               <div className="absolute bottom-[20px] right-[-70px] animate-bounce z-[10000] pointer-events-none">
                 <Image
                   src="/assets/img/ftue/hand icon.png"
@@ -453,24 +471,22 @@ const Library = () => {
           </div>
         </Popup>
       </div>
-      {ftueStep === 2 &&
-        showLibraryFtuePanel &&
-        localStorage.getItem("ftueCompleted") !== "true" && (
-          <InfoPanel
-            onClose={() => setShowLibraryFtuePanel(false)}
-            paragraphs={[
-              <div key="wrapper">
-                <p className="md:text-lg sm:text-sm">
-                  This is the <span className="font-bold">Song Library</span>, where you get new
-                  songs for your collection. Scroll the list and tap on the one you want for your
-                  first song. Watch out... some are harder than others!
-                </p>
-              </div>,
-            ]}
-            bottomPosition={true}
-            transparentBg={true}
-          />
-        )}
+      {currentStep === 2 && showLibraryFtuePanel && !isCompleted && (
+        <InfoPanel
+          onClose={() => setShowLibraryFtuePanel(false)}
+          paragraphs={[
+            <div key="wrapper">
+              <p className="md:text-lg sm:text-sm">
+                This is the <span className="font-bold">Song Library</span>, where you get new songs
+                for your collection. Scroll the list and tap on the one you want for your first
+                song. Watch out... some are harder than others!
+              </p>
+            </div>,
+          ]}
+          bottomPosition={true}
+          transparentBg={true}
+        />
+      )}
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-10">
         {isFtue && !hasUnlockedSong ? (
           <Image
@@ -512,6 +528,7 @@ const Library = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
+      <ZustandDebug />
     </div>
   );
 };

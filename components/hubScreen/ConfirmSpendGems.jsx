@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import "../styles.css";
+import useFTUEStore from "../../stores/ftueStore";
 
 const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) => {
-  const [ftueStep, setFtueStep] = useState(0);
+  // const [ftueStep, setFtueStep] = useState(0);
 
-  useEffect(() => {
-    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    setFtueStep(storedStep);
-  }, []);
+  // useEffect(() => {
+  //   const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+  //   setFtueStep(storedStep);
+  // }, []);
+
+  const { currentStep, isCompleted, setCurrentStep, completeStep } = useFTUEStore();
 
   const handleConfirm = () => {
-    if (ftueStep === 4) {
-      localStorage.setItem("ftueStep", "5");
-    }
+    // if (currentStep === 4) {
+    //   setCurrentStep(5);
+    // }
+    // completeStep(currentStep);
     onConfirm();
   };
 
@@ -58,9 +62,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
         <div className="flex justify-center gap-4 pb-4">
           <div
             className={`relative ${
-              ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"
-                ? "ftue-gems-highlight-frame"
-                : ""
+              currentStep === 5 && !isCompleted ? "ftue-gems-highlight-frame" : ""
             }`}
           >
             <button className="relative text-white font-bold w-24 h-20" onClick={handleConfirm}>
@@ -77,7 +79,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             </button>
             {/* Bouncing hand for FTUE step 4 */}
           </div>
-          {ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true" && (
+          {currentStep === 5 && !isCompleted && (
             <div className="absolute sm:bottom-[0rem] sm:left-[4rem] md:bottom-[-1rem] md:left-[6rem] animate-bounce z-[10000] pointer-events-none">
               <Image
                 src="/assets/img/ftue/hand icon.png"
@@ -90,27 +92,21 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
           )}
           <button
             className="relative text-white font-bold w-24 h-20"
-            onClick={
-              ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true" ? null : onCancel
-            }
-            disabled={ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"}
+            onClick={currentStep === 5 && !isCompleted ? null : onCancel}
+            disabled={currentStep === 5 && !isCompleted}
           >
             <Image
               src="/assets/img/spendgems/Right button.png"
               width={50}
               height={50}
               className={`w-24 h-20 ${
-                ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"
-                  ? "opacity-50 brightness-50"
-                  : ""
+                currentStep === 5 && !isCompleted ? "opacity-50 brightness-50" : ""
               }`}
               alt="No Button"
             />
             <span
               className={`absolute -inset-3 flex items-center justify-center text-4xl uppercase tracking-widest  ${
-                ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true"
-                  ? "opacity-50 brightness-50"
-                  : ""
+                currentStep === 5 && !isCompleted ? "opacity-50 brightness-50" : ""
               }`}
             >
               No

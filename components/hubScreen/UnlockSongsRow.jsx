@@ -7,24 +7,45 @@ import ParticleEffect from "./ParticleEffect";
 import { useRouter } from "next/router";
 import useClickSound from "../../hooks/useClickSound";
 import InfoPanel from "../infopanel/InfoPanel";
+import useFTUEStore from "../../stores/ftueStore";
+import useUnlockSongsStore from "../../stores/unlockSongsStore";
 import Image from "next/image";
 import "../styles.css";
-
-
 
 const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState(null);
-  const [unlockedState, setUnlockedState] = useState({});
-  const [particleTrigger, setParticleTrigger] = useState({});
+  // const [unlockedState, setUnlockedState] = useState({});
+  // const [particleTrigger, setParticleTrigger] = useState({});
   const [lockedSongs, setLockedSongs] = useState([]);
 
-  const [ftueStep, setFtueStep] = useState(0);
+  // const [ftueStep, setFtueStep] = useState(0);
   const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false); // Moved from HubScreen
   const [showUnlockOverlayPanel, setShowUnlockOverlayPanel] = useState(false);
   const [unlockOverlaySong, setUnlockOverlaySong] = useState(null);
+
+  const {
+    currentStep,
+    isCompleted,
+    unlockingInfoSeen,
+    addToLibrarySeen,
+    setCurrentStep,
+    completeStep,
+    setUnlockingInfoSeen,
+    setAddToLibrarySeen,
+    completeFTUE,
+  } = useFTUEStore();
+
+  const {
+    unlockedState,
+    particleTrigger,
+    markSongAsUnlocked,
+    resetSongUnlockedState,
+    triggerParticles,
+    resetParticles,
+  } = useUnlockSongsStore();
 
   const gemsRequiredToUnlockSong = 20;
 
@@ -33,45 +54,45 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   const router = useRouter();
 
   // Log FTUE status on render
-  useEffect(() => {
-    console.log("UnlockSongsRow rendered, FTUE status:", {
-      step: localStorage.getItem("ftueStep"),
-      completed: localStorage.getItem("ftueCompleted"),
-    });
-  }, []);
+  // useEffect(() => {
+  //   console.log("UnlockSongsRow rendered, FTUE status:", {
+  //     step: localStorage.getItem("ftueStep"),
+  //     completed: localStorage.getItem("ftueCompleted"),
+  //   });
+  // }, []);
 
   // Track FTUE step and show appropriate panels
   useEffect(() => {
-    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    setFtueStep(storedStep);
+    // const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    // setFtueStep(storedStep);
 
     // Show "Finish Now" panel for step 4 if not seen yet
-    if (storedStep === 4 && !localStorage.getItem("unlockingInfoSeen")) {
+    if (currentStep === 4 && !unlockingInfoSeen) {
       setShowUnlockingInfoPanel(true);
     }
-  }, []);
+  }, [currentStep, unlockingInfoSeen]);
 
   // Load local storage on mount
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const savedUnlocked = JSON.parse(localStorage.getItem("unlockedState")) || {};
-      const savedParticles = JSON.parse(localStorage.getItem("particleTrigger")) || {};
-      setUnlockedState(savedUnlocked);
-      setParticleTrigger(savedParticles);
-    } catch (error) {
-      console.error("Failed to load from localStorage:", error);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+  //   try {
+  //     const savedUnlocked = JSON.parse(localStorage.getItem("unlockedState")) || {};
+  //     const savedParticles = JSON.parse(localStorage.getItem("particleTrigger")) || {};
+  //     setUnlockedState(savedUnlocked);
+  //     setParticleTrigger(savedParticles);
+  //   } catch (error) {
+  //     console.error("Failed to load from localStorage:", error);
+  //   }
+  // }, []);
 
   // Save local storage whenever states change
-  useEffect(() => {
-    localStorage.setItem("unlockedState", JSON.stringify(unlockedState));
-  }, [unlockedState]);
+  // useEffect(() => {
+  //   localStorage.setItem("unlockedState", JSON.stringify(unlockedState));
+  // }, [unlockedState]);
 
-  useEffect(() => {
-    localStorage.setItem("particleTrigger", JSON.stringify(particleTrigger));
-  }, [particleTrigger]);
+  // useEffect(() => {
+  //   localStorage.setItem("particleTrigger", JSON.stringify(particleTrigger));
+  // }, [particleTrigger]);
 
   // Update locked songs when user_data changes
   useEffect(() => {
@@ -120,19 +141,21 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
 
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
-    localStorage.setItem("unlockingInfoSeen", "true");
+    // localStorage.setItem("unlockingInfoSeen", "true");
 
     // Progress to step 5
-    localStorage.setItem("ftueStep", "5");
-    setFtueStep(5);
+    // localStorage.setItem("ftueStep", "5");
+    setUnlockingInfoSeen(true);
+    // setCurrentStep(5);
+    // completeStep(currentStep);
   };
 
   function addToLibrary(song) {
     console.log("Add to library clicked for song:", song.id);
 
     // Get current FTUE step
-    const currentFtueStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    console.log("Current FTUE step before update:", currentFtueStep);
+    // const currentFtueStep = parseInt(localStorage.getItem("ftueStep") || "1");
+    // console.log("Current FTUE step before update:", currentFtueStep);
 
     // Update user data
     const newUserdata = JSON.parse(JSON.stringify(user_data));
@@ -150,19 +173,24 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     }
 
     // Reset UI states
-    setUnlockedState((prev) => {
-      const newState = { ...prev, [song.id]: false };
-      localStorage.setItem("unlockedState", JSON.stringify(newState));
-      return newState;
-    });
-    setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
+    // setUnlockedState((prev) => {
+    //   const newState = { ...prev, [song.id]: false };
+    //   localStorage.setItem("unlockedState", JSON.stringify(newState));
+    //   return newState;
+    // });
+    // setParticleTrigger((prev) => ({ ...prev, [song.id]: false }));
 
-    if (currentFtueStep === 5 && localStorage.getItem("ftueCompleted") !== "true") {
+    resetSongUnlockedState(song.id);
+    resetParticles(song.id);
+
+    if (currentStep === 6 && !isCompleted) {
       console.log("FTUE progressing from step 5 to 6");
 
-      localStorage.setItem("addToLibraryCompleted", "true");
-      localStorage.setItem("ftueStep", "6");
-      setFtueStep(6);
+      // localStorage.setItem("addToLibraryCompleted", "true");
+      setAddToLibrarySeen(true);
+      // localStorage.setItem("ftueStep", "6");
+      // setCurrentStep(6);
+      completeStep(currentStep);
 
       if (showUnlockOverlayPanel) {
         setShowUnlockOverlayPanel(false);
@@ -185,6 +213,10 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
 
   function handleUnlockNowClick(song) {
     setShowUnlockingInfoPanel(false);
+
+    if (currentStep === 4 && !isCompleted) {
+      completeStep(currentStep);
+    }
 
     if (user_data.profile.player.total_gems < gemsRequiredToUnlockSong) {
       setPopupMessage("You don't have enough gems to unlock this song right now.");
@@ -219,20 +251,24 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       songInstance.unlock_time = new Date().toISOString();
       dispatch(updateUser(newUserdata));
 
-      setUnlockedState((prev) => {
-        const newState = { ...prev, [songId]: true };
-        localStorage.setItem("unlockedState", JSON.stringify(newState));
-        return newState;
-      });
+      // setUnlockedState((prev) => {
+      //   const newState = { ...prev, [songId]: true };
+      //   localStorage.setItem("unlockedState", JSON.stringify(newState));
+      //   return newState;
+      // });
 
-      setParticleTrigger((prev) => ({
-        ...prev,
-        [songId]: true,
-      }));
+      // setParticleTrigger((prev) => ({
+      //   ...prev,
+      //   [songId]: true,
+      // }));
 
-      if (ftueStep === 4 && localStorage.getItem("ftueCompleted") !== "true") {
-        localStorage.setItem("ftueStep", "5");
-        setFtueStep(5);
+      markSongAsUnlocked(songId);
+      triggerParticles(songId);
+
+      if (currentStep === 5 && !isCompleted) {
+        // localStorage.setItem("ftueStep", "5");
+        setCurrentStep(6);
+        // completeStep(currentStep);
 
         setUnlockOverlaySong(selectedSong);
 
@@ -297,19 +333,14 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
         <div key={i} className="relative">
           <div
             className={`${
-              ftueStep === 4 && i === 0 && localStorage.getItem("ftueCompleted") !== "true"
-                ? "ftue-hub-highlight-frame"
-                : ""
+              currentStep === 4 && i === 0 && !isCompleted ? "ftue-hub-highlight-frame" : ""
             }`}
           >
             <div
               className={`flex flex-col items-center unlock-card-wrapper 
           ${unlockedState[item.song.id] ? "pulse-effect" : ""}
           ${
-            ftueStep === 5 &&
-            i === 0 &&
-            isUnlockTimePassed(item.unlock_time) &&
-            localStorage.getItem("ftueCompleted") !== "true"
+            currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted
               ? "ftue-add-library-highlight-frame"
               : ""
           }`}
@@ -350,15 +381,17 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                         <CountdownTimer
                           unlockTime={item.unlock_time}
                           onExpire={() => {
-                            setUnlockedState((prev) => {
-                              const newState = { ...prev, [item.song.id]: true };
-                              localStorage.setItem("unlockedState", JSON.stringify(newState));
-                              return newState;
-                            });
-                            setParticleTrigger((prev) => ({
-                              ...prev,
-                              [item.song.id]: true,
-                            }));
+                            // setUnlockedState((prev) => {
+                            //   const newState = { ...prev, [item.song.id]: true };
+                            //   localStorage.setItem("unlockedState", JSON.stringify(newState));
+                            //   return newState;
+                            // });
+                            // setParticleTrigger((prev) => ({
+                            //   ...prev,
+                            //   [item.song.id]: true,
+                            // }));
+                            markSongAsUnlocked(item.song.id);
+                            triggerParticles(item.song.id);
                           }}
                         />
                       )}
@@ -435,32 +468,26 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                 <ParticleEffect
                   active={true}
                   onComplete={() => {
-                    setParticleTrigger((prev) => ({
-                      ...prev,
-                      [item.song.id]: false,
-                    }));
+                    resetParticles(item.song.id);
                   }}
                 />
               )}
             </div>
           </div>
           {/* Hand pointer for step 5 */}
-          {ftueStep === 5 &&
-            i === 0 &&
-            isUnlockTimePassed(item.unlock_time) &&
-            localStorage.getItem("ftueCompleted") !== "true" && (
-              <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
-                <Image
-                  src="/assets/img/ftue/hand icon.png"
-                  width={80}
-                  height={80}
-                  alt="Hand pointing to Add to Library"
-                  className="w-20 h-20 object-contain transform"
-                />
-              </div>
-            )}
+          {currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted && (
+            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
+              <Image
+                src="/assets/img/ftue/hand icon.png"
+                width={80}
+                height={80}
+                alt="Hand pointing to Add to Library"
+                className="w-20 h-20 object-contain transform"
+              />
+            </div>
+          )}
           {/* Hand pointer for step 4 */}
-          {ftueStep === 4 && i === 0 && localStorage.getItem("ftueCompleted") !== "true" && (
+          {currentStep === 4 && i === 0 && !isCompleted && (
             <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
                 src="/assets/img/ftue/hand icon.png"
@@ -516,7 +543,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       />
 
       {/* "Finish Now" overlay panel (moved from HubScreen) */}
-      {showUnlockingInfoPanel && localStorage.getItem("ftueCompleted") !== "true" && (
+      {showUnlockingInfoPanel && !isCompleted && (
         <InfoPanel
           onClose={closeUnlockingInfoPanel}
           paragraphs={[

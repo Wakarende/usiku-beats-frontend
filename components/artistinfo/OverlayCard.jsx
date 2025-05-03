@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-
+import useFTUEStore from "../../stores/ftueStore";
 import "../styles.css";
 
 const getStarsFromScore = (score) => {
@@ -78,30 +78,27 @@ const ArtistImage = ({
   isPulsing,
   isHighlightedForFtue = false,
 }) => {
-  const [ftueStep, setFtueStep] = useState(0);
+  const { currentStep, isCompleted, completeFTUE } = useFTUEStore();
 
   useEffect(() => {
-    const storedStep = parseInt(localStorage.getItem("ftueStep") || "1");
-    const isFtueCompleted = localStorage.getItem("ftueCompleted") === "true";
-    setFtueStep(storedStep);
-
-    if (isFtueCompleted && isHighlightedForFtue) {
+    if (isCompleted && isHighlightedForFtue) {
       console.log("HIGHLIGHT ACTIVE for song:", song.id, song.song_name);
     }
-  }, [isHighlightedForFtue, song]);
+  }, [isHighlightedForFtue, song, isCompleted]);
 
   const starCount = getStarsFromScore(song.high_score);
 
   const handlePlay = () => {
     console.log("Play button clicked, FTUE status:", {
       isHighlightedForFtue,
-      ftueStep,
-      ftueCompleted: localStorage.getItem("ftueCompleted"),
+      currentStep,
+      isCompleted,
     });
 
-    if (ftueStep === 6 || isHighlightedForFtue) {
+    if (currentStep === 7 || isHighlightedForFtue) {
       // console.log("COMPLETING FTUE!");
-      localStorage.setItem("ftueCompleted", "true");
+      // localStorage.setItem("ftueCompleted", "true");
+      completeFTUE();
       localStorage.setItem("playSongPanelSeen", "true");
     }
 
@@ -113,13 +110,7 @@ const ArtistImage = ({
     }
   }, [isHighlightedForFtue, song]);
   return (
-    <div
-      className={`   ${
-        isHighlightedForFtue && localStorage.getItem("ftueCompleted") !== "true"
-          ? "ftue-song-highlight-frame"
-          : ""
-      }`}
-    >
+    <div className={`${isHighlightedForFtue && !isCompleted ? "ftue-song-highlight-frame" : ""}`}>
       <div
         className={`shrink-0  sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
       >
@@ -214,7 +205,7 @@ const ArtistImage = ({
           </div>
         </div>
       </div>
-      {isHighlightedForFtue && localStorage.getItem("ftueCompleted") !== "true" && (
+      {isHighlightedForFtue && !isCompleted && (
         <div className="absolute bottom-[-10px] right-[-90px] animate-bounce pointer-events-none z-[100]">
           <Image
             src="/assets/img/ftue/hand icon.png"
