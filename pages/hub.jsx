@@ -16,40 +16,41 @@ import LibraryFooter from "../components/footer/Footer";
 import UnlockSongsRow from "../components/hubScreen/UnlockSongsRow";
 import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import InfoPanel from "../components/infopanel/InfoPanel";
-
+import useFtueStore from "../stores/ftueStore";
+import useUnlockSongsStore from "../stores/unlockSongsStore";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
 import "./pages.css";
 
 // Helper function to safely access localStorage
-const getLocalStorage = (key, defaultValue) => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem(key) || defaultValue;
-  }
-  return defaultValue;
-};
+// const getLocalStorage = (key, defaultValue) => {
+//   if (typeof window !== "undefined") {
+//     return localStorage.getItem(key) || defaultValue;
+//   }
+//   return defaultValue;
+// };
 
 // Helper function to safely set localStorage
-const setLocalStorage = (key, value) => {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(key, value);
-  }
-};
+// const setLocalStorage = (key, value) => {
+//   if (typeof window !== "undefined") {
+//     localStorage.setItem(key, value);
+//   }
+// };
 
 // Helper function to safely access sessionStorage
-const getSessionStorage = (key, defaultValue) => {
-  if (typeof window !== "undefined") {
-    return sessionStorage.getItem(key) || defaultValue;
-  }
-  return defaultValue;
-};
+// const getSessionStorage = (key, defaultValue) => {
+//   if (typeof window !== "undefined") {
+//     return sessionStorage.getItem(key) || defaultValue;
+//   }
+//   return defaultValue;
+// };
 
 // Helper function to safely set sessionStorage
-const setSessionStorage = (key, value) => {
-  if (typeof window !== "undefined") {
-    sessionStorage.setItem(key, value);
-  }
-};
+// const setSessionStorage = (key, value) => {
+//   if (typeof window !== "undefined") {
+//     sessionStorage.setItem(key, value);
+//   }
+// };
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -81,56 +82,112 @@ const HubScreen = () => {
   const { fadeOutBgMusic, playBoom } = useAudio();
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
-  const [ftueStep, setFtueStep] = useState(0);
+  // const [ftueStep, setFtueStep] = useState(0);
   const [showUnlockingInfoPanel, setShowUnlockingInfoPanel] = useState(false);
   const [showAddToLibraryPanel, setShowAddToLibraryPanel] = useState(false);
   const [showPlaySongPanel, setShowPlaySongPanel] = useState(false);
   const [highlightedSongId, setHighlightedSongId] = useState(null);
 
+  //Zustand FTUE STATE
+  const {
+    currentStep,
+    isCompleted,
+    hubTutorialSeen,
+    unlockingInfoSeen,
+    addToLibrarySeen,
+    footerGlowCleared,
+    setCurrentStep,
+    setHubTutorialSeen,
+    setUnlockingInfoSeen,
+    setAddToLibrarySeen,
+    setFooterGlowCleared,
+    completeStep,
+    completeFTUE,
+  } = useFTUEStore();
+
   // Client-side only code
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+
+  //   console.log("FTUE Debug Log:");
+  //   console.log("Current FTUE Step:", ftueStep);
+  //   console.log("Highlighted Song ID:", highlightedSongId);
+  //   console.log("Show Play Song Panel:", showPlaySongPanel);
+  //   console.log(
+  //     "All Songs:",
+  //     songs.map((s) => ({ id: s.id, name: s.song_name }))
+  //   );
+  //   console.log("FTUE Completed:", getLocalStorage("ftueCompleted", "false") === "true");
+  // }, [ftueStep, highlightedSongId, showPlaySongPanel, songs]);
+
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+
+  //   const storedStep = parseInt(getLocalStorage("ftueStep", "1"));
+  //   setFtueStep(storedStep);
+  //   if (storedStep === 4 && !getLocalStorage("unlockingInfoSeen", "")) {
+  //     setShowUnlockingInfoPanel(true);
+  //   } else {
+  //     setShowUnlockingInfoPanel(false);
+  //   }
+
+  //   if (storedStep === 5 && !getLocalStorage("addToLibrarySeen", "")) {
+  //     setShowAddToLibraryPanel(true);
+  //   } else {
+  //     setShowAddToLibraryPanel(false);
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    console.log("FTUE Debug Log:");
-    console.log("Current FTUE Step:", ftueStep);
-    console.log("Highlighted Song ID:", highlightedSongId);
-    console.log("Show Play Song Panel:", showPlaySongPanel);
-    console.log(
-      "All Songs:",
-      songs.map((s) => ({ id: s.id, name: s.song_name }))
-    );
-    console.log("FTUE Completed:", getLocalStorage("ftueCompleted", "false") === "true");
-  }, [ftueStep, highlightedSongId, showPlaySongPanel, songs]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const storedStep = parseInt(getLocalStorage("ftueStep", "1"));
-    setFtueStep(storedStep);
-    if (storedStep === 4 && !getLocalStorage("unlockingInfoSeen", "")) {
+    // Set appropriate panels based on FTUE step
+    if (currentStep === 4 && !unlockingInfoSeen) {
       setShowUnlockingInfoPanel(true);
     } else {
       setShowUnlockingInfoPanel(false);
     }
 
-    if (storedStep === 5 && !getLocalStorage("addToLibrarySeen", "")) {
+    if (currentStep === 5 && !addToLibrarySeen) {
       setShowAddToLibraryPanel(true);
     } else {
       setShowAddToLibraryPanel(false);
     }
-  }, []);
+  }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
+
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+
+  //   const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
+  //   const isCompleted = getLocalStorage("ftueCompleted", "false") === "true";
+
+  //   if (currentStep === 6 && !isCompleted) {
+  //     console.log("FORCING STEP 6 HIGHLIGHTING");
+
+  //     setShowPlaySongPanel(true);
+
+  //     // Find the latest song to highlight
+  //     if (songs && songs.length > 0) {
+  //       const latestSong = songs[0];
+  //       setHighlightedSongId(latestSong.id);
+  //     }
+  //   } else if (isCompleted) {
+  //     setShowPlaySongPanel(false);
+  //     setHighlightedSongId(null);
+
+  //     if (showPlaySongPanel || highlightedSongId !== null) {
+  //       console.log("CLEANUP: Removing FTUE elements after completion");
+  //       setShowPlaySongPanel(false);
+  //       setHighlightedSongId(null);
+  //     }
+  //   }
+  // }, [ftueStep, songs]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
-    const isCompleted = getLocalStorage("ftueCompleted", "false") === "true";
-
     if (currentStep === 6 && !isCompleted) {
-      console.log("FORCING STEP 6 HIGHLIGHTING");
-
       setShowPlaySongPanel(true);
-
       // Find the latest song to highlight
       if (songs && songs.length > 0) {
         const latestSong = songs[0];
@@ -139,14 +196,8 @@ const HubScreen = () => {
     } else if (isCompleted) {
       setShowPlaySongPanel(false);
       setHighlightedSongId(null);
-
-      if (showPlaySongPanel || highlightedSongId !== null) {
-        console.log("CLEANUP: Removing FTUE elements after completion");
-        setShowPlaySongPanel(false);
-        setHighlightedSongId(null);
-      }
     }
-  }, [ftueStep, songs]);
+  }, [currentStep, songs, isCompleted]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -168,7 +219,7 @@ const HubScreen = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    if (ftueStep === 6 && getLocalStorage("ftueCompleted", "false") !== "true") {
+    if (currentStep === 6 && !isCompleted) {
       console.log("FTUE Step 6 active, highlight song:", highlightedSongId);
       console.log(
         "Songs available:",
@@ -177,7 +228,7 @@ const HubScreen = () => {
       const matchingSong = songs.find((s) => s.id === highlightedSongId);
       console.log("Matching song found:", matchingSong ? true : false);
     }
-  }, [ftueStep, highlightedSongId, songs]);
+  }, [currentStep, highlightedSongId, songs]);
 
   const checkFirstLoginOfDay = () => {
     if (typeof window === "undefined") return;
@@ -240,7 +291,7 @@ const HubScreen = () => {
       setSongs(sortedSongs || []);
 
       if (typeof window !== "undefined") {
-        const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
+        // const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
         if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
           console.log("Setting highlighted song in checkAnonUser");
           setHighlightedSongId(sortedSongs[0].id);
@@ -255,63 +306,86 @@ const HubScreen = () => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
-    const ftueCompleted = getLocalStorage("ftueCompleted", "");
-    const hubTutorialSeen = getLocalStorage("hubTutorialSeen", "");
-    const footerGlowCleared = getLocalStorage("footerGlowCleared", "");
+    // const ftueCompleted = getLocalStorage("ftueCompleted", "");
+    // const hubTutorialSeen = getLocalStorage("hubTutorialSeen", "");
+    // const footerGlowCleared = getLocalStorage("footerGlowCleared", "");
 
-    if (ftueParam === "true" && ftueCompleted !== "true" && !hubTutorialSeen) {
+    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen) {
       setShowFtuePanel(true);
+      setHubTutorialSeen(true);
 
-      setLocalStorage("hubTutorialSeen", "true");
+      // setLocalStorage("hubTutorialSeen", "true");
     }
 
     if (!footerGlowCleared) {
       setFooterGlowActive(true);
     }
-  }, []);
+  }, [isCompleted, hubTutorialSeen, footerGlowCleared]);
+
+  // const closeUnlockingInfoPanel = () => {
+  //   setShowUnlockingInfoPanel(false);
+  //   setLocalStorage("unlockingInfoSeen", "true");
+
+  //   setLocalStorage("ftueStep", "5");
+  //   setFtueStep(5);
+  // };
 
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
-    setLocalStorage("unlockingInfoSeen", "true");
-
-    setLocalStorage("ftueStep", "5");
-    setFtueStep(5);
+    setUnlockingInfoSeen(true);
+    setCurrentStep(5);
   };
+
+  // const closeAddToLibraryPanel = () => {
+  //   setShowAddToLibraryPanel(false);
+  //   setLocalStorage("addToLibrarySeen", "true");
+
+  //   setLocalStorage("ftueStep", "6");
+  //   setFtueStep(6);
+  // };
 
   const closeAddToLibraryPanel = () => {
     setShowAddToLibraryPanel(false);
-    setLocalStorage("addToLibrarySeen", "true");
-
-    setLocalStorage("ftueStep", "6");
-    setFtueStep(6);
+    setAddToLibrarySeen(true);
+    setCurrentStep(6);
   };
 
-  const closePlaySongPanel = () => {
-    console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
+  // const closePlaySongPanel = () => {
+  //   console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
 
+  //   setShowPlaySongPanel(false);
+  //   if (ftueStep === 6) {
+  //     console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
+  //     setLocalStorage("ftueCompleted", "true");
+  //     setHighlightedSongId(null);
+  //   }
+  // };
+
+  const closePlaySongPanel = () => {
     setShowPlaySongPanel(false);
-    if (ftueStep === 6) {
-      console.log("COMPLETING FTUE FROM OVERLAY DISMISSAL");
-      setLocalStorage("ftueCompleted", "true");
+    if (currentStep === 6) {
+      completeFTUE();
       setHighlightedSongId(null);
     }
   };
 
   const clearFooterGlow = () => {
     setFooterGlowActive(false);
-    setLocalStorage("footerGlowCleared", "true");
+    setFooterGlowCleared(true);
   };
 
   const closeFtuePanel = () => {
     setShowFtuePanel(false);
 
-    if (typeof window !== "undefined") {
-      const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
-      if (currentStep === 3) {
-        setLocalStorage("ftueStep", "4");
-        setFtueStep(4);
-      }
+    if (currentStep === 3) {
+      // setLocalStorage("ftueStep", "4");
+      setCurrentStep(4);
     }
+
+    // if (typeof window !== "undefined") {
+    //   const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
+
+    // }
 
     const currentQuery = { ...router.query };
     delete currentQuery.ftueGameplayCompleted;
@@ -342,7 +416,7 @@ const HubScreen = () => {
     console.log("MANUALLY TRIGGERING STEP 6 SETUP");
     console.log("Song passed to callback:", song);
 
-    setFtueStep(6);
+    setCurrentStep(6);
 
     setShowPlaySongPanel(true);
 
@@ -515,9 +589,7 @@ const HubScreen = () => {
                   }}
                   isPulsing={isPulsing && index === 0}
                   isHighlightedForFtue={
-                    ftueStep === 6 &&
-                    highlightedSongId === item.id &&
-                    getLocalStorage("ftueCompleted", "") !== "true"
+                    currentStep === 6 && highlightedSongId === item.id && !isCompleted
                   }
                 />
               ))
@@ -534,8 +606,8 @@ const HubScreen = () => {
           <InfoPanel
             onClose={() => {
               closePlaySongPanel();
-              if (ftueStep === 6) {
-                setLocalStorage("ftueCompleted", "true");
+              if (currentStep === 6) {
+                completeFTUE();
               }
             }}
             bottomPosition={true}
