@@ -9,10 +9,31 @@ const useUnlockSongsStore = create(
   persist(
     (set, get) => ({
       // State
-      unlockedState: {}, // Maps songId -> boolean (whether song is unlocked)
-      particleTrigger: {}, // Maps songId -> boolean (whether to show particles)
+      unlockedState: {},
+      particleTrigger: {},
+      unlockTimes: {},
 
       // Actions
+      setUnlockTime: (songId, unlockTimeISOString) =>
+        set((state) => ({
+          unlockTimes: {
+            ...state.unlockTimes,
+            [songId]: unlockTimeISOString,
+          },
+        })),
+
+      getUnlockTime: (songId) => {
+        const { unlockTimes } = get();
+        return unlockTimes[songId] || null;
+      },
+
+      clearUnlockTime: (songId) =>
+        set((state) => {
+          const newUnlockTimes = { ...state.unlockTimes };
+          delete newUnlockTimes[songId];
+          return { unlockTimes: newUnlockTimes };
+        }),
+
       markSongAsUnlocked: (songId) =>
         set((state) => ({
           unlockedState: {
@@ -63,6 +84,7 @@ const useUnlockSongsStore = create(
       partialize: (state) => ({
         unlockedState: state.unlockedState,
         particleTrigger: state.particleTrigger,
+        unlockTimes: state.unlockTimes,
       }),
     }
   )
