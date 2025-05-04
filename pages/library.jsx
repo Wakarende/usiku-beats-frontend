@@ -157,7 +157,8 @@ const Library = () => {
       console.log(
         `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${unlockedSongsCount} previous unlocks)`
       );
-      unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
+      // unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
+      unlockTime = moment().add(2, "hours").toISOString();
     }
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));

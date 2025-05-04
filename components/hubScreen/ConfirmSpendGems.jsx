@@ -16,25 +16,44 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
     <div className="fixed inset-0 flex items-center justify-center z-[110] bg-black/80">
       <div
         style={{ backgroundImage: `url("/assets/img/dailyreward/BG.png")` }}
-        className=" p-6 rounded-lg text-center relative w-full  h-auto bg-no-repeat bg-center bg-contain"
+        className=" text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
       >
-        <p className="text-orange tracking-widest text-lg ">{selectedSong.song_name}</p>
-        <h3 className="text-[#ff6b03] tracking-widest font-semibold text-6xl mb-4">
-          {selectedSong.artist_name}
-        </h3>
-
-        {/* Song thumbnail */}
-        {selectedSong.thumbnail_file && (
+        <div className="flex flex-col gap-0 mt-4">
+          <p className="text-orange tracking-widest text-2xl font-semibold">
+            {selectedSong.song_name}
+          </p>
+          <h3 className="text-[#ff6b03] tracking-widest font-semibold text-6xl -mt-6">
+            {selectedSong.artist_name}
+          </h3>
+        </div>
+        <div className="relative flex justify-center">
           <Image
-            src={selectedSong.thumbnail_file}
-            alt="Song Thumbnail"
-            width={150}
-            height={100}
-            className="mx-auto rounded mb-3 sm:mb-1 w-[250px] h-[200px] md:w-[250px] md:h-[300px] sm::w-[100px] sm:h-[200px] "
+            alt="confirmspendgems-frame"
+            src={"/assets/img/unlock/unlocksongs_frame.png"}
+            width={300}
+            height={300}
+            className="w-[100px] h-auto sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[300px] lg:w-[300px] lg:h-[300px] xl:w-[300px] xl:h-[300px] z-10 "
           />
-        )}
+          <div className="absolute sm:top-[4.5rem] md:top-[6rem] flex items-center justify-center">
+            {selectedSong.thumbnail_file && (
+              <Image
+                src={selectedSong.thumbnail_file}
+                alt="Song Thumbnail"
+                width={150}
+                height={100}
+                className="mx-auto rounded mb-3 sm:w-[200px] sm:h-[200px]  sm:mb-1 md:w-[235px] md:h-[233px]  lg:w-[250px] lg:h-[100px] rounded-t-md"
+              />
+            )}
+          </div>
+        </div>
+        <div className="absolute  sm:bottom-[13.5rem]  md:bottom-[14.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-2xl tracking-widest text-nowrap">
+          <p className=" uppercase text-yellow">
+            Time Left:<span className="text-cyan-200">02:13:00</span>
+          </p>
+        </div>
+        {/* Song thumbnail */}
         <p className="text-orange text-3xl sm:text-md tracking-widest">Unlock this track</p>
-        <div className="flex items-center gap-2 justify-center mb-10">
+        <div className="flex items-center gap-2 justify-center ">
           <p className="text-orange text-3xl sm:text-md tracking-widest">
             instantly for <span className="text-white font-semibold">20</span>
           </p>
@@ -62,7 +81,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
                 className="w-full h-20"
                 alt="Yes Button"
               />
-              <span className="absolute -inset-7 flex items-center justify-center text-4xl tracking-widest uppercase">
+              <span className="absolute  -inset-4 flex items-center justify-center text-4xl tracking-widest uppercase">
                 Yes
               </span>
             </button>
@@ -94,7 +113,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
               alt="No Button"
             />
             <span
-              className={`absolute -inset-3 flex items-center justify-center text-4xl uppercase tracking-widest  ${
+              className={`absolute -inset-2 flex items-center justify-center text-4xl uppercase tracking-widest  ${
                 currentStep === 5 && !isCompleted ? "opacity-50 brightness-50" : ""
               }`}
             >
