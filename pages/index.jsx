@@ -177,10 +177,10 @@ export default function TitleScreen() {
           Version: {currentVersion}
         </p>
       </div>
-      <div className=" relative flex flex-col justify-between items-center h-full w-full overflow-hidden">
+      <div className="relative flex flex-col justify-between items-center h-full w-full overflow-hidden">
         {/* Logo Section */}
         <motion.div
-          className="flex flex-col justify-center relative z-10 md:w-[15rem]  sm:mt-[4vh] sm:w-[11rem] lg:w-[15rem] lg:mt-[5vh] xl:w-[20rem] xl:mt-[5vh]"
+          className="flex flex-col justify-center relative z-10 md:w-[15rem] sm:mt-[4vh] sm:w-[11rem] lg:w-[16rem]  xl:w-[20rem] "
           initial={{ y: -300, opacity: 0 }}
           animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
@@ -190,7 +190,7 @@ export default function TitleScreen() {
             width={250}
             height={200}
             alt="logo"
-            className="md:w-60 md:h-auto lg:w-80 lg:h-auto xl:w-96 xl:h-auto"
+            className=""
           />
         </motion.div>
         {/* Background Banner */}
@@ -210,7 +210,7 @@ export default function TitleScreen() {
           />
         </motion.div>
         {/* Start Button */}
-        <div className="absolute left-1/2 bottom-20 w-3/5 max-w-xs transform -translate-x-1/2">
+        <div className="absolute left-1/2 sm:bottom-20 md:bottom-20 w-3/5 max-w-xs transform -translate-x-1/2 lg:bottom-[10rem] xl:bottom-[12rem] z-10">
           <motion.div
             onClick={handleStart}
             initial={{ x: "100vw", opacity: 0 }}

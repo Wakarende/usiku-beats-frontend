@@ -30,7 +30,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
     <>
       {footerGlowActive && (
         <div
-          className="fixed bottom-[120px] right-6 animate-bounce pointer-events-none"
+          className="fixed bottom-[120px] right-6 lg:bottom-[180px] animate-bounce pointer-events-none"
           style={{ zIndex: handZIndex }}
         >
           <Image
@@ -38,7 +38,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             width={100}
             height={100}
             alt="Hand pointing to Song Library"
-            className="w-24 h-24 object-contain transform -rotate-[120deg]"
+            className="w-24 h-24 lg:w-32 lg:h-32 xl:w-32 xl:h-32 object-contain transform -rotate-[120deg]"
           />
         </div>
       )}
@@ -48,7 +48,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
         style={{ zIndex: footerZIndex }}
       >
         <div
-          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] overflow-visible`}
+          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] lg:h-[300px] overflow-visible`}
           style={{
             zIndex: footerBgZIndex,
             filter: footerGlowActive ? "drop-shadow(0 -10px 10px rgba(0, 245, 255, 0.8))" : "none",
@@ -82,10 +82,10 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             className="absolute inset-0 w-full h-full"
           ></Link>
 
-          <div className="absolute bottom-8 sm:bottom-12 md:bottom-12 right-[0rem] tracking-widest leading-tight">
+          <div className="absolute bottom-8 sm:bottom-12 md:bottom-12 lg:bottom-24 right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
             <div className="flex flex-col items-center">
               <motion.p
-                className="text-xs sm:text-xs md:text-base font-bold uppercase text-center text-white leading-tight"
+                className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white leading-tight"
                 animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
                 transition={
                   canUnlockSongs
