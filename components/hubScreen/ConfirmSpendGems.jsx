@@ -18,15 +18,15 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
         style={{ backgroundImage: `url("/assets/img/dailyreward/BG.png")` }}
         className=" text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
       >
-        <div className="flex flex-col gap-0 mt-4">
+        <div className="flex flex-col gap-0 mt-10">
           <p className="text-orange tracking-widest text-2xl font-semibold">
             {selectedSong.song_name}
           </p>
-          <h3 className="text-[#ff6b03] tracking-widest font-semibold text-6xl -mt-6">
+          <h3 className="text-[#ff6b03] tracking-widest font-semibold text-6xl ">
             {selectedSong.artist_name}
           </h3>
         </div>
-        <div className="relative flex justify-center">
+        <div className="relative flex justify-center ">
           <Image
             alt="confirmspendgems-frame"
             src={"/assets/img/unlock/unlocksongs_frame.png"}
@@ -46,25 +46,27 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             )}
           </div>
         </div>
-        <div className="absolute  sm:bottom-[13.5rem]  md:bottom-[14.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-2xl tracking-widest text-nowrap">
+        <div className="absolute  sm:bottom-[13.5rem]  md:bottom-[14.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-lg md:text-xl tracking-widest text-nowrap">
           <p className=" uppercase text-yellow">
             Time Left:<span className="text-cyan-200">02:13:00</span>
           </p>
         </div>
         {/* Song thumbnail */}
-        <p className="text-orange text-3xl sm:text-md tracking-widest">Unlock this track</p>
-        <div className="flex items-center gap-2 justify-center ">
-          <p className="text-orange text-3xl sm:text-md tracking-widest">
-            instantly for <span className="text-white font-semibold">20</span>
-          </p>
-          <span className=" inline flex items-center">
-            <Image
-              src={"/assets/img/spendgems/Gem.png"}
-              width={50}
-              height={50}
-              className="w-6 h-6"
-            />
-          </span>
+        <div className="mb-2">
+          <p className="text-orange text-2xl sm:text-md tracking-widest">Unlock this track</p>
+          <div className="flex items-center gap-2 justify-center">
+            <p className="text-orange text-2xl sm:text-md tracking-widest">
+              instantly for <span className="text-white font-semibold">20</span>
+            </p>
+            <span className=" inline flex items-center">
+              <Image
+                src={"/assets/img/spendgems/Gem.png"}
+                width={50}
+                height={50}
+                className="w-6 h-6"
+              />
+            </span>
+          </div>
         </div>
         {/* Confirm / Cancel buttons */}
         <div className="flex justify-center gap-4 pb-4">

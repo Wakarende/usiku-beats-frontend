@@ -318,10 +318,12 @@ const HubScreen = () => {
     if (song) {
       console.log("Setting highlighted song ID to:", song.id);
       setHighlightedSongId(song.id);
+      setCurrentTrackData(JSON.stringify(song));
     } else if (songs && songs.length > 0) {
       const latestSong = songs[0];
       console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
       setHighlightedSongId(latestSong.id);
+      setCurrentTrackData(JSON.stringify(latestSong));
     }
 
     checkAnonUser();
@@ -330,6 +332,7 @@ const HubScreen = () => {
   const gotoGameDetail = (track) => {
     if (typeof window === "undefined") return;
 
+    console.log("Setting current track data:", track.id, track.song_name);
     setCurrentTrackData(JSON.stringify(track));
 
     router.push("/game");
@@ -346,16 +349,16 @@ const HubScreen = () => {
       axios.get(`${BASE_URL}song-detail/${trackId}/`).then((d) => {
         let trackObject = d.data;
 
-        setLocalStorage("currentTrackData", JSON.stringify(trackObject));
+        // setLocalStorage("currentTrackData", JSON.stringify(trackObject));
+        setCurrentTrackData(JSON.stringify(trackObject));
         router.push("/game");
       });
-    }
-
-    if (trackParam) {
+    } else if (trackParam) {
       try {
         const trackObject = JSON.parse(decodeURIComponent(trackParam));
 
-        setLocalStorage("currentTrackData", JSON.stringify(trackObject));
+        // setLocalStorage("currentTrackData", JSON.stringify(trackObject));
+        setCurrentTrackData(JSON.stringify(trackObject));
         router.push("/game");
       } catch (error) {
         console.error("Error parsing track JSON:", error);
@@ -395,6 +398,7 @@ const HubScreen = () => {
     if (index === 0 && songs.length === 1) {
       setIsPulsing(false);
     }
+    setCurrentTrackData(JSON.stringify(song));
     gotoGameDetail(song);
   };
 
