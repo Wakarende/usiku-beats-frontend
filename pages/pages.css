@@ -228,6 +228,7 @@
 }
 
 /* FTUE Library */
+/* purgecss start ignore */
 .ftue-lib-highlight-frame {
     position: relative;
 }
@@ -241,20 +242,7 @@
     filter: drop-shadow(0 0 15px rgba(0, 245, 255, 0.9));
 }
 
-/* .ftue-pulse-highlight {
-    animation: pulseHighlight 2s infinite alternate;
-} */
-
-/* @keyframes pulseHighlight {
-    0% {
-        filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
-    }
-
-    100% {
-        filter: drop-shadow(0 0 20px rgba(0, 245, 255, 1.0));
-    }
-} */
-
+/* purgecss end ignore */
 
 
 .ftue-continue-highlight-frame {

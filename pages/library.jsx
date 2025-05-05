@@ -18,7 +18,7 @@ import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
 // import ZustandDebug from "../components/zustandDebug";
-("./pages.css");
+import "./pages.css";
 
 const isSongInQueue = (songInstance) => {
   if (!songInstance) return false;
