@@ -154,11 +154,11 @@ const Library = () => {
       const additionalTime = unlockedSongsCount * 50;
       const totalUnlockTime = baseTime + additionalTime;
 
-      console.log(
-        `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${unlockedSongsCount} previous unlocks)`
-      );
-      // unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
-      unlockTime = moment().add(2, "hours").toISOString();
+      // console.log(
+      //   `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${unlockedSongsCount} previous unlocks)`
+      // );
+      unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
+      // unlockTime = moment().add(30, "seconds").toISOString();
     }
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));

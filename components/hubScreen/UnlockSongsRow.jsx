@@ -90,8 +90,25 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       }
     });
 
-    if (changedUnlocked) setUnlockedState(updatedUnlocked);
-    if (changedParticles) setParticleTrigger(updatedParticles);
+    // if (changedUnlocked) setUnlockedState(updatedUnlocked);
+    // if (changedParticles) setParticleTrigger(updatedParticles);
+    if (changedUnlocked) {
+      // For each song that became unlocked, call the Zustand action
+      Object.keys(updatedUnlocked).forEach((songId) => {
+        if (updatedUnlocked[songId]) {
+          markSongAsUnlocked(songId);
+        }
+      });
+    }
+
+    if (changedParticles) {
+      // For each song that needs particles, call the Zustand action
+      Object.keys(updatedParticles).forEach((songId) => {
+        if (updatedParticles[songId]) {
+          triggerParticles(songId);
+        }
+      });
+    }
   }, [lockedSongs]);
 
   function isUnlockTimePassed(unlockTime) {
