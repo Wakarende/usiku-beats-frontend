@@ -9,6 +9,7 @@ import useClickSound from "../../hooks/useClickSound";
 import InfoPanel from "../infopanel/InfoPanel";
 import useFTUEStore from "../../stores/ftueStore";
 import useUnlockSongsStore from "../../stores/unlockSongsStore";
+import useStorageStore from "../../stores/storageStore";
 import Image from "next/image";
 import "../styles.css";
 
@@ -45,6 +46,8 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     resetParticles,
   } = useUnlockSongsStore();
 
+  // Add this near your other hooks
+  const { setCurrentTrackData } = useStorageStore();
   const gemsRequiredToUnlockSong = 20;
 
   const dispatch = useDispatch();
@@ -138,6 +141,11 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
 
       if (showUnlockOverlayPanel) {
         setShowUnlockOverlayPanel(false);
+      }
+
+      if (song) {
+        console.log("Setting currentTrackData for song:", song.id);
+        setCurrentTrackData(JSON.stringify(song));
       }
 
       if (onFtueProgressToStep6) {

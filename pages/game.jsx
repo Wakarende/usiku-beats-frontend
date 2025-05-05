@@ -3,12 +3,15 @@ import React, { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/main/authActions";
-
+import useStorageStore from "../stores/storageStore";
 const Game = () => {
   const iframeRef = useRef(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const [iframeKey, setIframeKey] = useState(Date.now());
+
+  // Get the track data from your store
+  const { currentTrackData } = useStorageStore();
 
   // Function to reset the game
   const resetGame = () => {
@@ -43,6 +46,38 @@ const Game = () => {
       delete window.resetGame;
     };
   }, [router, dispatch, resetGame]);
+
+  // In your Game.jsx file
+  useEffect(() => {
+    if (iframeRef.current && currentTrackData) {
+      // Pass data to the iframe after it loads
+      const handleIframeLoad = () => {
+        try {
+          const trackData = JSON.parse(currentTrackData);
+          console.log("Passing track data to iframe:", trackData.song_name);
+
+          // Send the data to the iframe
+          iframeRef.current.contentWindow.postMessage(
+            {
+              type: "INIT_GAME_DATA",
+              data: { track: trackData },
+            },
+            "*"
+          );
+        } catch (error) {
+          console.error("Error parsing track data:", error);
+        }
+      };
+
+      iframeRef.current.addEventListener("load", handleIframeLoad);
+
+      return () => {
+        if (iframeRef.current) {
+          iframeRef.current.removeEventListener("load", handleIframeLoad);
+        }
+      };
+    }
+  }, [currentTrackData, iframeKey]);
 
   // Get the appropriate iframe URL based on environment
   const origin = typeof window !== "undefined" ? window.location.origin : "";

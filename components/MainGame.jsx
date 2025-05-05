@@ -8,6 +8,7 @@ import ViewportCoordinatePlugin from "phaser3-rex-plugins/plugins/viewportcoordi
 import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
 import { useAudio } from "../src/context/AudioProvider";
 import { AnalyticsService } from "../services/analytics.service";
+import useFTUEStore from "../stores/ftueStore";
 
 class Boot extends Phaser.Scene {
   preload() {
@@ -31,15 +32,48 @@ class Boot extends Phaser.Scene {
 
     this.registry.set("transitionDuration", 500);
 
-    let ftueCompleted = localStorage.getItem("ftueCompleted");
-    let isFTUE = false;
-    if (!ftueCompleted || ftueCompleted != "true") {
-      isFTUE = true;
-    }
+    // let ftueCompleted = localStorage.getItem("ftueCompleted");
+    // let isFTUE = false;
+    // if (!ftueCompleted || ftueCompleted != "true") {
+    //   isFTUE = true;
+    // }
 
-    if (isFTUE) {
-      this.scene.start("PreloadJ", { track: trackData });
-    } else {
+    // if (isFTUE) {
+    //   this.scene.start("PreloadJ", { track: trackData });
+    // } else {
+    //   this.scene.start("Preload", { track: trackData });
+    // }
+    // let ftueStore;
+    try {
+      // Try to get FTUE completed state
+      let isFTUE = true; // Default to FTUE mode
+
+      // Get the ftue-storage data
+      const ftueStoreData = localStorage.getItem("ftue-storage");
+      console.log("Raw FTUE storage data:", ftueStoreData); // For debugging
+
+      if (ftueStoreData) {
+        const ftueStore = JSON.parse(ftueStoreData);
+        console.log("Parsed FTUE store:", ftueStore); // For debugging
+
+        // Check different possible locations of the isCompleted flag
+        if (ftueStore.state && ftueStore.state.isCompleted === true) {
+          isFTUE = false;
+        } else if (ftueStore.isCompleted === true) {
+          isFTUE = false;
+        }
+
+        console.log("FTUE mode:", isFTUE ? "Tutorial" : "Normal"); // For debugging
+      }
+
+      if (isFTUE) {
+        this.scene.start("PreloadJ", { track: trackData });
+      } else {
+        this.scene.start("Preload", { track: trackData });
+      }
+    } catch (error) {
+      console.error("Error checking FTUE state:", error);
+      // Fallback to normal preload if there's an error
       this.scene.start("Preload", { track: trackData });
     }
   }
@@ -53,6 +87,19 @@ const PhaserGame = () => {
   const dispatch = useDispatch();
   const { stopBgMusic } = useAudio();
   stopBgMusic();
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      console.log("MainGame received message:", event.data);
+      if (event.data?.type === "INIT_GAME_DATA" && event.data.data?.track) {
+        localStorage.setItem("currentTrackData", JSON.stringify(event.data.data.track));
+        console.log("Game received track data:", event.data.data.track.song_name);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const updateUserEventListener = ({ data, new_level }) => {
     // console.log(data);

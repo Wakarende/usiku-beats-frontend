@@ -20,7 +20,13 @@ const useStorageStore = create(
       setLastLoginDate: (date) => set({ lastLoginDate: date }),
       setLoginCount: (count) => set({ loginCount: count }),
       setSessionActive: (active) => set({ sessionActive: active }),
-      setCurrentTrackData: (data) => set({ currentTrackData: data }),
+      setCurrentTrackData: (data) => {
+        set({ currentTrackData: data });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("currentTrackData", data);
+          console.log("Track data saved directly to localStorage:", data);
+        }
+      },
       setPlaySongPanelSeen: (seen) => set({ playSongPanelSeen: seen }),
 
       // Helper methods
