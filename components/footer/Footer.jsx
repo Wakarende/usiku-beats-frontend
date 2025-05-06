@@ -35,8 +35,8 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
         >
           <Image
             src="/assets/img/ftue/hand icon.png"
-            width={100}
-            height={100}
+            width={1}
+            height={1}
             alt="Hand pointing to Song Library"
             className="w-24 h-24 lg:w-32 lg:h-32 xl:w-32 xl:h-32 object-contain transform -rotate-[120deg]"
           />

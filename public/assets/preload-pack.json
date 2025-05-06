@@ -76,13 +76,6 @@
                 ],
                 "type": "audio",
                 "key": "sprinkle_chime"
-            },
-            {
-                "url": [
-                    "assets/sounds/start_sfx.mp3"
-                ],
-                "type": "audio",
-                "key": "start_sfx"
             }
         ]
     },

@@ -378,7 +378,7 @@ const Library = () => {
         </div>
         {/* Popup shown after user clicks get song */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-          <div className="flex justify-start flex-col items-center">
+          <div className="flex justify-start flex-col items-center  gap-8">
             <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap">
               You've Just Chose
             </h1>
@@ -386,12 +386,12 @@ const Library = () => {
               <div className="relative flex justify-center items-center">
                 <Image
                   src={"/assets/img/library/Group_13.png"}
-                  width={320}
-                  height={380}
+                  width={1}
+                  height={1}
                   alt="popup-frame"
-                  className="rounded-lg z-1"
+                  className="rounded-lg z-1 md:w-[320px] md:h-[400px] sm:w-[320px] sm:h-[400px]"
                 />
-                <div className="absolute top-[21.8%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
+                <div className="absolute top-[20%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
                   <Image
                     src={unlockedSong?.thumbnail_file}
                     alt="Artist Image"
@@ -409,7 +409,7 @@ const Library = () => {
             </div>
           </div>
           <div
-            className={`relative p-2 mt-4 ${
+            className={`relative flex justify-center items-center  ${
               currentStep === 3 && !isCompleted ? "ftue-continue-highlight-frame" : ""
             }`}
           >
@@ -420,19 +420,23 @@ const Library = () => {
               className="button-image-container"
             >
               <Image
-                src={"/assets/img/library/Continue_button copy.png"}
-                width={150}
-                height={100}
+                src={"/assets/img/hub/Button blank.png"}
+                width={1}
+                height={1}
                 alt="continue-btn"
+                className="w-[200px]"
               />
+              <span className="text-white absolute inset-4 font-bold uppercase text-xl tracking-widest">
+                Continue
+              </span>
               {/* Bouncing hand for step 3 */}
             </button>
             {currentStep === 3 && !isCompleted && (
               <div className="absolute bottom-[20px] right-[-70px] animate-bounce z-[10000] pointer-events-none">
                 <Image
                   src="/assets/img/ftue/hand icon.png"
-                  width={80}
-                  height={80}
+                  width={1}
+                  height={1}
                   alt="Hand pointing to continue"
                   className="w-20 h-20 object-contain -rotate-[120deg]"
                 />

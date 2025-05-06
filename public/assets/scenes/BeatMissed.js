@@ -304,7 +304,7 @@ class BeatMissed extends Phaser.Scene {
     const currentSong = levelScene.songItem || "unknown";
 
     // Track resource use in analytics, tied to the specific song
-    this.analytics.trackResourceUse("Gems", amount, "continue-" + currentSong);
+    this.analytics.trackResourceUse("Gems", amount, "continue", currentSong);
 
     this.continueCount++; // Increment the continue count
   }

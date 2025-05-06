@@ -1,404 +1,410 @@
 {
-  "section1": {
-    "files": [
-      {
-        "url": "assets/animations.json",
-        "type": "animation",
-        "key": "animations"
-      },
-      {
-        "url": "assets/sprites/playscene/Bar.png",
-        "type": "image",
-        "key": "Bar"
-      },
-      {
-        "url": "assets/sprites/playscene/rythm_line.png",
-        "type": "image",
-        "key": "rythm_line"
-      },
-
-      {
-        "url": ["assets/sounds/Beat2.mp3"],
-        "type": "audio",
-        "key": "Beat2"
-      },
-      {
-        "url": "assets/scenes/BeatMissed.js",
-        "type": "sceneFile",
-        "key": "BeatMissed"
-      },
-      {
-        "url": "assets/scenes/BeatMissedHeld.js",
-        "type": "sceneFile",
-        "key": "BeatMissedHeld"
-      },
-      {
-        "url": "assets/scenes/BeatMissedSwipe.js",
-        "type": "sceneFile",
-        "key": "BeatMissedSwipe"
-      },
-      {
-        "url": "assets/scenes/BeatMissedTap.js",
-        "type": "sceneFile",
-        "key": "BeatMissedTap"
-      },
-      {
-        "url": "assets/sprites/playscene/BG.png",
-        "type": "image",
-        "key": "BG_1"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/bm_BG.png",
-        "type": "image",
-        "key": "bm_BG"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/bm_continue.png",
-        "type": "image",
-        "key": "bm_continue"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Bottom banner.png",
-        "type": "image",
-        "key": "Bottom banner"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Choose song button.png",
-        "type": "image",
-        "key": "Choose song button"
-      },
-      {
-        "url": "assets/sprites/playscene/Colour highlight.png",
-        "type": "image",
-        "key": "Colour highlight"
-      },
-      {
-        "url": "assets/sprites/pausescene/Continue.png",
-        "type": "image",
-        "key": "Continue"
-      },
-      {
-        "url": ["assets/sounds/SoundScape/countdown_sfx.mp3"],
-        "type": "audio",
-        "key": "countdown_sfx"
-      },
-      {
-        "url": "assets/sprites/playscene/Disc.png",
-        "type": "image",
-        "key": "Disc"
-      },
-      {
-        "url": "assets/sprites/playscene/disc_flare.png",
-        "type": "image",
-        "key": "disc_flare"
-      },
-      {
-        "url": "assets/sprites/playscene/Down.png",
-        "type": "image",
-        "key": "Down"
-      },
-      {
-        "url": [
-          "assets/scenes/components/EventComponent.js",
-          "assets/scenes/components/AnimationKillOnComplete.js",
-          "assets/scenes/components/CharacterMove.js",
-          "assets/scenes/components/ControllerButton.js",
-          "assets/scenes/components/ControllerButtonLeftRight.js",
-          "assets/scenes/components/FixedToCamera.js",
-          "assets/scenes/components/Physics.js",
-          "assets/scenes/components/PhysicsBody.js",
-          "assets/scenes/components/StartAnimation.js"
-        ],
-        "type": "scripts",
-        "key": "EventComponent"
-      },
-      {
-        "url": "assets/sprites/summaryscene/FTUE_Game summary.jpg",
-        "type": "image",
-        "key": "FTUE_Game summary"
-      },
-      {
-        "url": "assets/scenes/GameOverFTUE.js",
-        "type": "sceneFile",
-        "key": "GameOverFTUE"
-      },
-      {
-        "url": "assets/scenes/GameOverScene.js",
-        "type": "sceneFile",
-        "key": "GameOverScene"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/Gem_small.png",
-        "type": "image",
-        "key": "Gem_small"
-      },
-      {
-        "url": "assets/sprites/playscene/great.png",
-        "type": "image",
-        "key": "great"
-      },
-      {
-        "url": "assets/sprites/playscene/Hold.png",
-        "type": "image",
-        "key": "Hold"
-      },
-      {
-        "url": "assets/scenes/Level.js",
-        "type": "sceneFile",
-        "key": "Level"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/Missed a beat_Hold.jpg",
-        "type": "image",
-        "key": "Missed a beat_Hold"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/Missed a beat_Swipe.jpg",
-        "type": "image",
-        "key": "Missed a beat_Swipe"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/Missed a beat_Tap.jpg",
-        "type": "image",
-        "key": "Missed a beat_Tap"
-      },
-      {
-        "url": "assets/sprites/playscene/new_held.png",
-        "type": "image",
-        "key": "new_held"
-      },
-      {
-        "url": "assets/sprites/summaryscene/No of stars.png",
-        "type": "image",
-        "key": "No of stars"
-      },
-      {
-        "url": "assets/sprites/playscene/particle_1.png",
-        "type": "image",
-        "key": "particle_1"
-      },
-      {
-        "url": "assets/sprites/playscene/Pattern.png",
-        "type": "image",
-        "key": "Pattern"
-      },
-      {
-        "url": "assets/scenes/Pause.js",
-        "type": "sceneFile",
-        "key": "Pause"
-      },
-      {
-        "url": "assets/sprites/playscene/Pause 2.png",
-        "type": "image",
-        "key": "Pause 2"
-      },
-      {
-        "url": "assets/sprites/pausescene/Pause_BG.png",
-        "type": "image",
-        "key": "Pause_BG"
-      },
-      {
-        "url": "assets/sprites/playscene/perfect.png",
-        "type": "image",
-        "key": "perfect"
-      },
-      {
-        "url": "assets/sprites/playscene/Perfect_1.png",
-        "type": "image",
-        "key": "Perfect_1"
-      },
-      {
-        "url": "assets/sprites/playscene/Perfect_2.png",
-        "type": "image",
-        "key": "Perfect_2"
-      },
-      {
-        "url": "assets/sprites/playscene/Perfect_3.png",
-        "type": "image",
-        "key": "Perfect_3"
-      },
-      {
-        "url": "assets/sprites/playscene/Perfect_Zone_Divider 2.png",
-        "type": "image",
-        "key": "Perfect_Zone_Divider 2"
-      },
-      {
-        "url": "assets/sprites/playscene/perfect+.png",
-        "type": "image",
-        "key": "perfect+"
-      },
-      {
-        "url": "assets/sprites/pausescene/Quit.png",
-        "type": "image",
-        "key": "Quit"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Retry button.png",
-        "type": "image",
-        "key": "Retry button"
-      },
-      {
-        "url": "assets/sprites/playscene/Right.png",
-        "type": "image",
-        "key": "Right"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Round Frame.png",
-        "type": "image",
-        "key": "Round Frame"
-      },
-      {
-        "url": "assets/sprites/summaryscene/sc_banner.png",
-        "type": "image",
-        "key": "sc_banner"
-      },
-      {
-        "url": ["assets/sounds/SoundScape/Score_Counter_Sfx.mp3"],
-        "type": "audio",
-        "key": "Score_Counter_Sfx"
-      },
-      {
-        "url": ["assets/sounds/SoundScape/scratch_sound.mp3"],
-        "type": "audio",
-        "key": "scratch_sound"
-      },
-      {
-        "url": ["assets/sounds/SoundScape/song_complete_sfx.mp3"],
-        "type": "audio",
-        "key": "song_complete_sfx"
-      },
-      {
-        "url": "assets/scenes/SongComplete.js",
-        "type": "sceneFile",
-        "key": "SongComplete"
-      },
-      {
-        "url": "assets/sprites/playscene/Spot_icon.png",
-        "type": "image",
-        "key": "Spot_icon"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Star Active.png",
-        "type": "image",
-        "key": "Star Active"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Star_Inactive.png",
-        "type": "image",
-        "key": "Star_Inactive"
-      },
-      {
-        "url": ["assets/sounds/SoundScape/Star_Reward_Sfx.mp3"],
-        "type": "audio",
-        "key": "Star_Reward_Sfx"
-      },
-      {
-        "url": "assets/sprites/tutorialscene/start button copy.png",
-        "type": "image",
-        "key": "start button copy"
-      },
-      {
-        "url": "assets/sprites/playscene/streak_blur.png",
-        "type": "image",
-        "key": "streak_blur"
-      },
-      {
-        "url": "assets/sprites/playscene/streak_blur_red.png",
-        "type": "image",
-        "key": "streak_blur_red"
-      },
-      {
-        "url": "assets/sprites/playscene/streak_overlay.png",
-        "type": "image",
-        "key": "streak_overlay"
-      },
-      {
-        "url": "assets/sprites/summaryscene/summary Continue button.png",
-        "type": "image",
-        "key": "summary Continue button"
-      },
-      {
-        "url": "assets/sprites/summaryscene/summary_BG.png",
-        "type": "image",
-        "key": "summary_BG"
-      },
-      {
-        "url": "assets/sprites/playscene/tap_zone_area.png",
-        "type": "image",
-        "key": "tap_zone_area"
-      },
-      {
-        "url": ["assets/sounds/SoundScape/Thumbnail_Screen Swipe_Sfx.mp3"],
-        "type": "audio",
-        "key": "Thumbnail_Screen Swipe_Sfx"
-      },
-      {
-        "url": "assets/sprites/playscene/Tile 1.png",
-        "type": "image",
-        "key": "Tile 1"
-      },
-      {
-        "url": "assets/sprites/playscene/Tile 2.png",
-        "type": "image",
-        "key": "Tile 2"
-      },
-      {
-        "url": "assets/sprites/playscene/Tile 3.png",
-        "type": "image",
-        "key": "Tile 3"
-      },
-      {
-        "url": "assets/sprites/playscene/Tile 4.png",
-        "type": "image",
-        "key": "Tile 4"
-      },
-      {
-        "url": "assets/sprites/playscene/tile_active.png",
-        "type": "image",
-        "key": "tile_active"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/Timer_icon.png",
-        "type": "image",
-        "key": "Timer_icon"
-      },
-      {
-        "url": "assets/sprites/playscene/too_early.png",
-        "type": "image",
-        "key": "too_early"
-      },
-      {
-        "url": "assets/sprites/summaryscene/Top banner.png",
-        "type": "image",
-        "key": "Top banner"
-      },
-      {
-        "url": "assets/sprites/beatmissedscene/Try again.png",
-        "type": "image",
-        "key": "Try again"
-      },
-      {
-        "url": "assets/sprites/tutorialscene/Tutorial_BG.jpg",
-        "type": "image",
-        "key": "Tutorial_BG"
-      },
-      {
-        "url": "assets/scenes/TutorialScene.js",
-        "type": "sceneFile",
-        "key": "TutorialScene"
-      },
-      {
-        "url": "assets/sprites/playscene/Vignette.png",
-        "type": "image",
-        "key": "Vignette"
-      }
-    ]
-  },
-  "meta": {
-    "app": "Phaser Editor 2D - Asset Pack Editor",
-    "contentType": "phasereditor2d.pack.core.AssetContentType",
-    "url": "https://phasereditor2d.com",
-    "version": 2,
-    "showAllFilesInBlocks": false
-  }
+    "section1": {
+        "files": [
+            {
+                "url": "assets/animations.json",
+                "type": "animation",
+                "key": "animations"
+            },
+            {
+                "url": "assets/sprites/playscene/Bar.png",
+                "type": "image",
+                "key": "Bar"
+            },
+            {
+                "url": "assets/scenes/BeatMissed.js",
+                "type": "sceneFile",
+                "key": "BeatMissed"
+            },
+            {
+                "url": "assets/scenes/BeatMissedHeld.js",
+                "type": "sceneFile",
+                "key": "BeatMissedHeld"
+            },
+            {
+                "url": "assets/scenes/BeatMissedSwipe.js",
+                "type": "sceneFile",
+                "key": "BeatMissedSwipe"
+            },
+            {
+                "url": "assets/scenes/BeatMissedTap.js",
+                "type": "sceneFile",
+                "key": "BeatMissedTap"
+            },
+            {
+                "url": "assets/sprites/playscene/BG.png",
+                "type": "image",
+                "key": "BG_1"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/bm_BG.png",
+                "type": "image",
+                "key": "bm_BG"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/bm_continue.png",
+                "type": "image",
+                "key": "bm_continue"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Bottom banner.png",
+                "type": "image",
+                "key": "Bottom banner"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Choose song button.png",
+                "type": "image",
+                "key": "Choose song button"
+            },
+            {
+                "url": "assets/sprites/playscene/Colour highlight.png",
+                "type": "image",
+                "key": "Colour highlight"
+            },
+            {
+                "url": "assets/sprites/pausescene/Continue.png",
+                "type": "image",
+                "key": "Continue"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/countdown_sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "countdown_sfx"
+            },
+            {
+                "url": "assets/sprites/playscene/Disc.png",
+                "type": "image",
+                "key": "Disc"
+            },
+            {
+                "url": "assets/sprites/playscene/disc_flare.png",
+                "type": "image",
+                "key": "disc_flare"
+            },
+            {
+                "url": "assets/sprites/playscene/Down.png",
+                "type": "image",
+                "key": "Down"
+            },
+            {
+                "url": [
+                    "assets/scenes/components/EventComponent.js",
+                    "assets/scenes/components/AnimationKillOnComplete.js",
+                    "assets/scenes/components/CharacterMove.js",
+                    "assets/scenes/components/ControllerButton.js",
+                    "assets/scenes/components/ControllerButtonLeftRight.js",
+                    "assets/scenes/components/FixedToCamera.js",
+                    "assets/scenes/components/Physics.js",
+                    "assets/scenes/components/PhysicsBody.js",
+                    "assets/scenes/components/StartAnimation.js"
+                ],
+                "type": "scripts",
+                "key": "EventComponent"
+            },
+            {
+                "url": "assets/sprites/summaryscene/FTUE_Game summary.jpg",
+                "type": "image",
+                "key": "FTUE_Game summary"
+            },
+            {
+                "url": "assets/scenes/GameOverFTUE.js",
+                "type": "sceneFile",
+                "key": "GameOverFTUE"
+            },
+            {
+                "url": "assets/scenes/GameOverScene.js",
+                "type": "sceneFile",
+                "key": "GameOverScene"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Gem_small.png",
+                "type": "image",
+                "key": "Gem_small"
+            },
+            {
+                "url": "assets/sprites/playscene/great.png",
+                "type": "image",
+                "key": "great"
+            },
+            {
+                "url": "assets/sprites/playscene/Hold.png",
+                "type": "image",
+                "key": "Hold"
+            },
+            {
+                "url": "assets/scenes/Level.js",
+                "type": "sceneFile",
+                "key": "Level"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Missed a beat_Hold.jpg",
+                "type": "image",
+                "key": "Missed a beat_Hold"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Missed a beat_Swipe.jpg",
+                "type": "image",
+                "key": "Missed a beat_Swipe"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Missed a beat_Tap.jpg",
+                "type": "image",
+                "key": "Missed a beat_Tap"
+            },
+            {
+                "url": "assets/sprites/playscene/new_held.png",
+                "type": "image",
+                "key": "new_held"
+            },
+            {
+                "url": "assets/sprites/summaryscene/No of stars.png",
+                "type": "image",
+                "key": "No of stars"
+            },
+            {
+                "url": "assets/sprites/playscene/particle_1.png",
+                "type": "image",
+                "key": "particle_1"
+            },
+            {
+                "url": "assets/sprites/playscene/Pattern.png",
+                "type": "image",
+                "key": "Pattern"
+            },
+            {
+                "url": "assets/scenes/Pause.js",
+                "type": "sceneFile",
+                "key": "Pause"
+            },
+            {
+                "url": "assets/sprites/playscene/Pause 2.png",
+                "type": "image",
+                "key": "Pause 2"
+            },
+            {
+                "url": "assets/sprites/pausescene/Pause_BG.png",
+                "type": "image",
+                "key": "Pause_BG"
+            },
+            {
+                "url": "assets/sprites/playscene/perfect.png",
+                "type": "image",
+                "key": "perfect"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_1.png",
+                "type": "image",
+                "key": "Perfect_1"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_2.png",
+                "type": "image",
+                "key": "Perfect_2"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_3.png",
+                "type": "image",
+                "key": "Perfect_3"
+            },
+            {
+                "url": "assets/sprites/playscene/Perfect_Zone_Divider 2.png",
+                "type": "image",
+                "key": "Perfect_Zone_Divider 2"
+            },
+            {
+                "url": "assets/sprites/playscene/perfect+.png",
+                "type": "image",
+                "key": "perfect+"
+            },
+            {
+                "url": "assets/sprites/pausescene/Quit.png",
+                "type": "image",
+                "key": "Quit"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Retry button.png",
+                "type": "image",
+                "key": "Retry button"
+            },
+            {
+                "url": "assets/sprites/playscene/Right.png",
+                "type": "image",
+                "key": "Right"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Round Frame.png",
+                "type": "image",
+                "key": "Round Frame"
+            },
+            {
+                "url": "assets/sprites/playscene/rythm_line.png",
+                "type": "image",
+                "key": "rythm_line"
+            },
+            {
+                "url": "assets/sprites/summaryscene/sc_banner.png",
+                "type": "image",
+                "key": "sc_banner"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Score_Counter_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Score_Counter_Sfx"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/scratch_sound.mp3"
+                ],
+                "type": "audio",
+                "key": "scratch_sound"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/song_complete_sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "song_complete_sfx"
+            },
+            {
+                "url": "assets/scenes/SongComplete.js",
+                "type": "sceneFile",
+                "key": "SongComplete"
+            },
+            {
+                "url": "assets/sprites/playscene/Spot_icon.png",
+                "type": "image",
+                "key": "Spot_icon"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Star Active.png",
+                "type": "image",
+                "key": "Star Active"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Star_Inactive.png",
+                "type": "image",
+                "key": "Star_Inactive"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Star_Reward_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Star_Reward_Sfx"
+            },
+            {
+                "url": "assets/sprites/tutorialscene/start button copy.png",
+                "type": "image",
+                "key": "start button copy"
+            },
+            {
+                "url": "assets/sprites/playscene/streak_blur.png",
+                "type": "image",
+                "key": "streak_blur"
+            },
+            {
+                "url": "assets/sprites/playscene/streak_blur_red.png",
+                "type": "image",
+                "key": "streak_blur_red"
+            },
+            {
+                "url": "assets/sprites/playscene/streak_overlay.png",
+                "type": "image",
+                "key": "streak_overlay"
+            },
+            {
+                "url": "assets/sprites/summaryscene/summary Continue button.png",
+                "type": "image",
+                "key": "summary Continue button"
+            },
+            {
+                "url": "assets/sprites/summaryscene/summary_BG.png",
+                "type": "image",
+                "key": "summary_BG"
+            },
+            {
+                "url": "assets/sprites/playscene/tap_zone_area.png",
+                "type": "image",
+                "key": "tap_zone_area"
+            },
+            {
+                "url": [
+                    "assets/sounds/SoundScape/Thumbnail_Screen Swipe_Sfx.mp3"
+                ],
+                "type": "audio",
+                "key": "Thumbnail_Screen Swipe_Sfx"
+            },
+            {
+                "url": "assets/sprites/playscene/Tile 1.png",
+                "type": "image",
+                "key": "Tile 1"
+            },
+            {
+                "url": "assets/sprites/playscene/Tile 2.png",
+                "type": "image",
+                "key": "Tile 2"
+            },
+            {
+                "url": "assets/sprites/playscene/Tile 3.png",
+                "type": "image",
+                "key": "Tile 3"
+            },
+            {
+                "url": "assets/sprites/playscene/Tile 4.png",
+                "type": "image",
+                "key": "Tile 4"
+            },
+            {
+                "url": "assets/sprites/playscene/tile_active.png",
+                "type": "image",
+                "key": "tile_active"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Timer_icon.png",
+                "type": "image",
+                "key": "Timer_icon"
+            },
+            {
+                "url": "assets/sprites/playscene/too_early.png",
+                "type": "image",
+                "key": "too_early"
+            },
+            {
+                "url": "assets/sprites/summaryscene/Top banner.png",
+                "type": "image",
+                "key": "Top banner"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/Try again.png",
+                "type": "image",
+                "key": "Try again"
+            },
+            {
+                "url": "assets/sprites/tutorialscene/Tutorial_BG.jpg",
+                "type": "image",
+                "key": "Tutorial_BG"
+            },
+            {
+                "url": "assets/scenes/TutorialScene.js",
+                "type": "sceneFile",
+                "key": "TutorialScene"
+            },
+            {
+                "url": "assets/sprites/playscene/Vignette.png",
+                "type": "image",
+                "key": "Vignette"
+            }
+        ]
+    },
+    "meta": {
+        "app": "Phaser Editor 2D - Asset Pack Editor",
+        "contentType": "phasereditor2d.pack.core.AssetContentType",
+        "url": "https://phasereditor2d.com",
+        "version": 2,
+        "showAllFilesInBlocks": false
+    }
 }

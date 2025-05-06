@@ -92,7 +92,7 @@ const HubScreen = () => {
   } = useStorageStore();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     // Set appropriate panels based on FTUE step
     if (currentStep === 4 && !unlockingInfoSeen) {
@@ -109,7 +109,7 @@ const HubScreen = () => {
   }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     if (currentStep === 7 && !isCompleted) {
       setShowPlaySongPanel(true);
@@ -125,7 +125,7 @@ const HubScreen = () => {
   }, [currentStep, songs, isCompleted]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     checkAnonUser();
     checkRedirect();
@@ -142,7 +142,7 @@ const HubScreen = () => {
   }, [songs]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     if (currentStep === 7 && !isCompleted) {
       console.log("FTUE Step 7 active, highlight song:", highlightedSongId);
@@ -235,7 +235,7 @@ const HubScreen = () => {
   };
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
@@ -330,16 +330,18 @@ const HubScreen = () => {
   };
 
   const gotoGameDetail = (track) => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     console.log("Setting current track data:", track.id, track.song_name);
-    setCurrentTrackData(JSON.stringify(track));
-
+    // setCurrentTrackData(JSON.stringify(track));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("currentTrackData", JSON.stringify(track));
+    }
     router.push("/game");
   };
 
   const checkRedirect = () => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
 
     const params = new URLSearchParams(window.location.search);
     const trackParam = params.get("track");
@@ -398,7 +400,7 @@ const HubScreen = () => {
     if (index === 0 && songs.length === 1) {
       setIsPulsing(false);
     }
-    setCurrentTrackData(JSON.stringify(song));
+    setCurrentTrackData(song);
     gotoGameDetail(song);
   };
 
@@ -503,6 +505,7 @@ const HubScreen = () => {
               closePlaySongPanel();
               if (currentStep === 7) {
                 completeFTUE();
+                localStorage.setItem("ftueCompleted", "true");
               }
             }}
             bottomPosition={true}
@@ -523,8 +526,8 @@ const HubScreen = () => {
         <div className="w-full">
           <Image
             src={"/assets/img/library/Divider.png"}
-            width={400}
-            height={100}
+            width={4}
+            height={1}
             alt="divider"
             className="w-full"
           />
@@ -538,8 +541,8 @@ const HubScreen = () => {
         <div className="w-full">
           <Image
             src={"/assets/img/library/Divider.png"}
-            width={400}
-            height={100}
+            width={4}
+            height={1}
             alt="divider"
             className="w-full"
           />
@@ -573,9 +576,9 @@ const HubScreen = () => {
             <Image
               src="/assets/img/dailyreward/Gem.png"
               alt="Gem Icon"
-              width={100}
-              height={100}
-              className="daily-reward-gem"
+              width={1}
+              height={1}
+              className="daily-reward-gem w-20 h-20"
             />
             <h3 className="gem-value text-yellow text-6xl tracking-wider">+10</h3>
           </div>
@@ -591,6 +594,7 @@ const HubScreen = () => {
               alt="Claim Button"
               width={220}
               height={100}
+              className="w-52 h-24"
             />
           </motion.button>
         </div>

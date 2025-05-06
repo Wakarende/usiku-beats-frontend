@@ -22,7 +22,7 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
-  const currentVersion = "0.2.2"; // Match the version displayed in the UI
+  const currentVersion = "0.2.3"; // Match the version displayed in the UI
 
   // Version check
   // Version check
@@ -187,10 +187,10 @@ export default function TitleScreen() {
         >
           <Image
             src="/assets/img/start/LogoTail.png"
-            width={250}
-            height={200}
+            width={1}
+            height={1}
             alt="logo"
-            className=""
+            className="w-[15rem]"
           />
         </motion.div>
         {/* Background Banner */}
