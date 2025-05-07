@@ -18,12 +18,22 @@ export const AnalyticsService = {
     // Only initialize once and only on client-side
     if (!initialized && typeof window !== "undefined" && gameanalytics) {
       try {
+        gameanalytics.GameAnalytics.configureBuild("0.2.3");
+        gameanalytics.GameAnalytics.configureAvailableResourceCurrencies([
+          "Gems",
+          "Discs",
+          "Stars",
+        ]);
+        gameanalytics.GameAnalytics.configureAvailableResourceItemTypes([
+          "continue",
+          "song_unlock",
+        ]);
+
         gameanalytics.GameAnalytics.initialize(
           "ee0454adaf47527b1972a5a530e570b6",
-          "f5ed2b53cbad4d76d4f481b0b423bc4a0937c5bd",
-          "0.2.2"
+          "f5ed2b53cbad4d76d4f481b0b423bc4a0937c5bd"
+          // "0.2.3"
         );
-        // gameanalytics.GameAnalytics.configureBuild("0.2.2");
         initialized = true;
         console.log("GameAnalytics initialized");
       } catch (error) {
@@ -90,24 +100,24 @@ export const AnalyticsService = {
   },
 
   // Resource events
-  trackResourceGain: (resourceType, amount, itemId) => {
+  trackResourceGain: (resourceType, amount, itemType, itemId) => {
     if (!initialized || !gameanalytics) return;
     gameanalytics.GameAnalytics.addResourceEvent(
       gameanalytics.EGAResourceFlowType.Source,
       resourceType,
       amount,
-      "items",
+      itemType,
       itemId
     );
   },
 
-  trackResourceUse: (resourceType, amount, itemId) => {
+  trackResourceUse: (resourceType, amount, itemType, itemId) => {
     if (!initialized || !gameanalytics) return;
     gameanalytics.GameAnalytics.addResourceEvent(
       gameanalytics.EGAResourceFlowType.Sink,
       resourceType,
       amount,
-      "items",
+      itemType,
       itemId
     );
   },
