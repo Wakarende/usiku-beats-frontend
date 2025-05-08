@@ -95,9 +95,9 @@ const Header = () => {
           <Image
             src="/assets/img/start/Group 5.png"
             alt="Star Level"
-            width={75}
-            height={75}
-            className="logo "
+            width={70}
+            height={70}
+            className="logo w-[75px] h-auto "
           />
         </div>
         {/* Header Icons Section */}
@@ -118,5 +118,4 @@ const Header = () => {
     </Navbar>
   );
 };
-
 export default Header;

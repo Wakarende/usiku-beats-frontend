@@ -64,6 +64,7 @@ const Sound = () => {
             width={star.width}
             height={star.height}
             alt="Star"
+            priority={true}
           />
         </div>
       ))}
@@ -77,7 +78,9 @@ const Sound = () => {
             src={"/assets/img/sound/headphone.png"}
             width={50}
             height={50}
+            alt="headphone-img"
             className="sm:w-3/4 md:w-11/12 lg:w-1/2 xl:w-1/2 h-auto"
+            priority={true}
           />
         </div>
       </div>
@@ -99,6 +102,7 @@ const Sound = () => {
             width={1}
             height={1}
             className="w-full px-5"
+            priority={true}
           />
           <span className="absolute inset-0 flex items-center justify-center z-10 text-white font-bold text-3xl uppercase tracking-widest lg:text-5xl xl:text-6xl">
             Yes, its on!

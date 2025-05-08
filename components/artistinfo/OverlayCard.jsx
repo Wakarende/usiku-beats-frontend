@@ -33,6 +33,7 @@ const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => 
             alt="info-icon"
             width={25}
             height={25}
+            className="w-[25px] h-[25px]"
           />
         </div>
         <h2 className="artist">{artistName}</h2>
@@ -51,6 +52,7 @@ const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => 
                   alt={`${platform} icon`}
                   width={40}
                   height={40}
+                  className="w-[40px] h-[40px]"
                 />
               </a>
             ) : null
@@ -65,6 +67,7 @@ const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => 
             alt="close-button"
             width={200}
             height={200}
+            className="w-full h-auto"
           />
         </button>
       </div>
@@ -112,22 +115,27 @@ const ArtistImage = ({
   return (
     <div className={`${isHighlightedForFtue && !isCompleted ? "ftue-song-highlight-frame" : ""}`}>
       <div
-        className={`shrink-0  sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[250px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px] `}
+        className={`sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[200px] md:w-[160px] md:h-[256px] lg:w-[160px] lg:h-[250px] xl:w-[160px] xl:h-[250px]    `}
       >
         <Image
           src="/assets/img/hub/Frame_.png"
           width={240}
           height={200}
           alt="song-frame"
-          className="z-2"
+          className="z-2 w-[240px] h-[200px]"
         />
         {/* Artist Image Container */}
-        <div className="absolute overflow-hidden sm:left-[2%] sm:w-[134px] sm:h-[142px] sm:top-[1.3%] sm:rounted-t-lg md:left-1 md:w-[152px] md:h-[165px] md:top-1.5 md:rounded-t-lg lg:top-1.5 lg:left-1 lg:w-[152px] lg:h-[165px] lg:rounded-t-lg xl:w-[152px] xl:h-[235px] lg:top-1.5 lg:left-1 xl:rounded-t-lg">
-          <Image src={song.thumbnail_file} alt="Artist Image" layout="fill" objectFit="cover" />
+        <div className="absolute overflow-hidden sm:left-[2%] sm:w-[134px] sm:h-[140px] sm:top-[0.2rem] sm:rounded-t-lg md:left-1 md:w-[152px] md:h-[150px] md:top-[1.8rem] md:rounded-t-lg lg:top-1.5 lg:left-1 lg:w-[152px] lg:h-[165px] lg:rounded-t-lg xl:w-[152px] xl:h-[235px] lg:top-1.5 lg:left-1 xl:rounded-t-lg">
+          <Image
+            src={song.thumbnail_file}
+            alt="Artist Image"
+            layout="fill"
+            className="object-cover"
+          />
         </div>
         {/* Star Rating Overlay */}
-        <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-black/60 rounded-2xl to-transparent z-20">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex mt-2">
+        <div className="absolute sm:top-[0.2rem] md:top-[1.5rem] left-0 w-full h-8 bg-gradient-to-b from-black/70 rounded-2xl to-transparent z-20">
+          <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex mt-2">
             {[...Array(5)].map((_, index) => (
               <div
                 key={index}
@@ -142,20 +150,20 @@ const ArtistImage = ({
                   alt="star"
                   width={15}
                   height={15}
-                  className="stars object-contain md:min-w-5 md:min-h-5 sm:min-w-4 sm:min-h-4 lg:min-w-5 lg:min-h-5 xl:min-w-5 xl:min-h-5"
+                  className="stars object-contain md:min-w-5 md:min-h-5 sm:min-w-5 sm:min-h-5 lg:min-w-5 lg:min-h-5 xl:min-w-5 xl:min-h-5"
                 />
               </div>
             ))}
           </div>
         </div>
         {/* Country and Difficulty Labels */}
-        <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[78px] sm:left-[-10px] md:bottom-[92px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
+        <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[78px] sm:left-[-10px] md:bottom-[102px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
           <svg
             viewBox="0 0 450 70"
-            className="absolute md:left-[-25px] sm:left-[-16px] lg:left-[-25px] xl:left-[-25px]"
+            className="absolute md:left-[-1.6rem] sm:left-[-1.1rem] lg:left-[-25px] xl:left-[-25px]"
           >
             <text
-              className="svgText uppercase tracking-normal text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
+              className="svgText uppercase tracking-widest text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
               x="1"
               y="45"
             >
@@ -164,20 +172,20 @@ const ArtistImage = ({
           </svg>
           <svg
             viewBox="0 0 450 70"
-            className="absolute md:left-[91px] sm:left-[81px] lg:left-[91px] xl:left-[91px]"
+            className="absolute md:left-[5.5rem] sm:left-[81px] lg:left-[91px] xl:left-[91px]"
           >
             <text
-              className="svgText uppercase tracking-normal text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
+              className="svgText uppercase tracking-widest text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
               x="3"
               y="45"
             >
-              Medium
+              {song.difficulty}
             </text>
           </svg>
         </div>
         {/* Text (Artist and Song) and Play Button */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight md:bottom-[-1px] sm:bottom-[-1px] lg:bottom-[-1px] xl:bottom-[-1px]">
-          <p className="text-yellow text-nowrap md:text-base lg:text-base sm:text-sm leading-tight">
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight md:bottom-[1.6rem] sm:bottom-[0.4rem] lg:bottom-[-1px] xl:bottom-[-1px]">
+          <p className="text-yellow text-nowrap md:text-md lg:text-base sm:text-sm leading-tight md:-mb-1">
             {song.song_name}
           </p>
           <p
@@ -186,7 +194,7 @@ const ArtistImage = ({
           >
             {song.artist_name}
           </p>
-          <div className="md:w-[145px] sm:w-[120px] lg:w-[145px] xl:w-[145px] relative">
+          <div className="md:w-[130px] sm:w-[120px] lg:w-[145px] xl:w-[145px] relative">
             <button
               onClick={handlePlay}
               className={`md:mt-1 relative ${
@@ -198,7 +206,7 @@ const ArtistImage = ({
                 width={200}
                 height={30}
                 alt="play-now-btn"
-                className={`w-full h-full ${isPulsing ? "pulse" : ""}`}
+                className={`w-full h-auto ${isPulsing ? "pulse" : ""}`}
               />
             </button>
             {/* Bouncing hand for FTUE step 6 */}

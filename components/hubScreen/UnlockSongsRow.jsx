@@ -320,11 +320,11 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                     src={frameImage}
                     alt="Title Bar"
                     width={300}
-                    height={200}
-                    className="h-[7.3rem] large:h-[180px] xl:h-[180px]"
+                    height={180}
+                    className="h-[7.3rem] lg:h-[180px] xl:h-[180px] w-[300px] h-auto"
                   />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center">
+                <div className="absolute bottom-1 left-0 right-0 flex items-center justify-center">
                   <div className="flex items-center justify-center z-1 w-full">
                     <p className="text-white font-bold ml-2">
                       {isUnlockTimePassed(item.unlock_time) ? (
@@ -346,7 +346,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                   </div>
                 </div>
               </div>
-
               {/* Button section - either "Unlock Now" or "Add to Library" */}
               {!isUnlockTimePassed(item.unlock_time) ? (
                 <div className="relative mt-0.5">
@@ -357,8 +356,8 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                     <Image
                       src="/assets/img/hub/Button blank.png"
                       alt="Button"
-                      width={160}
-                      height={40}
+                      width={10}
+                      height={10}
                       className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
                     />
                     <div className="absolute inset-0 flex items-center justify-between px-1">
@@ -371,21 +370,14 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                           className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
                         />
                         <div className="flex items-center">
-                          <span className="text-yellow sm:text-[8px] md:text-[10px] lg:text-[14px] xl:text-[14px]">
+                          <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[14px] xl:text-[14px]">
                             {gemsRequiredToUnlockSong}
                           </span>
                         </div>
                       </div>
-                      <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
-                        unlock now
+                      <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[12px] md:text-[12px] lg:text-lg xl:text-lg  tracking-widest">
+                        Finish Now
                       </p>
-                      <Image
-                        src="/assets/img/hub/Unlock.png"
-                        alt="Unlock"
-                        width={16}
-                        height={16}
-                        className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
-                      />
                     </div>
                   </button>
                 </div>
@@ -401,7 +393,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                     />
                     <div className="absolute gem-wrapper">
                       <button onClick={() => addToLibrary(item.song)}>
-                        <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[8px] md:text-[10px] lg:text-lg xl:text-lg">
+                        <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[10px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
                           Add to Library
                         </p>
                       </button>
@@ -409,7 +401,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                   </button>
                 </div>
               )}
-
               {/* Particle effect */}
               {particleTrigger[item.song.id] && (
                 <ParticleEffect
@@ -451,7 +442,13 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
           <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[140px] lg:h-[220px] lg:w-[202px] xl:w-[202px] xl:h-[220px]">
-            <Image src="/assets/img/hub/empty_slot.png" width={200} height={100} alt="Empty Slot" />
+            <Image
+              src="/assets/img/hub/empty_slot.png"
+              width={200}
+              height={100}
+              alt="Empty Slot"
+              className="w-[200px] h-auto"
+            />
           </div>
         </div>
       );
@@ -459,7 +456,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   }
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center sm:text-2xl md:text-4xl lg:text-6xl xl:text-6xl mb-3">
+      <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-6xl md:mb-3">
         Currently Unlocking
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>

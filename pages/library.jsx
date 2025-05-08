@@ -296,13 +296,13 @@ const Library = () => {
             return (
               <div key={index} className="w-full max-w-xl ">
                 <div className="p-4 flex flex-row justify-center items-center">
-                  <div className="w-[150px] h-[150px] flex-shrink-0">
+                  <div className="flex-shrink-0">
                     <Image
                       src={song.thumbnail_file}
                       alt="Song Cover"
-                      width={150}
-                      height={150}
-                      className="rounded-md"
+                      width={1}
+                      height={1}
+                      className="rounded-md md:w-[150px] sm:w-[120px]"
                     />
                   </div>
                   <div className="flex-grow ml-6 min-w-0">
@@ -344,7 +344,7 @@ const Library = () => {
                             height={110}
                             className="object-contain"
                           />
-                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%] sm:top-[25%] sm:left-[6%] sm:text-sm">
+                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%] sm:top-[10%] sm:left-[9%] sm:text-sm">
                             30
                           </span>
                         </div>

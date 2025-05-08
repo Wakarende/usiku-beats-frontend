@@ -330,10 +330,8 @@ const HubScreen = () => {
   };
 
   const gotoGameDetail = (track) => {
-    // if (typeof window === "undefined") return;
-
     console.log("Setting current track data:", track.id, track.song_name);
-    // setCurrentTrackData(JSON.stringify(track));
+
     if (typeof window !== "undefined") {
       localStorage.setItem("currentTrackData", JSON.stringify(track));
     }
@@ -341,8 +339,6 @@ const HubScreen = () => {
   };
 
   const checkRedirect = () => {
-    // if (typeof window === "undefined") return;
-
     const params = new URLSearchParams(window.location.search);
     const trackParam = params.get("track");
     const trackId = params.get("id");
@@ -351,7 +347,6 @@ const HubScreen = () => {
       axios.get(`${BASE_URL}song-detail/${trackId}/`).then((d) => {
         let trackObject = d.data;
 
-        // setLocalStorage("currentTrackData", JSON.stringify(trackObject));
         setCurrentTrackData(JSON.stringify(trackObject));
         router.push("/game");
       });
@@ -359,7 +354,6 @@ const HubScreen = () => {
       try {
         const trackObject = JSON.parse(decodeURIComponent(trackParam));
 
-        // setLocalStorage("currentTrackData", JSON.stringify(trackObject));
         setCurrentTrackData(JSON.stringify(trackObject));
         router.push("/game");
       } catch (error) {
@@ -433,7 +427,7 @@ const HubScreen = () => {
           onClose={closeFtuePanel}
           paragraphs={[
             <>
-              <p className="font-bold text-md sm:text-sm lg:text-xl  mb-4">
+              <p className="font-bold text-md sm:text-sm lg:text-xl mb-4">
                 Usiku Beats is all about collecting great songs to play and master!
               </p>
               <p className="text-lg sm:text-sm lg:text-xl">
@@ -447,14 +441,14 @@ const HubScreen = () => {
         />
       )}
       {/* Container */}
-      <div className=" mx-auto max-w-7xl hub-content-wrapper">
+      <div className=" mx-auto hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex items-center w-full relative">
-          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5 sm:mt-4 sm:mb-1 text-5xl uppercase tracking-wider">
+          <h1 className="text-[#ff6b03] text-center w-full md:mt-3  sm:mb-1 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
           <Link href={"/library"}>
-            <button className="absolute right-[-2rem] top-1/2 transform -translate-y-1/2 h-10">
+            <button className="absolute sm:right-[-2rem] md:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
               <Image
                 src={"/assets/img/hub/Button blank.png"}
                 alt="your-songs-btn"
@@ -462,15 +456,15 @@ const HubScreen = () => {
                 height={40}
                 className="h-full w-24"
               />
-              <span className="absolute inset-1.5 flex items-center justify-center text-white font-bold tracking-widest text-xs uppercase text-nowrap ">
-                +ADD SONGS
+              <span className="absolute sm:inset-2.5 md:inset-2 flex items-center justify-center text-white font-bold tracking-widest sm:text-xs md:text-xs uppercase text-nowrap ">
+                + ADD SONGS
               </span>
             </button>
           </Link>
         </div>
-        <div className="">
+        <div className="md:-mt-3">
           <div
-            className={`kayfo-masonry-main overflow-x-auto overflow-y-hidden flex flex-nowrap hide-scrollbar gap-2 w-full shrink-0 ${
+            className={`overflow-x-auto overflow-y-hidden flex flex-nowrap hide-scrollbar w-full shrink-0 ${
               songs.length === 1 ? "justify-center" : ""
             }`}
           >
@@ -523,7 +517,7 @@ const HubScreen = () => {
             ]}
           />
         )}
-        <div className="w-full">
+        <div className="w-full md:-mt-2.5 ">
           <Image
             src={"/assets/img/library/Divider.png"}
             width={4}

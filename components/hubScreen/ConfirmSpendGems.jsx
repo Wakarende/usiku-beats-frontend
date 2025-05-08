@@ -30,8 +30,8 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
           <Image
             alt="confirmspendgems-frame"
             src={"/assets/img/unlock/unlocksongs_frame.png"}
-            width={300}
-            height={300}
+            width={100}
+            height={100}
             className="w-[100px] h-auto sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[300px] lg:w-[300px] lg:h-[300px] xl:w-[300px] xl:h-[300px] z-10 "
           />
           <div className="absolute sm:top-[4.5rem] md:top-[6rem] flex items-center justify-center">
@@ -39,7 +39,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
               <Image
                 src={selectedSong.thumbnail_file}
                 alt="Song Thumbnail"
-                width={150}
+                width={100}
                 height={100}
                 className="mx-auto rounded mb-3 sm:w-[200px] sm:h-[200px]  sm:mb-1 md:w-[235px] md:h-[233px]  lg:w-[250px] lg:h-[100px] rounded-t-md"
               />
@@ -64,6 +64,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
                 width={50}
                 height={50}
                 className="w-6 h-6"
+                alt="gem-icon"
               />
             </span>
           </div>
