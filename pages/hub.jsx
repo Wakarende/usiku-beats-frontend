@@ -332,9 +332,7 @@ const HubScreen = () => {
   const gotoGameDetail = (track) => {
     console.log("Setting current track data:", track.id, track.song_name);
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("currentTrackData", JSON.stringify(track));
-    }
+    setCurrentTrackData(JSON.stringify(track));
     router.push("/game");
   };
 

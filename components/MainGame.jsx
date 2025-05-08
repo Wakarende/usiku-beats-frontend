@@ -32,50 +32,38 @@ class Boot extends Phaser.Scene {
 
     this.registry.set("transitionDuration", 500);
 
-    let ftueCompleted = localStorage.getItem("ftueCompleted");
-    let isFTUE = false;
-    if (!ftueCompleted || ftueCompleted != "true") {
-      isFTUE = true;
-    }
+    try {
+      // Try to get FTUE completed state
+      let isFTUE = true; // Default to FTUE mode
 
-    if (isFTUE) {
-      this.scene.start("PreloadJ", { track: trackData });
-    } else {
+      // Get the ftue-storage data
+      const ftueStoreData = localStorage.getItem("ftue-storage");
+      console.log("Raw FTUE storage data:", ftueStoreData); // For debugging
+
+      if (ftueStoreData) {
+        const ftueStore = JSON.parse(ftueStoreData);
+        console.log("Parsed FTUE store:", ftueStore); // For debugging
+
+        // Check different possible locations of the isCompleted flag
+        if (ftueStore.state && ftueStore.state.isCompleted === true) {
+          isFTUE = false;
+        } else if (ftueStore.isCompleted === true) {
+          isFTUE = false;
+        }
+
+        console.log("FTUE mode:", isFTUE ? "Tutorial" : "Normal"); // For debugging
+      }
+
+      if (isFTUE) {
+        this.scene.start("PreloadJ", { track: trackData });
+      } else {
+        this.scene.start("Preload", { track: trackData });
+      }
+    } catch (error) {
+      console.error("Error checking FTUE state:", error);
+      // Fallback to normal preload if there's an error
       this.scene.start("Preload", { track: trackData });
     }
-    let ftueStore;
-    // try {
-    //   // Try to get FTUE completed state
-    //   let isFTUE = true; // Default to FTUE mode
-
-    //   // Get the ftue-storage data
-    //   const ftueStoreData = localStorage.getItem("ftue-storage");
-    //   console.log("Raw FTUE storage data:", ftueStoreData); // For debugging
-
-    //   if (ftueStoreData) {
-    //     const ftueStore = JSON.parse(ftueStoreData);
-    //     console.log("Parsed FTUE store:", ftueStore); // For debugging
-
-    //     // Check different possible locations of the isCompleted flag
-    //     if (ftueStore.state && ftueStore.state.isCompleted === true) {
-    //       isFTUE = false;
-    //     } else if (ftueStore.isCompleted === true) {
-    //       isFTUE = false;
-    //     }
-
-    //     console.log("FTUE mode:", isFTUE ? "Tutorial" : "Normal"); // For debugging
-    //   }
-
-    //   if (isFTUE) {
-    //     this.scene.start("PreloadJ", { track: trackData });
-    //   } else {
-    //     this.scene.start("Preload", { track: trackData });
-    //   }
-    // } catch (error) {
-    //   console.error("Error checking FTUE state:", error);
-    //   // Fallback to normal preload if there's an error
-    //   this.scene.start("Preload", { track: trackData });
-    // }
   }
 }
 
