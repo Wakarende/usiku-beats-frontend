@@ -53,6 +53,7 @@ const Library = () => {
     setLibraryTutorialSeen,
     completeStep,
   } = useFTUEStore();
+  const [sessionUnlockCounter, setSessionUnlockCounter] = useState(0);
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -133,6 +134,14 @@ const Library = () => {
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
+    const existingInstance = user_data.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+
+    if (existingInstance && !existingInstance.unlocked && isSongInQueue(existingInstance)) {
+      console.log("Song is already unlocking; cannot purchase again");
+      return;
+    }
 
     setUnlockedSong(song);
     if (currentStep === 2) {
@@ -150,26 +159,26 @@ const Library = () => {
         (instance) => instance.unlocked
       ).length;
 
+      const inQueueCount = user_data.profile.player.player_song_instances.filter(
+        (instance) => !instance.unlocked && instance.unlock_time
+      ).length;
+
       const baseTime = 20;
-      const additionalTime = unlockedSongsCount * 50;
+
+      const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
+      const additionalTime = totalSongs * 20;
+
       const totalUnlockTime = baseTime + additionalTime;
 
-      // console.log(
-      //   `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${unlockedSongsCount} previous unlocks)`
-      // );
+      console.log(
+        `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${totalSongs} previous unlocks)`
+      );
+
       unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
-      // unlockTime = moment().add(30, "seconds").toISOString();
     }
+    setSessionUnlockCounter((prevCount) => prevCount + 1);
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
-    const existingInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
-    );
-
-    if (existingInstance && !existingInstance.unlocked && isSongInQueue(existingInstance)) {
-      console.log("Song is already unlocking; cannot purchase again");
-      return;
-    }
 
     let newSongInstance = {
       date_added: new Date().toISOString(),
