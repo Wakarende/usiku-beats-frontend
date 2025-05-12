@@ -48,7 +48,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
         style={{ zIndex: footerZIndex }}
       >
         <div
-          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[150px] md:h-[180px] lg:h-[300px] overflow-visible`}
+          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[140px] md:h-[180px] lg:h-[300px] overflow-visible`}
           style={{
             zIndex: footerBgZIndex,
             filter: footerGlowActive ? "drop-shadow(0 -10px 10px rgba(0, 245, 255, 0.8))" : "none",
@@ -82,7 +82,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             className="absolute inset-0 w-full h-full"
           ></Link>
 
-          <div className="absolute bottom-8 sm:bottom-12 md:bottom-12 lg:bottom-24 right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
+          <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 lg:bottom-24 right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
             <div className="flex flex-col items-center">
               <motion.p
                 className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white leading-tight"

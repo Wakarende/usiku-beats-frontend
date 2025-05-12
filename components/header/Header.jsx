@@ -93,7 +93,7 @@ const Header = () => {
         {/* Ayoba Test  */}
         <div className="header-level relative flex items-center justify-center">
           <Image
-            src="/assets/img/start/Group 5.png"
+            src="/assets/img/start/usiku.png"
             alt="Star Level"
             width={70}
             height={70}
@@ -110,9 +110,10 @@ const Header = () => {
               height={50}
             />
           </button>
-          <Link href={"/login"} className="flex items-center">
+          <div className="ml-10"></div>
+          {/* <Link href={"/login"} className="flex items-center">
             <Image src="/assets/img/header/Settings.png" alt="Settings" width={50} height={50} />
-          </Link>
+          </Link> */}
         </div>
       </Container>
     </Navbar>

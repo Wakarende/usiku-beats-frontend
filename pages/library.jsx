@@ -468,38 +468,78 @@ const Library = () => {
           allowClickThrough={true}
         />
       )}
-      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-10">
+      <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0  flex items-center justify-center z-10">
         {isFtue && !hasUnlockedSong ? (
           <Image
-            src="/assets/img/ftue/Footer_pattern.png"
+            src="/assets/img/ftue/Footer_pattern-v1.png"
             alt="Footer pattern"
             width={400}
             height={100}
             className="object-contain"
           />
         ) : (
-          <motion.div
-            className="flex justify-center mt-5 mb-2.5"
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-            }}
-            onClick={() => {
-              handleClickSound();
-              router.push("/hub");
-            }}
-          >
+          // <div className="">
+          //   <Image
+          //     alt="footer-banner"
+          //     src={"/assets/img/library/Bottom banner BG-v1.png"}
+          //     width={400}
+          //     height={100}
+          //     className="object-contain"
+          //   />
+          //   <motion.div
+          //     className="flex justify-center mt-5 mb-2.5"
+          //     animate={{ scale: [1, 1.1, 1] }}
+          //     transition={{
+          //       duration: 1.5,
+          //       repeat: Infinity,
+          //       repeatType: "loop",
+          //       ease: "easeInOut",
+          //     }}
+          //     onClick={() => {
+          //       handleClickSound();
+          //       router.push("/hub");
+          //     }}
+          //   >
+          //     <Image
+          //       src="/assets/img/levelinfo/Back_Button.png"
+          //       alt="Back"
+          //       width={190}
+          //       height={50}
+          //       className="object-contain"
+          //     />
+          //   </motion.div>
+          // </div>
+          <div className="relative w-full">
             <Image
-              src="/assets/img/levelinfo/Back_Button.png"
-              alt="Back"
-              width={190}
-              height={50}
-              className="object-contain"
+              alt="footer-banner"
+              src={"/assets/img/library/Bottom banner BG.png"}
+              width={400}
+              height={100}
+              className="object-contain w-full"
             />
-          </motion.div>
+            <motion.div
+              className="absolute sm:top-8 sm:left-[4rem] md:top-10 md:left-20"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut",
+              }}
+              onClick={() => {
+                handleClickSound();
+                router.push("/hub");
+              }}
+            >
+              <Image
+                src="/assets/img/levelinfo/Back_Button.png"
+                alt="Back"
+                width={190}
+                height={50}
+                className="object-contain"
+              />
+            </motion.div>
+          </div>
         )}
       </footer>
       <OverlayCard

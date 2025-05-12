@@ -68,12 +68,11 @@ const Sound = () => {
           />
         </div>
       ))}
-      <div className="uppercase text-yellow text-7xl mt-10 text-center z-10 lg:text-9xl xl:text-9xl">
-        <h2>Turn Your</h2>
-        <h2>sound on</h2>
+      <div className="uppercase text-yellow text-7xl mt-10 text-center z-10 lg:text-9xl xl:text-9xl bg-black p-2">
+        <h2 className="tracking-widest">Your Sound</h2>
       </div>
       <div className="flex justify-center">
-        <div className="absolute bottom-56 lg:bottom-72 xl:bottom-72 flex justify-center ">
+        <div className="absolute sm:bottom-56 md:bottom-56 lg:bottom-72 xl:bottom-72 flex justify-center">
           <Image
             src={"/assets/img/sound/headphone.png"}
             width={50}
@@ -87,8 +86,7 @@ const Sound = () => {
       <div className="flex justify-center">
         <div className="text-center text-xl font-medium tracking-wider absolute bottom-36 lg:text-2xl lg:bottom-48  xl:text-2xl xl:bottom-48">
           <p className="text-[#cab05a]">This is a music game!</p>
-          <p className="text-[#cab05a]">You need your sound on</p>
-          <p className="text-[#cab05a]">to hear the beats.</p>
+          <p className="text-[#cab05a]">Turn on your sound to hear the beats.</p>
         </div>
       </div>
       <div className="flex justify-center">
