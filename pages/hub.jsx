@@ -428,12 +428,10 @@ const HubScreen = () => {
           paragraphs={[
             <>
               <p className="font-bold text-md sm:text-sm lg:text-xl mb-4">
-                Usiku Beats is all about collecting great songs to play and master!
+                Usiku Beats: Collect and master great songs!
               </p>
               <p className="text-lg sm:text-sm lg:text-xl">
-                This page is where you access all <span className="font-bold">Your Songs...</span>{" "}
-                but right now it's empty! To get your first song, tap this button to open the
-                <br />
+                Let's' get your first one! Tap this button to open the{" "}
                 <span className="font-bold"> Song Library!</span>
               </p>
             </>,
@@ -506,13 +504,8 @@ const HubScreen = () => {
             positionOffset={40}
             paragraphs={[
               <>
-                <p className="font-bold sm:text-sm mb-4">Your new song is now ready to play!</p>
-                <p className="text-lg sm:text-sm mb-2">
-                  When you're' ready, tap the song's'{" "}
-                  <span className="font-bold sm:text-sm">Play Now</span> button, and have a great
-                  time!
-                </p>
-                <p className="sm:text-sm">Tap anywhere else to close this message.</p>
+                <p className="font-bold sm:text-sm mb-4">Awesome! Your new song is now ready!</p>
+                <p className="sm:text-sm">Tap it to play, and have a great time!</p>
               </>,
             ]}
           />

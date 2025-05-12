@@ -523,10 +523,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           onClose={() => setShowUnlockOverlayPanel(false)}
           paragraphs={[
             <>
-              <p className="text-lg sm:text-sm">
-                Your new song is now unlocked, so tap{" "}
-                <span className="font-bold">'Add to Library'</span> to make it playable!
-              </p>
+              <p className="text-lg sm:text-sm">Now tap here to add it to your collection!</p>
             </>,
           ]}
           customPosition={true}

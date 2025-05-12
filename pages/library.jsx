@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
 import Header from "../components/header/Header";
-import BottomTabNav from "../components/BottomTabNav";
+
 import { OverlayCard } from "../components/artistinfo/OverlayCard";
 import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
@@ -250,7 +250,7 @@ const Library = () => {
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
-        <BottomTabNav />
+        {/* <BottomTabNav /> */}
       </div>
     );
   }
@@ -379,9 +379,7 @@ const Library = () => {
         {/* Popup shown after user clicks get song */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div className="flex justify-start flex-col items-center  gap-8">
-            <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap">
-              You've Just Chose
-            </h1>
+            <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap">You Just Chose</h1>
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
@@ -451,14 +449,14 @@ const Library = () => {
           paragraphs={[
             <div key="wrapper">
               <p className="md:text-lg sm:text-sm">
-                This is the <span className="font-bold">Song Library</span>, where you get new songs
-                for your collection. Scroll the list and tap on the one you want for your first
-                song. Watch out... some are harder than others!
+                This is the <span className="font-bold">Song Library!</span>. Scroll through, and
+                choose a song to start with.
               </p>
             </div>,
           ]}
           bottomPosition={true}
           transparentBg={true}
+          allowClickThrough={true}
         />
       )}
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0 library-footer flex items-center justify-center z-10">

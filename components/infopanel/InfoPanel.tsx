@@ -12,14 +12,16 @@ export default function InfoPanel({
   positionOffset = 0,
   customClassName = "",
   customPosition = false,
+  allowClickThrough = false,
 }) {
   return (
     <div
-    className={transparentBg ? "" : "bg-black/70"}
+      className={transparentBg ? "" : "bg-black/70"}
       style={{
         position: "fixed",
-        inset: 0,  
+        inset: 0,
         zIndex: 60,
+        pointerEvents: allowClickThrough ? "none" : "auto",
       }}
       onClick={onClose}
     >
@@ -32,24 +34,25 @@ export default function InfoPanel({
           backgroundPosition: "center",
           padding: "2rem",
           position: "absolute",
-          ...(customPosition 
-            ? {} 
+          ...(customPosition
+            ? {}
             : {
                 left: "50%",
                 top: bottomPosition ? "auto" : "50%",
                 bottom: bottomPosition ? `${positionOffset}px` : "auto",
                 transform: `translateX(-50%) ${!bottomPosition ? "translateY(-50%)" : ""}`,
-                 maxWidth: "3xl",
+                maxWidth: "3xl",
                 width: "100%",
               }),
           ...customStyle,
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div
-         className="text-lg text-white w-full mx-auto">
+        <div className="text-lg text-white w-full mx-auto">
           {paragraphs.map((paragraph, index) => (
-            <p key={index} className="mb-2">{paragraph}</p>
+            <p key={index} className="mb-2">
+              {paragraph}
+            </p>
           ))}
         </div>
       </div>
