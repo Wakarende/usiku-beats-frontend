@@ -163,7 +163,7 @@ const Library = () => {
         (instance) => !instance.unlocked && instance.unlock_time
       ).length;
 
-      const baseTime = 20;
+      const baseTime = 200;
 
       const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
       const additionalTime = totalSongs * 20;
@@ -332,7 +332,6 @@ const Library = () => {
                         {song.country_name}
                       </p>
                     </div>
-
                     {/* Unlock Button */}
                     {showUnlocked ? (
                       <div className="text-green-500 font-bold mt-4">Unlocked</div>

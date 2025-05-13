@@ -44,6 +44,11 @@
 }
 
 @font-face {
+  font-family: "Digital-7";
+  src: url("/assets/fonts/digital-7.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Carlito-Regular";
   src: url("/assets/fonts/Carlito-Regular.ttf") format("truetype");
 }

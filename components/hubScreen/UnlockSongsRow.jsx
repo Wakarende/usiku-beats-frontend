@@ -256,8 +256,11 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     }, [timeLeft, unlockTime, onExpire]);
 
     return (
-      <p className="sm:text-[6px] sm:pb-[5px] md:text-[7px] md:pb-[4px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px]">
-        {timeLeft.minutes}:{timeLeft.seconds} m
+      <p
+        className="sm:text-[6px] sm:pb-[5px] md:text-[18px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px] text-nowrap text-[#0af0e4]"
+        style={{ fontFamily: "Digital-7" }}
+      >
+        {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
       </p>
     );
   }
@@ -283,7 +286,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     const item = lockedSongs[i];
     if (item) {
       const frameImage =
-        i % 2 === 0 ? "/assets/img/hub/unlock_frame.png" : "/assets/img/hub/unlock_frame_2.png";
+        i % 2 === 0 ? "/assets/img/unlock/unlock_frame.png" : "/assets/img/unlock/unlock_frame.png";
 
       slotsContent.push(
         <div key={i} className="relative">
@@ -302,30 +305,30 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           }`}
             >
               {/* Card content - the song image and info */}
+              <div className="absolute w-[200px]  z-10 bottom-[-0.3rem]">
+                <Image
+                  src={frameImage}
+                  alt="Title Bar"
+                  width={300}
+                  height={180}
+                  className="lg:h-[180px] xl:h-[180px] "
+                />
+              </div>
               <div
-                className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[132px] md:h-[116px] lg:w-[200px] lg:h-[180px]"
+                className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[134px] md:h-[116px] lg:w-[200px] lg:h-[180px]"
                 style={{
                   backgroundImage: `url(${item.song.thumbnail_file})`,
                 }}
               >
                 <div className="flex justify-center items-center">
-                  <div className="absolute sm:top-[-6%] md:top-[-6%] lg:top-[-1%]">
-                    <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-xl lg:text-xl xl:text-xl">
+                  <div className="absolute sm:top-[-6%] md:top-[-10%] lg:top-[-1%] z-10">
+                    <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-2xl lg:text-xl xl:text-xl">
                       {item.song.song_name}
                     </p>
                   </div>
                 </div>
-                <div className="relative justify-center items-center">
-                  <Image
-                    src={frameImage}
-                    alt="Title Bar"
-                    width={300}
-                    height={180}
-                    className="h-[7.3rem] lg:h-[180px] xl:h-[180px] w-[300px] h-auto"
-                  />
-                </div>
-                <div className="absolute bottom-1 left-0 right-0 flex items-center justify-center">
-                  <div className="flex items-center justify-center z-1 w-full">
+                {/* <div className="absolute bottom-1 left-0 right-0 flex items-center justify-center">
+                  <div className="flex items-center justify-center z-10 w-full">
                     <p className="text-white font-bold ml-2">
                       {isUnlockTimePassed(item.unlock_time) ? (
                         <button onClick={() => addToLibrary(item.song)}>
@@ -344,61 +347,94 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       )}
                     </p>
                   </div>
+                </div> */}
+                <div className="absolute bottom-[1.9rem] left-0 right-0 flex items-center justify-center">
+                  <div className="flex items-center justify-center z-10 w-full tracking-wide">
+                    <p className="text-nowrap text-yellow text-[13px]">Time Left:</p>
+                    <p className="text-white font-bold ml-2">
+                      {isUnlockTimePassed(item.unlock_time) ? (
+                        <button onClick={() => addToLibrary(item.song)}>
+                          <p
+                            className="tracking-wide unlocked-text text-nowrap sm:text-[6px] sm:pb-[5px] md:text-[18px] md:pb-[0.5px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1 text-[#0af0e4]"
+                            style={{ fontFamily: "Digital-7" }}
+                          >
+                            00:00:00
+                          </p>
+                        </button>
+                      ) : (
+                        <div className="">
+                          {/* <p className="text-yellow text-nowrap text-[12px]">Time Left:</p> */}
+                          <CountdownTimer
+                            className=""
+                            unlockTime={item.unlock_time}
+                            onExpire={() => {
+                              markSongAsUnlocked(item.song.id);
+                              triggerParticles(item.song.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                    </p>
+                  </div>
                 </div>
               </div>
               {/* Button section - either "Unlock Now" or "Add to Library" */}
               {!isUnlockTimePassed(item.unlock_time) ? (
-                <div className="relative mt-0.5">
-                  <button
-                    className="w-full relative"
-                    onClick={() => handleUnlockNowClick(item.song)}
-                  >
-                    <Image
-                      src="/assets/img/hub/Button blank.png"
-                      alt="Button"
-                      width={10}
-                      height={10}
-                      className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-between px-1">
-                      <div className="flex items-center gap-0.5">
-                        <Image
-                          src="/assets/img/hub/Gem.png"
-                          alt="Gem"
-                          width={16}
-                          height={16}
-                          className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
-                        />
-                        <div className="flex items-center">
-                          <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[14px] xl:text-[14px]">
-                            {gemsRequiredToUnlockSong}
-                          </span>
+                <div className="absolute bottom-[-0.5rem] w-[190px] left-[-1.rem]">
+                  <div className="relative mt-0.5 z-10">
+                    <button
+                      className="w-full relative"
+                      onClick={() => handleUnlockNowClick(item.song)}
+                    >
+                      <Image
+                        src="/assets/img/hub/Button blank.png"
+                        alt="Button"
+                        width={10}
+                        height={10}
+                        className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-between px-1">
+                        <div className="flex items-center gap-0.5">
+                          <Image
+                            src="/assets/img/hub/Gem.png"
+                            alt="Gem"
+                            width={16}
+                            height={16}
+                            className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
+                          />
+                          <div className="flex items-center">
+                            <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[14px] xl:text-[14px]">
+                              {gemsRequiredToUnlockSong}
+                            </span>
+                          </div>
                         </div>
+                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[12px] md:text-[12px] lg:text-lg xl:text-lg  tracking-widest">
+                          Finish Now
+                        </p>
                       </div>
-                      <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[12px] md:text-[12px] lg:text-lg xl:text-lg  tracking-widest">
-                        Finish Now
-                      </p>
-                    </div>
-                  </button>
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <div className="relative">
-                  <button className="unlock-button flex items-center justify-center w-full">
-                    <Image
-                      src="/assets/img/hub/Button blank.png"
-                      alt="Unlock Button Background"
-                      width={160}
-                      height={100}
-                      className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
-                    />
-                    <div className="absolute gem-wrapper">
-                      <button onClick={() => addToLibrary(item.song)}>
-                        <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[10px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
-                          Add to Library
-                        </p>
-                      </button>
-                    </div>
-                  </button>
+                <div className="absolute bottom-[-0.2rem] w-[190px] left-[-1.6rem]">
+                  <div className="relative z-10 ">
+                    <button className="unlock-button flex items-center justify-center w-full">
+                      <Image
+                        src="/assets/img/hub/Button blank.png"
+                        alt="Unlock Button Background"
+                        width={160}
+                        height={100}
+                        className="sm:h-[20px] sm:w-[120px] md:w-[120px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                      />
+                      <div className="absolute gem-wrapper">
+                        <button onClick={() => addToLibrary(item.song)}>
+                          <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[10px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
+                            Add to Library
+                          </p>
+                        </button>
+                      </div>
+                    </button>
+                  </div>
                 </div>
               )}
               {/* Particle effect */}
@@ -461,7 +497,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       </h1>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
       {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
-
       {/* Popups */}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
         <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg sm:w-[280px]">
@@ -478,14 +513,12 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           </button>
         </div>
       </Popup>
-
       <ConfirmSpendGemsPopup
         isOpen={confirmPopupOpen}
         onConfirm={confirmUnlockNow}
         onCancel={() => setConfirmPopupOpen(false)}
         selectedSong={selectedSong}
       />
-
       {/* "Finish Now" overlay panel (moved from HubScreen) */}
       {showUnlockingInfoPanel && !isCompleted && (
         <InfoPanel
@@ -516,7 +549,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           transparentBg={false}
         />
       )}
-
       {/* "Add to Library" overlay panel */}
       {showUnlockOverlayPanel && (
         <InfoPanel
