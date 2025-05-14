@@ -157,7 +157,7 @@ const ArtistImage = ({
           </div>
         </div>
         {/* Country and Difficulty Labels */}
-        <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[78px] sm:left-[-10px] md:bottom-[102px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
+        <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[76px] sm:left-[-10px] md:bottom-[102px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
           <svg
             viewBox="0 0 450 70"
             className="absolute md:left-[-1.6rem] sm:left-[-1.1rem] lg:left-[-25px] xl:left-[-25px]"
@@ -184,13 +184,13 @@ const ArtistImage = ({
           </svg>
         </div>
         {/* Text (Artist and Song) and Play Button */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight md:bottom-[1.6rem] sm:bottom-[0.4rem] lg:bottom-[-1px] xl:bottom-[-1px]">
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center z-2 leading-tight md:bottom-[1.6rem] sm:bottom-[0rem] lg:bottom-[-1px] xl:bottom-[-1px]">
           <p className="text-yellow text-nowrap md:text-md lg:text-base sm:text-sm leading-tight md:-mb-1">
             {song.song_name}
           </p>
           <p
             onClick={(e) => onArtistClick(e, song.artist)}
-            className="text-white uppercase text-nowrap leading-tight sm:text-[8px] md:text-[10px] lg:text-[10px] xl:text-[10px]"
+            className="text-white uppercase text-nowrap leading-tight sm:text-[10px] md:text-[10px] lg:text-[10px] xl:text-[10px]"
           >
             {song.artist_name}
           </p>

@@ -97,7 +97,7 @@ const Header = () => {
             alt="Star Level"
             width={70}
             height={70}
-            className="logo w-[75px] h-auto "
+            className="logo md:w-[75px] h-auto "
           />
         </div>
         {/* Header Icons Section */}

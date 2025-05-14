@@ -82,27 +82,28 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             className="absolute inset-0 w-full h-full"
           ></Link>
 
-          <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 lg:bottom-24 right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
-            <div className="flex flex-col items-center">
-              <motion.p
-                className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white leading-tight"
-                animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
-                transition={
-                  canUnlockSongs
-                    ? {
-                        duration: 0.8,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        ease: "easeInOut",
-                      }
-                    : {}
-                }
-              >
+          <div className="absolute bottom-8  sm:right-[0.4rem] sm:bottom-10 md:bottom-14 lg:bottom-24 right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
+            <motion.div
+              className="flex flex-col items-center"
+              animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
+              transition={
+                canUnlockSongs
+                  ? {
+                      duration: 0.8,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                    }
+                  : {}
+              }
+            >
+              <p className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white ">
                 YOU HAVE
-                <br />
-                <span className="">{totalDiscs} DISCS</span>
-              </motion.p>
-            </div>
+              </p>
+              <p className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white md:-mt-2 sm:-mt-0.5">
+                {totalDiscs} DISCS
+              </p>
+            </motion.div>
           </div>
         </div>
       </footer>

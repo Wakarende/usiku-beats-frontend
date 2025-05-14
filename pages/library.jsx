@@ -138,7 +138,7 @@ const Library = () => {
       (instance) => instance.song.id === song.id
     );
 
-    if (existingInstance && !existingInstance.unlocked && isSongInQueue(existingInstance)) {
+    if (existingInstance && !existingInstance.unlocked && existingInstance.unlockTime) {
       console.log("Song is already unlocking; cannot purchase again");
       return;
     }
@@ -163,11 +163,10 @@ const Library = () => {
         (instance) => !instance.unlocked && instance.unlock_time
       ).length;
 
-      const baseTime = 200;
+      const baseTime = 5;
 
       const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
-      const additionalTime = totalSongs * 20;
-
+      const additionalTime = totalSongs * 5;
       const totalUnlockTime = baseTime + additionalTime;
 
       console.log(
@@ -278,8 +277,17 @@ const Library = () => {
         <div className=" flex  justify-center items-center">
           <div className="flex justify-center flex-col items-center sm:text-sm text-lg ">
             <p className="text-library uppercase font-bold">You have {totalDiscs} discs!</p>
-            <p className="text-white mt-1">Each song costs 30 discs</p>
-            <p className="text-white">Find your next song now!</p>
+            {unlockable ? (
+              <>
+                <p className="text-white mt-1">Each song costs 30 discs</p>
+                <p className="text-white">Find your next song now!</p>
+              </>
+            ) : (
+              <>
+                <p className="text-white">You don't have enough discs!</p>
+                <p className="text-white">Play songs to earn more discs!</p>
+              </>
+            )}
           </div>
           <div className="mt-0">
             <Image src={"/assets/img/hub/Disc.png"} width={120} height={120} alt="disc-icon" />
@@ -477,37 +485,6 @@ const Library = () => {
             className="object-contain"
           />
         ) : (
-          // <div className="">
-          //   <Image
-          //     alt="footer-banner"
-          //     src={"/assets/img/library/Bottom banner BG-v1.png"}
-          //     width={400}
-          //     height={100}
-          //     className="object-contain"
-          //   />
-          //   <motion.div
-          //     className="flex justify-center mt-5 mb-2.5"
-          //     animate={{ scale: [1, 1.1, 1] }}
-          //     transition={{
-          //       duration: 1.5,
-          //       repeat: Infinity,
-          //       repeatType: "loop",
-          //       ease: "easeInOut",
-          //     }}
-          //     onClick={() => {
-          //       handleClickSound();
-          //       router.push("/hub");
-          //     }}
-          //   >
-          //     <Image
-          //       src="/assets/img/levelinfo/Back_Button.png"
-          //       alt="Back"
-          //       width={190}
-          //       height={50}
-          //       className="object-contain"
-          //     />
-          //   </motion.div>
-          // </div>
           <div className="relative w-full">
             <Image
               alt="footer-banner"

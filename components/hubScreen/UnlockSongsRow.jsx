@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/main/authActions";
 import Popup from "../library/Popup";
@@ -140,6 +140,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     if (songInstance) {
       songInstance.unlocked = true;
       songInstance.unlock_time = null;
+      songInstance.unlock_start_time = new Date().toISOString();
       dispatch(updateUser(newUserdata));
       console.log("Song unlocked and added to library:", song.id);
     } else {
@@ -171,7 +172,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
 
       return;
     }
-
     // Normal behavior for non-FTUE
     if (showUnlockOverlayPanel) {
       setShowUnlockOverlayPanel(false);
@@ -193,7 +193,11 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       return;
     }
 
-    setSelectedSong(song);
+    const songInstance = user_data.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+
+    setSelectedSong(songInstance);
     setConfirmPopupOpen(true);
   }
 
@@ -255,12 +259,16 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       return () => clearTimeout(timer);
     }, [timeLeft, unlockTime, onExpire]);
 
+    const formattedHours = timeLeft.hours?.toString().padStart(2, "0") || "00";
+    const formattedMinutes = timeLeft.minutes?.toString().padStart(2, "0") || "00";
+    const formattedSeconds = timeLeft.seconds?.toString().padStart(2, "0") || "00";
+
     return (
       <p
-        className="sm:text-[6px] sm:pb-[5px] md:text-[18px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px] text-nowrap text-[#0af0e4]"
+        className="sm:text-[14px] md:text-[18px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px] text-nowrap text-[#0af0e4] tracking-widest"
         style={{ fontFamily: "Digital-7" }}
       >
-        {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
+        {formattedHours}:{formattedMinutes}:{formattedSeconds}
       </p>
     );
   }
@@ -279,17 +287,85 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     return timeLeft;
   }
 
+  function TimerBar({ unlockTime }) {
+    const [fillPercent, setFillPercent] = useState(0);
+    const initialTimeRef = useRef(null);
+    const startTimeRef = useRef(null);
+
+    useEffect(() => {
+      // Calculate and store the initial times when component mounts
+      if (initialTimeRef.current === null) {
+        const now = new Date();
+        const unlockDate = new Date(unlockTime);
+        const remainingTime = unlockDate.getTime() - now.getTime();
+
+        initialTimeRef.current = remainingTime;
+        startTimeRef.current = now.getTime();
+      }
+
+      const calculateFill = () => {
+        const now = new Date();
+        const unlockDate = new Date(unlockTime);
+
+        // If unlock time has passed, show full bar
+        if (now >= unlockDate) {
+          return 100;
+        }
+
+        // Get elapsed time since component mounted
+        const elapsedTime = now.getTime() - startTimeRef.current;
+
+        // Use the initial remaining time as total duration
+        const totalDuration = initialTimeRef.current;
+
+        // Calculate fill percentage
+        const percentage = (elapsedTime / totalDuration) * 100;
+
+        return Math.max(0, Math.min(100, percentage));
+      };
+
+      // Update every 100ms for smoother animation
+      const timer = setInterval(() => {
+        setFillPercent(calculateFill());
+      }, 100);
+
+      // Initial calculation
+      setFillPercent(calculateFill());
+
+      return () => clearInterval(timer);
+    }, [unlockTime]);
+
+    return (
+      <div
+        className="h-full absolute left-0 rounded-sm transition-all duration-100 ease-linear"
+        style={{
+          width: `${fillPercent}%`,
+          background: "linear-gradient(to right, #edca55, #3bc0b3)",
+        }}
+      />
+    );
+  }
+
   const slots = 3;
   const slotsContent = [];
-
   for (let i = 0; i < slots; i++) {
     const item = lockedSongs[i];
     if (item) {
       const frameImage =
         i % 2 === 0 ? "/assets/img/unlock/unlock_frame.png" : "/assets/img/unlock/unlock_frame.png";
-
       slotsContent.push(
-        <div key={i} className="relative">
+        <div
+          key={`song${item.song.id}`}
+          className="relative"
+          onClick={() => {
+            // Logic to handle different states
+            if (isUnlockTimePassed(item.unlock_time)) {
+              addToLibrary(item.song);
+            } else {
+              handleUnlockNowClick(item.song);
+            }
+          }}
+        >
           <div
             className={`${
               currentStep === 4 && i === 0 && !isCompleted ? "ftue-hub-highlight-frame" : ""
@@ -297,101 +373,93 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           >
             <div
               className={`flex flex-col items-center unlock-card-wrapper 
-          ${unlockedState[item.song.id] ? "pulse-effect" : ""}
-          ${
-            currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted
-              ? "ftue-add-library-highlight-frame"
-              : ""
-          }`}
+      ${unlockedState[item.song.id] ? "pulse-effect" : ""}
+      ${
+        currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted
+          ? "ftue-add-library-highlight-frame"
+          : ""
+      }`}
             >
-              {/* Card content - the song image and info */}
-              <div className="absolute w-[200px]  z-10 bottom-[-0.3rem]">
-                <Image
-                  src={frameImage}
-                  alt="Title Bar"
-                  width={300}
-                  height={180}
-                  className="lg:h-[180px] xl:h-[180px] "
-                />
-              </div>
-              <div
-                className="unlock-card relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[120px] md:w-[134px] md:h-[116px] lg:w-[200px] lg:h-[180px]"
-                style={{
-                  backgroundImage: `url(${item.song.thumbnail_file})`,
-                }}
-              >
-                <div className="flex justify-center items-center">
-                  <div className="absolute sm:top-[-6%] md:top-[-10%] lg:top-[-1%] z-10">
+              {/* Main card container with exact dimensions */}
+              <div className="unlock-card relative overflow-hidden rounded-lg sm:w-[110px] sm:h-[130px] md:w-[134px] md:h-[140px] lg:w-[200px] lg:h-[180px]">
+                {/* Background image covering the entire card */}
+                <div className="absolute md:top-0 md:left-0 md:right-0 md:bottom-0 sm:top-0 sm:left-0 sm:right-0 sm:bottom-0 w-full h-full overflow-hidden">
+                  <Image
+                    src={item.song.thumbnail_file}
+                    alt={`${item.song.song_name} thumbnail`}
+                    width={500}
+                    height={500}
+                    className="absolute sm:top-0 sm:left-[-0.2rem] md:top-0 md:left-0  md:w-[150%] md:h-[120%] sm:w-[160%] sm:h-[120%] max-w-none object-cover"
+                    style={{ transform: "translate(-16%, -10%)" }}
+                    priority
+                  />
+                </div>
+                {/* Top purple frame - CSS only */}
+                <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10">
+                  {/* Keep original song title implementation */}
+                  <div className="absolute md:top-[-0.4rem] md:left-0 md:right-0  sm:top-[-0.4rem] sm:left-[-0.5rem] sm:right-0 flex justify-center items-center">
                     <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-2xl lg:text-xl xl:text-xl">
                       {item.song.song_name}
                     </p>
                   </div>
                 </div>
-                {/* <div className="absolute bottom-1 left-0 right-0 flex items-center justify-center">
-                  <div className="flex items-center justify-center z-10 w-full">
-                    <p className="text-white font-bold ml-2">
-                      {isUnlockTimePassed(item.unlock_time) ? (
-                        <button onClick={() => addToLibrary(item.song)}>
-                          <p className="tracking-wide unlocked-text text-nowrap sm:text-[6px] sm:pb-[5px] md:text-[7px] md:pb-[4px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1">
-                            Unlocked
-                          </p>
-                        </button>
-                      ) : (
-                        <CountdownTimer
-                          unlockTime={item.unlock_time}
-                          onExpire={() => {
-                            markSongAsUnlocked(item.song.id);
-                            triggerParticles(item.song.id);
-                          }}
+                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] bg-[#73274e] z-10">
+                  <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]">
+                    {item.unlock_time &&
+                      (isUnlockTimePassed(item.unlock_time) ? (
+                        // Fully unlocked - show full bar
+                        <div
+                          className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 w-full rounded-sm "
+                          style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
                         />
-                      )}
-                    </p>
-                  </div>
-                </div> */}
-                <div className="absolute bottom-[1.9rem] left-0 right-0 flex items-center justify-center">
-                  <div className="flex items-center justify-center z-10 w-full tracking-wide">
-                    <p className="text-nowrap text-yellow text-[13px]">Time Left:</p>
-                    <p className="text-white font-bold ml-2">
-                      {isUnlockTimePassed(item.unlock_time) ? (
-                        <button onClick={() => addToLibrary(item.song)}>
-                          <p
-                            className="tracking-wide unlocked-text text-nowrap sm:text-[6px] sm:pb-[5px] md:text-[18px] md:pb-[0.5px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1 text-[#0af0e4]"
-                            style={{ fontFamily: "Digital-7" }}
-                          >
-                            00:00:00
-                          </p>
-                        </button>
                       ) : (
-                        <div className="">
-                          {/* <p className="text-yellow text-nowrap text-[12px]">Time Left:</p> */}
+                        // Still unlocking - show filling bar
+                        <TimerBar unlockTime={item.unlock_time} />
+                      ))}
+                  </div>
+
+                  <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0 flex items-center justify-center z-20">
+                    <div className="flex items-center justify-center w-full ">
+                      <p className="text-nowrap text-yellow sm:text-[14px] md:text-[14px] -mr-1">
+                        Time Left:
+                      </p>
+                      <p className="text-white font-bold ml-2">
+                        {isUnlockTimePassed(item.unlock_time) ? (
+                          <button onClick={() => addToLibrary(item.song)}>
+                            <p
+                              className="tracking-wide unlocked-text text-nowrap sm:text-[14px]  md:text-[18px] md:pb-[0.5px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1 text-[#0af0e4]"
+                              style={{ fontFamily: "Digital-7" }}
+                            >
+                              00:00:00
+                            </p>
+                          </button>
+                        ) : (
                           <CountdownTimer
-                            className=""
                             unlockTime={item.unlock_time}
                             onExpire={() => {
                               markSongAsUnlocked(item.song.id);
                               triggerParticles(item.song.id);
                             }}
                           />
-                        </div>
-                      )}
-                    </p>
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-              {/* Button section - either "Unlock Now" or "Add to Library" */}
               {!isUnlockTimePassed(item.unlock_time) ? (
-                <div className="absolute bottom-[-0.5rem] w-[190px] left-[-1.rem]">
-                  <div className="relative mt-0.5 z-10">
+                <div className="absolute sm:bottom-[-0.1rem] sm:w-[190px] sm:left-[-1.35rem] md:bottom-[-0.2rem] md:w-[190px] md:left-[-1.8rem]">
+                  <div className="relative mt-0.5 z-20">
                     <button
                       className="w-full relative"
-                      onClick={() => handleUnlockNowClick(item.song)}
+                      // onClick={() => handleUnlockNowClick(item.song)}
                     >
                       <Image
                         src="/assets/img/hub/Button blank.png"
                         alt="Button"
                         width={10}
                         height={10}
-                        className="sm:h-[20px] sm:w-[120px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                        className="sm:h-[20px] sm:w-[100px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
                       />
                       <div className="absolute inset-0 flex items-center justify-between px-1">
                         <div className="flex items-center gap-0.5">
@@ -408,7 +476,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                             </span>
                           </div>
                         </div>
-                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[12px] md:text-[12px] lg:text-lg xl:text-lg  tracking-widest">
+                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[9px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
                           Finish Now
                         </p>
                       </div>
@@ -416,27 +484,29 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                   </div>
                 </div>
               ) : (
-                <div className="absolute bottom-[-0.2rem] w-[190px] left-[-1.6rem]">
-                  <div className="relative z-10 ">
-                    <button className="unlock-button flex items-center justify-center w-full">
+                <div className="absolute sm:bottom-[-0.1rem] sm:w-[185px] sm:left-[-1.3rem] md:bottom-[-0.1rem] md:w-[185px] md:left-[-1.6rem]">
+                  <div className="relative  z-20">
+                    <button
+                      className="w-full relative"
+                      // onClick={() => addToLibrary(item.song)}
+                    >
                       <Image
                         src="/assets/img/hub/Button blank.png"
-                        alt="Unlock Button Background"
-                        width={160}
-                        height={100}
-                        className="sm:h-[20px] sm:w-[120px] md:w-[120px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                        alt="Button"
+                        width={10}
+                        height={10}
+                        className="sm:h-[20px] sm:w-[100px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
                       />
-                      <div className="absolute gem-wrapper">
-                        <button onClick={() => addToLibrary(item.song)}>
-                          <p className="text-white font-bold flex-grow tracking-wide uppercase unlock-now-text whitespace-nowrap text-center sm:text-[10px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
-                            Add to Library
-                          </p>
-                        </button>
+                      <div className="absolute -inset-[26px] flex items-center justify-center">
+                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[10px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
+                          Add to Library
+                        </p>
                       </div>
                     </button>
                   </div>
                 </div>
               )}
+
               {/* Particle effect */}
               {particleTrigger[item.song.id] && (
                 <ParticleEffect
@@ -448,9 +518,10 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
               )}
             </div>
           </div>
-          {/* Hand pointer for step 5 */}
+
+          {/* FTUE hand pointers - unchanged */}
           {currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted && (
-            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce  pointer-events-none z-[100]">
+            <div className="absolute bottom-[-80px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
                 src="/assets/img/ftue/hand icon.png"
                 width={80}
@@ -460,7 +531,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
               />
             </div>
           )}
-          {/* Hand pointer for step 4 */}
           {currentStep === 4 && i === 0 && !isCompleted && (
             <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
@@ -468,7 +538,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                 width={80}
                 height={80}
                 alt="Hand pointing to unlocking song"
-                className="w-20 h-20 object-contain "
+                className="w-20 h-20 object-contain"
               />
             </div>
           )}
@@ -492,9 +562,25 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   }
   return (
     <div className="w-full mb-1">
-      <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-6xl md:mb-3">
-        Currently Unlocking
-      </h1>
+      <div className="flex justify-center items-center gap-x-1.5">
+        {/* <Image
+          alt="lock-icon"
+          src={"/assets/img/footer/Unlock_copy.png"}
+          width={10}
+          height={10}
+          className="sm:w-5 sm:h-5 sm:-mb-2 md:w-6 md:h-6 "
+        /> */}
+        <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-6xl md:mb-3 ">
+          Currently Unlocking
+        </h1>
+        {/* <Image
+          alt="lock-icon"
+          src={"/assets/img/footer/Unlock_copy.png"}
+          width={10}
+          height={10}
+          className="sm:w-5 sm:h-5 sm:-mb-2 md:w-6 md:h-6 "
+        /> */}
+      </div>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
       {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
       {/* Popups */}
