@@ -416,7 +416,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                         {isUnlockTimePassed(item.unlock_time) ? (
                           <button onClick={() => addToLibrary(item.song)}>
                             <p
-                              className="tracking-wide unlocked-text text-nowrap sm:text-[14px]  md:text-[18px] md:pb-[0.5px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1 text-[#0af0e4]"
+                              className="tracking-wider unlocked-text text-nowrap sm:text-[12px]  md:text-[18px] md:pb-[0.5px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1 text-[#0af0e4]"
                               style={{ fontFamily: "Digital-7" }}
                             >
                               00:00:00

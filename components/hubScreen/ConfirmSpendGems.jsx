@@ -107,7 +107,7 @@ const TimerBar = ({ unlockTime, song }) => {
   }, [unlockTime, song]);
 
   return (
-    <div className="w-full bg-[#5e203f] h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
+    <div className="w-full  h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
       <div className="w-full h-2.5 bg-[#4e1b2e] mt-0.5 rounded-sm relative shadow-lg">
         <div
           className="h-full absolute left-0 rounded-sm transition-all duration-100 ease-linear"
