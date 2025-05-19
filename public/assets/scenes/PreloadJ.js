@@ -243,7 +243,6 @@ class PreloadJ extends Phaser.Scene {
   }
 
   init(data) {
-    console.log(data);
     this.track = data.track;
     this.track.mp3_url = this.track.mp3_file;
     this.track.midi_url = this.track.midi_file;
@@ -338,7 +337,7 @@ class PreloadJ extends Phaser.Scene {
       }
       this.tweens.killTweensOf(this.loading_txt);
 
-      // this.scale.startFullscreen();
+      this.scale.startFullscreen();
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
         this.button_sfx.play();

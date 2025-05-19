@@ -78,8 +78,8 @@ export const AnalyticsService = {
     // Since tileType is always a string, include it in the event ID
     gameanalytics.GameAnalytics.addDesignEvent(`Song:Miss:${songName}:${tileType}`);
 
-    // Also track general misses for the song (without tile type) for easier aggregation
-    gameanalytics.GameAnalytics.addDesignEvent(`Song:Miss:${songName}`);
+    // // Also track general misses for the song (without tile type) for easier aggregation
+    // gameanalytics.GameAnalytics.addDesignEvent(`Song:Miss:${songName}`);
   },
 
   trackSongEnd: (songName, score, wasSuccessful) => {
@@ -148,7 +148,7 @@ export const AnalyticsService = {
     if (!initialized || !gameanalytics) return;
 
     // Always track with tile type since it's available
-    const eventId = `FTUE:TileMiss:${stepName}:${tileType}`;
+    const eventId = `FTUE:TileMiss:${tileType}`;
 
     // If attempt count is provided, include it as a value
     if (attemptCount !== null) {
@@ -157,9 +157,9 @@ export const AnalyticsService = {
       gameanalytics.GameAnalytics.addDesignEvent(eventId);
     }
 
-    // Also track aggregated miss events for the tutorial step
-    const stepEventId = `FTUE:TileMiss:${stepName}`;
-    gameanalytics.GameAnalytics.addDesignEvent(stepEventId);
+    // // Also track aggregated miss events for the tutorial step
+    // const stepEventId = `FTUE:TileMiss:${stepName}`;
+    // gameanalytics.GameAnalytics.addDesignEvent(stepEventId);
   },
 };
 

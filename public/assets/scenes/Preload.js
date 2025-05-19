@@ -305,27 +305,7 @@ class Preload extends Phaser.Scene {
   }
 
   init(data) {
-    console.log("Preload init - data:", data);
-    console.log("Preload init - localStorage:", localStorage.getItem("currentTrackData"));
-    if (data && data.track) {
-      this.track = data.track;
-      console.log("Using track data from scene params:", this.track.song_name);
-    }
-    // If not, try to get it from localStorage (used by your Zustand store)
-    else {
-      try {
-        const storedTrackData = localStorage.getItem("currentTrackData");
-        if (storedTrackData) {
-          this.track = JSON.parse(storedTrackData);
-          console.log("Using track data from localStorage:", this.track.song_name);
-        } else {
-          console.error("No track data found in localStorage!");
-        }
-      } catch (error) {
-        console.error("Error parsing track data:", error);
-      }
-    }
-
+    this.track = data.track;
     this.track.mp3_url = this.track.mp3_file;
     this.track.midi_url = this.track.midi_file;
     // this.track.mp3_url = "./assets/sounds/SoundScape/Score_Counter_Sfx.mp3";
@@ -420,7 +400,7 @@ class Preload extends Phaser.Scene {
       }
       this.tweens.killTweensOf(this.loading_txt);
 
-      // this.scale.startFullscreen();
+      this.scale.startFullscreen();
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
         this.button_sfx.play();

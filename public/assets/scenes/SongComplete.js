@@ -103,7 +103,7 @@ class SongComplete extends Phaser.Scene {
     // discs_text
     const discs_text = this.add.text(240, 392, "", {});
     discs_text.setOrigin(0.5, 0.5);
-    discs_text.text = "45 discs";
+    discs_text.text = "30 discs";
     discs_text.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
 
     // you_now_have

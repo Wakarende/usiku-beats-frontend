@@ -1,13 +1,13 @@
 :root {
-  --kayfo-orange: #DA7F14;
-  --kayfo-orange-light: #FFA500;
+  --kayfo-orange: #da7f14;
+  --kayfo-orange-light: #ffa500;
   --kayfo-violet: #280439;
-  --kayfo-pink: #FF2264;
+  --kayfo-pink: #ff2264;
   --kayfo-dark-pink: #982062;
 }
 
 .App {
-  background-image: url('/assets/img/BG.png');
+  background-image: url("/assets/img/BG.png");
   /* Debugging  */
   /* background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
     url('/assets/img/BG.png'); */
@@ -22,25 +22,28 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: "Afolkalips";
   src: url("/assets/fonts/Afolkalips.otf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Carlito-Bold";
   src: url("/assets/fonts/Carlito-Bold.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Carlito-BoldItalic";
   src: url("/assets/fonts/Carlito-BoldItalic.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Carlito-Italic";
   src: url("/assets/fonts/Carlito-Italic.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
@@ -51,6 +54,7 @@
 @font-face {
   font-family: "Carlito-Regular";
   src: url("/assets/fonts/Carlito-Regular.ttf") format("truetype");
+  font-display: swap;
 }
 
 body {
@@ -71,7 +75,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: 'Afolkalips', sans-serif;
+  font-family: "Afolkalips", sans-serif;
 }
 
 .kayfo-header {
@@ -85,14 +89,14 @@ h3 {
   border: none;
   border-radius: 25px;
   font-weight: bold;
-  transition: all ease-in .2s;
+  transition: all ease-in 0.2s;
   padding-top: 4px;
 }
 
 .kayfo-connexion-btn:hover {
   color: #000;
   background-color: #fff;
-  transition: all ease-in .1s;
+  transition: all ease-in 0.1s;
 }
 
 .kayfo-signin-btn {
@@ -101,14 +105,14 @@ h3 {
   border: none;
   border-radius: 25px;
   font-weight: bold;
-  transition: all ease-in .2s;
+  transition: all ease-in 0.2s;
   padding-top: 4px;
 }
 
 .kayfo-signin-btn:hover {
   color: #fff;
   background-color: #0c0111;
-  transition: all ease-in .1s;
+  transition: all ease-in 0.1s;
 }
 
 .kayfo-gotogames-btn {
@@ -117,7 +121,7 @@ h3 {
   border: solid 1px #fff;
   border-radius: 25px;
   font-weight: bold;
-  transition: all ease-in .2s;
+  transition: all ease-in 0.2s;
   padding-top: 4px;
 }
 
@@ -125,7 +129,7 @@ h3 {
   color: #fff;
   background-color: #0c0111;
   border: solid 1px var(--kayfo-pink);
-  transition: all ease-in .1s;
+  transition: all ease-in 0.1s;
 }
 
 .kayfo-signin-box {
@@ -188,7 +192,7 @@ h3 {
 }
 
 .form-select {
-  --bs-form-select-bg-img: url('/assets/icons/select-arrow.png');
+  --bs-form-select-bg-img: url("/assets/icons/select-arrow.png");
 }
 
 .kayfo-category-btn {
@@ -263,7 +267,8 @@ h3 {
   /* Alternatively, use rgba or hex if transparency is needed */
 }
 
-.kayfo-masonry-item img {}
+.kayfo-masonry-item img {
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .kayfo-masonry-main::-webkit-scrollbar {
@@ -292,7 +297,6 @@ h3 {
   color: #fff;
 }
 
-
 .kayfo-bottom-nav-link.active {
   background-color: transparent !important;
   border-color: transparent !important;
@@ -304,24 +308,6 @@ h3 {
   transition: all ease-in 0.2s;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ul li.page-item span {
   color: #ffffff;
 }
@@ -329,7 +315,6 @@ ul li.page-item span {
 ul li.page-item:hover span {
   color: #2d2d2d;
 }
-
 
 a.page-link {
   color: #fff;
@@ -348,7 +333,6 @@ ul li.page-item.active span {
   color: #000000;
   text-decoration: none;
 }
-
 
 .kayfo-game-detail-container {
   background-color: var(--kayfo-violet);
@@ -406,17 +390,15 @@ ul li.page-item.active span {
   outline: solid 2px transparent;
   transition: all ease-in 0.25s;
   cursor: pointer;
-
 }
 
 .kayfo-subscription-pack:hover {
-  outline: solid 2px #A48EFF;
+  outline: solid 2px #a48eff;
   transition: all ease-in 0.25s;
-
 }
 
 .kayfo-payment-method {
-  background-color: #D9D9D920;
+  background-color: #d9d9d920;
   padding: 7px;
   border-radius: 6px;
   outline: solid 2px transparent;
@@ -425,7 +407,7 @@ ul li.page-item.active span {
 }
 
 .kayfo-payment-method:hover {
-  outline: solid 2px #A48EFF;
+  outline: solid 2px #a48eff;
   transition: all ease-in 0.25s;
 }
 
@@ -444,18 +426,16 @@ ul li.page-item.active span {
   border: none;
   border-radius: 25px;
   font-weight: bold;
-  transition: all ease-in .2s;
+  transition: all ease-in 0.2s;
 }
 
 .kayfo-progress-btn:hover {
   color: #000;
   background-color: #fff;
-  transition: all ease-in .1s;
+  transition: all ease-in 0.1s;
 }
 
-
 @media only screen and (max-width: 600px) {
-
   .kayfo-categories-banner div {
     justify-content: flex-start;
   }
@@ -492,64 +472,74 @@ ul li.page-item.active span {
 }
 
 @font-face {
-  font-family: 'Young-Techs';
-  src: url('/assets/fonts/youngtechs.ttf') format('truetype');
+  font-family: "Young-Techs";
+  src: url("/assets/fonts/youngtechs.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Robot-Font';
-  src: url('/assets/fonts/Robot_Font.ttf') format('truetype');
+  font-family: "Robot-Font";
+  src: url("/assets/fonts/Robot_Font.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'D-DIN-Bold';
-  src: url('/assets/fonts/D-DIN-Bold.otf') format('opentype');
+  font-family: "D-DIN-Bold";
+  src: url("/assets/fonts/D-DIN-Bold.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'DINPro-Bold';
-  src: url('/assets/fonts/DINPro-Bold.otf') format('opentype');
+  font-family: "DINPro-Bold";
+  src: url("/assets/fonts/DINPro-Bold.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'DINPro-Medium';
-  src: url('/assets/fonts/DINPro-Medium.otf') format('opentype');
+  font-family: "DINPro-Medium";
+  src: url("/assets/fonts/DINPro-Medium.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'DINPro';
-  src: url('/assets/fonts/DINPro.otf') format('opentype');
+  font-family: "DINPro";
+  src: url("/assets/fonts/DINPro.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Misty-Cotton';
-  src: url('/assets/fonts/Misty Cotton.ttf') format('truetype');
+  font-family: "Misty-Cotton";
+  src: url("/assets/fonts/Misty Cotton.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'MyriadPro-Bold';
-  src: url('/assets/fonts/MyriadPro-Bold.otf') format('opentype');
+  font-family: "MyriadPro-Bold";
+  src: url("/assets/fonts/MyriadPro-Bold.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'MyriadPro-Regular';
-  src: url('/assets/fonts/MyriadPro-Regular.otf') format('opentype');
+  font-family: "MyriadPro-Regular";
+  src: url("/assets/fonts/MyriadPro-Regular.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Roboto-Regular';
-  src: url('/assets/fonts/Roboto-Regular.ttf') format('truetype');
+  font-family: "Roboto-Regular";
+  src: url("/assets/fonts/Roboto-Regular.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Righteous-Regular';
-  src: url('/assets/fonts/Righteous-Regular.ttf') format('truetype');
+  font-family: "Righteous-Regular";
+  src: url("/assets/fonts/Righteous-Regular.ttf") format("truetype");
+  font-display: swap;
 }
-
 
 .song-info {
   color: white;
-  font-family: 'Righteous-Regular', sans-serif;
+  font-family: "Righteous-Regular", sans-serif;
   line-height: 1.1;
   text-align: left;
   display: flex;
@@ -572,8 +562,6 @@ ul li.page-item.active span {
   margin: 0;
 }
 
-
-
 .song-detail-text .detail {
   display: flex;
   align-items: center;
@@ -587,13 +575,11 @@ ul li.page-item.active span {
   /* Prevents the title from shrinking */
   margin-right: 8px;
   font-weight: bold;
-  font-family: 'Righteous-Regular', sans-serif;
-
+  font-family: "Righteous-Regular", sans-serif;
 }
 
 .song-detail-text .content {
   flex-grow: 1;
   /* Allows the content to take up the remaining space */
-  font-family: 'DINPro', sans-serif;
-
+  font-family: "DINPro", sans-serif;
 }

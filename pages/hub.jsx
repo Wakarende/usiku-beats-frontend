@@ -332,10 +332,11 @@ const HubScreen = () => {
   const gotoGameDetail = (track) => {
     console.log("Setting current track data:", track.id, track.song_name);
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("currentTrackData", JSON.stringify(track));
-    }
-    router.push("/game");
+    setCurrentTrackData(JSON.stringify(track));
+
+    const src = process.env.NODE_ENV === "production" ? `/game.html` : `/game`;
+    window.location.href = src;
+    // router.push("/game");
   };
 
   const checkRedirect = () => {

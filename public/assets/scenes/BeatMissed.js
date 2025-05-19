@@ -264,10 +264,9 @@ class BeatMissed extends Phaser.Scene {
   checkGems() {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     const total_gems = user_data.profile.player.total_gems;
-    this.gem_count.setText(total_gems);
 
     const continueCost = (this.continueCount + 1) * 5; // Calculate the cost
-
+    this.gem_count.setText(continueCost);
     // Initially disable the button
     this.continue_btn.disableInteractive();
     // this.continue_btn.setAlpha(0.5); // Optional: make it look disabled

@@ -282,6 +282,8 @@ class GameOverScene extends Phaser.Scene {
 
           // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
         });
+
+      this.triggerFullScreen();
     });
 
     this.library_button.setInteractive();
@@ -306,6 +308,7 @@ class GameOverScene extends Phaser.Scene {
         pathname: "/library",
         // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
+      this.triggerFullScreen();
     });
 
     this.buildScreen();
@@ -320,6 +323,17 @@ class GameOverScene extends Phaser.Scene {
     this.adjustButtons();
   }
 
+  async triggerFullScreen() {
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        console.warn("Fullscreen API is not supported");
+      }
+    } catch (err) {
+      console.error("Error enabling full-screen mode:", err);
+    }
+  }
   adjustButtons() {
     let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
 
