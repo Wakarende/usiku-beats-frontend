@@ -180,7 +180,7 @@ export default function TitleScreen() {
       <div className="relative flex flex-col justify-between items-center h-full w-full overflow-hidden">
         {/* Logo Section */}
         <motion.div
-          className="flex flex-col justify-center relative z-10 md:w-[15rem] sm:w-[11rem] lg:w-[16rem] xl:w-[20rem] "
+          className="flex flex-col justify-center relative z-10"
           initial={{ y: -300, opacity: 0 }}
           animate={logoVisible ? { y: 0, opacity: 1 } : { y: -300, opacity: 0 }}
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
@@ -190,7 +190,7 @@ export default function TitleScreen() {
             width={1}
             height={1}
             alt="logo"
-            className="w-[15rem]"
+            className="md:w-[15rem] sm:w-[10rem] lg:w-[16rem] xl:w-[20rem]"
             priority={true}
           />
         </motion.div>
