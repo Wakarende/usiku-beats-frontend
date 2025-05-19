@@ -15,6 +15,7 @@ const Header = () => {
   const [stars, setStars] = useState(0);
   const [gems, setGems] = useState(0);
   const [level, setLevel] = useState(1);
+  const [lastTapTime, setLastTapTime] = useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,6 +46,21 @@ const Header = () => {
     // Navigate to the start of the game (root path)
     window.location.href = "/";
   }
+
+  const handleTap = () => {
+    const currentTime = new Date().getTime();
+    const timeSinceLastTap = currentTime - lastTapTime;
+
+    // Check if this is a double tap (tap within 300ms of previous tap)
+    if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+      resetGame();
+      console.log("Double-tap reset triggered");
+    }
+
+    // Update the last tap time
+    setLastTapTime(currentTime);
+  };
+
   return (
     <Navbar expand="lg" className="navbar" style={{ zIndex: 21 }}>
       <Container fluid className="flex items-center justify-between">
@@ -101,19 +117,27 @@ const Header = () => {
           />
         </div>
         {/* Header Icons Section */}
-        <div className="header-right flex items-center gap-x-2 h-full">
-          <button onClick={resetGame} className="flex items-center">
-            <Image
-              src="/assets/img/header/Leaderboard_icon.png"
-              alt="Leaderboard"
-              width={50}
-              height={50}
+        <div className="header-right flex items-center justify-end gap-x-2 h-full">
+          <div className="ml-10"></div>
+          <button
+            onClick={handleTap}
+            className="flex items-center justify-center"
+            style={{
+              width: "50px",
+              height: "50px",
+
+              // border: "1px dashed red",
+              // opacity: 0.3,
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                touchAction: "manipulation",
+              }}
             />
           </button>
-          <div className="ml-10"></div>
-          {/* <Link href={"/login"} className="flex items-center">
-            <Image src="/assets/img/header/Settings.png" alt="Settings" width={50} height={50} />
-          </Link> */}
         </div>
       </Container>
     </Navbar>

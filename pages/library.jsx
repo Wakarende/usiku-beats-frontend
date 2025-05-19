@@ -25,8 +25,7 @@ const isSongInQueue = (songInstance) => {
   if (songInstance.unlocked) return false;
   if (!songInstance.unlock_time) return false;
 
-  const unlockTime = new Date(songInstance.unlock_time).getTime();
-  return unlockTime > Date.now();
+  return true;
 };
 
 const Library = () => {
@@ -135,12 +134,29 @@ const Library = () => {
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
     const existingInstance = user_data.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
+      (instance) =>
+        instance.song.id === song.id || // Direct match
+        (instance.song &&
+          instance.song.id &&
+          song.id &&
+          instance.song.id.toString() === song.id.toString())
     );
 
-    if (existingInstance && !existingInstance.unlocked && existingInstance.unlockTime) {
-      console.log("Song is already unlocking; cannot purchase again");
-      return;
+    if (existingInstance && !existingInstance.unlocked) {
+      if (existingInstance.unlock_time) {
+        const now = new Date();
+        const unlockTime = new Date(existingInstance.unlock_time);
+
+        if (unlockTime > now) {
+          console.log("Song is still unlocking; cannot purchase again");
+          return;
+        } else {
+          console.log(
+            "Song has finished unlocking but hasn't been added to library yet; cannot purchase again"
+          );
+          return;
+        }
+      }
     }
 
     setUnlockedSong(song);

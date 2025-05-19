@@ -221,6 +221,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     );
 
     if (songInstance) {
+      songInstance.unlock_start_time = new Date().toISOString();
       songInstance.unlock_time = new Date().toISOString();
       dispatch(updateUser(newUserdata));
 
@@ -287,57 +288,47 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     return timeLeft;
   }
 
-  function TimerBar({ unlockTime }) {
+  function TimerBar({ unlockTime, song }) {
     const [fillPercent, setFillPercent] = useState(0);
-    const initialTimeRef = useRef(null);
-    const startTimeRef = useRef(null);
 
     useEffect(() => {
-      // Calculate and store the initial times when component mounts
-      if (initialTimeRef.current === null) {
-        const now = new Date();
-        const unlockDate = new Date(unlockTime);
-        const remainingTime = unlockDate.getTime() - now.getTime();
-
-        initialTimeRef.current = remainingTime;
-        startTimeRef.current = now.getTime();
-      }
-
       const calculateFill = () => {
         const now = new Date();
         const unlockDate = new Date(unlockTime);
 
-        // If unlock time has passed, show full bar
         if (now >= unlockDate) {
           return 100;
         }
 
-        // Get elapsed time since component mounted
-        const elapsedTime = now.getTime() - startTimeRef.current;
+        let startTime;
+        if (song && song.unlock_start_time) {
+          startTime = new Date(song.unlock_start_time);
+        } else {
+          const estimatedDuration = 60 * 1000;
+          startTime = new Date(unlockDate.getTime() - estimatedDuration);
+        }
 
-        // Use the initial remaining time as total duration
-        const totalDuration = initialTimeRef.current;
+        const totalDuration = unlockDate.getTime() - startTime.getTime();
 
-        // Calculate fill percentage
+        const elapsedTime = now.getTime() - startTime.getTime();
+
         const percentage = (elapsedTime / totalDuration) * 100;
 
         return Math.max(0, Math.min(100, percentage));
       };
 
-      // Update every 100ms for smoother animation
       const timer = setInterval(() => {
         setFillPercent(calculateFill());
-      }, 100);
+      }, 50);
 
-      // Initial calculation
       setFillPercent(calculateFill());
 
       return () => clearInterval(timer);
-    }, [unlockTime]);
+    }, [unlockTime, song]);
 
     return (
       <div
-        className="h-full absolute left-0 rounded-sm transition-all duration-100 ease-linear"
+        className="h-full absolute left-0 rounded-sm transition-all duration-50 ease-linear"
         style={{
           width: `${fillPercent}%`,
           background: "linear-gradient(to right, #edca55, #3bc0b3)",
@@ -345,7 +336,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       />
     );
   }
-
   const slots = 3;
   const slotsContent = [];
   for (let i = 0; i < slots; i++) {
@@ -358,7 +348,6 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           key={`song${item.song.id}`}
           className="relative"
           onClick={() => {
-            // Logic to handle different states
             if (isUnlockTimePassed(item.unlock_time)) {
               addToLibrary(item.song);
             } else {
@@ -394,9 +383,8 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                     priority
                   />
                 </div>
-                {/* Top purple frame - CSS only */}
+                {/* Top purple frame */}
                 <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10">
-                  {/* Keep original song title implementation */}
                   <div className="absolute md:top-[-0.4rem] md:left-0 md:right-0  sm:top-[-0.4rem] sm:left-[-0.5rem] sm:right-0 flex justify-center items-center">
                     <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-2xl lg:text-xl xl:text-xl">
                       {item.song.song_name}
@@ -407,14 +395,15 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                   <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]">
                     {item.unlock_time &&
                       (isUnlockTimePassed(item.unlock_time) ? (
-                        // Fully unlocked - show full bar
                         <div
                           className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 w-full rounded-sm "
                           style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
                         />
                       ) : (
-                        // Still unlocking - show filling bar
-                        <TimerBar unlockTime={item.unlock_time} />
+                        <TimerBar
+                          unlockTime={item.unlock_time}
+                          unlockStartTime={item.unlock_start_time}
+                        />
                       ))}
                   </div>
 

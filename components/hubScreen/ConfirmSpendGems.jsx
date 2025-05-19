@@ -56,54 +56,55 @@ const CountdownTimer = ({ unlockTime, onExpire }) => {
   );
 };
 
-// Separate component for the timer bar
-const TimerBar = ({ unlockTime }) => {
+const TimerBar = ({ unlockTime, song }) => {
   const [fillPercent, setFillPercent] = useState(0);
-  const initialTimeRef = useRef(null);
-  const startTimeRef = useRef(null);
 
   useEffect(() => {
-    // Calculate and store the initial times when component mounts
-    if (initialTimeRef.current === null) {
-      const now = new Date();
-      const unlockDate = new Date(unlockTime);
-      const remainingTime = unlockDate.getTime() - now.getTime();
-
-      initialTimeRef.current = remainingTime;
-      startTimeRef.current = now.getTime();
-    }
-
     const calculateFill = () => {
       const now = new Date();
       const unlockDate = new Date(unlockTime);
 
-      // If unlock time has passed, show full bar
       if (now >= unlockDate) {
         return 100;
       }
 
-      // Get elapsed time since component mounted
-      const elapsedTime = now.getTime() - startTimeRef.current;
+      const remainingTime = unlockDate.getTime() - now.getTime();
 
-      // Use the initial remaining time as total duration
-      const totalDuration = initialTimeRef.current;
+      const unlockDuration = getUnlockDuration(song);
 
-      // Calculate fill percentage
-      const percentage = (elapsedTime / totalDuration) * 100;
+      const elapsedTime = unlockDuration - remainingTime;
+
+      const percentage = (elapsedTime / unlockDuration) * 100;
 
       return Math.max(0, Math.min(100, percentage));
     };
 
-    // Update every 100ms for smoother animation
+    function getUnlockDuration(song) {
+      if (song.date_added) {
+        const startTime = new Date(song.date_added).getTime();
+        const endTime = new Date(unlockTime).getTime();
+        return endTime - startTime;
+      }
+
+      const totalSeconds = song.unlock_duration || Math.ceil(remainingTimeInSeconds(unlockTime));
+
+      return totalSeconds * 1000;
+    }
+
+    function remainingTimeInSeconds(unlockTime) {
+      const now = new Date();
+      const unlockDate = new Date(unlockTime);
+      return Math.max(0, (unlockDate.getTime() - now.getTime()) / 1000);
+    }
+
     const timer = setInterval(() => {
       setFillPercent(calculateFill());
     }, 100);
 
-    // Initial calculation
     setFillPercent(calculateFill());
 
     return () => clearInterval(timer);
-  }, [unlockTime]);
+  }, [unlockTime, song]);
 
   return (
     <div className="w-full bg-[#5e203f] h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
@@ -121,11 +122,11 @@ const TimerBar = ({ unlockTime }) => {
 };
 
 const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) => {
-  // Always define hooks at the top level, before any conditional returns
-  const { currentStep, isCompleted } = useFTUEStore();
+  const ftueStore = useFTUEStore();
+  const currentStep = ftueStore?.currentStep || 0;
+  const isCompleted = ftueStore?.isCompleted || false;
   const [shouldClose, setShouldClose] = useState(false);
 
-  // Handle auto-close if timer runs out while popup is open
   useEffect(() => {
     if (shouldClose) {
       onCancel();
@@ -133,33 +134,26 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
   }, [shouldClose, onCancel]);
 
   // For debugging
-  console.log("ConfirmSpendGemsPopup - selectedSong:", selectedSong);
+  // console.log("ConfirmSpendGemsPopup - selectedSong:", selectedSong);
 
-  // Early return if no data
   if (!isOpen || !selectedSong) return null;
 
-  // Get song details AFTER the hooks
   const unlockTime = selectedSong.unlock_time;
   console.log("ConfirmSpendGemsPopup - unlockTime:", unlockTime);
 
-  // Get the song object, which could be either directly or in selectedSong.song
   const song = selectedSong.song || selectedSong;
 
-  // Get song details
   const songName = song.song_name;
   const artistName = song.artist_name;
   const thumbnailFile = song.thumbnail_file;
 
-  // Check if the song is already unlocked
   const isUnlocked = isUnlockTimePassed(unlockTime);
 
-  // Handle timer expiration
   const handleTimerExpire = () => {
     console.log("Timer expired while popup is open");
     setShouldClose(true);
   };
 
-  // If the song is already unlocked, close the popup
   if (isUnlocked) {
     setTimeout(() => onCancel(), 0);
     return null;
@@ -168,7 +162,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[110] bg-black/80">
       <div
-        style={{ backgroundImage: `url("/assets/img/dailyreward/BG.png")` }}
+        style={{ backgroundImage: `url("/assets/img/dailyreward/BG-v1.png")` }}
         className="text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
       >
         <div className="flex flex-col gap-0 mt-10">
@@ -208,7 +202,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
           </p>
 
           {/* Add timer bar */}
-          {unlockTime && <TimerBar unlockTime={unlockTime} />}
+          {unlockTime && <TimerBar unlockTime={unlockTime} song={selectedSong} />}
         </div>
         {/* Song thumbnail */}
         <div className="mb-2">

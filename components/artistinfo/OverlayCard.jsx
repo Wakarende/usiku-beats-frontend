@@ -61,14 +61,17 @@ const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => 
         <div className="overlay-body">
           <p className="text-white">{bio}</p>
         </div>
-        <button onClick={onClose} className="">
+        <button onClick={onClose} className="absolute bottom-0 w-[20rem] relative">
           <Image
-            src="/assets/img/artistinfo/Close_button.png"
+            src="/assets/img/hub/Button blank.png"
             alt="close-button"
-            width={200}
-            height={200}
+            width={100}
+            height={100}
             className="w-full h-auto"
           />
+          <div className="absolute top-0 left-[4.8rem] flex justify-center items-center w-full">
+            <p className="text-white font-bold uppercase text-4xl tracking-widest ">CLOSE</p>
+          </div>
         </button>
       </div>
     </div>
