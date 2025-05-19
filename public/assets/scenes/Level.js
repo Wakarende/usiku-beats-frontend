@@ -40,7 +40,7 @@ class Level extends Phaser.Scene {
     artist_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "14px" });
 
     // song_name_text
-    const song_name_text = this.add.text(180, 27, "", {});
+    const song_name_text = this.add.text(180, 29, "", {});
     song_name_text.setOrigin(0.5, 0.5);
     song_name_text.text = "song";
     song_name_text.setStyle({
@@ -78,14 +78,14 @@ class Level extends Phaser.Scene {
     tap_zone_area.visible = false;
 
     // divider_1
-    // const divider_1 = this.add.image(121.5, 321, "Perfect_Zone_Divider 2");
-    // divider_1.scaleX = 0.3;
-    // divider_1.scaleY = 0.42;
+    const divider_1 = this.add.image(121.5, 321, "Perfect_Zone_Divider 2");
+    divider_1.scaleX = 0.3;
+    divider_1.scaleY = 0.42;
 
     // divider_2
-    // const divider_2 = this.add.image(238, 320, "Perfect_Zone_Divider 2");
-    // divider_2.scaleX = 0.3;
-    // divider_2.scaleY = 0.42;
+    const divider_2 = this.add.image(238, 320, "Perfect_Zone_Divider 2");
+    divider_2.scaleX = 0.3;
+    divider_2.scaleY = 0.42;
 
     // feedback_text
     const feedback_text = this.add.image(180, 303, "perfect");
@@ -293,14 +293,14 @@ class Level extends Phaser.Scene {
     song_complete_overlay.add(disc_count_txt_1);
 
     // lists
-    const ui_layer = [
-      multiplier_text,
-      score_text,
-      song_name_text,
-      artist_text,
+    const ui_layer = [multiplier_text, score_text, song_name_text, artist_text];
+    const perfect_zone = [
+      perfect_1,
+      colour_highlight_2,
+      colour_highlight_1,
+      colour_highlight,
       perfect_3,
       perfect_2,
-      perfect_1,
     ];
 
     this.vignette = vignette;
@@ -311,8 +311,8 @@ class Level extends Phaser.Scene {
     this.pause_btn = pause_btn;
     this.multiplier_text = multiplier_text;
     this.tap_zone_area = tap_zone_area;
-    // this.divider_1 = divider_1;
-    // this.divider_2 = divider_2;
+    this.divider_1 = divider_1;
+    this.divider_2 = divider_2;
     this.feedback_text = feedback_text;
     this.bar = bar;
     this.streak_popup = streak_popup;
@@ -326,6 +326,7 @@ class Level extends Phaser.Scene {
     this.earn_text = earn_text;
     this.disc_count_txt = disc_count_txt;
     this.ui_layer = ui_layer;
+    this.perfect_zone = perfect_zone;
 
     this.events.emit("scene-awake");
   }
@@ -374,8 +375,10 @@ class Level extends Phaser.Scene {
   earn_text;
   /** @type {Phaser.GameObjects.Text} */
   disc_count_txt;
-  /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
+  /** @type {Phaser.GameObjects.Text[]} */
   ui_layer;
+  /** @type {Phaser.GameObjects.Image[]} */
+  perfect_zone;
 
   /* START-USER-CODE */
 
@@ -512,6 +515,9 @@ class Level extends Phaser.Scene {
 
     this.ui_layer.forEach((asset) => {
       asset.setDepth(3);
+    });
+    this.perfect_zone.forEach((asset) => {
+      asset.setDepth(2.7);
     });
 
     // this.divider_1.setDepth(2.5);
@@ -698,7 +704,7 @@ class Level extends Phaser.Scene {
     if (this.lineMarkers.length === 0 && this.lineGroup.getChildren().length === 0) return;
 
     if (!this.music.isPlaying) {
-      console.log("music stopped, forcing remaining lines to finish");
+      // console.log("music stopped, forcing remaining lines to finish");
       seek = this.music.duration + 1;
     }
 
@@ -725,7 +731,7 @@ class Level extends Phaser.Scene {
         line.setY(adjustedY);
 
         if (!this.music.isPlaying && line.y >= this.screenHeight) {
-          console.log(`Destroying line ${index} at Y: ${line.y}`);
+          // console.log(`Destroying line ${index} at Y: ${line.y}`);
           line.destroy();
         }
       });
@@ -1412,7 +1418,7 @@ class Level extends Phaser.Scene {
     ninesliceTile.start = tile.start;
     ninesliceTile.duration = duration;
     ninesliceTile.initialHeight = initialHeight;
-    ninesliceTile.setDepth(tile.depth);
+    ninesliceTile.setDepth(2.8);
     ninesliceTile.tileType = "held";
 
     // Variables to track hold duration
@@ -1434,6 +1440,11 @@ class Level extends Phaser.Scene {
     ninesliceTile.setInteractive();
 
     ninesliceTile.on("pointerdown", () => {
+      // Fix: Ignore additional touches if already being held
+      if (ninesliceTile.held) {
+        return;
+      }
+
       ninesliceTile.held = true;
       ninesliceTile.holdStartTime = this.time.now; // Record start time
 
@@ -1547,7 +1558,6 @@ class Level extends Phaser.Scene {
       }
     });
   }
-
   // Modify checkOverlap to track failed tile type
   checkOverlap(tile) {
     if (tile.y >= this.screenHeight) {
@@ -1652,7 +1662,7 @@ class Level extends Phaser.Scene {
       track: this.track,
       score: this.score,
       currentDiscs: JSON.parse(localStorage.getItem("user_data")).profile.player.total_discs,
-      earnedDiscs: 45,
+      earnedDiscs: 30,
       isFTUE: this.isFTUE,
     };
 
@@ -1857,7 +1867,7 @@ class Level extends Phaser.Scene {
     // console.log("tileType", tileType);
 
     if (this.isFTUE) {
-      this.analytics.trackFTUETileMiss("Gameplay", tileType);
+      this.analytics.trackFTUETileMiss(tileType);
       this.ftueFail(tileType);
     } else {
       this.analytics.trackTileMiss(this.track.song_name, tileType);
@@ -2081,7 +2091,6 @@ class Level extends Phaser.Scene {
 
   tileActiveFlash(tile, perfect_plus) {
     var tile_active = this.add.image(tile.x, 0, "tile_active").setDepth(10);
-    console.log("here");
 
     if (perfect_plus) {
       tile_active.setY(this.screenHeight * this.tileTarget);

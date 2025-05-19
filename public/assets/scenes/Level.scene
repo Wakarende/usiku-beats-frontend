@@ -76,7 +76,7 @@
             "scope": "CLASS",
             "components": [],
             "x": 180,
-            "y": 27,
+            "y": 29,
             "originX": 0.5,
             "originY": 0.5,
             "text": "song",
@@ -573,10 +573,19 @@
                 "f669c805-a5d3-4459-8f19-b6132df8c0e5",
                 "133ec661-739d-412f-94e4-6a32fedbec52",
                 "5e6aa4d2-41d2-43ca-b214-f57af72b601e",
-                "bd56f0ea-006f-48fe-95a8-7e69f6bb2734",
+                "bd56f0ea-006f-48fe-95a8-7e69f6bb2734"
+            ]
+        },
+        {
+            "id": "db31358d-8e97-4e66-b7e8-b3a59b8b0a01",
+            "label": "perfect_zone",
+            "objectIds": [
+                "7b7307a0-2fe7-4ce5-b439-aa28c45aa998",
+                "8e1f54ac-bf0d-4874-aeed-3c69815d8eff",
+                "22dc148f-bf0d-4b1c-a866-fd3db6c7069f",
+                "7ed886be-18a7-4ebf-9b72-6a8cd14a15ab",
                 "297ac49a-6b37-41e1-bbf6-c3d1f52b6b30",
-                "f82c87a1-43ce-48d9-bfc9-87d66d038b51",
-                "7b7307a0-2fe7-4ce5-b439-aa28c45aa998"
+                "f82c87a1-43ce-48d9-bfc9-87d66d038b51"
             ]
         }
     ]

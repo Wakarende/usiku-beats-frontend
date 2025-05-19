@@ -38,11 +38,11 @@ class Boot extends Phaser.Scene {
 
       // Get the ftue-storage data
       const ftueStoreData = localStorage.getItem("ftue-storage");
-      console.log("Raw FTUE storage data:", ftueStoreData); // For debugging
+      // console.log("Raw FTUE storage data:", ftueStoreData); // For debugging
 
       if (ftueStoreData) {
         const ftueStore = JSON.parse(ftueStoreData);
-        console.log("Parsed FTUE store:", ftueStore); // For debugging
+        // console.log("Parsed FTUE store:", ftueStore); // For debugging
 
         // Check different possible locations of the isCompleted flag
         if (ftueStore.state && ftueStore.state.isCompleted === true) {
@@ -51,7 +51,7 @@ class Boot extends Phaser.Scene {
           isFTUE = false;
         }
 
-        console.log("FTUE mode:", isFTUE ? "Tutorial" : "Normal"); // For debugging
+        // console.log("FTUE mode:", isFTUE ? "Tutorial" : "Normal"); // For debugging
       }
 
       if (isFTUE) {
@@ -76,18 +76,18 @@ const PhaserGame = () => {
   const { stopBgMusic } = useAudio();
   stopBgMusic();
 
-  useEffect(() => {
-    const handleMessage = (event) => {
-      console.log("MainGame received message:", event.data);
-      if (event.data?.type === "INIT_GAME_DATA" && event.data.data?.track) {
-        localStorage.setItem("currentTrackData", JSON.stringify(event.data.data.track));
-        console.log("Game received track data:", event.data.data.track.song_name);
-      }
-    };
+  // useEffect(() => {
+  //   const handleMessage = (event) => {
+  //     console.log("MainGame received message:", event.data);
+  //     if (event.data?.type === "INIT_GAME_DATA" && event.data.data?.track) {
+  //       localStorage.setItem("currentTrackData", JSON.stringify(event.data.data.track));
+  //       console.log("Game received track data:", event.data.data.track.song_name);
+  //     }
+  //   };
 
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
+  //   window.addEventListener("message", handleMessage);
+  //   return () => window.removeEventListener("message", handleMessage);
+  // }, []);
 
   const updateUserEventListener = ({ data, new_level }) => {
     // console.log(data);

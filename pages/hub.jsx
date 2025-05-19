@@ -333,7 +333,10 @@ const HubScreen = () => {
     console.log("Setting current track data:", track.id, track.song_name);
 
     setCurrentTrackData(JSON.stringify(track));
-    router.push("/game");
+
+    const src = process.env.NODE_ENV === "production" ? `/game.html` : `/game`;
+    window.location.href = src;
+    // router.push("/game");
   };
 
   const checkRedirect = () => {
