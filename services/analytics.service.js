@@ -18,7 +18,7 @@ export const AnalyticsService = {
     // Only initialize once and only on client-side
     if (!initialized && typeof window !== "undefined" && gameanalytics) {
       try {
-        gameanalytics.GameAnalytics.configureBuild("0.2.3");
+        gameanalytics.GameAnalytics.configureBuild("0.2.4");
         gameanalytics.GameAnalytics.configureAvailableResourceCurrencies([
           "Gems",
           "Discs",
@@ -32,7 +32,6 @@ export const AnalyticsService = {
         gameanalytics.GameAnalytics.initialize(
           "ee0454adaf47527b1972a5a530e570b6",
           "f5ed2b53cbad4d76d4f481b0b423bc4a0937c5bd"
-          // "0.2.3"
         );
         initialized = true;
         console.log("GameAnalytics initialized");
