@@ -121,7 +121,7 @@ const TimerBar = ({ unlockTime, song }) => {
   );
 };
 
-const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) => {
+const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, currentGems }) => {
   const ftueStore = useFTUEStore();
   const currentStep = ftueStore?.currentStep || 0;
   const isCompleted = ftueStore?.isCompleted || false;
@@ -139,7 +139,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
   if (!isOpen || !selectedSong) return null;
 
   const unlockTime = selectedSong.unlock_time;
-  console.log("ConfirmSpendGemsPopup - unlockTime:", unlockTime);
+  // console.log("ConfirmSpendGemsPopup - unlockTime:", unlockTime);
 
   const song = selectedSong.song || selectedSong;
 
@@ -189,8 +189,8 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
             )}
           </div>
         </div>
-        <div className="absolute sm:bottom-[12.4rem] md:bottom-[13rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-2xl tracking-wider text-nowrap w-[70%]">
-          <p className=" text-yellow">
+        <div className="absolute sm:bottom-[14rem] md:bottom-[14.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-2xl tracking-wider text-nowrap w-[70%]">
+          <p className=" text-yellow ">
             Time Left:{" "}
             {unlockTime ? (
               <CountdownTimer unlockTime={unlockTime} onExpire={handleTimerExpire} />
@@ -221,6 +221,9 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong }) =>
               />
             </span>
           </div>
+          <p className="text-orange text-xl">
+            Current Gems: <span className="text-white">{currentGems}</span>
+          </p>
         </div>
         {/* Confirm / Cancel buttons */}
         <div className="flex justify-center gap-4 pb-4">

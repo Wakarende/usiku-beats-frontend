@@ -237,7 +237,7 @@ export default function TitleScreen() {
               priority={true}
             />
             <span className="absolute inset-0 flex items-center justify-center z-10 text-white font-bold text-3xl uppercase tracking-widest">
-              Play
+              Start
             </span>
           </motion.div>
         </div>

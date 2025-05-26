@@ -123,8 +123,20 @@ const Library = () => {
           (instance) => instance.song.id === song.id && instance.unlocked
         ),
       }));
-      setSongs(songsWithUnlockStatus);
+      const sortedSongs = [...songsWithUnlockStatus].sort((a, b) => {
+        const getDifficultyRank = (diff) => {
+          diff = (diff || "").toLowerCase();
+          if (diff === "easy") return 1;
+          if (diff === "medium") return 2;
+          if (diff === "hard") return 3;
+          return 4;
+        };
+
+        return getDifficultyRank(a.difficulty) - getDifficultyRank(b.difficulty);
+      });
+      setSongs(sortedSongs);
       setLoading(false);
+      // setSongs(songsWithUnlockStatus);
     });
   }, [user_data]);
 
@@ -148,12 +160,12 @@ const Library = () => {
         const unlockTime = new Date(existingInstance.unlock_time);
 
         if (unlockTime > now) {
-          console.log("Song is still unlocking; cannot purchase again");
+          // console.log("Song is still unlocking; cannot purchase again");
           return;
         } else {
-          console.log(
-            "Song has finished unlocking but hasn't been added to library yet; cannot purchase again"
-          );
+          // console.log(
+          //   "Song has finished unlocking but hasn't been added to library yet; cannot purchase again"
+          // );
           return;
         }
       }
@@ -168,6 +180,33 @@ const Library = () => {
     let unlockTime = null;
     let unlockedFlag = false;
 
+    {
+      /* Previous unlocking logic that we WILL GO BACK TO LATER */
+    }
+    // if (!isCompleted && currentStep <= 5) {
+    //   unlockTime = moment().add(15, "minutes").toISOString();
+    // } else {
+    //   const unlockedSongsCount = user_data.profile.player.player_song_instances.filter(
+    //     (instance) => instance.unlocked
+    //   ).length;
+
+    //   const inQueueCount = user_data.profile.player.player_song_instances.filter(
+    //     (instance) => !instance.unlocked && instance.unlock_time
+    //   ).length;
+
+    //   const baseTime = 5;
+
+    //   const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
+    //   const additionalTime = totalSongs * 5;
+    //   const totalUnlockTime = baseTime + additionalTime;
+
+    //   console.log(
+    //     `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${totalSongs} previous unlocks)`
+    //   );
+
+    //   unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
+    // }
+
     if (!isCompleted && currentStep <= 5) {
       unlockTime = moment().add(15, "minutes").toISOString();
     } else {
@@ -179,17 +218,20 @@ const Library = () => {
         (instance) => !instance.unlocked && instance.unlock_time
       ).length;
 
-      const baseTime = 5;
-
       const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
-      const additionalTime = totalSongs * 5;
-      const totalUnlockTime = baseTime + additionalTime;
+      const unlockTimes = [30, 60, 300, 600, 1200];
 
-      console.log(
-        `Regular unlock: Using ${totalUnlockTime} seconds (${baseTime} base + ${additionalTime} from ${totalSongs} previous unlocks)`
-      );
+      const postFtueCount = totalSongs - 1;
+      const unlockTimeIndex = Math.max(0, Math.min(postFtueCount, unlockTimes.length - 1));
+      const unlockTimeInSeconds = unlockTimes[unlockTimeIndex];
 
-      unlockTime = moment().add(totalUnlockTime, "seconds").toISOString();
+      // console.log(
+      //   `Regular unlock: Using ${unlockTimeInSeconds} seconds for song #${
+      //     postFtueCount + 1
+      //   } after FTUE`
+      // );
+
+      unlockTime = moment().add(unlockTimeInSeconds, "seconds").toISOString();
     }
     setSessionUnlockCounter((prevCount) => prevCount + 1);
 
@@ -421,7 +463,7 @@ const Library = () => {
                   alt="popup-frame"
                   className="rounded-lg z-1 md:w-[320px] md:h-[400px] sm:w-[320px] sm:h-[400px]"
                 />
-                <div className="absolute top-[20%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
+                <div className="absolute top-[19%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
                   <Image
                     src={unlockedSong?.thumbnail_file}
                     alt="Artist Image"

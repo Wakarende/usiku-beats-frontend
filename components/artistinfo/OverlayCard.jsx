@@ -96,6 +96,38 @@ const ArtistImage = ({
 
   const starCount = getStarsFromScore(song.high_score);
 
+  const isNewSong = () => {
+    // Song is considered new if it's unlocked and has no high score (never played)
+    return song.unlocked && (!song.high_score || song.high_score === 0);
+  };
+
+  const getDifficultyPositioning = (difficulty) => {
+    const difficultyLower = difficulty.toLowerCase();
+
+    switch (difficultyLower) {
+      case "easy":
+        return {
+          svgLeft: "md:left-[6.2rem] sm:left-[92px] lg:left-[98px] xl:left-[98px]",
+          textX: "3",
+        };
+      case "medium":
+        return {
+          svgLeft: "md:left-[5.5rem] sm:left-[78px] lg:left-[91px] xl:left-[91px]",
+          textX: "3",
+        };
+      case "hard":
+        return {
+          svgLeft: "md:left-[6.1rem] sm:left-[90px] lg:left-[96px] xl:left-[96px]",
+          textX: "3",
+        };
+      default:
+        return {
+          svgLeft: "md:left-[5.5rem] sm:left-[81px] lg:left-[91px] xl:left-[91px]",
+          textX: "3",
+        };
+    }
+  };
+
   const handlePlay = () => {
     console.log("Play button clicked, FTUE status:", {
       isHighlightedForFtue,
@@ -115,6 +147,8 @@ const ArtistImage = ({
       console.log("Song highlighted for FTUE:", song.id, song.song_name);
     }
   }, [isHighlightedForFtue, song]);
+
+  const difficultyStyle = getDifficultyPositioning(song.difficulty);
   return (
     <div className={`${isHighlightedForFtue && !isCompleted ? "ftue-song-highlight-frame" : ""}`}>
       <div
@@ -138,6 +172,42 @@ const ArtistImage = ({
         </div>
         {/* Star Rating Overlay */}
         <div className="absolute sm:top-[0.2rem] md:top-[1.5rem] left-0 w-full h-8 bg-gradient-to-b from-black/70 rounded-2xl to-transparent z-20">
+          {/* {isNewSong() ? (
+            <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex items-center justify-center sm:mt-0.5 md:mt-2 lg:mt-2 xl:mt-2">
+              <svg viewBox="0 0 100 30" className="w-20 h-6 animate-pulse">
+                <text
+                  className="svgText uppercase tracking-widest font-bold sm:text-[14px] md:text-[16px] lg:text-[12px] xl:text-[12px] text-yellow"
+                  x="50"
+                  y="20"
+                  textAnchor="middle"
+                  fontSize="12"
+                >
+                  NEW SONG
+                </text>
+              </svg>
+            </div>
+          ) : (
+            <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex mt-2">
+              {[...Array(5)].map((_, index) => (
+                <div
+                  key={index}
+                  className="relative md:w-5 md:h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-5 xl:h-5"
+                >
+                  <Image
+                    src={
+                      starCount > 0 && index < starCount
+                        ? "/assets/img/hub/Star Active.png"
+                        : "/assets/img/hub/Star_Inactive.png"
+                    }
+                    alt="star"
+                    width={15}
+                    height={15}
+                    className="stars object-contain md:min-w-5 md:min-h-5 sm:min-w-5 sm:min-h-5 lg:min-w-5 lg:min-h-5 xl:min-w-5 xl:min-h-5"
+                  />
+                </div>
+              ))}
+            </div>
+          )} */}
           <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex mt-2">
             {[...Array(5)].map((_, index) => (
               <div
@@ -160,7 +230,7 @@ const ArtistImage = ({
           </div>
         </div>
         {/* Country and Difficulty Labels */}
-        <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[76px] sm:left-[-10px] md:bottom-[102px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
+        <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[76px] sm:left-[-9px] md:bottom-[102px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
           <svg
             viewBox="0 0 450 70"
             className="absolute md:left-[-1.6rem] sm:left-[-1.1rem] lg:left-[-25px] xl:left-[-25px]"
@@ -175,11 +245,12 @@ const ArtistImage = ({
           </svg>
           <svg
             viewBox="0 0 450 70"
-            className="absolute md:left-[5.5rem] sm:left-[81px] lg:left-[91px] xl:left-[91px]"
+            // className="absolute md:left-[5.5rem] sm:left-[81px] lg:left-[91px] xl:left-[91px]"
+            className={`absolute ${difficultyStyle.svgLeft}`}
           >
             <text
               className="svgText uppercase tracking-widest text-yellow md:text-[8px] sm:text-[8px] lg:text-[8px] xl:text-[8px]"
-              x="3"
+              x={difficultyStyle.textX}
               y="45"
             >
               {song.difficulty}
@@ -217,7 +288,7 @@ const ArtistImage = ({
         </div>
       </div>
       {isHighlightedForFtue && !isCompleted && (
-        <div className="absolute bottom-[-10px] right-[-90px] animate-bounce pointer-events-none z-[100]">
+        <div className="absolute sm:bottom-[-10px] sm:right-[-90px] md:bottom-1 md:right-[-90px] lg:bottom-1 lg:right-[-90px] xl:bottom-1 xl:right-[-90px] animate-bounce pointer-events-none z-[100]">
           <Image
             src="/assets/img/ftue/hand icon.png"
             width={80}

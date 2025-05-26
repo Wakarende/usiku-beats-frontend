@@ -494,6 +494,11 @@ class Level extends Phaser.Scene {
 
     this.events.on("resume", () => {
       this.music.resume();
+      this.resetWaveSystem();
+    });
+    this.events.on("wake", () => {
+      // Reset wave system when scene wakes up from pause
+      this.resetWaveSystem();
     });
 
     this.song_name_text.setText(this.songItem.toUpperCase());
@@ -585,7 +590,7 @@ class Level extends Phaser.Scene {
     });
 
     this.addProgressBar();
-    // this.initializeVisualizer();
+
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
@@ -602,17 +607,23 @@ class Level extends Phaser.Scene {
 
     //Wave canvas
     this.waveCanvas = document.createElement("canvas");
-    this.waveCanvas.width = 50; // or any width you want
+    this.waveCanvas.width = 100;
     this.waveCanvas.height = this.screenHeight;
     this.waveCtx = this.waveCanvas.getContext("2d");
 
     //Left divider wave
+    if (this.textures.exists("waveTexture")) {
+      this.textures.remove("waveTexture");
+    }
     this.textures.createCanvas("waveTexture", this.waveCanvas.width, this.waveCanvas.height);
 
     this.waveTexture = this.textures.get("waveTexture");
     this.waveCtx = this.waveTexture.getContext();
 
     //right divider wave
+    if (this.textures.exists("waveTextureRight")) {
+      this.textures.remove("waveTextureRight");
+    }
     this.textures.createCanvas("waveTextureRight", this.waveCanvas.width, this.waveCanvas.height);
 
     this.waveTextureRight = this.textures.get("waveTextureRight");
@@ -919,6 +930,56 @@ class Level extends Phaser.Scene {
     }
   }
 
+  resetWaveSystem() {
+    // Get current music position for proper synchronization
+    const currentSeek = this.music?.seek || 0;
+
+    // Reset timing trackers relative to current position
+    // This ensures we don't miss beats that should trigger soon
+    this.lastDividerPulse = currentSeek - 1; // Set to just before current time
+    this.lastF2Pulse = currentSeek - 1;
+
+    // Reset wave state
+    this.waveActive = false;
+    this.dividerPulseAmplitudeLeft = 0;
+    this.dividerPulseAmplitudeRight = 0;
+
+    // Reset wave positions to center
+    this.dividerWaveYLeft = this.screenHeight / 2;
+    this.dividerWaveYRight = this.screenHeight / 2;
+
+    // Reset wave thickness
+    this.waveThickness = 4;
+
+    // Regenerate segments
+    this.leftSegments = this.generateRandomSegments(12);
+    this.rightSegments = this.generateRandomSegments(12);
+
+    // Clear any existing wave tweens that might interfere
+    this.tweens.killTweensOf(this);
+
+    // Redraw the wave canvases to clear any stuck states
+    this.drawWaveToCanvas(
+      "waveTexture",
+      this.waveCtx,
+      false,
+      this.dividerWaveYLeft,
+      this.dividerPulseAmplitudeLeft,
+      false,
+      this.leftSegments
+    );
+
+    this.drawWaveToCanvas(
+      "waveTextureRight",
+      this.waveCtxRight,
+      true,
+      this.dividerWaveYRight,
+      this.dividerPulseAmplitudeRight,
+      false,
+      this.rightSegments
+    );
+  }
+
   initScoring() {
     this.totalTiles = this.soundMarkers.length;
     this.streakThreshold = 10;
@@ -1070,108 +1131,6 @@ class Level extends Phaser.Scene {
     }
     return segments;
   }
-  // initializeVisualizer() {
-  //   const visualizerWidth = this.screenWidth;
-  //   const visualizerHeight = 180;
-
-  //   const maxPixelRatio = 4;
-  //   const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
-
-  //   const canvasWidth = visualizerWidth * pixelRatio;
-  //   const canvasHeight = visualizerHeight * pixelRatio;
-  //   const offscreenCanvas = document.createElement("canvas");
-  //   offscreenCanvas.width = canvasWidth;
-  //   offscreenCanvas.height = canvasHeight;
-
-  //   if (this.sound.context.state === "suspended") {
-  //     this.sound.context.resume();
-  //   }
-
-  //   this.audioMotion = new AudioMotionAnalyzer(null, {
-  //     canvas: offscreenCanvas,
-  //     audioCtx: this.sound.context,
-  //     connectSpeakers: false,
-  //     mode: 1,
-  //     radial: false,
-  //     fftSize: 2048,
-  //     smoothing: 0.8,
-  //     showPeaks: false,
-  //     showScaleX: false,
-  //     showScaleY: false,
-  //     showFPS: false,
-  //     minDecibels: -85,
-  //     maxDecibels: -25,
-  //     frequencyScale: "log",
-  //     // fillAlpha: 0.1,
-  //     // lineWidth: 2,
-  //     // weightingFilter: "C",
-  //     barSpace: 0.5,
-  //     bgAlpha: 0,
-  //     loRes: false,
-  //     width: visualizerWidth,
-  //     height: visualizerHeight,
-  //     pixelRatio: 4,
-  //     responsive: false,
-  //     overlay: true,
-  //     channelLayout: "single",
-  //   });
-
-  //   //Custom visualizer color
-  //   this.audioMotion.registerGradient("custom", {
-  //     colorStops: [
-  //       { pos: 0, color: "#f2d469", level: 0.3 },
-
-  //       { pos: 1, color: "#4fa3af", level: 1.5 },
-  //     ],
-  //   });
-
-  //   this.audioMotion.setOptions({
-  //     gradient: "custom",
-  //   });
-
-  //   this.visualizerTexture = this.textures.createCanvas(
-  //     "visualizerTexture",
-  //     visualizerWidth,
-  //     visualizerHeight
-  //   );
-
-  //   this.visualizerImage = this.add.image(this.screenCenterX, 50, "visualizerTexture");
-  //   this.visualizerImage.setOrigin(0.5, 0.5);
-
-  //   this.visualizerImage.setDisplaySize(visualizerWidth, visualizerHeight);
-
-  //   this.visualizerImage.setAngle(180);
-
-  //   this.visualizerImage.setDepth(2.5);
-  //   this.visualizerImage.setAlpha(0.5);
-
-  //   let lastVisualizerUpdate = 0;
-  //   const visualizerUpdateInterval = 100;
-
-  //   this.audioMotion.onCanvasDraw = () => {
-  //     const now = performance.now();
-  //     if (now - lastVisualizerUpdate >= visualizerUpdateInterval) {
-  //       lastVisualizerUpdate = now;
-
-  //       const ctx = this.visualizerTexture.context;
-
-  //       ctx.clearRect(0, 0, visualizerWidth, visualizerHeight);
-
-  //       ctx.drawImage(
-  //         offscreenCanvas,
-  //         0,
-  //         0,
-  //         canvasWidth,
-  //         canvasHeight,
-  //         0,
-  //         0,
-  //         visualizerWidth,
-  //         visualizerHeight
-  //       );
-  //       this.visualizerTexture.refresh();
-  //     }
-  //   };
-  // }
 
   update(time, delta) {
     if (!this.tileGroup) {
@@ -1238,14 +1197,15 @@ class Level extends Phaser.Scene {
       .create(0, 0, this.baseTileTextures[Math.floor(Math.random() * this.baseTileTextures.length)])
       .setOrigin(0.5, 0.5)
       .setInteractive()
-      .setAlpha(0.2)
+      // .setAlpha(0.2)
+      .setAlpha(0)
       .setDepth(4);
 
     // Create overlay swipe/default texture that moves with the base
     let overlayTile = this.add
       .image(0, 0, "beats2") // Will be changed in placeTile
       .setOrigin(0.5, 0.5)
-      .setAlpha(0.2)
+      .setAlpha(0)
       .setDepth(4.1) // Slightly higher depth than base
       .setScale(0.3);
     // Link the overlay to the base tile for reference
@@ -2173,6 +2133,13 @@ class Level extends Phaser.Scene {
     this.time.removeAllEvents();
     this.tweens.killAll();
     this.sound.stopAll();
+
+    if (this.textures.exists("waveTexture")) {
+      this.textures.remove("waveTexture");
+    }
+    if (this.textures.exists("waveTextureRight")) {
+      this.textures.remove("waveTextureRight");
+    }
 
     if (this.audioMotion) {
       if (this.analyzerNode) {

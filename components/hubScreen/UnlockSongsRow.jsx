@@ -129,7 +129,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   };
 
   function addToLibrary(song) {
-    console.log("Add to library clicked for song:", song.id);
+    // console.log("Add to library clicked for song:", song.id);
 
     // Update user data
     const newUserdata = JSON.parse(JSON.stringify(user_data));
@@ -142,16 +142,16 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       songInstance.unlock_time = null;
       songInstance.unlock_start_time = new Date().toISOString();
       dispatch(updateUser(newUserdata));
-      console.log("Song unlocked and added to library:", song.id);
+      // console.log("Song unlocked and added to library:", song.id);
     } else {
-      console.error("Song not found in song instances", song.id);
+      // console.error("Song not found in song instances", song.id);
     }
 
     resetSongUnlockedState(song.id);
     resetParticles(song.id);
 
     if (currentStep === 6 && !isCompleted) {
-      console.log("FTUE progressing from step 5 to 6");
+      // console.log("FTUE progressing from step 5 to 6");
 
       setAddToLibrarySeen(true);
 
@@ -162,7 +162,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       }
 
       if (song) {
-        console.log("Setting currentTrackData for song:", song.id);
+        // console.log("Setting currentTrackData for song:", song.id);
         setCurrentTrackData(JSON.stringify(song));
       }
 
@@ -265,12 +265,12 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     const formattedSeconds = timeLeft.seconds?.toString().padStart(2, "0") || "00";
 
     return (
-      <p
-        className="sm:text-[14px] md:text-[18px] lg:text-[12px] lg:pb-[7px] xl:text-[12px] xl:pb-[7px] text-nowrap text-[#0af0e4] tracking-widest"
-        style={{ fontFamily: "Digital-7" }}
+      <span
+        className="-ml-1 sm:text-[13px] md:text-[15px] lg:text-[12px] xl:text-[12px] text-nowrap text-[#0af0e4] tracking-widest"
+        style={{ fontFamily: "Digital-7", lineHeight: 1 }}
       >
         {formattedHours}:{formattedMinutes}:{formattedSeconds}
-      </p>
+      </span>
     );
   }
 
@@ -385,11 +385,9 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                 </div>
                 {/* Top purple frame */}
                 <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10">
-                  <div className="absolute md:top-[-0.4rem] md:left-0 md:right-0  sm:top-[-0.4rem] sm:left-[-0.5rem] sm:right-0 flex justify-center items-center">
-                    <p className="text-yellow text-center title-text tracking-wider flex items-center justify-center whitespace-nowrap z-1 sm:text-xl md:text-2xl lg:text-xl xl:text-xl">
-                      {item.song.song_name}
-                    </p>
-                  </div>
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow text-center tracking-wide whitespace-nowrap text-sm">
+                    {item.song.song_name}
+                  </p>
                 </div>
                 <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] bg-[#73274e] z-10">
                   <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]">
@@ -406,21 +404,23 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                         />
                       ))}
                   </div>
-
                   <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0 flex items-center justify-center z-20">
-                    <div className="flex items-center justify-center w-full ">
-                      <p className="text-nowrap text-yellow sm:text-[14px] md:text-[14px] -mr-1">
+                    <div className="flex items-center justify-center w-full">
+                      <span className="text-nowrap text-yellow sm:text-[13px] md:text-[15px]">
                         Time Left:
-                      </p>
-                      <p className="text-white font-bold ml-2">
+                      </span>
+                      <span className="text-white font-bold ml-2 flex items-center">
                         {isUnlockTimePassed(item.unlock_time) ? (
-                          <button onClick={() => addToLibrary(item.song)}>
-                            <p
-                              className="tracking-wider unlocked-text text-nowrap sm:text-[12px]  md:text-[18px] md:pb-[0.5px] lg:text-[10px] lg:pb-[7px] lg:ml-1 xl:text-[10px] xl:pb-[7px] xl:ml-1 text-[#0af0e4]"
-                              style={{ fontFamily: "Digital-7" }}
+                          <button
+                            onClick={() => addToLibrary(item.song)}
+                            className="flex items-center"
+                          >
+                            <span
+                              className="tracking-wider text-nowrap sm:text-[13px] md:text-[15px] lg:text-[12px] xl:text-[12px] text-[#0af0e4] -ml-1"
+                              style={{ fontFamily: "Digital-7", lineHeight: 1 }}
                             >
                               00:00:00
-                            </p>
+                            </span>
                           </button>
                         ) : (
                           <CountdownTimer
@@ -431,7 +431,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                             }}
                           />
                         )}
-                      </p>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -536,7 +536,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     } else {
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
-          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[115px] md:w-[132px] md:h-[140px] lg:h-[220px] lg:w-[202px] xl:w-[202px] xl:h-[220px]">
+          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[120px] md:w-[132px] md:h-[140px] lg:h-[220px] lg:w-[202px] xl:w-[202px] xl:h-[220px]">
             <Image
               src="/assets/img/hub/empty_slot.png"
               width={200}
@@ -593,6 +593,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
         onConfirm={confirmUnlockNow}
         onCancel={() => setConfirmPopupOpen(false)}
         selectedSong={selectedSong}
+        currentGems={user_data?.profile?.player?.total_gems}
       />
       {/* "Finish Now" overlay panel (moved from HubScreen) */}
       {showUnlockingInfoPanel && !isCompleted && (

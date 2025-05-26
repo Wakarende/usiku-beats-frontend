@@ -19,7 +19,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("updating header", user_data);
+    // console.log("updating header", user_data);
     setStars(user_data?.profile.player.total_stars || 0);
     setGems(user_data?.profile.player.total_gems || 0);
     setLevel(user_data?.profile.player.level || 1);

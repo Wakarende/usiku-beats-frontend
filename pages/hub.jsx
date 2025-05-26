@@ -424,7 +424,8 @@ const HubScreen = () => {
       {/* The FTUE panel if needed */}
       {showFtuePanel && (
         <InfoPanel
-          className=""
+          customPosition={true}
+          customClassName=" sm:top-[45%] md:top-[50%] lg:top-[60%] xl:top-[70%]"
           onClose={closeFtuePanel}
           paragraphs={[
             <>
@@ -443,7 +444,7 @@ const HubScreen = () => {
       <div className=" mx-auto hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex items-center w-full relative">
-          <h1 className="text-[#ff6b03] text-center w-full md:mt-3  sm:mb-1 text-5xl uppercase tracking-wider">
+          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5  sm:mb-1 sm:mt-1 text-5xl uppercase tracking-wider">
             Your Songs
           </h1>
           <Link href={"/library"}>
@@ -455,7 +456,7 @@ const HubScreen = () => {
                 height={40}
                 className="h-full w-24"
               />
-              <span className="absolute sm:inset-2.5 md:inset-2 flex items-center justify-center text-white font-bold tracking-widest sm:text-xs md:text-xs uppercase text-nowrap ">
+              <span className="absolute sm:inset-2.5 md:inset-2 flex items-center justify-center text-white font-bold tracking-wider sm:text-xs md:text-xs uppercase text-nowrap ">
                 + ADD SONGS
               </span>
             </button>
@@ -501,8 +502,8 @@ const HubScreen = () => {
                 localStorage.setItem("ftueCompleted", "true");
               }
             }}
-            bottomPosition={true}
-            positionOffset={40}
+            customPosition={true}
+            customClassName="sm:top-[56%] md:top-[50%] lg:top-[60%] xl:top-[70%]"
             paragraphs={[
               <>
                 <p className="font-bold sm:text-sm mb-4">Awesome! Your new song is now ready!</p>
@@ -536,7 +537,6 @@ const HubScreen = () => {
           />
         </div>
       </div>
-
       {/* Overlays / popups */}
       <OverlayCard
         isOpen={isOverlayOpen}
@@ -545,9 +545,8 @@ const HubScreen = () => {
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
       />
-
       {/* Daily Reward Popup */}
-      <DailyRewardPopup
+      {/* <DailyRewardPopup
         isOpen={isDailyPopupOpen}
         closePopup={() => setIsDailyPopupOpen(false)}
         className="popup-overlay"
@@ -586,7 +585,7 @@ const HubScreen = () => {
             />
           </motion.button>
         </div>
-      </DailyRewardPopup>
+      </DailyRewardPopup> */}
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
       {/* <ZustandDebug /> */}
     </div>
