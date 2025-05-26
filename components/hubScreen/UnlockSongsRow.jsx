@@ -11,6 +11,7 @@ import useFTUEStore from "../../stores/ftueStore";
 import useUnlockSongsStore from "../../stores/unlockSongsStore";
 import useStorageStore from "../../stores/storageStore";
 import Image from "next/image";
+import { AnalyticsService } from "../../services/analytics.service";
 import "../styles.css";
 
 const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
@@ -151,8 +152,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     resetParticles(song.id);
 
     if (currentStep === 6 && !isCompleted) {
-      // console.log("FTUE progressing from step 5 to 6");
-
+      AnalyticsService.trackFTUEStep("8 - Add to Library");
       setAddToLibrarySeen(true);
 
       completeStep(currentStep);
@@ -184,6 +184,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     setShowUnlockingInfoPanel(false);
 
     if (currentStep === 4 && !isCompleted) {
+      AnalyticsService.trackFTUEStep("6 - Finish Now");
       completeStep(currentStep);
     }
 
@@ -229,6 +230,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       triggerParticles(songId);
 
       if (currentStep === 5 && !isCompleted) {
+        AnalyticsService.trackFTUEStep("7 - Unlock Instantly");
         setCurrentStep(6);
 
         setUnlockOverlaySong(selectedSong);

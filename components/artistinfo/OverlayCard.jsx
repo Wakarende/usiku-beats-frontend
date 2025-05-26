@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import useFTUEStore from "../../stores/ftueStore";
 import useStorageStore from "../../stores/storageStore";
+import { AnalyticsService } from "../../services/analytics.service";
 import "../styles.css";
 
 const getStarsFromScore = (score) => {
@@ -129,13 +130,8 @@ const ArtistImage = ({
   };
 
   const handlePlay = () => {
-    console.log("Play button clicked, FTUE status:", {
-      isHighlightedForFtue,
-      currentStep,
-      isCompleted,
-    });
-
     if (currentStep === 7 || isHighlightedForFtue) {
+      AnalyticsService.trackFTUEStep("9 - Play Now", true);
       completeFTUE();
       setPlaySongPanelSeen(true);
     }

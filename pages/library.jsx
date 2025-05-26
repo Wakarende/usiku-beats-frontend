@@ -17,6 +17,7 @@ import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
+import { AnalyticsService } from "../services/analytics.service";
 // import ZustandDebug from "../components/zustandDebug";
 import "./pages.css";
 
@@ -173,6 +174,7 @@ const Library = () => {
 
     setUnlockedSong(song);
     if (currentStep === 2) {
+      AnalyticsService.trackFTUEStep("4 - Song Select");
       completeStep(currentStep);
     }
     setIsPopupOpen(true);
@@ -265,6 +267,7 @@ const Library = () => {
 
     if (isFtue) {
       if (currentStep === 3) {
+        AnalyticsService.trackFTUEStep("5 - Confirm SOng Select");
         completeStep(currentStep);
       }
       router.push("/hub?ftueGameplayCompleted=true");

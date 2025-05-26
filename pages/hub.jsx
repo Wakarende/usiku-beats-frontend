@@ -20,6 +20,7 @@ import useFTUEStore from "../stores/ftueStore";
 import useUnlockSongsStore from "../stores/unlockSongsStore";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
+import { AnalyticsService } from "../services/analytics.service";
 import "./pages.css";
 // import ZustandDebug from "../components/zustandDebug";
 import useStorageStore from "../stores/storageStore";
@@ -145,13 +146,7 @@ const HubScreen = () => {
     // if (typeof window === "undefined") return;
 
     if (currentStep === 7 && !isCompleted) {
-      console.log("FTUE Step 7 active, highlight song:", highlightedSongId);
-      console.log(
-        "Songs available:",
-        songs.map((s) => ({ id: s.id, name: s.song_name }))
-      );
       const matchingSong = songs.find((s) => s.id === highlightedSongId);
-      console.log("Matching song found:", matchingSong ? true : false);
     }
   }, [currentStep, highlightedSongId, songs]);
 
@@ -273,6 +268,7 @@ const HubScreen = () => {
   };
 
   const clearFooterGlow = () => {
+    AnalyticsService.trackFTUEStep("3 - Song Library");
     setFooterGlowActive(false);
     setFooterGlowCleared(true);
   };

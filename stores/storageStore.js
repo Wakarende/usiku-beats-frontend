@@ -24,7 +24,6 @@ const useStorageStore = create(
         set({ currentTrackData: data });
         if (typeof window !== "undefined") {
           localStorage.setItem("currentTrackData", data);
-          console.log("Track data saved directly to localStorage:", data);
         }
       },
       setPlaySongPanelSeen: (seen) => set({ playSongPanelSeen: seen }),
