@@ -119,6 +119,11 @@
                 "key": "GameOverScene"
             },
             {
+                "url": "assets/sprites/beatmissedscene/gem_outline.png",
+                "type": "image",
+                "key": "gem_outline"
+            },
+            {
                 "url": "assets/sprites/beatmissedscene/Gem_small.png",
                 "type": "image",
                 "key": "Gem_small"

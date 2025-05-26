@@ -195,7 +195,7 @@ const HubScreen = () => {
             player: {
               level: 1,
               total_discs: 30,
-              total_gems: 30,
+              total_gems: 150,
               total_stars: 0,
               player_song_instances: [],
               data: null,

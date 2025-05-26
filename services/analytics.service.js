@@ -143,7 +143,7 @@ export const AnalyticsService = {
     gameanalytics.GameAnalytics.addDesignEvent(eventId);
   },
 
-  trackFTUETileMiss: (stepName, tileType, attemptCount = null) => {
+  trackFTUETileMiss: (tileType, attemptCount = null) => {
     if (!initialized || !gameanalytics) return;
 
     // Always track with tile type since it's available

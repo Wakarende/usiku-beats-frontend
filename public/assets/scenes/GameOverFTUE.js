@@ -3,48 +3,43 @@
 /* START OF COMPILED CODE */
 
 class GameOverFTUE extends Phaser.Scene {
-  constructor() {
-    super("GameOverFTUE");
 
-    /* START-USER-CTR-CODE */
+	constructor() {
+		super("GameOverFTUE");
+
+		/* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-  }
+	}
 
-  /** @returns {void} */
-  editorCreate() {
-    // fTUE_Game_summary
-    const fTUE_Game_summary = this.add.image(180, 320, "FTUE_Game summary");
-    fTUE_Game_summary.scaleX = 0.3333;
-    fTUE_Game_summary.scaleY = 0.3333;
+	/** @returns {void} */
+	editorCreate() {
 
-    // choose_song_button
-    const choose_song_button = this.add.image(180, 541, "Choose song button");
-    choose_song_button.scaleX = 0.3333;
-    choose_song_button.scaleY = 0.3333;
+		// fTUE_Game_summary
+		const fTUE_Game_summary = this.add.image(180, 320, "FTUE_Game summary");
+		fTUE_Game_summary.scaleX = 0.3333;
+		fTUE_Game_summary.scaleY = 0.3333;
 
-    // text_1
-    const text_1 = this.add.text(180, 409.93804067328125, "", {});
-    text_1.setOrigin(0.5, 0.5);
-    text_1.text =
-      "You've just learnt the basics of\nplaying Usiku Beats... and it's\ntime to use your Discs to\nunlock your first song";
-    text_1.setStyle({
-      align: "center",
-      color: "#faf05e",
-      fontFamily: "Carlito-Regular",
-      fontSize: "20px",
-      stroke: "#faf05e",
-    });
+		// choose_song_button
+		const choose_song_button = this.add.image(180, 541, "Choose song button");
+		choose_song_button.scaleX = 0.3333;
+		choose_song_button.scaleY = 0.3333;
 
-    this.choose_song_button = choose_song_button;
+		// text_1
+		const text_1 = this.add.text(180, 421.93804067328125, "", {});
+		text_1.setOrigin(0.5, 0.5);
+		text_1.text = "You've learnt the basics... \nnow let's use your Discs \nto unlock your first song";
+		text_1.setStyle({ "align": "center", "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "20px", "stroke": "#faf05e" });
 
-    this.events.emit("scene-awake");
-  }
+		this.choose_song_button = choose_song_button;
 
-  /** @type {Phaser.GameObjects.Image} */
-  choose_song_button;
+		this.events.emit("scene-awake");
+	}
 
-  /* START-USER-CODE */
+	/** @type {Phaser.GameObjects.Image} */
+	choose_song_button;
+
+	/* START-USER-CODE */
 
   // Write your code here
 

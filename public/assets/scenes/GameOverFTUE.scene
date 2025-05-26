@@ -4,7 +4,7 @@
     "settings": {
         "preloadPackFiles": [],
         "createMethodName": "editorCreate",
-        "sceneKey": "GameOverFtue",
+        "sceneKey": "GameOverFTUE",
         "borderWidth": 360,
         "borderHeight": 640
     },
@@ -42,10 +42,10 @@
             "label": "text_1",
             "components": [],
             "x": 180,
-            "y": 409.93804067328125,
+            "y": 421.93804067328125,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "You've just learnt the basics of\nplaying Usiku Beats... and it's\ntime to use your Discs to\nunlock your first song",
+            "text": "You've learnt the basics... \nnow let's use your Discs \nto unlock your first song",
             "align": "center",
             "fontFamily": "Carlito-Regular",
             "fontSize": "20px",
