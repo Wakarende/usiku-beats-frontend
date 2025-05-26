@@ -115,7 +115,6 @@ const ArtistImage = ({
   }, [isHighlightedForFtue, song, isCompleted]);
 
   const starCount = getStarsFromScore(song.high_score);
-  console.log("Song:", song.song_name, "Score:", song.high_score, "Stars:", starCount);
 
   const isNewSong = () => {
     // Song is considered new if it's unlocked and has no high score (never played)
