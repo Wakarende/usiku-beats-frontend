@@ -221,8 +221,20 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
               />
             </span>
           </div>
-          <p className="text-orange text-xl">
-            Current Gems: <span className="text-white">{currentGems}</span>
+          <p className="text-white text-md">
+            You have:
+            <div className=" ml-1 inline-flex items-center gap-0.5">
+              <span className="text-white">{currentGems} </span>
+              <span>
+                <Image
+                  src={"/assets/img/spendgems/Gem.png"}
+                  width={50}
+                  height={50}
+                  className="w-4 h-auto"
+                  alt="gem-icon"
+                />
+              </span>
+            </div>
           </p>
         </div>
         {/* Confirm / Cancel buttons */}

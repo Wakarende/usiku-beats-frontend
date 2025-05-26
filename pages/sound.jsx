@@ -69,7 +69,7 @@ const Sound = () => {
         </div>
       ))}
       <div className="uppercase text-yellow text-7xl mt-10 text-center z-10 lg:text-9xl xl:text-9xl bg-black p-2">
-        <h2 className="tracking-widest">Your Sound</h2>
+        <h2 className="tracking-widest">Sound on!</h2>
       </div>
       <div className="flex justify-center">
         <div className="absolute sm:bottom-56 md:bottom-56 lg:bottom-72 xl:bottom-72 flex justify-center">

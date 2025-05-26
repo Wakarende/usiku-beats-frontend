@@ -5,15 +5,15 @@ import useStorageStore from "../../stores/storageStore";
 import { AnalyticsService } from "../../services/analytics.service";
 import "../styles.css";
 
-const getStarsFromScore = (score) => {
-  if (score === 0) return 0;
-  if (score < 5000) return 1;
-  if (score >= 5000 && score < 10000) return 2;
-  if (score >= 10000 && score < 15000) return 3;
-  if (score >= 15000 && score < 20000) return 4;
-  if (score >= 20000) return 5;
-  return 0;
-};
+// const getStarsFromScore = (score) => {
+//   if (score === 0) return 0;
+//   if (score < 5000) return 1;
+//   if (score >= 5000 && score < 10000) return 2;
+//   if (score >= 10000 && score < 15000) return 3;
+//   if (score >= 15000 && score < 20000) return 4;
+//   if (score >= 20000) return 5;
+//   return 0;
+// };
 
 const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => {
   if (!isOpen) return null;
@@ -88,6 +88,25 @@ const ArtistImage = ({
 }) => {
   const { setPlaySongPanelSeen } = useStorageStore();
   const { currentStep, isCompleted, completeFTUE } = useFTUEStore();
+  const getStarsFromScore = (score) => {
+    let starsCount;
+    if (score < 18000) {
+      starsCount = 0;
+    } else if (score >= 18000 && score < 36000) {
+      starsCount = 1;
+    } else if (score >= 36000 && score < 54000) {
+      starsCount = 2;
+    } else if (score >= 54000 && score < 72000) {
+      starsCount = 3;
+    } else if (score >= 72000 && score < 90000) {
+      starsCount = 4;
+    } else if (score >= 90000) {
+      starsCount = 5;
+    } else {
+      starsCount = 0; // Handle unexpected cases
+    }
+    return starsCount;
+  };
 
   useEffect(() => {
     if (isCompleted && isHighlightedForFtue) {
@@ -96,6 +115,7 @@ const ArtistImage = ({
   }, [isHighlightedForFtue, song, isCompleted]);
 
   const starCount = getStarsFromScore(song.high_score);
+  console.log("Song:", song.song_name, "Score:", song.high_score, "Stars:", starCount);
 
   const isNewSong = () => {
     // Song is considered new if it's unlocked and has no high score (never played)
@@ -168,7 +188,7 @@ const ArtistImage = ({
         </div>
         {/* Star Rating Overlay */}
         <div className="absolute sm:top-[0.2rem] md:top-[1.5rem] left-0 w-full h-8 bg-gradient-to-b from-black/70 rounded-2xl to-transparent z-20">
-          {/* {isNewSong() ? (
+          {isNewSong() ? (
             <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex items-center justify-center sm:mt-0.5 md:mt-2 lg:mt-2 xl:mt-2">
               <svg viewBox="0 0 100 30" className="w-20 h-6 animate-pulse">
                 <text
@@ -178,7 +198,7 @@ const ArtistImage = ({
                   textAnchor="middle"
                   fontSize="12"
                 >
-                  NEW SONG
+                  NEW SONG!
                 </text>
               </svg>
             </div>
@@ -203,8 +223,8 @@ const ArtistImage = ({
                 </div>
               ))}
             </div>
-          )} */}
-          <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex mt-2">
+          )}
+          {/* <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex mt-2">
             {[...Array(5)].map((_, index) => (
               <div
                 key={index}
@@ -223,7 +243,7 @@ const ArtistImage = ({
                 />
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         {/* Country and Difficulty Labels */}
         <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[76px] sm:left-[-9px] md:bottom-[102px] md:left-0 lg:bottom-[92px] lg:left-0 xl:bottom-[92px] xl:left-0">
