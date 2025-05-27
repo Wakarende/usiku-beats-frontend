@@ -63,6 +63,10 @@ const Library = () => {
   const gemsRequiredToUnlockSong = 20;
 
   useEffect(() => {
+    AnalyticsService.trackUIEvent("Library", "View");
+  }, []);
+
+  useEffect(() => {
     if (currentStep === 2) {
       setShowLibraryFtuePanel(true);
       setIsFtue(true);

@@ -130,8 +130,8 @@
             "label": "motivation_text",
             "scope": "CLASS",
             "components": [],
-            "x": 184,
-            "y": 449,
+            "x": 183,
+            "y": 425,
             "originX": 0.5,
             "originY": 0.5,
             "text": "You missed a beat! Continue from where you left off, or wait to see your score.",
@@ -140,6 +140,52 @@
             "fontSize": "20px",
             "maxLines": 4,
             "wordWrapWidth": 300
+        },
+        {
+            "type": "Text",
+            "id": "885ab898-8232-477c-8bce-8881bf87207b",
+            "label": "motivation_text_1",
+            "components": [],
+            "x": 152,
+            "y": 487,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "You have",
+            "align": "center",
+            "fontFamily": "Carlito-Italic",
+            "fontSize": "20px",
+            "maxLines": 4,
+            "wordWrapWidth": 300
+        },
+        {
+            "type": "Text",
+            "id": "681e0c1f-addc-410d-b0ac-d633e672668c",
+            "label": "total_gem_count_txt",
+            "scope": "CLASS",
+            "components": [],
+            "x": 208,
+            "y": 488,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "15",
+            "align": "center",
+            "fontFamily": "Carlito-Italic",
+            "fontSize": "20px",
+            "maxLines": 4,
+            "wordWrapWidth": 300
+        },
+        {
+            "type": "Image",
+            "id": "c922f6c4-53f0-4ce2-a3e2-3dd794eb41ec",
+            "label": "gem_outline",
+            "components": [],
+            "texture": {
+                "key": "gem_outline"
+            },
+            "x": 240,
+            "y": 488,
+            "scaleX": 0.2,
+            "scaleY": 0.2
         }
     ],
     "plainObjects": [],

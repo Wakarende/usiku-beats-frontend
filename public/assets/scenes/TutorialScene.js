@@ -97,6 +97,8 @@ class TutorialScene extends Phaser.Scene {
     this.midi = data.midi;
     this.track = data.track;
     this.isFTUE = data.isFTUE;
+
+    this.analytics = this.registry.get("analytics");
   }
 
   create() {
@@ -109,6 +111,7 @@ class TutorialScene extends Phaser.Scene {
 
     this.start_button.setInteractive();
     this.start_button.on("pointerup", () => {
+      this.analytics.trackFTUEStep("1.1 - How to Play: Start");
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
         this.button_sfx.play();
