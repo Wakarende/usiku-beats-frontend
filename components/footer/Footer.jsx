@@ -55,7 +55,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
           }}
         >
           <Image
-            src="/assets/img/footer/hub_banner_BG.png"
+            src="/assets/img/footer/Bottom_banner_BG.png"
             fill
             sizes="100vw"
             priority
@@ -67,7 +67,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
           />
         </div>
         <div
-          className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] pointer-events-auto"
+          className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] lg:h-[220px] xl:h-[220px] pointer-events-auto"
           style={{ zIndex: contentZIndex }}
         >
           <Link

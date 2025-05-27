@@ -268,7 +268,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
 
     return (
       <span
-        className="-ml-1 sm:text-[13px] md:text-[15px] lg:text-[12px] xl:text-[12px] text-nowrap text-[#0af0e4] tracking-widest"
+        className="-ml-1 sm:text-[13px] md:text-[15px] lg:text-[18px] lg:-mt-1 xl:text-[15px] text-nowrap text-[#0af0e4] tracking-widest"
         style={{ fontFamily: "Digital-7", lineHeight: 1 }}
       >
         {formattedHours}:{formattedMinutes}:{formattedSeconds}
@@ -372,7 +372,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       }`}
             >
               {/* Main card container with exact dimensions */}
-              <div className="unlock-card relative overflow-hidden rounded-lg sm:w-[110px] sm:h-[130px] md:w-[134px] md:h-[140px] lg:w-[200px] lg:h-[180px]">
+              <div className="unlock-card relative overflow-hidden rounded-lg sm:w-[110px] sm:h-[130px] md:w-[134px] md:h-[140px] lg:w-[200px] lg:h-[200px]">
                 {/* Background image covering the entire card */}
                 <div className="absolute md:top-0 md:left-0 md:right-0 md:bottom-0 sm:top-0 sm:left-0 sm:right-0 sm:bottom-0 w-full h-full overflow-hidden">
                   <Image
@@ -380,23 +380,23 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                     alt={`${item.song.song_name} thumbnail`}
                     width={500}
                     height={500}
-                    className="absolute sm:top-0 sm:left-[-0.2rem] md:top-0 md:left-0  md:w-[150%] md:h-[120%] sm:w-[160%] sm:h-[120%] max-w-none object-cover"
+                    className="absolute sm:top-0 sm:left-[-0.2rem] md:top-0 md:left-0  md:w-[150%] md:h-[120%] sm:w-[160%] sm:h-[120%]  lg:top-0 lg:left-0  lg:w-[150%] lg:h-[120%] xl:top-0 xl:left-0  xl:w-[150%] xl:h-[120%] max-w-none object-cover"
                     style={{ transform: "translate(-16%, -10%)" }}
                     priority
                   />
                 </div>
                 {/* Top purple frame */}
-                <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10">
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow text-center tracking-wide whitespace-nowrap text-sm">
+                <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] lg:h-[25px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10  lg:top-0 lg:left-0 lg:right-0">
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow text-center tracking-wide whitespace-nowrap text-sm lg:text-lg xl:text-lg">
                     {item.song.song_name}
                   </p>
                 </div>
-                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] bg-[#73274e] z-10">
-                  <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]">
+                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0">
+                  <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]  lg:top-[30%] lg:left-0 lg:right-2">
                     {item.unlock_time &&
                       (isUnlockTimePassed(item.unlock_time) ? (
                         <div
-                          className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 w-full rounded-sm "
+                          className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
                           style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
                         />
                       ) : (
@@ -406,9 +406,9 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                         />
                       ))}
                   </div>
-                  <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0 flex items-center justify-center z-20">
+                  <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0  lg:bottom-[3.3rem] lg:left-0 lg:right-0  flex items-center justify-center z-20">
                     <div className="flex items-center justify-center w-full">
-                      <span className="text-nowrap text-yellow sm:text-[13px] md:text-[15px]">
+                      <span className="text-nowrap text-yellow sm:text-[13px] md:text-[15px] lg:text-lg xl:text-lg">
                         Time Left:
                       </span>
                       <span className="text-white font-bold ml-2 flex items-center">
@@ -418,7 +418,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                             className="flex items-center"
                           >
                             <span
-                              className="tracking-wider text-nowrap sm:text-[13px] md:text-[15px] lg:text-[12px] xl:text-[12px] text-[#0af0e4] -ml-1"
+                              className="tracking-wider text-nowrap sm:text-[13px] md:text-[15px] lg:text-lg xl:text-lg text-[#0af0e4] -ml-1"
                               style={{ fontFamily: "Digital-7", lineHeight: 1 }}
                             >
                               00:00:00
@@ -439,7 +439,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                 </div>
               </div>
               {!isUnlockTimePassed(item.unlock_time) ? (
-                <div className="absolute sm:bottom-[-0.1rem] sm:w-[190px] sm:left-[-1.35rem] md:bottom-[-0.2rem] md:w-[190px] md:left-[-1.8rem]">
+                <div className="absolute sm:bottom-[-0.1rem] sm:w-[190px] sm:left-[-1.35rem] md:bottom-[-0.2rem] md:w-[190px] md:left-[-1.8rem] lg:bottom-[-0.2rem] lg:w-[240px] lg:left-[0.1rem]">
                   <div className="relative mt-0.5 z-20">
                     <button
                       className="w-full relative"
@@ -462,12 +462,12 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                             className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
                           />
                           <div className="flex items-center">
-                            <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[14px] xl:text-[14px]">
+                            <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[20px] xl:text-[20px]">
                               {gemsRequiredToUnlockSong}
                             </span>
                           </div>
                         </div>
-                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[9px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
+                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[9px] md:text-[12px] lg:text-[18px] xl:text-[18px] tracking-widest">
                           Finish Now
                         </p>
                       </div>
@@ -475,7 +475,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                   </div>
                 </div>
               ) : (
-                <div className="absolute sm:bottom-[-0.1rem] sm:w-[185px] sm:left-[-1.3rem] md:bottom-[-0.1rem] md:w-[185px] md:left-[-1.6rem]">
+                <div className="absolute sm:bottom-[-0.1rem] sm:w-[185px] sm:left-[-1.3rem] md:bottom-[-0.1rem] md:w-[185px] md:left-[-1.6rem] lg:bottom-[-0.1rem] lg:w-[230px] lg:left-[0.5rem]">
                   <div className="relative  z-20">
                     <button
                       className="w-full relative"
@@ -538,7 +538,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     } else {
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
-          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[120px] md:w-[132px] md:h-[140px] lg:h-[220px] lg:w-[202px] xl:w-[202px] xl:h-[220px]">
+          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[120px] md:w-[132px] md:h-[140px]  lg:w-[180px]  lg:h-[180px]xl:w-[202px] xl:h-[220px]">
             <Image
               src="/assets/img/hub/empty_slot.png"
               width={200}
@@ -561,7 +561,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           height={10}
           className="sm:w-5 sm:h-5 sm:-mb-2 md:w-6 md:h-6 "
         /> */}
-        <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-6xl md:mb-3 ">
+        <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-6xl md:mb-3 lg:mb-3">
           Currently Unlocking
         </h1>
         {/* <Image
@@ -603,8 +603,8 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           onClose={closeUnlockingInfoPanel}
           paragraphs={[
             <>
-              <p className="text-lg sm:text-sm font-bold"> Nice Choice!</p>
-              <p className="text-lg sm:text-sm">
+              <p className="text-lg sm:text-sm font-bold lg:text-xl"> Nice Choice!</p>
+              <p className="text-lg sm:text-sm lg:text-xl">
                 {" "}
                 Your new song is now <span className="font-bold">unlocking</span>. But let's not
                 wait! Tap here to get it now.
@@ -623,7 +623,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
             padding: "1.5rem",
             zIndex: "10000",
           }}
-          customClassName="unlock-info-panel"
+          customClassName="unlock-info-panel "
           transparentBg={false}
         />
       )}

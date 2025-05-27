@@ -11,24 +11,26 @@ const Sound = () => {
   const { playBoom } = useAudio();
   const router = useRouter();
   const stars = [
+    //Left top star
     {
-      className: "absolute md:top-72 md:right-72 sm:top-1/3 sm:left-20 lg:top-96 lg:left-32 z-10 ",
+      className:
+        "absolute md:top-72 md:right-72 sm:top-1/3 sm:left-20 lg:top-96 lg:left-[15rem] z-10 ",
       width: 22,
       height: 22,
       animation: "animate-pulse",
     },
-    //Left star
+    //Left bottom star
     {
       className:
-        "absolute md:bottom-1/2 md:left-36 sm:top-72 sm:left-36 lg:bottom-96 lg:left-80 z-0",
-      width: 10,
-      height: 10,
+        "absolute md:bottom-1/2 md:left-36 sm:top-72 sm:left-36 lg:bottom-[35rem] lg:left-[20rem] z-0 ",
+      width: 12,
+      height: 12,
       animation: "animate-pulse",
     },
     //Right star
     {
       className:
-        "absolute md:bottom-80 md:right-44 sm:bottom-80 sm:right-40 lg:bottom-96 lg:right-80 z-0",
+        "absolute md:bottom-80 md:right-44 sm:bottom-80 sm:right-40 lg:bottom-[30rem] lg:right-[21rem] z-0",
       width: 30,
       height: 30,
       animation: "animate-pulse",
@@ -72,19 +74,19 @@ const Sound = () => {
         <h2 className="tracking-widest">Sound on!</h2>
       </div>
       <div className="flex justify-center">
-        <div className="absolute sm:bottom-56 md:bottom-56 lg:bottom-72 xl:bottom-72 flex justify-center">
+        <div className="absolute sm:bottom-56 md:bottom-56 lg:bottom-96 xl:bottom-96 flex justify-center">
           <Image
             src={"/assets/img/sound/headphone.png"}
             width={50}
             height={50}
             alt="headphone-img"
-            className="sm:w-3/4 md:w-11/12 lg:w-1/2 xl:w-1/2 h-auto"
+            className="sm:w-3/4 md:w-11/12 lg:w-full xl:w-1/2 h-auto"
             priority={true}
           />
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="text-center text-xl font-medium tracking-wider absolute bottom-36 lg:text-2xl lg:bottom-48  xl:text-2xl xl:bottom-48">
+        <div className="text-center text-xl font-medium tracking-wider absolute bottom-36 lg:text-3xl lg:bottom-48 xl:text-3xl xl:bottom-48">
           <p className="text-[#cab05a]">This is a music game!</p>
           <p className="text-[#cab05a]">Turn on your sound to hear the beats.</p>
         </div>

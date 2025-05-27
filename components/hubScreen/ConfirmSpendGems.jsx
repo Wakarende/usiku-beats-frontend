@@ -46,7 +46,7 @@ const CountdownTimer = ({ unlockTime, onExpire }) => {
 
   return (
     <span
-      className="text-[#0af0e4] font-bold text-[24px] sm:text-xl"
+      className="text-[#0af0e4] font-bold text-[24px] sm:text-xl lg:text-3xl xl:text-3xl"
       style={{ fontFamily: "Digital-7" }}
     >
       {timeLeft.hours?.toString().padStart(2, "0") || "00"}:
@@ -107,7 +107,7 @@ const TimerBar = ({ unlockTime, song }) => {
   }, [unlockTime, song]);
 
   return (
-    <div className="w-full  h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
+    <div className="w-full h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
       <div className="w-full h-2.5 bg-[#4e1b2e] mt-0.5 rounded-sm relative shadow-lg">
         <div
           className="h-full absolute left-0 rounded-sm transition-all duration-100 ease-linear"
@@ -177,19 +177,19 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             height={100}
             className="w-[100px] h-auto sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[300px] lg:w-[300px] lg:h-[300px] xl:w-[300px] xl:h-[300px] z-10"
           />
-          <div className="absolute sm:top-[4.5rem] md:top-[6rem] flex items-center justify-center">
+          <div className="absolute sm:top-[4.5rem] md:top-[6rem] lg:top-[7rem] flex items-center justify-center">
             {thumbnailFile && (
               <Image
                 src={thumbnailFile}
                 alt="Song Thumbnail"
                 width={100}
                 height={100}
-                className="mx-auto rounded mb-3 sm:w-[192px] sm:h-[200px] sm:mb-1 md:w-[235px] md:h-[233px] lg:w-[250px] lg:h-[100px] rounded-t-md"
+                className="mx-auto rounded mb-3 sm:w-[192px] sm:h-[200px] sm:mb-1 md:w-[235px] md:h-[233px] lg:w-[285px] lg:h-[290px] rounded-t-md"
               />
             )}
           </div>
         </div>
-        <div className="absolute sm:bottom-[14rem] md:bottom-[14.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-2xl tracking-wider text-nowrap w-[70%]">
+        <div className="absolute sm:bottom-[14rem] md:bottom-[14.5rem] lg:bottom-[15rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-2xl lg:text-3xl tracking-wider text-nowrap w-[70%] lg:w-[45%] xl:w-[40%]">
           <p className=" text-yellow ">
             Time Left:{" "}
             {unlockTime ? (
@@ -221,7 +221,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
               />
             </span>
           </div>
-          <p className="text-white text-md">
+          <p className="text-white text-md lg:text-lg tracking-widest">
             You have:
             <div className=" ml-1 inline-flex items-center gap-0.5">
               <span className="text-white">{currentGems} </span>
@@ -259,7 +259,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             {/* Bouncing hand for FTUE step 4 */}
           </div>
           {currentStep === 5 && !isCompleted && (
-            <div className="absolute sm:bottom-[0rem] sm:left-[4rem] md:bottom-[-1rem] md:left-[6rem] animate-bounce z-[10000] pointer-events-none">
+            <div className="absolute sm:bottom-[0rem] sm:left-[4rem] md:bottom-[-1rem] md:left-[6rem] lg:bottom-[-2rem] lg:left-[16rem] xl:bottom-[-2rem] xl:left-[16rem] animate-bounce z-[10000] pointer-events-none">
               <Image
                 src="/assets/img/ftue/hand icon.png"
                 width={80}

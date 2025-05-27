@@ -337,10 +337,12 @@ const Library = () => {
       <Header />
       <div>
         <div className="flex justify-center items-center mt-4 w-full ">
-          <h1 className="uppercase lib-header text-7xl sm:text-5xl">Full Song Library</h1>
+          <h1 className="uppercase lib-header text-7xl sm:text-5xl lg:text-8xl">
+            Full Song Library
+          </h1>
         </div>
         <div className=" flex  justify-center items-center">
-          <div className="flex justify-center flex-col items-center sm:text-sm text-lg ">
+          <div className="flex justify-center flex-col items-center sm:text-sm text-lg lg:text-2xl ">
             <p className="text-library uppercase font-bold">You have {totalDiscs} discs!</p>
             {unlockable ? (
               <>
@@ -384,30 +386,30 @@ const Library = () => {
                       alt="Song Cover"
                       width={1}
                       height={1}
-                      className="rounded-md md:w-[150px] sm:w-[120px]"
+                      className="rounded-md md:w-[150px] sm:w-[120px] lg:w-[180px] xl:w-[200px] object-cover"
                     />
                   </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
-                      <p className="font-bold text-yellow text-lg md:text-md sm:text-sm text-nowrap">
+                      <p className="font-bold text-yellow text-lg md:text-md sm:text-sm text-nowrap lg:text-xl xl:text-2xl">
                         {song.song_name}
                       </p>
                       <p className="text-yellow uppercase text-xs text-nowrap">{song.difficulty}</p>
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <p
-                        className="text-white uppercase text-xs sm:text-[10px] cursor-pointer text-nowrap"
+                        className="text-white uppercase text-xs sm:text-[10px] cursor-pointer text-nowrap lg:text-sm xl:text-base"
                         onClick={() => handleArtistClick(song.artist?.id)}
                       >
                         {song.artist_name}
                       </p>
-                      <p className="text-white uppercase text-xs sm:text-[10px] text-nowrap">
+                      <p className="text-white uppercase text-xs sm:text-[10px] text-nowrap lg:text-sm xl:text-base">
                         {song.country_name}
                       </p>
                     </div>
                     {/* Unlock Button */}
                     {showUnlocked ? (
-                      <div className="text-green-500 font-bold mt-4">Unlocked</div>
+                      <div className="text-green-500 font-bold mt-4 ">Unlocked</div>
                     ) : (
                       <div
                         className={`
@@ -417,7 +419,7 @@ const Library = () => {
                         `}
                         onClick={() => unlockable && handleSongUnlock(song)}
                       >
-                        <div className="relative flex justify-center items-center p-1 rounded-lg">
+                        <div className="relative flex justify-center items-center p-1 rounded-lg ">
                           <Image
                             src="/assets/img/library/Get song button.png"
                             alt="get-song-btn"
@@ -425,12 +427,12 @@ const Library = () => {
                             height={110}
                             className="object-contain"
                           />
-                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%] sm:top-[10%] sm:left-[9%] sm:text-sm">
+                          <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%] sm:top-[10%] sm:left-[9%] sm:text-sm lg:top-[20%] lg:left-[15%] xl:top-[20%] xl:left-[15%] lg:text-xl xl:text-2xl">
                             30
                           </span>
                         </div>
                         {currentStep === 2 && !isCompleted && (
-                          <div className="absolute top-[50px] right-[-40px] animate-bounce z-[10000] pointer-events-none">
+                          <div className="absolute top-[50px] right-[-40px] lg:top-[60px] lg:right-[-40px] animate-bounce z-[10000] pointer-events-none">
                             <Image
                               src="/assets/img/ftue/hand icon.png"
                               width={80}
@@ -460,7 +462,9 @@ const Library = () => {
         {/* Popup shown after user clicks get song */}
         <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
           <div className="flex justify-start flex-col items-center  gap-8">
-            <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap">You Just Chose</h1>
+            <h1 className="text-6xl tracking-wider text-[#ff6b03] text-nowrap lg:text-7xl xl:text-8xl uppercase">
+              You Just Chose
+            </h1>
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
@@ -468,21 +472,23 @@ const Library = () => {
                   width={1}
                   height={1}
                   alt="popup-frame"
-                  className="rounded-lg z-1 md:w-[320px] md:h-[400px] sm:w-[320px] sm:h-[400px]"
+                  className="rounded-lg z-1 md:w-[320px] md:h-[400px] sm:w-[320px] sm:h-[400px] lg:w-[400px] lg:h-[450px] xl:w-[480px] xl:h-[550px] "
                 />
-                <div className="absolute top-[19%] left-[11.6%] overflow-hidden w-[237px] h-[256px]">
+                <div className="absolute top-[22%] left-[11.6%] overflow-hidden w-[237px] h-[250px] lg:top-[21%] lg:left-[11%] xl:top-[21%] xl:left-[12%] lg:w-[300px] lg:h-[265px] xl:w-[352px] xl:h-[370px]">
                   <Image
                     src={unlockedSong?.thumbnail_file}
                     alt="Artist Image"
                     layout="fill"
-                    className="z-0 w-[237px] h-[256px] object-contain"
+                    className="z-0 w-[237px] h-[256px] object-contains  lg:w-[300px] lg:h-[200px] "
                   />
                 </div>
                 <div className="flex flex-col absolute bottom-[10%] z-1">
-                  <p className="text-yellow uppercase text-xs text-nowrap ">
+                  <p className="text-yellow uppercase text-xs text-nowrap lg:text-base xl:text-lg">
                     {unlockedSong?.artist_name}
                   </p>
-                  <p className="text-white text-sm">{unlockedSong?.song_name}</p>
+                  <p className="text-white text-sm lg:text-base xl:text-base">
+                    {unlockedSong?.song_name}
+                  </p>
                 </div>
               </div>
             </div>
@@ -503,9 +509,9 @@ const Library = () => {
                 width={1}
                 height={1}
                 alt="continue-btn"
-                className="w-[200px]"
+                className="w-[200px] lg:w-[250px] xl:w-[300px] object-contain"
               />
-              <span className="text-white absolute inset-4 font-bold uppercase text-xl tracking-widest">
+              <span className="text-white absolute inset-4 font-bold uppercase text-xl tracking-widest lg:inset-6 lg:text-2xl xl:inset-8 xl:text-3xl">
                 Continue
               </span>
               {/* Bouncing hand for step 3 */}
@@ -529,7 +535,7 @@ const Library = () => {
           onClose={() => setShowLibraryFtuePanel(false)}
           paragraphs={[
             <div key="wrapper">
-              <p className="md:text-lg sm:text-sm">
+              <p className="md:text-lg sm:text-sm lg:text-2xl">
                 This is the <span className="font-bold">Song Library!</span>. Scroll through, and
                 choose a song to start with.
               </p>
@@ -559,7 +565,7 @@ const Library = () => {
               className="object-contain w-full"
             />
             <motion.div
-              className="absolute sm:top-8 sm:left-[4rem] md:top-10 md:left-20"
+              className="absolute sm:top-8 sm:left-[4rem] md:top-10 md:left-20 lg:top-[5rem] lg:left-[11rem] xl:top-[5rem] xl:left-[11rem]"
               animate={{ scale: [1, 1.1, 1] }}
               transition={{
                 duration: 1.5,
@@ -577,7 +583,7 @@ const Library = () => {
                 alt="Back"
                 width={190}
                 height={50}
-                className="object-contain"
+                className="object-contain sm:w-[200px] md:w-[200px] lg:w-[350px] xl:w-[350px] cursor-pointer"
               />
             </motion.div>
           </div>

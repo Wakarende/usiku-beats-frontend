@@ -421,14 +421,14 @@ const HubScreen = () => {
       {showFtuePanel && (
         <InfoPanel
           customPosition={true}
-          customClassName=" sm:top-[45%] md:top-[50%] lg:top-[60%] xl:top-[70%]"
+          customClassName=" sm:top-[45%] md:top-[50%] lg:top-[45%] xl:top-[70%] w-full"
           onClose={closeFtuePanel}
           paragraphs={[
             <>
-              <p className="font-bold text-md sm:text-sm lg:text-xl mb-4">
+              <p className="font-bold text-md sm:text-sm lg:text-2xl mb-4">
                 Usiku Beats: Collect and master great songs!
               </p>
-              <p className="text-lg sm:text-sm lg:text-xl">
+              <p className="text-lg sm:text-sm lg:text-2xl">
                 Let's get your first one! Tap this button to open the{" "}
                 <span className="font-bold"> Song Library!</span>
               </p>
@@ -440,7 +440,7 @@ const HubScreen = () => {
       <div className=" mx-auto hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex items-center w-full relative">
-          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5  sm:mb-1 sm:mt-1 text-5xl uppercase tracking-wider">
+          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5  sm:mb-1 sm:mt-1 text-5xl uppercase tracking-wider lg:text-6xl xl:text-7xl lg:mt-2.5 xl:mt-2.5">
             Your Songs
           </h1>
           <Link href={"/library"}>
@@ -499,7 +499,7 @@ const HubScreen = () => {
               }
             }}
             customPosition={true}
-            customClassName="sm:top-[56%] md:top-[50%] lg:top-[60%] xl:top-[70%]"
+            customClassName="sm:top-[56%] md:top-[50%] lg:top-[45%] xl:top-[40%] w-full"
             paragraphs={[
               <>
                 <p className="font-bold sm:text-sm mb-4">Awesome! Your new song is now ready!</p>
