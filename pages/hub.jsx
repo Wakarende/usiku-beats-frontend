@@ -429,7 +429,7 @@ const HubScreen = () => {
                 Usiku Beats: Collect and master great songs!
               </p>
               <p className="text-lg sm:text-sm lg:text-xl">
-                Let's' get your first one! Tap this button to open the{" "}
+                Let's get your first one! Tap this button to open the{" "}
                 <span className="font-bold"> Song Library!</span>
               </p>
             </>,
