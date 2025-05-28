@@ -186,11 +186,11 @@ export default function TitleScreen() {
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
         >
           <Image
-            src="/assets/img/start/logo.png"
+            src="/assets/img/start/logo_beta-v1.png"
             width={1}
             height={1}
             alt="logo"
-            className="md:w-[15rem] sm:w-[10rem] lg:w-[16rem] xl:w-[20rem]"
+            className="md:w-[16rem] sm:w-[12rem] lg:w-[16rem] xl:w-[20rem] "
             priority={true}
           />
         </motion.div>
