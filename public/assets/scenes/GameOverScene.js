@@ -239,6 +239,7 @@ class GameOverScene extends Phaser.Scene {
 
     this.artist_name.setText(this.track.artist_name.toUpperCase());
     this.song_name.setText(this.track.song_name);
+    this.difficulty_text.setText(this.track.difficulty.toUpperCase());
     // this.current_score.setText(Math.trunc(this.track.current_score))
     this.setStars(this.track.current_score);
     this.stars.forEach((star) => {
@@ -678,8 +679,8 @@ class GameOverScene extends Phaser.Scene {
         this.newLevelAchieved = true; // Set the flag to true if new level is reached
       }
 
-      // let’s give the player 2 Gems for every star they get
-      updatedUserData.profile.player.total_gems += this.fullStarsCount * 2;
+      // // let’s give the player 2 Gems for every star they get
+      // updatedUserData.profile.player.total_gems += this.fullStarsCount * 2;
 
       // Emit the event with the flag indicating whether a new level has been achieved
       this.game.events.emit("updateUserEvent", { data: updatedUserData });
