@@ -271,8 +271,9 @@ class Preload extends Phaser.Scene {
     this.song_name.setText(this.track.song_name);
     this.artist_name.setText(this.track.artist_name.toUpperCase());
 
-    let infoText = this.track.artist.bio || this.track.data?.description;
+    let infoText = this.track.data?.description || this.track.artist.bio;
     this.bio_text.setText(infoText.toUpperCase());
+    this.difficulty_text.setText(`${this.track.difficulty.toUpperCase()}`);
     // console.log("this.track.artist.bio", this.track.artist.bio);
 
     let scores = JSON.parse(localStorage.getItem("scores") || "{}");

@@ -218,6 +218,10 @@ class SongComplete extends Phaser.Scene {
     this.carousel.setScale(scale);
     this.carousel.setPosition(180, 202);
 
+    if (this.sceneData.isFTUE) {
+      this.carousel.setScale(scale * 0.7);
+    }
+
     // Apply mask
     const mask = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
     this.carousel.setMask(mask);
