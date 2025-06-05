@@ -22,7 +22,7 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
-  const currentVersion = "0.2.4"; // Match the version displayed in the UI
+  const currentVersion = "0.2.5"; // Match the version displayed in the UI
 
   // Version check
   // Version check
@@ -62,7 +62,7 @@ export default function TitleScreen() {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
     const checkAuth = () => {
       const auth = prompt("Please enter the password:", "");
-      if (auth === "4321") {
+      if (auth === "4321" || auth === "R%Gk&v!pIe*PcZGA") {
         localStorage.setItem("isAuthenticated", "true");
       } else {
         alert("Incorrect password");
