@@ -24,6 +24,7 @@ import { AnalyticsService } from "../services/analytics.service";
 import "./pages.css";
 // import ZustandDebug from "../components/zustandDebug";
 import useStorageStore from "../stores/storageStore";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -52,7 +53,7 @@ const HubScreen = () => {
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
 
-  const { fadeOutBgMusic, playBoom } = useAudio();
+  const { fadeOutBgMusic, playBoom, stopBgMusic } = useAudio();
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
 
@@ -91,6 +92,35 @@ const HubScreen = () => {
     setPlaySongPanelSeen,
     trackDailyLogin,
   } = useStorageStore();
+
+  const [isInIframe, setIsInIframe] = useState(false);
+
+  // Check if this is iframe mode
+const isIframeMode = router.query.iframe === 'true';
+
+// Detect if running in iframe
+useEffect(() => {
+  setIsInIframe(window !== window.parent);
+}, []);
+
+// Add this useEffect in both hub.jsx and library.jsx:
+
+useEffect(() => {
+  // Check if we're returning from game and in iframe
+  if (isInIframe) {
+    const params = new URLSearchParams(window.location.search);
+    const fromGame = params.get('fromGame');
+    
+    if (fromGame === 'true') {
+      // Notify parent to resume music
+      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+      
+      // Clean up URL parameter
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }
+}, [isInIframe]);
 
   useEffect(() => {
     // if (typeof window === "undefined") return;
@@ -330,6 +360,13 @@ const HubScreen = () => {
 
     setCurrentTrackData(JSON.stringify(track));
 
+    if (window !== window.parent) {
+      window.parent.postMessage({ type: 'STOP_MUSIC' }, '*');
+    } else {
+      // Direct mode - stop music directly
+      stopBgMusic();
+    }
+
     const src = process.env.NODE_ENV === "production" ? `/game.html` : `/game`;
     window.location.href = src;
     // router.push("/game");
@@ -414,8 +451,10 @@ const HubScreen = () => {
       </div>
     );
   }
-  return (
-    <div className="hubscreen-container">
+
+
+  const pageContent = (
+<div className="hubscreen-container">
       <Header />
       {/* The FTUE panel if needed */}
       {showFtuePanel && (
@@ -585,6 +624,11 @@ const HubScreen = () => {
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
       {/* <ZustandDebug /> */}
     </div>
+  );
+  return (
+    <DesktopViewport>
+      {pageContent}
+    </DesktopViewport>
   );
 };
 

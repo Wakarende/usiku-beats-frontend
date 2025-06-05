@@ -10,6 +10,7 @@ import { updateUser } from "../redux/main/authActions";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { useAudio } from "../src/context/AudioProvider";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 import "./pages.css";
 
@@ -22,9 +23,17 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
-  const currentVersion = "0.2.4"; // Match the version displayed in the UI
+  const [isInIframe, setIsInIframe] = useState(false);
+  const currentVersion = "0.2.4";
 
-  // Version check
+  
+  const isIframeMode = router.query.iframe === 'true';
+
+  // Detect if running in iframe
+  useEffect(() => {
+    setIsInIframe(window !== window.parent);
+  }, []);
+
   // Version check
   useEffect(() => {
     const checkVersion = async () => {
@@ -36,21 +45,17 @@ export default function TitleScreen() {
         if (localVersion !== serverVersion) {
           console.log("new version detected. reloading");
 
-          // Store new version
           localStorage.setItem("gameVersion", serverVersion);
 
-          // Clear cache if supported
           if (window.caches) {
             const cacheNames = await window.caches.keys();
             await Promise.all(cacheNames.map((cacheName) => window.caches.delete(cacheName)));
           }
 
-          // Force reload of the page without clearing localStorage
           window.location.reload(true);
         }
       } catch (error) {
         console.error("Version check failed:", error);
-        // Game continues with current version if check fails
       }
     };
 
@@ -74,7 +79,7 @@ export default function TitleScreen() {
     }
   }, []);
 
-  //Intro.jsx Anonymous user setup
+  // Anonymous user setup
   useEffect(() => {
     const checkAnon = async () => {
       if (!user_data) {
@@ -104,10 +109,24 @@ export default function TitleScreen() {
     checkAnon();
   }, [user_data, dispatch]);
 
+  // Handle navigation - iframe vs direct
+  const handleNavigation = (url) => {
+    if (isInIframe) {
+     
+      window.parent.postMessage({ type: 'NAVIGATE', url }, '*');
+    } else {
+     
+      router.push(url);
+    }
+  };
+
   // Combined intro and index logic
   const handleStart = async () => {
-    handleClickSound();
-    router.push("/sound");
+    handleClickSound(); // Local click sound
+
+    // Navigate to sound page
+    handleNavigation("/sound");
+
     try {
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
@@ -118,37 +137,6 @@ export default function TitleScreen() {
       console.error("Error enabling full-screen mode:", err);
     }
   };
-  // const handleStart = async () => {
-  //   handleClickSound();
-  //   playBoom();
-
-  //   try {
-  //     if (document.documentElement.requestFullscreen) {
-  //       await document.documentElement.requestFullscreen();
-  //     } else {
-  //       console.warn("Fullscreen API is not supported");
-  //     }
-  //   } catch (err) {
-  //     console.error("Error enabling full-screen mode:", err);
-  //   }
-
-  //   // Check FTUE
-  //   const ftueCompleted = localStorage.getItem("ftueCompleted");
-  //   if (!ftueCompleted || ftueCompleted === "false") {
-  //     try {
-  //       const response = await axios.get(`${BASE_URL}song-detail/148/`);
-  //       const tutorialTrack = response.data;
-
-  //       localStorage.setItem("currentTrackData", JSON.stringify(tutorialTrack));
-  //       router.push("/game");
-  //     } catch (err) {
-  //       console.log("Error fetching tutorial track", err);
-  //       router.push("/hub");
-  //     }
-  //   } else {
-  //     router.push("/hub");
-  //   }
-  // };
 
   // Animation states
   const [backgroundVisible, setBackgroundVisible] = useState(false);
@@ -156,7 +144,6 @@ export default function TitleScreen() {
   const [buttonVisible, setButtonVisible] = useState(false);
 
   useEffect(() => {
-    // Start the animation sequence
     const sequence = async () => {
       setBackgroundVisible(true);
 
@@ -170,7 +157,7 @@ export default function TitleScreen() {
     sequence();
   }, []);
 
-  return (
+  const pageContent = (
     <div className="fixed inset-0 overflow-hidden ">
       <div className="flex justify-end px-2 py-1">
         <p className="text-white leading-wide small:text-[10px] medium:text-sm">
@@ -186,7 +173,7 @@ export default function TitleScreen() {
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
         >
           <Image
-            src="/assets/img/start/logo_beta-v1.png"
+            src="/assets/img/start/logo_beta.png"
             width={1}
             height={1}
             alt="logo"
@@ -243,5 +230,17 @@ export default function TitleScreen() {
         </div>
       </div>
     </div>
+  );
+
+  
+  if (isIframeMode) {
+    return pageContent;
+  }
+
+  
+  return (
+    <DesktopViewport>
+      {pageContent}
+    </DesktopViewport>
   );
 }

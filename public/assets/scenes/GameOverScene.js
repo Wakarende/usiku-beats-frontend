@@ -282,6 +282,7 @@ class GameOverScene extends Phaser.Scene {
       localStorage.setItem("ftueCompleted", "true"),
         router.push({
           pathname: "/hub",
+          query: { fromGame: "true" }
 
           // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
         });
@@ -311,6 +312,7 @@ class GameOverScene extends Phaser.Scene {
       localStorage.setItem("newLevel", JSON.stringify(newLevel));
       router.push({
         pathname: "/library",
+        query: { fromGame: "true" }
         // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
       });
       this.triggerFullScreen();
