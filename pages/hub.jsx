@@ -44,7 +44,9 @@ const HubScreen = () => {
   const [newLevel, setNewLevel] = useState();
   const [isPulsing, setIsPulsing] = useState(false);
 
-  const [showFtuePanel, setShowFtuePanel] = useState(false);
+  // const [showFtuePanel, setShowFtuePanel] = useState(false);
+  const { showFtuePanel, setShowFtuePanel, step1PanelShown, 
+    setStep1PanelShown } = useFTUEStore();
 
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
@@ -259,21 +261,61 @@ useEffect(() => {
     }
   };
 
+  //debugging
+  useEffect(() => {
+    console.log('🔄 Hub component mounted');
+    return () => console.log('🔄 Hub component unmounted');
+  }, []);
+
   useEffect(() => {
     // if (typeof window === "undefined") return;
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
 
-    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen) {
+    // if (currentStep === 1 && !isCompleted && !hubTutorialSeen && !ftueParam) {
+    //   setShowFtuePanel(true);
+    //   setHubTutorialSeen(true);
+    //   setStep1PanelShown(true);
+    // }
+
+  //debugging
+
+  if (!ftueParam && showFtuePanel) {
+    console.log('🚫 No ftueParam but panel is showing, hiding it');
+    setShowFtuePanel(false);
+  }
+  
+  console.log('🔍 FTUE condition check:', 
+  'ftueParam:', ftueParam,
+  'isCompleted:', isCompleted,
+  'hubTutorialSeen:', hubTutorialSeen, 
+  'step1PanelShown:', step1PanelShown,
+  'currentStep:', currentStep,
+  'willTrigger:', ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown
+);
+
+    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown) {
+      console.log('🎯 FTUE condition triggered! Setting showFtuePanel to true');
       setShowFtuePanel(true);
       setHubTutorialSeen(true);
-    }
+      setStep1PanelShown(true);  
+    }console.log('🔍 FTUE condition check:', 
+  'ftueParam:', ftueParam,
+  'isCompleted:', isCompleted,
+  'hubTutorialSeen:', hubTutorialSeen, 
+  'step1PanelShown:', step1PanelShown,
+  'currentStep:', currentStep,
+  'willTrigger:', ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown
+);
 
     if (!footerGlowCleared) {
       setFooterGlowActive(true);
     }
-  }, [isCompleted, hubTutorialSeen, footerGlowCleared]);
+
+    console.log('FTUE useEffect running', { currentStep, isCompleted, hubTutorialSeen, showFtuePanel, ftueParam, fullUrl: window.location.href, 
+      searchParams: window.location.search  })
+  }, [currentStep, isCompleted, hubTutorialSeen, footerGlowCleared, step1PanelShown]);
 
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
@@ -306,6 +348,11 @@ useEffect(() => {
   const closeFtuePanel = () => {
     console.log("Closing FTUE panel. Current step:", currentStep);
     setShowFtuePanel(false);
+
+
+    if (currentStep === 1) {
+      completeStep(currentStep);
+    }
 
     const currentQuery = { ...router.query };
     delete currentQuery.ftueGameplayCompleted;

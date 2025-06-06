@@ -66,8 +66,8 @@ class GameOverFTUE extends Phaser.Scene {
 
       router.push({
         pathname: "/hub",
-        query: { ftueGameplayCompleted: this.ftueCompleted },
-        query: { fromGame: "true" }
+        query: { ftueGameplayCompleted: this.ftueCompleted, fromGame: "true" },
+       
       });
     });
 

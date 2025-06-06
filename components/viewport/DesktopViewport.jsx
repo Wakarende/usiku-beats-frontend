@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useAudio } from '../../src/context/AudioProvider';
 
 const DesktopViewport = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [iframeUrl, setIframeUrl] = useState('');
   const router = useRouter();
   const { playBoom, fadeOutBgMusic, playBgMusic, stopBgMusic } = useAudio();
