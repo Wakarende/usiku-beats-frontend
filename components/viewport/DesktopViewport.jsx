@@ -23,8 +23,19 @@ const DesktopViewport = ({ children }) => {
   // Sync iframe URL with parent URL
   useEffect(() => {
     if (!isMobile) {
-      const currentUrl = router.asPath;
-      // Add iframe=true parameter to prevent AudioProvider in iframe
+      let currentUrl = router.asPath;
+      
+      // For static export in production, add .html extension
+      if (process.env.NODE_ENV === 'production') {
+        const [pathname, queryString] = currentUrl.split('?');
+        
+        // Add .html if it's not the root path and doesn't already have .html
+        if (pathname !== '/' && !pathname.includes('.html')) {
+          currentUrl = queryString ? `${pathname}.html?${queryString}` : `${pathname}.html`;
+        }
+      }
+      
+      // Add iframe=true parameter
       const separator = currentUrl.includes('?') ? '&' : '?';
       setIframeUrl(`${currentUrl}${separator}iframe=true`);
     }

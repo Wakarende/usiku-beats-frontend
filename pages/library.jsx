@@ -138,11 +138,7 @@ const Library = () => {
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
 
-    if (ftueParam === "true") {
-      console.log('🚨 URL has ftueGameplayCompleted=true!');
-      console.log('🚨 Full URL:', window.location.href);
-      console.log('🚨 Referrer:', document.referrer);
-    }
+   
 
     if (ftueParam === "true" && !isCompleted && !libraryTutorialSeen) {
       setIsFtue(true);

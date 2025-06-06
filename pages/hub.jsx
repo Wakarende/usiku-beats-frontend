@@ -97,15 +97,14 @@ const HubScreen = () => {
 
   const [isInIframe, setIsInIframe] = useState(false);
 
-  // Check if this is iframe mode
-const isIframeMode = router.query.iframe === 'true';
+  
 
 // Detect if running in iframe
 useEffect(() => {
   setIsInIframe(window !== window.parent);
 }, []);
 
-// Add this useEffect in both hub.jsx and library.jsx:
+
 
 useEffect(() => {
   // Check if we're returning from game and in iframe
@@ -125,9 +124,7 @@ useEffect(() => {
 }, [isInIframe]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
-
-    // Set appropriate panels based on FTUE step
+    
     if (currentStep === 4 && !unlockingInfoSeen) {
       setShowUnlockingInfoPanel(true);
     } else {
@@ -142,11 +139,11 @@ useEffect(() => {
   }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
+   
 
     if (currentStep === 7 && !isCompleted) {
       setShowPlaySongPanel(true);
-      // Find the latest song to highlight
+     
       if (songs && songs.length > 0) {
         const latestSong = songs[0];
         setHighlightedSongId(latestSong.id);
@@ -158,7 +155,7 @@ useEffect(() => {
   }, [currentStep, songs, isCompleted]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
+    
 
     checkAnonUser();
     checkRedirect();
@@ -175,7 +172,7 @@ useEffect(() => {
   }, [songs]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
+    
 
     if (currentStep === 7 && !isCompleted) {
       const matchingSong = songs.find((s) => s.id === highlightedSongId);
@@ -273,48 +270,26 @@ useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
 
-    // if (currentStep === 1 && !isCompleted && !hubTutorialSeen && !ftueParam) {
-    //   setShowFtuePanel(true);
-    //   setHubTutorialSeen(true);
-    //   setStep1PanelShown(true);
-    // }
-
-  //debugging
+   
 
   if (!ftueParam && showFtuePanel) {
-    console.log('🚫 No ftueParam but panel is showing, hiding it');
+  
     setShowFtuePanel(false);
   }
-  
-  console.log('🔍 FTUE condition check:', 
-  'ftueParam:', ftueParam,
-  'isCompleted:', isCompleted,
-  'hubTutorialSeen:', hubTutorialSeen, 
-  'step1PanelShown:', step1PanelShown,
-  'currentStep:', currentStep,
-  'willTrigger:', ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown
-);
 
+ 
     if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown) {
-      console.log('🎯 FTUE condition triggered! Setting showFtuePanel to true');
+     
       setShowFtuePanel(true);
       setHubTutorialSeen(true);
       setStep1PanelShown(true);  
-    }console.log('🔍 FTUE condition check:', 
-  'ftueParam:', ftueParam,
-  'isCompleted:', isCompleted,
-  'hubTutorialSeen:', hubTutorialSeen, 
-  'step1PanelShown:', step1PanelShown,
-  'currentStep:', currentStep,
-  'willTrigger:', ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown
-);
+    }
 
     if (!footerGlowCleared) {
       setFooterGlowActive(true);
     }
 
-    console.log('FTUE useEffect running', { currentStep, isCompleted, hubTutorialSeen, showFtuePanel, ftueParam, fullUrl: window.location.href, 
-      searchParams: window.location.search  })
+  
   }, [currentStep, isCompleted, hubTutorialSeen, footerGlowCleared, step1PanelShown]);
 
   const closeUnlockingInfoPanel = () => {
@@ -346,7 +321,7 @@ useEffect(() => {
   };
 
   const closeFtuePanel = () => {
-    console.log("Closing FTUE panel. Current step:", currentStep);
+    // console.log("Closing FTUE panel. Current step:", currentStep);
     setShowFtuePanel(false);
 
 
@@ -380,8 +355,8 @@ useEffect(() => {
   };
 
   const handleFtueProgressToStep6 = (song) => {
-    console.log("MANUALLY TRIGGERING STEP 6 SETUP");
-    console.log("Song passed to callback:", song);
+    // console.log("MANUALLY TRIGGERING STEP 6 SETUP");
+    // console.log("Song passed to callback:", song);
 
     completeStep(currentStep);
 
@@ -389,12 +364,12 @@ useEffect(() => {
 
     // Set the highlighted song explicitly
     if (song) {
-      console.log("Setting highlighted song ID to:", song.id);
+      // console.log("Setting highlighted song ID to:", song.id);
       setHighlightedSongId(song.id);
       setCurrentTrackData(JSON.stringify(song));
     } else if (songs && songs.length > 0) {
       const latestSong = songs[0];
-      console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
+      // console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
       setHighlightedSongId(latestSong.id);
       setCurrentTrackData(JSON.stringify(latestSong));
     }
@@ -403,7 +378,7 @@ useEffect(() => {
   };
 
   const gotoGameDetail = (track) => {
-    console.log("Setting current track data:", track.id, track.song_name);
+    // console.log("Setting current track data:", track.id, track.song_name);
 
     setCurrentTrackData(JSON.stringify(track));
 
