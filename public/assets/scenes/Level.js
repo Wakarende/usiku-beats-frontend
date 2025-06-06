@@ -1137,8 +1137,8 @@ class Level extends Phaser.Scene {
       return;
     }
     this.frameTime = this.frameTime * 0.99 + delta * 0.01;
-    this.fps = ((1 / this.frameTime) * 1000).toFixed(1);
-    this.fps_text.text = this.fps;
+    // this.fps = ((1 / this.frameTime) * 1000).toFixed(1);
+    // this.fps_text.text = this.fps;
 
     const lowFpsThreshold = 50;
 

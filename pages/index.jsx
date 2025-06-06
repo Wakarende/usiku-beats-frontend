@@ -24,7 +24,7 @@ export default function TitleScreen() {
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
   const [isInIframe, setIsInIframe] = useState(false);
-  const currentVersion = "0.2.4";
+  const currentVersion = "0.2.5";
 
   
   const isIframeMode = router.query.iframe === 'true';
@@ -67,7 +67,7 @@ export default function TitleScreen() {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
     const checkAuth = () => {
       const auth = prompt("Please enter the password:", "");
-      if (auth === "4321") {
+      if (auth === "4321" || auth === "R%Gk&v!pIe*PcZGA") {
         localStorage.setItem("isAuthenticated", "true");
       } else {
         alert("Incorrect password");

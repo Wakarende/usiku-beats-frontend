@@ -85,7 +85,7 @@ class BeatMissed extends Phaser.Scene {
 		gem_outline.scaleY = 0.2;
 
 		// lists
-		const ui_layer = [gem_count, beat_Missed_Text, continue_btn, gem_small, timer_icon, motivation_text, bm_BG, timer_text];
+		const ui_layer = [gem_count, beat_Missed_Text, continue_btn, gem_small, timer_icon, motivation_text, bm_BG, timer_text, motivation_text_1, total_gem_count_txt, gem_outline];
 
 		this.black_background = black_background;
 		this.timer_text = timer_text;
