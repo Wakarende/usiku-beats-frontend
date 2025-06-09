@@ -258,14 +258,8 @@ useEffect(() => {
     }
   };
 
-  //debugging
-  useEffect(() => {
-    console.log('🔄 Hub component mounted');
-    return () => console.log('🔄 Hub component unmounted');
-  }, []);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
