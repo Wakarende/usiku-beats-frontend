@@ -162,7 +162,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[110] bg-black/80">
       <div
-        style={{ backgroundImage: `url("/assets/img/dailyreward/BG-v1.png")` }}
+        style={{ backgroundImage: `url("./assets/img/dailyreward/BG-v1.png")` }}
         className="text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
       >
         <div className="flex flex-col gap-0 mt-10">
@@ -172,7 +172,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
         <div className="relative flex justify-center">
           <Image
             alt="confirmspendgems-frame"
-            src={"/assets/img/unlock/spendgems-frame.png"}
+            src={"./assets/img/unlock/spendgems-frame.png"}
             width={100}
             height={100}
             className="w-[100px] h-auto sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[300px] lg:w-[300px] lg:h-[300px] xl:w-[300px] xl:h-[300px] z-10"
@@ -213,7 +213,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             </p>
             <span className="inline flex items-center">
               <Image
-                src={"/assets/img/spendgems/Gem.png"}
+                src={"./assets/img/spendgems/Gem.png"}
                 width={50}
                 height={50}
                 className="w-6 h-6"
@@ -227,7 +227,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
               <span className="text-white">{currentGems} </span>
               <span>
                 <Image
-                  src={"/assets/img/spendgems/Gem.png"}
+                  src={"./assets/img/spendgems/Gem.png"}
                   width={50}
                   height={50}
                   className="w-4 h-auto"
@@ -246,7 +246,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
           >
             <button className="relative text-white font-bold w-24 h-20" onClick={onConfirm}>
               <Image
-                src="/assets/img/spendgems/Left button.png"
+                src="./assets/img/spendgems/Left button.png"
                 width={50}
                 height={50}
                 className="w-full h-20"
@@ -261,7 +261,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
           {currentStep === 5 && !isCompleted && (
             <div className="absolute sm:bottom-[0rem] sm:left-[4rem] md:bottom-[-1rem] md:left-[6rem] lg:bottom-[-2rem] lg:left-[16rem] xl:bottom-[-2rem] xl:left-[16rem] animate-bounce z-[10000] pointer-events-none">
               <Image
-                src="/assets/img/ftue/hand icon.png"
+                src="./assets/img/ftue/hand icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to yes button"
@@ -275,7 +275,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             disabled={currentStep === 5 && !isCompleted}
           >
             <Image
-              src="/assets/img/spendgems/Right button.png"
+              src="./assets/img/spendgems/Right button.png"
               width={50}
               height={50}
               className={`w-24 h-20 ${

@@ -19,9 +19,9 @@ const LevelInfo = ({
   );
 
   const getBackgroundImage = () => {
-    if (isActive) return "url('/assets/img/levelinfo/Tile_Active.png')";
-    if (isCompleted) return "url('/assets/img/levelinfo/Tile_completed.png')";
-    return "url('/assets/img/levelinfo/Tile_Inactive.png')";
+    if (isActive) return "url('assets/img/levelinfo/Tile_Active.png')";
+    if (isCompleted) return "url('assets/img/levelinfo/Tile_completed.png')";
+    return "url('assets/img/levelinfo/Tile_Inactive.png')";
   };
 
   const cardClasses = classNames(
@@ -96,7 +96,7 @@ const LevelInfo = ({
                 <div className="flex items-center flex-1">
                   <div className="w-7 h-7 relative mr-3">
                     <Image
-                      src="/assets/img/levelinfo/Gem.png"
+                      src="./assets/img/levelinfo/Gem.png"
                       alt="Gems"
                       layout="fill"
                       objectFit="contain"
@@ -104,16 +104,14 @@ const LevelInfo = ({
                   </div>
                   <p className="text-white text-lg">Bonus gems</p>
                 </div>
-                <h3 className="text-yellow text-4xl font-bold ml-4 tracking-widest">
-                  {bonusGems}
-                </h3>
+                <h3 className="text-yellow text-4xl font-bold ml-4 tracking-widest">{bonusGems}</h3>
               </div>
 
               {/* Normal Difficulty */}
               <div className="flex items-center">
                 <div className="w-7 h-7 relative mr-3">
                   <Image
-                    src="/assets/img/levelinfo/Unlock.png"
+                    src="./assets/img/levelinfo/Unlock.png"
                     alt="Difficulty"
                     layout="fill"
                     objectFit="contain"
@@ -126,7 +124,7 @@ const LevelInfo = ({
               <div className="flex items-center">
                 <div className="w-7 h-7 relative mr-3">
                   <Image
-                    src="/assets/img/levelinfo/Unlock.png"
+                    src="./assets/img/levelinfo/Unlock.png"
                     alt="Tiles"
                     layout="fill"
                     objectFit="contain"
@@ -140,16 +138,14 @@ const LevelInfo = ({
                 <div className="flex items-center">
                   <div className="w-7 h-7 relative mr-3">
                     <Image
-                      src="/assets/img/levelinfo/Disc_icon.png"
+                      src="./assets/img/levelinfo/Disc_icon.png"
                       alt="Songs"
                       layout="fill"
                       objectFit="contain"
                     />
                   </div>
                   <p className="text-white text-lg w-28">New songs to unlock</p>
-                  <h3 className="text-yellow text-4xl font-bold ml-4 tracking-widest">
-                    20
-                  </h3>
+                  <h3 className="text-yellow text-4xl font-bold ml-4 tracking-widest">20</h3>
                 </div>
               </div>
             </div>
@@ -160,19 +156,15 @@ const LevelInfo = ({
               <div className="flex items-center gap-1">
                 <div className="w-7 h-7 relative top-[-15px] ">
                   <Image
-                    src="/assets/img/levelinfo/Star.png"
+                    src="./assets/img/levelinfo/Star.png"
                     alt="Star"
                     layout="fill"
                     objectFit="contain"
                   />
                 </div>
-                <h1 className="text-black text-6xl tracking-wider">
-                  {starsNeeded}
-                </h1>
+                <h1 className="text-black text-6xl tracking-wider">{starsNeeded}</h1>
               </div>
-              <p className="text-yellow text-lg tracking-widest ">
-                Stars needed
-              </p>
+              <p className="text-yellow text-lg tracking-widest ">Stars needed</p>
             </div>
           </div>
         </div>

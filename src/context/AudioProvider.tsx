@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useRef,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useRef, useEffect, useState } from "react";
 import { Howl } from "howler";
 import { usePathname } from "next/navigation";
 
@@ -16,11 +10,7 @@ export function useAudio() {
   return useContext(AudioContext);
 }
 
-export default function AudioProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AudioProvider({ children }: { children: React.ReactNode }) {
   const howlsRef = useRef<{
     bgMusic?: Howl;
   }>({});
@@ -30,7 +20,7 @@ export default function AudioProvider({
 
   useEffect(() => {
     const bgMusic = new Howl({
-      src: ["/assets/sounds/ui/themeMusic.mp3"],
+      src: ["./assets/sounds/ui/themeMusic.mp3"],
       loop: true,
       volume: 1,
     });
@@ -45,48 +35,45 @@ export default function AudioProvider({
     };
   }, []);
 
-  useEffect(()=>{
-    const bgMusic = howlsRef.current.bgMusic;
-    if(!bgMusic) return;
-    
-  })
   useEffect(() => {
-  
-  const bgMusic = new Howl({
-    src: ["/assets/sounds/ui/themeMusic.mp3"],
-    loop: true,
-    volume: 1,
+    const bgMusic = howlsRef.current.bgMusic;
+    if (!bgMusic) return;
   });
-  howlsRef.current.bgMusic = bgMusic;
+  useEffect(() => {
+    const bgMusic = new Howl({
+      src: ["./assets/sounds/ui/themeMusic.mp3"],
+      loop: true,
+      volume: 1,
+    });
+    howlsRef.current.bgMusic = bgMusic;
 
-  bgMusic.once("playerror", (id, error) => {
-    console.warn("Howler play error:", error);
-  });
+    bgMusic.once("playerror", (id, error) => {
+      console.warn("Howler play error:", error);
+    });
 
-  return () => {
-    bgMusic.unload();
-  };
-}, []);
+    return () => {
+      bgMusic.unload();
+    };
+  }, []);
 
+  useEffect(() => {
+    const bgMusic = howlsRef.current.bgMusic;
+    if (!bgMusic) return;
 
-useEffect(() => {
-  const bgMusic = howlsRef.current.bgMusic;
-  if (!bgMusic) return;
-
-  // If we’re in the Phaser route => stop
-  if (pathname === "/game") {
-    if (bgMusic.playing()) {
-      setWasPlaying(true);
-      bgMusic.stop();
+    // If we’re in the Phaser route => stop
+    if (pathname === "/game") {
+      if (bgMusic.playing()) {
+        setWasPlaying(true);
+        bgMusic.stop();
+      }
+    } else {
+      // For all other Next.js routes => play
+      if (!bgMusic.playing()) {
+        bgMusic.play();
+        setWasPlaying(false);
+      }
     }
-  } else {
-    // For all other Next.js routes => play
-    if (!bgMusic.playing()) {
-      bgMusic.play();
-      setWasPlaying(false);
-    }
-  }
-}, [pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -134,7 +121,7 @@ useEffect(() => {
 
   const playBoom = () => {
     const boomSfx = new Howl({
-      src: ["/assets/sounds/ui/boomHitSfx.mp3"],
+      src: ["./assets/sounds/ui/boomHitSfx.mp3"],
       volume: 0.5,
     });
     boomSfx.play();

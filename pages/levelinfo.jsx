@@ -59,15 +59,12 @@ const LevelInfoPage = () => {
 
   useEffect(() => {
     // Scroll to the current level on mount
-    const currentIndex = levelsData.findIndex(
-      (level) => level.level === currentLevel
-    );
+    const currentIndex = levelsData.findIndex((level) => level.level === currentLevel);
     if (scrollContainerRef.current && currentIndex !== -1) {
       const child = scrollContainerRef.current.children[currentIndex];
       const childWidth = child.offsetWidth;
       const containerWidth = scrollContainerRef.current.offsetWidth;
-      const scrollPosition =
-        child.offsetLeft - containerWidth / 2 + childWidth / 2;
+      const scrollPosition = child.offsetLeft - containerWidth / 2 + childWidth / 2;
       scrollContainerRef.current.scrollTo({
         left: scrollPosition,
         behavior: "smooth",
@@ -109,7 +106,7 @@ const LevelInfoPage = () => {
             <Link href="/hub" passHref>
               <div className="relative">
                 <Image
-                  src="/assets/img/levelinfo/Back_Button.png"
+                  src="./assets/img/levelinfo/Back_Button.png"
                   alt="Back"
                   width={300}
                   height={300}

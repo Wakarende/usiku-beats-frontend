@@ -62,7 +62,7 @@ const Sound = () => {
       {stars.map((star, index) => (
         <div key={index} className={`${star.className} ${star.animation}`}>
           <Image
-            src="/assets/img/sound/star.png"
+            src="./assets/img/sound/star.png"
             width={star.width}
             height={star.height}
             alt="Star"
@@ -76,7 +76,7 @@ const Sound = () => {
       <div className="flex justify-center">
         <div className="absolute sm:bottom-56 md:bottom-56 lg:bottom-96 xl:bottom-96 flex justify-center">
           <Image
-            src={"/assets/img/sound/headphone.png"}
+            src={"./assets/img/sound/headphone.png"}
             width={50}
             height={50}
             alt="headphone-img"
@@ -97,7 +97,7 @@ const Sound = () => {
           className="flex justify-center items-center absolute bottom-10"
         >
           <Image
-            src={"/assets/img/hub/Button blank.png"}
+            src={"./assets/img/hub/Button blank.png"}
             alt="sound-btn"
             width={1}
             height={1}

@@ -24,12 +24,12 @@ export default function Document() {
         />
         <link
           rel="preload"
-          href="/assets/fonts/Afolkalips.otf"
+          href="./assets/fonts/Afolkalips.otf"
           as="font"
           type="font/otf"
           crossOrigin="anonymous"
         />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />

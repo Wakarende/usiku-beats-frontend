@@ -1,18 +1,18 @@
 /* INDEX PAGE  */
 .toast-message {
-    background: #242424;
-    color: white;
-    max-width: 300px;
+  background: #242424;
+  color: white;
+  max-width: 300px;
 }
 
 /* INDEX PAGE END  */
 
 /* TURN ON YOUR SOUND PAGE  */
 .sound-page {
-    background-image: url('../public/assets/img/BG.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% 100%;
+  background-image: url("/games/usiku/beats/assets/img/BG.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
 }
 
 /* TURN ON YOUR SOUND PAGE END  */
@@ -24,94 +24,93 @@
     flex-direction: column;
 } */
 
-
 /* DAILY REWARD POPUP  */
 .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('/assets/img/dailyreward/BG.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/games/usiku/beats/assets/img/dailyreward/BG.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .daily-reward-content {
-    padding: 40px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  padding: 40px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .daily-welcome {
-    color: #ff6a00;
-    text-transform: uppercase;
-    text-shadow: 1.5px 1.5px #faf05d;
+  color: #ff6a00;
+  text-transform: uppercase;
+  text-shadow: 1.5px 1.5px #faf05d;
 }
 
 .daily-gift-title {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .daily-gem-section {
-    position: relative;
-    padding: 0;
-    display: inline-block;
+  position: relative;
+  padding: 0;
+  display: inline-block;
 }
 
 .gem-value {
-    position: absolute;
-    top: 12px;
-    right: -25px;
-    transform: rotate(-20deg);
+  position: absolute;
+  top: 12px;
+  right: -25px;
+  transform: rotate(-20deg);
 }
 
 .daily-claim-button {
-    border: none;
+  border: none;
 }
 
 .daily-claim-button img {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .daily-claim-button:hover img {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* DAILY REWARD POPUP END  */
 /* UNLOCK SONGS ROW  */
 
 .hub-content-wrapper {
-    overflow: visible;
+  overflow: visible;
 }
 
 /* Small screens (≤ 395px): allow scrolling */
 @media (max-width: 395px) {
-    .hub-content-wrapper {
-        height: calc(100vh - 20px);
-        /* 80px = approximate height of footer */
-        overflow-y: auto;
-        padding-bottom: 90px;
-        /* Make sure you can scroll enough past the footer */
-        scrollbar-width: none;
-        /* Firefox */
-        -ms-overflow-style: none;
-        /* Edge */
-    }
+  .hub-content-wrapper {
+    height: calc(100vh - 20px);
+    /* 80px = approximate height of footer */
+    overflow-y: auto;
+    padding-bottom: 90px;
+    /* Make sure you can scroll enough past the footer */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Edge */
+  }
 
-    .hub-content-wrapper::-webkit-scrollbar {
-        display: none;
-        /* Chrome/Safari */
-    }
+  .hub-content-wrapper::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+  }
 }
 
 /* FOOTER  */
@@ -120,136 +119,175 @@
 
 /* LEVEL INFO PAGE  */
 .main-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 1200px;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  overflow: hidden;
 }
 
 .level-info-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
 }
 
 .gradient-bg {
-    background-image: url('/assets/img/levelinfo/Gradient.png');
-    min-height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+  background-image: url("/games/usiku/beats/assets/img/levelinfo/Gradient.png");
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 /* LEVEL INFO END  */
 
 /* INTRO PAGE  */
 .intro-bg {
-    background-image: url("/assets/img/dailyreward/BG.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: border-box;
+  background-image: url("/games/usiku/beats/assets/img/dailyreward/BG.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .intro-header {
-    color: rgb(255, 106, 0);
-    text-shadow: 1.636px 1.673px 0px #faf05d;
-    -moz-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    -webkit-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    -ms-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
+  color: rgb(255, 106, 0);
+  text-shadow: 1.636px 1.673px 0px #faf05d;
+  -moz-transform: matrix(
+    1.24224541509235,
+    -0.00527636487041,
+    0.00527636487041,
+    1.24224541509236,
+    0,
+    0
+  );
+  -webkit-transform: matrix(
+    1.24224541509235,
+    -0.00527636487041,
+    0.00527636487041,
+    1.24224541509236,
+    0,
+    0
+  );
+  -ms-transform: matrix(
+    1.24224541509235,
+    -0.00527636487041,
+    0.00527636487041,
+    1.24224541509236,
+    0,
+    0
+  );
+  transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
 }
 
 @keyframes pulse {
-    0% {
-        transform: scale(0.95);
-    }
+  0% {
+    transform: scale(0.95);
+  }
 
-    70% {
-        transform: scale(1);
+  70% {
+    transform: scale(1);
+  }
 
-    }
-
-    100% {
-        transform: scale(0.95);
-
-    }
+  100% {
+    transform: scale(0.95);
+  }
 }
 
 /* INTRO PAGE END  */
 
 /* LIBRARY PAGE  */
 .infopanel-btn {
-    background-image: url('/assets/img/hub/Button blank.png');
-    height: auto;
-    padding: 0.5rem;
+  background-image: url("/games/usiku/beats/assets/img/hub/Button blank.png");
+  height: auto;
+  padding: 0.5rem;
 }
 
 .lib-header {
-    color: rgb(255, 106, 0);
-    text-shadow: 1.636px 1.673px 0px #faf05d;
-    -moz-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    -webkit-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    -ms-transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
-    transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
+  color: rgb(255, 106, 0);
+  text-shadow: 1.636px 1.673px 0px #faf05d;
+  -moz-transform: matrix(
+    1.24224541509235,
+    -0.00527636487041,
+    0.00527636487041,
+    1.24224541509236,
+    0,
+    0
+  );
+  -webkit-transform: matrix(
+    1.24224541509235,
+    -0.00527636487041,
+    0.00527636487041,
+    1.24224541509236,
+    0,
+    0
+  );
+  -ms-transform: matrix(
+    1.24224541509235,
+    -0.00527636487041,
+    0.00527636487041,
+    1.24224541509236,
+    0,
+    0
+  );
+  transform: matrix(1.24224541509235, -0.00527636487041, 0.00527636487041, 1.24224541509236, 0, 0);
 }
 
 .library-footer {
-    background-image: url('/assets/img/library/Bottom banner BG.png');
-    /* background-size: 100%; */
-    width: 100%;
-    height: 100px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("/games/usiku/beats/assets/img/library/Bottom banner BG.png");
+  /* background-size: 100%; */
+  width: 100%;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .gradient-container {
-    margin: 0;
+  margin: 0;
 }
 
 .popup-frame {
-    background-image: url("/assets/img/library/popup-frame.png");
-    width: 100%;
-    height: auto;
+  background-image: url("/games/usiku/beats/assets/img/library/popup-frame.png");
+  width: 100%;
+  height: auto;
 }
 
 /* FTUE Library */
 /* purgecss start ignore */
 .ftue-lib-highlight-frame {
-    position: relative;
+  position: relative;
 }
 
-.ftue-lib-highlight-frame>div:first-child {
-    filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
-    border-radius: 12px;
+.ftue-lib-highlight-frame > div:first-child {
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
+  border-radius: 12px;
 }
 
 .ftue-strong-highlight {
-    filter: drop-shadow(0 0 15px rgba(0, 245, 255, 0.9));
+  filter: drop-shadow(0 0 15px rgba(0, 245, 255, 0.9));
 }
 
 /* purgecss end ignore */
 
-
 .ftue-continue-highlight-frame {
-    position: relative;
+  position: relative;
 }
 
 .ftue-continue-highlight-frame .button-image-container {
-    filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
+  filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8)) !important;
 }
 
 /* LIBRARY PAGE END  */

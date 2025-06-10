@@ -22,7 +22,7 @@ export default function IntroPanel() {
   const [loading, setLoading] = useState(false);
   const { playBoom } = useAudio();
 
-  // const [buttonSound] = useSound("/assets/sounds/ui/buttonSfx.mp3");
+  // const [buttonSound] = useSound("./assets/sounds/ui/buttonSfx.mp3");
 
   useEffect(() => {
     const checkAnon = async () => {
@@ -87,12 +87,7 @@ export default function IntroPanel() {
     <div className="intro-bg">
       <div className="intro-card flex flex-col justify-center items-center text-white mb-4">
         <div className="intro-logo flex justify-center">
-          <Image
-            src={"/assets/img/start/LogoTail.png"}
-            width={130}
-            height={130}
-            alt="w-full"
-          />
+          <Image src={"./assets/img/start/LogoTail.png"} width={130} height={130} alt="w-full" />
         </div>
         <div className="flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-widest text-center small: text-xs small:w-[75vw] medium:text-sm medium: w-[75vw] large:text-xl large:w-[80vw] xl:text-2xl xl:w-[80vw]">
           <p className=" mb-4 font-bold medium:text-xl large:text-2xl large:mt-4 text-nowrap">
@@ -100,14 +95,14 @@ export default function IntroPanel() {
           </p>
           <div className="mb-4">
             <p className="font-extralight">
-              Welcome to <span className="font-bold">Usiku Beats</span> - the
-              rhythm game that brings Africa's music to life!
+              Welcome to <span className="font-bold">Usiku Beats</span> - the rhythm game that
+              brings Africa's music to life!
             </p>
             <p>Tap, swipe, and groove to the continent's best sounds.</p>
           </div>
           <p className="mb-2">
-            This is just the beginning! Usiku Beats is in early access, with new
-            music and features coming soon.
+            This is just the beginning! Usiku Beats is in early access, with new music and features
+            coming soon.
           </p>
           <p className="font-bold mt-4">Ready to move to the rhythm?</p>
         </div>
@@ -130,7 +125,7 @@ export default function IntroPanel() {
           className="relative text-white font-bold text-2xl uppercase tracking-wider small:w-[250px] small:h-[50px]  medium:w-[300px] medium:h-[50px] large:w-[300px] large:h-[50px] large:mt-4 xl:h-[50px] xl:w-[500px]"
         >
           <Image
-            src={"/assets/img/hub/Button blank.png"}
+            src={"./assets/img/hub/Button blank.png"}
             alt="button-bg"
             fill
             className="object-contain pointer-events-none "
