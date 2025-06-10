@@ -52,15 +52,13 @@ const DailyReward = () => {
       {/* Daily Reward Styling */}
       <div className="daily-reward-content mt-5">
         <h1 className="daily-welcome uppercase text-8xl mb-4">Welcome back</h1>
-        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow">
-          Your Daily Gift
-        </p>
+        <p className="daily-gift-title uppercase font-bold text-3xl text-yellow">Your Daily Gift</p>
         <p className="daily-gift-subtext text-xl mt-1 text-yellow">
           Check in everyday to get more rewards
         </p>
         <div className="daily-gem-section">
           <Image
-            src="/assets/img/dailyreward/Gem.png"
+            src="./assets/img/dailyreward/Gem.png"
             alt="Gem Icon"
             width={100}
             height={100}
@@ -70,7 +68,7 @@ const DailyReward = () => {
         </div>
         <button className="daily-claim-button" onClick={toggleDailyPopup}>
           <Image
-            src="/assets/img/dailyreward/Collect button.png"
+            src="./assets/img/dailyreward/Collect button.png"
             alt="Claim Button"
             width={220}
             height={100}

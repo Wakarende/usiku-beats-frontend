@@ -23,17 +23,9 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
-  const [isInIframe, setIsInIframe] = useState(false);
-  const currentVersion = "0.2.5";
+  const currentVersion = "0.2.6"; // Match the version displayed in the UI
 
-  
-  const isIframeMode = router.query.iframe === 'true';
-
-  // Detect if running in iframe
-  useEffect(() => {
-    setIsInIframe(window !== window.parent);
-  }, []);
-
+  // Version check
   // Version check
   useEffect(() => {
     const checkVersion = async () => {
@@ -63,21 +55,21 @@ export default function TitleScreen() {
   }, []);
 
   // Password
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
-    const checkAuth = () => {
-      const auth = prompt("Please enter the password:", "");
-      if (auth === "4321" || auth === "R%Gk&v!pIe*PcZGA") {
-        localStorage.setItem("isAuthenticated", "true");
-      } else {
-        alert("Incorrect password");
-        checkAuth();
-      }
-    };
-    if (!isAuthenticated) {
-      checkAuth();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const isAuthenticated = localStorage.getItem("isAuthenticated");
+  //   const checkAuth = () => {
+  //     const auth = prompt("Please enter the password:", "");
+  //     if (auth === "4321" || auth === "R%Gk&v!pIe*PcZGA") {
+  //       localStorage.setItem("isAuthenticated", "true");
+  //     } else {
+  //       alert("Incorrect password");
+  //       checkAuth();
+  //     }
+  //   };
+  //   if (!isAuthenticated) {
+  //     checkAuth();
+  //   }
+  // }, []);
 
   // Anonymous user setup
   useEffect(() => {
@@ -173,7 +165,7 @@ export default function TitleScreen() {
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
         >
           <Image
-            src="/assets/img/start/logo_beta.png"
+            src="./assets/img/start/logo_beta-v1.png"
             width={1}
             height={1}
             alt="logo"
@@ -189,7 +181,7 @@ export default function TitleScreen() {
           className="absolute inset-x-0 bottom-0 w-full aspect-[6/5] overflow-hidden"
         >
           <Image
-            src="/assets/img/start/bottom-banner.png"
+            src="./assets/img/start/bottom-banner.png"
             alt="bottom-banner"
             fill
             className="object-cover object-center"
@@ -216,7 +208,7 @@ export default function TitleScreen() {
             }}
           >
             <Image
-              src={"/assets/img/hub/Button blank.png"}
+              src={"./assets/img/hub/Button blank.png"}
               width={1}
               height={1}
               alt="play-btn"

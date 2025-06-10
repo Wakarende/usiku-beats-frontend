@@ -19,22 +19,17 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center z-50 popup-container">
-      <div
-        className="relative w-full max-w-md mx-auto"
-        onTouchEnd={(e) => e.stopPropagation()}
-      >
+      <div className="relative w-full max-w-md mx-auto" onTouchEnd={(e) => e.stopPropagation()}>
         <div className="relative w-full mx-auto max-w-md">
           <div className=" flex flex-col justify-center items-center">
             <p className=" absolute top-[10%] text-yellow z-50 text-3xl uppercase font-bold tracking-wider">
               You've Reached
             </p>
-            <h1 className="absolute top-[18%] text-yellow text-8xl">
-              Level {newLevel}
-            </h1>
+            <h1 className="absolute top-[18%] text-yellow text-8xl">Level {newLevel}</h1>
           </div>
           {/* Star Image */}
           <Image
-            src="/assets/img/levelup/Level_Star.png"
+            src="./assets/img/levelup/Level_Star.png"
             alt="Level Up Star"
             width={500}
             height={500}
@@ -60,7 +55,7 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
       >
         <button className="levelup-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center ">
           <Image
-            src={"/assets/img/levelup/Unlock combined copy 4.png"}
+            src={"./assets/img/levelup/Unlock combined copy 4.png"}
             width={300}
             height={100}
             alt="unlock-btn"

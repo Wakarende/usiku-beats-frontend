@@ -5,7 +5,7 @@ export default function InfoPanel({
   title = "How To Play?",
   paragraphs = [],
   onClose,
-  bgImage = "/assets/img/ftue/Info_panel_blue.png",
+  bgImage = "./assets/img/ftue/Info_panel_blue.png",
   bottomPosition = false,
   transparentBg = false,
   customStyle = {},

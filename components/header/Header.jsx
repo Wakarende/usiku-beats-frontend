@@ -69,7 +69,7 @@ const Header = () => {
           {/* Number of stars */}
           <div className="relative flex items-center mb-1">
             <Image
-              src="/assets/img/header/No_of_stars.png"
+              src="./assets/img/header/No_of_stars.png"
               alt="Number of stars"
               width={120}
               height={100}
@@ -82,7 +82,7 @@ const Header = () => {
           {/* Number of gems */}
           <div className="relative flex items-center">
             <Image
-              src="/assets/img/header/No_of_gems.png"
+              src="./assets/img/header/No_of_gems.png"
               alt="Number of gems"
               width={120}
               height={100}
@@ -97,7 +97,7 @@ const Header = () => {
         {/* <Link href={"/levelinfo"}>
           <div className="header-level relative flex items-center justify-center">
             <Image
-              src="/assets/img/header/Star_Level.png"
+              src="./assets/img/header/Star_Level.png"
               alt="Star Level"
               width={110}
               height={110}
@@ -109,7 +109,7 @@ const Header = () => {
         {/* Ayoba Test  */}
         <div className="header-level relative flex items-center justify-center">
           <Image
-            src="/assets/img/start/usiku.png"
+            src="./assets/img/start/usiku.png"
             alt="Star Level"
             width={70}
             height={70}

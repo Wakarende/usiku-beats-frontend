@@ -376,14 +376,7 @@ useEffect(() => {
 
     setCurrentTrackData(JSON.stringify(track));
 
-    if (window !== window.parent) {
-      window.parent.postMessage({ type: 'STOP_MUSIC' }, '*');
-    } else {
-      // Direct mode - stop music directly
-      stopBgMusic();
-    }
-
-    const src = process.env.NODE_ENV === "production" ? `/game.html` : `/game`;
+    const src = process.env.NODE_ENV === "production" ? `/games/usiku/beats/game.html` : `/game`;
     window.location.href = src;
     // router.push("/game");
   };
@@ -501,7 +494,7 @@ useEffect(() => {
           <Link href={"/library"}>
             <button className="absolute sm:right-[-2rem] md:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
               <Image
-                src={"/assets/img/hub/Button blank.png"}
+                src={"./assets/img/hub/Button blank.png"}
                 alt="your-songs-btn"
                 width={120}
                 height={40}
@@ -565,7 +558,7 @@ useEffect(() => {
         )}
         <div className="w-full md:-mt-2.5 ">
           <Image
-            src={"/assets/img/library/Divider.png"}
+            src={"./assets/img/library/Divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -580,7 +573,7 @@ useEffect(() => {
         />
         <div className="w-full">
           <Image
-            src={"/assets/img/library/Divider.png"}
+            src={"./assets/img/library/Divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -612,7 +605,7 @@ useEffect(() => {
           </p>
           <div className="daily-gem-section">
             <Image
-              src="/assets/img/dailyreward/Gem.png"
+              src="./assets/img/dailyreward/Gem.png"
               alt="Gem Icon"
               width={1}
               height={1}
@@ -628,7 +621,7 @@ useEffect(() => {
             transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
           >
             <Image
-              src="/assets/img/dailyreward/Collect button.png"
+              src="./assets/img/dailyreward/Collect button.png"
               alt="Claim Button"
               width={220}
               height={100}

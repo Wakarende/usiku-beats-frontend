@@ -344,7 +344,9 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     const item = lockedSongs[i];
     if (item) {
       const frameImage =
-        i % 2 === 0 ? "/assets/img/unlock/unlock_frame.png" : "/assets/img/unlock/unlock_frame.png";
+        i % 2 === 0
+          ? "./assets/img/unlock/unlock_frame.png"
+          : "./assets/img/unlock/unlock_frame.png";
       slotsContent.push(
         <div
           key={`song${item.song.id}`}
@@ -446,7 +448,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       // onClick={() => handleUnlockNowClick(item.song)}
                     >
                       <Image
-                        src="/assets/img/hub/Button blank.png"
+                        src="./assets/img/hub/Button blank.png"
                         alt="Button"
                         width={10}
                         height={10}
@@ -455,7 +457,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       <div className="absolute inset-0 flex items-center justify-between px-1">
                         <div className="flex items-center gap-0.5">
                           <Image
-                            src="/assets/img/hub/Gem.png"
+                            src="./assets/img/hub/Gem.png"
                             alt="Gem"
                             width={16}
                             height={16}
@@ -482,7 +484,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       // onClick={() => addToLibrary(item.song)}
                     >
                       <Image
-                        src="/assets/img/hub/Button blank.png"
+                        src="./assets/img/hub/Button blank.png"
                         alt="Button"
                         width={10}
                         height={10}
@@ -514,7 +516,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           {currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted && (
             <div className="absolute bottom-[-80px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
-                src="/assets/img/ftue/hand icon.png"
+                src="./assets/img/ftue/hand icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to Add to Library"
@@ -525,7 +527,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           {currentStep === 4 && i === 0 && !isCompleted && (
             <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
-                src="/assets/img/ftue/hand icon.png"
+                src="./assets/img/ftue/hand icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to unlocking song"
@@ -540,7 +542,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
           <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[120px] md:w-[132px] md:h-[140px]  lg:w-[180px]  lg:h-[180px]xl:w-[202px] xl:h-[220px]">
             <Image
-              src="/assets/img/hub/empty_slot.png"
+              src="./assets/img/hub/empty_slot.png"
               width={200}
               height={100}
               alt="Empty Slot"
@@ -556,7 +558,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
       <div className="flex justify-center items-center gap-x-1.5">
         {/* <Image
           alt="lock-icon"
-          src={"/assets/img/footer/Unlock_copy.png"}
+          src={"./assets/img/footer/Unlock_copy.png"}
           width={10}
           height={10}
           className="sm:w-5 sm:h-5 sm:-mb-2 md:w-6 md:h-6 "
@@ -566,7 +568,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
         </h1>
         {/* <Image
           alt="lock-icon"
-          src={"/assets/img/footer/Unlock_copy.png"}
+          src={"./assets/img/footer/Unlock_copy.png"}
           width={10}
           height={10}
           className="sm:w-5 sm:h-5 sm:-mb-2 md:w-6 md:h-6 "
