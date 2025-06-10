@@ -2,7 +2,7 @@
     "section1": {
         "files": [
             {
-                "url": "assets/sprites/preloader/Beats 2024 UI - Option 7_Load song_BG.jpg",
+                "url": "assets/sprites/preloader/ftue_bg.jpg",
                 "type": "image",
                 "key": "Beats 2024 UI - Option 7_Load song_BG"
             },
@@ -29,7 +29,7 @@
                 "key": "carousel_2"
             },
             {
-                "url": "assets/sprites/preloader/Collect button copy 2.png",
+                "url": "assets/sprites/preloader/learn_to_play.png",
                 "type": "image",
                 "key": "Collect button copy 2"
             },
@@ -61,7 +61,7 @@
                 "key": "preloader_Star_Inactive"
             },
             {
-                "url": "assets/sprites/preloader/preloader_Top banner.png",
+                "url": "assets/sprites/preloader/preloader_top_banner.png",
                 "type": "image",
                 "key": "preloader_Top banner"
             },

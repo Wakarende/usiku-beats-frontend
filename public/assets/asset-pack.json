@@ -47,17 +47,17 @@
                 "key": "bm_continue"
             },
             {
-                "url": "assets/sprites/summaryscene/Bottom banner.png",
+                "url": "assets/sprites/summaryscene/bottom_banner.png",
                 "type": "image",
                 "key": "Bottom banner"
             },
             {
-                "url": "assets/sprites/summaryscene/Choose song button.png",
+                "url": "assets/sprites/summaryscene/choose_song_button.png",
                 "type": "image",
                 "key": "Choose song button"
             },
             {
-                "url": "assets/sprites/playscene/Colour highlight.png",
+                "url": "assets/sprites/playscene/color_highlight.png",
                 "type": "image",
                 "key": "Colour highlight"
             },
@@ -104,7 +104,7 @@
                 "key": "EventComponent"
             },
             {
-                "url": "assets/sprites/summaryscene/FTUE_Game summary.jpg",
+                "url": "assets/sprites/summaryscene/ftue_game_summary.jpg",
                 "type": "image",
                 "key": "FTUE_Game summary"
             },
@@ -144,17 +144,17 @@
                 "key": "Level"
             },
             {
-                "url": "assets/sprites/beatmissedscene/Missed a beat_Hold.jpg",
+                "url": "assets/sprites/beatmissedscene/missed_beat_hold.jpg",
                 "type": "image",
                 "key": "Missed a beat_Hold"
             },
             {
-                "url": "assets/sprites/beatmissedscene/Missed a beat_Swipe.jpg",
+                "url": "assets/sprites/beatmissedscene/missed_beat_swipe.jpg",
                 "type": "image",
                 "key": "Missed a beat_Swipe"
             },
             {
-                "url": "assets/sprites/beatmissedscene/Missed a beat_Tap.jpg",
+                "url": "assets/sprites/beatmissedscene/missed_beat_tap.jpg",
                 "type": "image",
                 "key": "Missed a beat_Tap"
             },
@@ -164,7 +164,7 @@
                 "key": "new_held"
             },
             {
-                "url": "assets/sprites/summaryscene/No of stars.png",
+                "url": "assets/sprites/summaryscene/no_stars.png",
                 "type": "image",
                 "key": "No of stars"
             },
@@ -229,7 +229,7 @@
                 "key": "Quit"
             },
             {
-                "url": "assets/sprites/summaryscene/Retry button.png",
+                "url": "assets/sprites/summaryscene/retry_button.png",
                 "type": "image",
                 "key": "Retry button"
             },
@@ -239,7 +239,7 @@
                 "key": "Right"
             },
             {
-                "url": "assets/sprites/summaryscene/Round Frame.png",
+                "url": "assets/sprites/summaryscene/round_frame.png",
                 "type": "image",
                 "key": "Round Frame"
             },
@@ -285,7 +285,7 @@
                 "key": "Spot_icon"
             },
             {
-                "url": "assets/sprites/summaryscene/Star Active.png",
+                "url": "assets/sprites/summaryscene/star_active.png",
                 "type": "image",
                 "key": "Star Active"
             },
@@ -302,7 +302,7 @@
                 "key": "Star_Reward_Sfx"
             },
             {
-                "url": "assets/sprites/tutorialscene/start button copy.png",
+                "url": "assets/sprites/tutorialscene/start_button.png",
                 "type": "image",
                 "key": "start button copy"
             },
@@ -322,7 +322,7 @@
                 "key": "streak_overlay"
             },
             {
-                "url": "assets/sprites/summaryscene/summary Continue button.png",
+                "url": "assets/sprites/summaryscene/summary_continue.png",
                 "type": "image",
                 "key": "summary Continue button"
             },
@@ -344,22 +344,22 @@
                 "key": "Thumbnail_Screen Swipe_Sfx"
             },
             {
-                "url": "assets/sprites/playscene/Tile 1.png",
+                "url": "assets/sprites/playscene/tile_1.png",
                 "type": "image",
                 "key": "Tile 1"
             },
             {
-                "url": "assets/sprites/playscene/Tile 2.png",
+                "url": "assets/sprites/playscene/tile_2.png",
                 "type": "image",
                 "key": "Tile 2"
             },
             {
-                "url": "assets/sprites/playscene/Tile 3.png",
+                "url": "assets/sprites/playscene/tile_3.png",
                 "type": "image",
                 "key": "Tile 3"
             },
             {
-                "url": "assets/sprites/playscene/Tile 4.png",
+                "url": "assets/sprites/playscene/tile_4.png",
                 "type": "image",
                 "key": "Tile 4"
             },
@@ -379,7 +379,7 @@
                 "key": "too_early"
             },
             {
-                "url": "assets/sprites/summaryscene/Top banner.png",
+                "url": "assets/sprites/summaryscene/top_banner.png",
                 "type": "image",
                 "key": "Top banner"
             },
