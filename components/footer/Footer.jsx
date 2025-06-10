@@ -34,7 +34,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
           style={{ zIndex: handZIndex }}
         >
           <Image
-            src="/assets/img/ftue/hand icon.png"
+            src="./assets/img/ftue/hand icon.png"
             width={1}
             height={1}
             alt="Hand pointing to Song Library"
@@ -55,7 +55,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
           }}
         >
           <Image
-            src="/assets/img/footer/Bottom_banner_BG.png"
+            src="./assets/img/footer/Bottom_banner_BG.png"
             fill
             sizes="100vw"
             priority

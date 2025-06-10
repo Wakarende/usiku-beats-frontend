@@ -357,12 +357,12 @@ const Library = () => {
             )}
           </div>
           <div className="mt-0">
-            <Image src={"/assets/img/hub/Disc.png"} width={120} height={120} alt="disc-icon" />
+            <Image src={"./assets/img/hub/Disc.png"} width={120} height={120} alt="disc-icon" />
           </div>
         </div>
         <div className="gradient-container item-stretch w-full p-0">
           <Image
-            src={"/assets/img/library/Gradient-copy.png"}
+            src={"./assets/img/library/Gradient-copy.png"}
             alt="gradient-separator"
             width={150}
             height={10}
@@ -421,7 +421,7 @@ const Library = () => {
                       >
                         <div className="relative flex justify-center items-center p-1 rounded-lg ">
                           <Image
-                            src="/assets/img/library/Get song button.png"
+                            src="./assets/img/library/Get song button.png"
                             alt="get-song-btn"
                             width={460}
                             height={110}
@@ -434,7 +434,7 @@ const Library = () => {
                         {currentStep === 2 && !isCompleted && (
                           <div className="absolute top-[50px] right-[-40px] lg:top-[60px] lg:right-[-40px] animate-bounce z-[10000] pointer-events-none">
                             <Image
-                              src="/assets/img/ftue/hand icon.png"
+                              src="./assets/img/ftue/hand icon.png"
                               width={80}
                               height={80}
                               alt="Hand pointing to get song"
@@ -448,7 +448,7 @@ const Library = () => {
                 </div>
                 <div className="w-full p-0">
                   <Image
-                    src={"/assets/img/library/Divider.png"}
+                    src={"./assets/img/library/Divider.png"}
                     width={400}
                     height={100}
                     alt="divider"
@@ -468,7 +468,7 @@ const Library = () => {
             <div className="flex flex-col justify-center items-center relative">
               <div className="relative flex justify-center items-center">
                 <Image
-                  src={"/assets/img/library/Group_13.png"}
+                  src={"./assets/img/library/Group_13.png"}
                   width={1}
                   height={1}
                   alt="popup-frame"
@@ -505,7 +505,7 @@ const Library = () => {
               className="button-image-container"
             >
               <Image
-                src={"/assets/img/hub/Button blank.png"}
+                src={"./assets/img/hub/Button blank.png"}
                 width={1}
                 height={1}
                 alt="continue-btn"
@@ -519,7 +519,7 @@ const Library = () => {
             {currentStep === 3 && !isCompleted && (
               <div className="absolute bottom-[20px] right-[-70px] animate-bounce z-[10000] pointer-events-none">
                 <Image
-                  src="/assets/img/ftue/hand icon.png"
+                  src="./assets/img/ftue/hand icon.png"
                   width={1}
                   height={1}
                   alt="Hand pointing to continue"
@@ -549,7 +549,7 @@ const Library = () => {
       <footer className="bg-contain bg-center bg-no-repeat sticky bottom-0  flex items-center justify-center z-10">
         {isFtue && !hasUnlockedSong ? (
           <Image
-            src="/assets/img/ftue/Footer_pattern-v1.png"
+            src="./assets/img/ftue/Footer_pattern-v1.png"
             alt="Footer pattern"
             width={400}
             height={100}
@@ -559,7 +559,7 @@ const Library = () => {
           <div className="relative w-full">
             <Image
               alt="footer-banner"
-              src={"/assets/img/library/Bottom banner BG.png"}
+              src={"./assets/img/library/Bottom banner BG.png"}
               width={400}
               height={100}
               className="object-contain w-full"
@@ -579,7 +579,7 @@ const Library = () => {
               }}
             >
               <Image
-                src="/assets/img/levelinfo/Back_Button.png"
+                src="./assets/img/levelinfo/Back_Button.png"
                 alt="Back"
                 width={190}
                 height={50}
