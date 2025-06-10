@@ -210,7 +210,7 @@
 
 /* LIBRARY PAGE  */
 .infopanel-btn {
-  background-image: url("/games/usiku/beats/assets/img/hub/Button blank.png");
+  background-image: url("/games/usiku/beats/assets/img/hub/button_blank.png");
   height: auto;
   padding: 0.5rem;
 }
@@ -246,7 +246,7 @@
 }
 
 .library-footer {
-  background-image: url("/games/usiku/beats/assets/img/library/Bottom banner BG.png");
+  background-image: url("/games/usiku/beats/assets/img/library/bottom_banner_bg.png");
   /* background-size: 100%; */
   width: 100%;
   height: 100px;

@@ -246,7 +246,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
           >
             <button className="relative text-white font-bold w-24 h-20" onClick={onConfirm}>
               <Image
-                src="./assets/img/spendgems/Left button.png"
+                src="./assets/img/spendgems/left_button.png"
                 width={50}
                 height={50}
                 className="w-full h-20"
@@ -261,7 +261,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
           {currentStep === 5 && !isCompleted && (
             <div className="absolute sm:bottom-[0rem] sm:left-[4rem] md:bottom-[-1rem] md:left-[6rem] lg:bottom-[-2rem] lg:left-[16rem] xl:bottom-[-2rem] xl:left-[16rem] animate-bounce z-[10000] pointer-events-none">
               <Image
-                src="./assets/img/ftue/hand icon.png"
+                src="./assets/img/ftue/hand_icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to yes button"
@@ -275,7 +275,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             disabled={currentStep === 5 && !isCompleted}
           >
             <Image
-              src="./assets/img/spendgems/Right button.png"
+              src="./assets/img/spendgems/right_button.png"
               width={50}
               height={50}
               className={`w-24 h-20 ${

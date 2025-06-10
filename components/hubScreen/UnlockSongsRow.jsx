@@ -448,7 +448,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       // onClick={() => handleUnlockNowClick(item.song)}
                     >
                       <Image
-                        src="./assets/img/hub/Button blank.png"
+                        src="./assets/img/hub/button_blank.png"
                         alt="Button"
                         width={10}
                         height={10}
@@ -484,7 +484,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       // onClick={() => addToLibrary(item.song)}
                     >
                       <Image
-                        src="./assets/img/hub/Button blank.png"
+                        src="./assets/img/hub/button_blank.png"
                         alt="Button"
                         width={10}
                         height={10}
@@ -516,7 +516,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           {currentStep === 6 && i === 0 && isUnlockTimePassed(item.unlock_time) && !isCompleted && (
             <div className="absolute bottom-[-80px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
-                src="./assets/img/ftue/hand icon.png"
+                src="./assets/img/ftue/hand_icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to Add to Library"
@@ -527,7 +527,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           {currentStep === 4 && i === 0 && !isCompleted && (
             <div className="absolute bottom-[-70px] right-[-40px] animate-bounce pointer-events-none z-[100]">
               <Image
-                src="./assets/img/ftue/hand icon.png"
+                src="./assets/img/ftue/hand_icon.png"
                 width={80}
                 height={80}
                 alt="Hand pointing to unlocking song"
