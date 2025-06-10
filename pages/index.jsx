@@ -26,7 +26,6 @@ export default function TitleScreen() {
   const currentVersion = "0.2.6"; // Match the version displayed in the UI
 
   // Version check
-  // Version check
   useEffect(() => {
     const checkVersion = async () => {
       try {
