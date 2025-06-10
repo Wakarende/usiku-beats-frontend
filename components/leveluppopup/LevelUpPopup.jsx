@@ -55,7 +55,7 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
       >
         <button className="levelup-btn bg-center bg-contain bg-no-repeat text-white font-bold text-2xl uppercase tracking-wider flex items-center justify-center ">
           <Image
-            src={"./assets/img/levelup/Unlock combined copy 4.png"}
+            src={"./assets/img/levelup/see_unlock_btn.png"}
             width={300}
             height={100}
             alt="unlock-btn"

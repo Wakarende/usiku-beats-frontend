@@ -231,7 +231,7 @@
 /* HUBSCREEN CARD  */
 .frame {
   position: relative;
-  background-image: url("/games/usiku/beats/assets/img/hub/Frame_.png");
+  background-image: url("/games/usiku/beats/assets/img/hub/frame.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 7px 8px 6px 6px;
@@ -405,7 +405,7 @@ svg {
 }
 
 .enough-gems-btn {
-  background-image: url("/games/usiku/beats/assets/img/hub/Button blank.png");
+  background-image: url("/games/usiku/beats/assets/img/hub/button_blank.png");
   width: 100%;
   height: auto;
   padding: 0.5rem;
@@ -616,7 +616,7 @@ svg {
 }
 
 .levelup-btn {
-  background-image: url("/games/usiku/beats/assets/img/levelup/Unlock combined copy 4.png");
+  background-image: url("/games/usiku/beats/assets/img/levelup/see_unlock_btn.png");
 }
 
 /* LEVEL UP POPUP END  */

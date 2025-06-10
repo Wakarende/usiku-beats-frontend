@@ -446,7 +446,7 @@ const HubScreen = () => {
           <Link href={"/library"}>
             <button className="absolute sm:right-[-2rem] md:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
               <Image
-                src={"./assets/img/hub/Button blank.png"}
+                src={"./assets/img/hub/button_blank.png"}
                 alt="your-songs-btn"
                 width={120}
                 height={40}

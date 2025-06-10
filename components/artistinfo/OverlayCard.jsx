@@ -64,7 +64,7 @@ const OverlayCard = ({ isOpen, onClose, artistName, bio, socialMedia = {} }) => 
         </div>
         <button onClick={onClose} className="absolute bottom-0 w-[20rem] relative">
           <Image
-            src="./assets/img/hub/Button blank.png"
+            src="./assets/img/hub/button_blank.png"
             alt="close-button"
             width={100}
             height={100}
@@ -170,7 +170,7 @@ const ArtistImage = ({
         className={`sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[200px] md:w-[160px] md:h-[256px] lg:w-[180px] lg:h-[266px] xl:w-[160px] xl:h-[266px]    `}
       >
         <Image
-          src="./assets/img/hub/Frame_.png"
+          src="./assets/img/hub/frame.png"
           width={240}
           height={200}
           alt="song-frame"
@@ -211,7 +211,7 @@ const ArtistImage = ({
                   <Image
                     src={
                       starCount > 0 && index < starCount
-                        ? "./assets/img/hub/Star Active.png"
+                        ? "./assets/img/hub/Star_Active.png"
                         : "./assets/img/hub/Star_Inactive.png"
                     }
                     alt="star"
@@ -232,7 +232,7 @@ const ArtistImage = ({
                 <Image
                   src={
                     starCount > 0 && index < starCount
-                      ? "./assets/img/hub/Star Active.png"
+                      ? "./assets/img/hub/Star_Active.png"
                       : "./assets/img/hub/Star_Inactive.png"
                   }
                   alt="star"
@@ -305,7 +305,7 @@ const ArtistImage = ({
       {isHighlightedForFtue && !isCompleted && (
         <div className="absolute sm:bottom-[-10px] sm:right-[-90px] md:bottom-1 md:right-[-90px] lg:bottom-1 lg:right-[-90px] xl:bottom-1 xl:right-[-90px] animate-bounce pointer-events-none z-[100]">
           <Image
-            src="./assets/img/ftue/hand icon.png"
+            src="./assets/img/ftue/hand_icon.png"
             width={80}
             height={80}
             alt="Hand pointing to play button"

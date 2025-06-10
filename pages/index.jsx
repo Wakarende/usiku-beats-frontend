@@ -186,7 +186,7 @@ export default function TitleScreen() {
           transition={{ type: "spring", stiffness: 100, damping: 10 }}
         >
           <Image
-            src="./assets/img/start/logo_beta-v1.png"
+            src="./assets/img/start/logo_beta.png"
             width={1}
             height={1}
             alt="logo"
@@ -229,7 +229,7 @@ export default function TitleScreen() {
             }}
           >
             <Image
-              src={"./assets/img/hub/Button blank.png"}
+              src={"./assets/img/hub/button_blank.png"}
               width={1}
               height={1}
               alt="play-btn"

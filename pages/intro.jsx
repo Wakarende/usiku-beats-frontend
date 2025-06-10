@@ -125,7 +125,7 @@ export default function IntroPanel() {
           className="relative text-white font-bold text-2xl uppercase tracking-wider small:w-[250px] small:h-[50px]  medium:w-[300px] medium:h-[50px] large:w-[300px] large:h-[50px] large:mt-4 xl:h-[50px] xl:w-[500px]"
         >
           <Image
-            src={"./assets/img/hub/Button blank.png"}
+            src={"./assets/img/hub/button_blank.png"}
             alt="button-bg"
             fill
             className="object-contain pointer-events-none "

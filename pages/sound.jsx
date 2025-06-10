@@ -97,7 +97,7 @@ const Sound = () => {
           className="flex justify-center items-center absolute bottom-10"
         >
           <Image
-            src={"./assets/img/hub/Button blank.png"}
+            src={"./assets/img/hub/button_blank.png"}
             alt="sound-btn"
             width={1}
             height={1}
