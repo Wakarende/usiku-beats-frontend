@@ -184,7 +184,7 @@
                 "key": "Pause"
             },
             {
-                "url": "assets/sprites/playscene/Pause 2.png",
+                "url": "assets/sprites/playscene/pause.png",
                 "type": "image",
                 "key": "Pause 2"
             },
@@ -214,12 +214,12 @@
                 "key": "Perfect_3"
             },
             {
-                "url": "assets/sprites/playscene/Perfect_Zone_Divider 2.png",
+                "url": "assets/sprites/playscene/zone_divider.png",
                 "type": "image",
                 "key": "Perfect_Zone_Divider 2"
             },
             {
-                "url": "assets/sprites/playscene/perfect+.png",
+                "url": "assets/sprites/playscene/perfect_plus.png",
                 "type": "image",
                 "key": "perfect+"
             },
@@ -338,7 +338,7 @@
             },
             {
                 "url": [
-                    "assets/sounds/SoundScape/Thumbnail_Screen Swipe_Sfx.mp3"
+                    "assets/sounds/SoundScape/thumbnail_swipe.mp3"
                 ],
                 "type": "audio",
                 "key": "Thumbnail_Screen Swipe_Sfx"
@@ -384,7 +384,7 @@
                 "key": "Top banner"
             },
             {
-                "url": "assets/sprites/beatmissedscene/Try again.png",
+                "url": "assets/sprites/beatmissedscene/try_again.png",
                 "type": "image",
                 "key": "Try again"
             },
