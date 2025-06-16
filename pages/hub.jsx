@@ -330,7 +330,7 @@ const HubScreen = () => {
 
     setCurrentTrackData(JSON.stringify(track));
 
-    const src = process.env.NODE_ENV === "production" ? `/games/usiku/beats/game.html` : `/game`;
+    const src = process.env.NODE_ENV === "production" ? `/game.html` : `/game`;
     window.location.href = src;
     // router.push("/game");
   };

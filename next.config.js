@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: false,
   output: "export",
-  basePath: "/games/usiku/beats",
-  assetPrefix: "/games/usiku/beats",
+  basePath: "",
+  assetPrefix: "",
   // trailingSlash: true,
   images: {
     unoptimized: true,

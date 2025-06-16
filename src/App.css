@@ -7,7 +7,7 @@
 }
 
 .App {
-  background-image: url("/games/usiku/beats/assets/img/BG.png");
+  background-image: url("/assets/img/BG.png");
   /* Debugging  */
   /* background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
     url('/assets/img/BG.png'); */
@@ -24,36 +24,36 @@
 
 @font-face {
   font-family: "Afolkalips";
-  src: url("/games/usiku/beats/assets/fonts/Afolkalips.otf") format("truetype");
+  src: url("/assets/fonts/Afolkalips.otf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Carlito-Bold";
-  src: url("/games/usiku/beats/assets/fonts/Carlito-Bold.ttf") format("truetype");
+  src: url("/assets/fonts/Carlito-Bold.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Carlito-BoldItalic";
-  src: url("/games/usiku/beats/assets/fonts/Carlito-BoldItalic.ttf") format("truetype");
+  src: url("/assets/fonts/Carlito-BoldItalic.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Carlito-Italic";
-  src: url("/games/usiku/beats/assets/fonts/Carlito-Italic.ttf") format("truetype");
+  src: url("/assets/fonts/Carlito-Italic.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Digital-7";
-  src: url("/games/usiku/beats/assets/fonts/digital-7.ttf") format("truetype");
+  src: url("/assets/fonts/digital-7.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Carlito-Regular";
-  src: url("/games/usiku/beats/assets/fonts/Carlito-Regular.ttf") format("truetype");
+  src: url("/assets/fonts/Carlito-Regular.ttf") format("truetype");
   font-display: swap;
 }
 
@@ -192,7 +192,7 @@ h3 {
 }
 
 .form-select {
-  --bs-form-select-bg-img: url("/games/usiku/beats/assets/icons/select-arrow.png");
+  --bs-form-select-bg-img: url("/assets/icons/select-arrow.png");
 }
 
 .kayfo-category-btn {
@@ -473,67 +473,67 @@ ul li.page-item.active span {
 
 @font-face {
   font-family: "Young-Techs";
-  src: url("/games/usiku/beats/assets/fonts/youngtechs.ttf") format("truetype");
+  src: url("/assets/fonts/youngtechs.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Robot-Font";
-  src: url("/games/usiku/beats/assets/fonts/Robot_Font.ttf") format("truetype");
+  src: url("/assets/fonts/Robot_Font.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "D-DIN-Bold";
-  src: url("/games/usiku/beats/assets/fonts/D-DIN-Bold.otf") format("opentype");
+  src: url("/assets/fonts/D-DIN-Bold.otf") format("opentype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "DINPro-Bold";
-  src: url("/games/usiku/beats/assets/fonts/DINPro-Bold.otf") format("opentype");
+  src: url("/assets/fonts/DINPro-Bold.otf") format("opentype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "DINPro-Medium";
-  src: url("/games/usiku/beats/assets/fonts/DINPro-Medium.otf") format("opentype");
+  src: url("/assets/fonts/DINPro-Medium.otf") format("opentype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "DINPro";
-  src: url("/games/usiku/beats/assets/fonts/DINPro.otf") format("opentype");
+  src: url("/assets/fonts/DINPro.otf") format("opentype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Misty-Cotton";
-  src: url("/games/usiku/beats/assets/fonts/Misty Cotton.ttf") format("truetype");
+  src: url("/assets/fonts/Misty Cotton.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "MyriadPro-Bold";
-  src: url("/games/usiku/beats/assets/fonts/MyriadPro-Bold.otf") format("opentype");
+  src: url("/assets/fonts/MyriadPro-Bold.otf") format("opentype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "MyriadPro-Regular";
-  src: url("/games/usiku/beats/assets/fonts/MyriadPro-Regular.otf") format("opentype");
+  src: url("/assets/fonts/MyriadPro-Regular.otf") format("opentype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Roboto-Regular";
-  src: url("/games/usiku/beats/assets/fonts/Roboto-Regular.ttf") format("truetype");
+  src: url("/assets/fonts/Roboto-Regular.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Righteous-Regular";
-  src: url("/games/usiku/beats/assets/fonts/Righteous-Regular.ttf") format("truetype");
+  src: url("/assets/fonts/Righteous-Regular.ttf") format("truetype");
   font-display: swap;
 }
 

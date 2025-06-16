@@ -143,7 +143,7 @@ const PhaserGame = () => {
             height: 1280,
             backgroundColor: "#000000",
             loader: {
-              baseURL: "/games/usiku/beats/", // This will be '/games/usiku/beats/'
+              baseURL: "/", // This will be '/'
             },
             scale: {
               mode: Phaser.Scale.FIT,
