@@ -594,6 +594,14 @@ class Level extends Phaser.Scene {
     this.vignette.setDepth(2);
     // this.pattern.setDepth(2);
 
+    if (this.isFTUE) {
+      this.firstTileClicked = {
+        tap: false,
+        swipe: false,
+        held: false,
+      };
+    }
+
     this.scene.get("BeatMissed").continueCount = 0;
     this.dividerWaveYLeft = this.screenHeight / 2;
     this.dividerWaveYRight = this.screenHeight / 2;
@@ -1137,7 +1145,7 @@ class Level extends Phaser.Scene {
       return;
     }
     this.frameTime = this.frameTime * 0.99 + delta * 0.01;
-    // this.fps = ((1 / this.frameTime) * 1000).toFixed(1);
+    this.fps = ((1 / this.frameTime) * 1000).toFixed(1);
     // this.fps_text.text = this.fps;
 
     const lowFpsThreshold = 50;
@@ -1626,6 +1634,10 @@ class Level extends Phaser.Scene {
       isFTUE: this.isFTUE,
     };
 
+    if (this.isFTUE) {
+      this.analytics.trackFTUEStep(`1.3 Gameplay SongComplete`);
+    }
+
     // Launch SongComplete scene
     this.scene.launch("SongComplete", sceneData);
   }
@@ -1837,6 +1849,28 @@ class Level extends Phaser.Scene {
   }
 
   onClickInstrument(tile, swiped = false, held = false) {
+    if (this.isFTUE) {
+      let tileType;
+      if (held) tileType = "held";
+      else if (swiped) tileType = "swipe";
+      else tileType = "tap";
+
+      // Track first click of each type
+      if (!this.firstTileClicked[tileType]) {
+        this.firstTileClicked[tileType] = true;
+
+        // Track numbered FTUE events
+        if (tileType == "tap") {
+          this.analytics.trackFTUEStep(`1.21 first_${tileType}_clicked`);
+          this.analytics.trackCustomEvent("FTUE", "FPS", parseFloat(this.fps));
+        } else if (tileType == "swipe") {
+          this.analytics.trackFTUEStep(`1.22 first_${tileType}_clicked`);
+        } else if (tileType == "held") {
+          this.analytics.trackFTUEStep(`1.23 first_${tileType}_clicked`);
+        }
+      }
+    }
+
     // Base accuracy calculation (timing of the initial tap)
     let accuracy = Math.abs(tile.lerp - 1);
     let tile_score = 0;

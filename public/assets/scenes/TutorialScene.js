@@ -116,6 +116,7 @@ class TutorialScene extends Phaser.Scene {
       this.cameras.main.once("camerafadeoutcomplete", () => {
         this.button_sfx.play();
         this.background_music.stop();
+        this.analytics.trackFTUEStep("1.2 - Gameplay Start");
         this.scene.start("Level", { track: this.track, midi: this.midi, isFTUE: this.isFTUE });
       });
     });

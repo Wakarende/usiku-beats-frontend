@@ -74,11 +74,15 @@ class BeatMissedSwipe extends Phaser.Scene {
     this.background_music = this.registry.get("background_music");
     this.background_music.play();
 
+    this.analytics.trackCustomEvent("FTUE", "beat_missed_shown", "swipe");
+
     this.try_again_btn.setInteractive();
     this.try_again_btn.on("pointerup", () => {
       this.scene.stop();
       this.button_sfx.play();
       this.background_music.stop();
+
+      this.analytics.trackCustomEvent("FTUE", "retry_clicked", "swipe");
 
       this.scene.stop("BeatMissedSwipe");
       this.scene.start("Level", { track: this.track, midi: this.track.midi, isFTUE: true });
