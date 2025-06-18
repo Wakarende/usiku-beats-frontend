@@ -23,7 +23,15 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
+  const [isInIframe, setIsInIframe] = useState(false);
   const currentVersion = "0.2.6"; // Match the version displayed in the UI
+
+  const isIframeMode = router.query.iframe === 'true';
+
+  // Detect if running in iframe
+  useEffect(() => {
+    setIsInIframe(window !== window.parent);
+  }, []);
 
   // Version check
   // Version check
