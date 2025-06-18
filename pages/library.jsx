@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
 import Header from "../components/header/Header";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 import { OverlayCard } from "../components/artistinfo/OverlayCard";
 import InfoPanel from "../components/infopanel/InfoPanel";
@@ -62,6 +63,31 @@ const Library = () => {
 
   const gemsRequiredToUnlockSong = 20;
 
+
+  //Desktop Viewport
+  const [isInIframe, setIsInIframe] = useState(false);
+  const isIframeMode = router.query.iframe === 'true';
+
+  useEffect(() => {
+    setIsInIframe(window !== window.parent);
+  }, []);
+
+  useEffect(() => {
+    // Check if we're returning from game and in iframe
+    if (isInIframe) {
+      const params = new URLSearchParams(window.location.search);
+      const fromGame = params.get('fromGame');
+      
+      if (fromGame === 'true') {
+        // Notify parent to resume music
+        window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+        
+        // Clean up URL parameter
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+  }, [isInIframe]);
   useEffect(() => {
     AnalyticsService.trackUIEvent("Library", "View");
   }, []);
@@ -111,6 +137,8 @@ const Library = () => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
+
+   
 
     if (ftueParam === "true" && !isCompleted && !libraryTutorialSeen) {
       setIsFtue(true);
@@ -274,7 +302,8 @@ const Library = () => {
         AnalyticsService.trackFTUEStep("5 - Confirm SOng Select");
         completeStep(currentStep);
       }
-      router.push("/hub?ftueGameplayCompleted=true");
+      // router.push("/hub?ftueGameplayCompleted=true");
+      router.push('/hub');
     } else {
       router.push("/hub");
     }
@@ -332,7 +361,7 @@ const Library = () => {
     (instance) => instance.unlocked
   );
 
-  return (
+  const pageContent = (
     <div className="cmd-page">
       <Header />
       <div>
@@ -598,6 +627,16 @@ const Library = () => {
       />
       {/* <ZustandDebug /> */}
     </div>
+  );
+
+  if (isIframeMode) {
+    return pageContent;
+  }
+  
+  return (
+      <DesktopViewport>
+        {pageContent}
+      </DesktopViewport>
   );
 };
 

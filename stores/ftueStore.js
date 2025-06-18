@@ -16,6 +16,8 @@ const useFTUEStore = create(
       unlockingInfoSeen: false, // Whether unlocking info panel has been seen
       addToLibrarySeen: false, // Whether add to library panel has been seen
       footerGlowCleared: false, // Whether footer glow has been cleared
+      showFtuePanel: false,  
+      step1PanelShown: false, 
 
       // Actions
       setCurrentStep: (step) => {
@@ -40,6 +42,9 @@ const useFTUEStore = create(
 
       setFooterGlowCleared: (cleared = true) => set({ footerGlowCleared: cleared }),
 
+      setShowFtuePanel: (show) => set({ showFtuePanel: show }),
+      setStep1PanelShown: (shown = true) => set({ step1PanelShown: shown }),
+
       // Helper methods
       getStepStatus: () => {
         const state = get();
@@ -63,6 +68,8 @@ const useFTUEStore = create(
           unlockingInfoSeen: false,
           addToLibrarySeen: false,
           footerGlowCleared: false,
+          showFtuePanel: false,
+          step1PanelShown: false,
         }),
     }),
     {
@@ -75,6 +82,8 @@ const useFTUEStore = create(
         unlockingInfoSeen: state.unlockingInfoSeen,
         addToLibrarySeen: state.addToLibrarySeen,
         footerGlowCleared: state.footerGlowCleared,
+        showFtuePanel: state.showFtuePanel, 
+        step1PanelShown: state.step1PanelShown,
       }),
     }
   )

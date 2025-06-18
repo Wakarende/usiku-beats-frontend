@@ -24,6 +24,7 @@ import { AnalyticsService } from "../services/analytics.service";
 import "./pages.css";
 // import ZustandDebug from "../components/zustandDebug";
 import useStorageStore from "../stores/storageStore";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -43,7 +44,9 @@ const HubScreen = () => {
   const [newLevel, setNewLevel] = useState();
   const [isPulsing, setIsPulsing] = useState(false);
 
-  const [showFtuePanel, setShowFtuePanel] = useState(false);
+  // const [showFtuePanel, setShowFtuePanel] = useState(false);
+  const { showFtuePanel, setShowFtuePanel, step1PanelShown, 
+    setStep1PanelShown } = useFTUEStore();
 
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
@@ -52,7 +55,7 @@ const HubScreen = () => {
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
 
-  const { fadeOutBgMusic, playBoom } = useAudio();
+  const { fadeOutBgMusic, playBoom, stopBgMusic } = useAudio();
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
 
@@ -92,10 +95,36 @@ const HubScreen = () => {
     trackDailyLogin,
   } = useStorageStore();
 
-  useEffect(() => {
-    // if (typeof window === "undefined") return;
+  const [isInIframe, setIsInIframe] = useState(false);
 
-    // Set appropriate panels based on FTUE step
+  
+
+// Detect if running in iframe
+useEffect(() => {
+  setIsInIframe(window !== window.parent);
+}, []);
+
+
+
+useEffect(() => {
+  // Check if we're returning from game and in iframe
+  if (isInIframe) {
+    const params = new URLSearchParams(window.location.search);
+    const fromGame = params.get('fromGame');
+    
+    if (fromGame === 'true') {
+      // Notify parent to resume music
+      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+      
+      // Clean up URL parameter
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }
+}, [isInIframe]);
+
+  useEffect(() => {
+    
     if (currentStep === 4 && !unlockingInfoSeen) {
       setShowUnlockingInfoPanel(true);
     } else {
@@ -110,11 +139,11 @@ const HubScreen = () => {
   }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
+   
 
     if (currentStep === 7 && !isCompleted) {
       setShowPlaySongPanel(true);
-      // Find the latest song to highlight
+     
       if (songs && songs.length > 0) {
         const latestSong = songs[0];
         setHighlightedSongId(latestSong.id);
@@ -126,7 +155,7 @@ const HubScreen = () => {
   }, [currentStep, songs, isCompleted]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
+    
 
     checkAnonUser();
     checkRedirect();
@@ -143,7 +172,7 @@ const HubScreen = () => {
   }, [songs]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
+    
 
     if (currentStep === 7 && !isCompleted) {
       const matchingSong = songs.find((s) => s.id === highlightedSongId);
@@ -229,21 +258,39 @@ const HubScreen = () => {
     }
   };
 
+  //debugging
+  useEffect(() => {
+    console.log('🔄 Hub component mounted');
+    return () => console.log('🔄 Hub component unmounted');
+  }, []);
+
   useEffect(() => {
     // if (typeof window === "undefined") return;
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
 
-    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen) {
+   
+
+  if (!ftueParam && showFtuePanel) {
+  
+    setShowFtuePanel(false);
+  }
+
+ 
+    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown) {
+     
       setShowFtuePanel(true);
       setHubTutorialSeen(true);
+      setStep1PanelShown(true);  
     }
 
     if (!footerGlowCleared) {
       setFooterGlowActive(true);
     }
-  }, [isCompleted, hubTutorialSeen, footerGlowCleared]);
+
+  
+  }, [currentStep, isCompleted, hubTutorialSeen, footerGlowCleared, step1PanelShown]);
 
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
@@ -274,8 +321,13 @@ const HubScreen = () => {
   };
 
   const closeFtuePanel = () => {
-    console.log("Closing FTUE panel. Current step:", currentStep);
+    // console.log("Closing FTUE panel. Current step:", currentStep);
     setShowFtuePanel(false);
+
+
+    if (currentStep === 1) {
+      completeStep(currentStep);
+    }
 
     const currentQuery = { ...router.query };
     delete currentQuery.ftueGameplayCompleted;
@@ -303,8 +355,8 @@ const HubScreen = () => {
   };
 
   const handleFtueProgressToStep6 = (song) => {
-    console.log("MANUALLY TRIGGERING STEP 6 SETUP");
-    console.log("Song passed to callback:", song);
+    // console.log("MANUALLY TRIGGERING STEP 6 SETUP");
+    // console.log("Song passed to callback:", song);
 
     completeStep(currentStep);
 
@@ -312,12 +364,12 @@ const HubScreen = () => {
 
     // Set the highlighted song explicitly
     if (song) {
-      console.log("Setting highlighted song ID to:", song.id);
+      // console.log("Setting highlighted song ID to:", song.id);
       setHighlightedSongId(song.id);
       setCurrentTrackData(JSON.stringify(song));
     } else if (songs && songs.length > 0) {
       const latestSong = songs[0];
-      console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
+      // console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
       setHighlightedSongId(latestSong.id);
       setCurrentTrackData(JSON.stringify(latestSong));
     }
@@ -326,9 +378,16 @@ const HubScreen = () => {
   };
 
   const gotoGameDetail = (track) => {
-    console.log("Setting current track data:", track.id, track.song_name);
+    // console.log("Setting current track data:", track.id, track.song_name);
 
     setCurrentTrackData(JSON.stringify(track));
+
+    if (window !== window.parent) {
+      window.parent.postMessage({ type: 'STOP_MUSIC' }, '*');
+    } else {
+      // Direct mode - stop music directly
+      stopBgMusic();
+    }
 
     const src = process.env.NODE_ENV === "production" ? `/game.html` : `/game`;
     window.location.href = src;
@@ -414,8 +473,10 @@ const HubScreen = () => {
       </div>
     );
   }
-  return (
-    <div className="hubscreen-container">
+
+
+  const pageContent = (
+<div className="hubscreen-container">
       <Header />
       {/* The FTUE panel if needed */}
       {showFtuePanel && (
@@ -585,6 +646,11 @@ const HubScreen = () => {
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
       {/* <ZustandDebug /> */}
     </div>
+  );
+  return (
+    <DesktopViewport>
+      {pageContent}
+    </DesktopViewport>
   );
 };
 

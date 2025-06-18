@@ -6,8 +6,21 @@ import { usePathname } from "next/navigation";
 
 const AudioContext = createContext<any>(null);
 
+
 export function useAudio() {
-  return useContext(AudioContext);
+  const context = useContext(AudioContext);
+  
+ 
+  if (!context) {
+    return {
+      playBgMusic: () => {},
+      stopBgMusic: () => {},
+      fadeOutBgMusic: () => {},
+      playBoom: () => {},
+    };
+  }
+  
+  return context;
 }
 
 export default function AudioProvider({ children }: { children: React.ReactNode }) {
