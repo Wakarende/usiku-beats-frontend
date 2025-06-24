@@ -162,7 +162,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[110] bg-black/80">
       <div
-        style={{ backgroundImage: `url("./assets/img/dailyreward/BG-v1.png")` }}
+        style={{ backgroundImage: `url("./assets/img/dailyreward/bg-v1.png")` }}
         className="text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
       >
         <div className="flex flex-col gap-0 mt-10">
@@ -213,7 +213,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             </p>
             <span className="inline flex items-center">
               <Image
-                src={"./assets/img/spendgems/Gem.png"}
+                src={"./assets/img/spendgems/gem.png"}
                 width={50}
                 height={50}
                 className="w-6 h-6"
@@ -227,7 +227,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
               <span className="text-white">{currentGems} </span>
               <span>
                 <Image
-                  src={"./assets/img/spendgems/Gem.png"}
+                  src={"./assets/img/spendgems/gem.png"}
                   width={50}
                   height={50}
                   className="w-4 h-auto"

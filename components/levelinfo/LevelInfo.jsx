@@ -19,9 +19,9 @@ const LevelInfo = ({
   );
 
   const getBackgroundImage = () => {
-    if (isActive) return "url('assets/img/levelinfo/Tile_Active.png')";
-    if (isCompleted) return "url('assets/img/levelinfo/Tile_completed.png')";
-    return "url('assets/img/levelinfo/Tile_Inactive.png')";
+    if (isActive) return "url('assets/img/levelinfo/tile_active.png')";
+    if (isCompleted) return "url('assets/img/levelinfo/tile_completed.png')";
+    return "url('assets/img/levelinfo/tile_inactive.png')";
   };
 
   const cardClasses = classNames(
@@ -96,7 +96,7 @@ const LevelInfo = ({
                 <div className="flex items-center flex-1">
                   <div className="w-7 h-7 relative mr-3">
                     <Image
-                      src="./assets/img/levelinfo/Gem.png"
+                      src="./assets/img/levelinfo/gem.png"
                       alt="Gems"
                       layout="fill"
                       objectFit="contain"
@@ -111,7 +111,7 @@ const LevelInfo = ({
               <div className="flex items-center">
                 <div className="w-7 h-7 relative mr-3">
                   <Image
-                    src="./assets/img/levelinfo/Unlock.png"
+                    src="./assets/img/levelinfo/unlock.png"
                     alt="Difficulty"
                     layout="fill"
                     objectFit="contain"
@@ -124,7 +124,7 @@ const LevelInfo = ({
               <div className="flex items-center">
                 <div className="w-7 h-7 relative mr-3">
                   <Image
-                    src="./assets/img/levelinfo/Unlock.png"
+                    src="./assets/img/levelinfo/unlock.png"
                     alt="Tiles"
                     layout="fill"
                     objectFit="contain"
@@ -138,7 +138,7 @@ const LevelInfo = ({
                 <div className="flex items-center">
                   <div className="w-7 h-7 relative mr-3">
                     <Image
-                      src="./assets/img/levelinfo/Disc_icon.png"
+                      src="./assets/img/levelinfo/disc_icon.png"
                       alt="Songs"
                       layout="fill"
                       objectFit="contain"
@@ -156,7 +156,7 @@ const LevelInfo = ({
               <div className="flex items-center gap-1">
                 <div className="w-7 h-7 relative top-[-15px] ">
                   <Image
-                    src="./assets/img/levelinfo/Star.png"
+                    src="./assets/img/levelinfo/star.png"
                     alt="Star"
                     layout="fill"
                     objectFit="contain"

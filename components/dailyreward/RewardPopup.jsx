@@ -58,7 +58,7 @@ const DailyReward = () => {
         </p>
         <div className="daily-gem-section">
           <Image
-            src="./assets/img/dailyreward/Gem.png"
+            src="./assets/img/dailyreward/gem.png"
             alt="Gem Icon"
             width={100}
             height={100}
@@ -68,7 +68,7 @@ const DailyReward = () => {
         </div>
         <button className="daily-claim-button" onClick={toggleDailyPopup}>
           <Image
-            src="./assets/img/dailyreward/Collect_button.png"
+            src="./assets/img/dailyreward/collect_button.png"
             alt="Claim Button"
             width={220}
             height={100}

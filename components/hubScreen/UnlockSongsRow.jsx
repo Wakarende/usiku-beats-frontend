@@ -457,7 +457,7 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                       <div className="absolute inset-0 flex items-center justify-between px-1">
                         <div className="flex items-center gap-0.5">
                           <Image
-                            src="./assets/img/hub/Gem.png"
+                            src="./assets/img/hub/gem.png"
                             alt="Gem"
                             width={16}
                             height={16}

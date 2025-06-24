@@ -285,7 +285,10 @@ const ArtistImage = ({
           </p>
           <div className="md:w-[130px] sm:w-[120px] lg:w-[140px] xl:w-[140px] relative">
             <button
-              onClick={handlePlay}
+              onClick={(e) => {
+                e.stopPropagation(); 
+                handlePlay();
+              }}
               className={`md:mt-1 relative ${
                 isHighlightedForFtue ? "ftue-play-button-highlight" : ""
               }`}

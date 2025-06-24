@@ -29,7 +29,7 @@ const LevelUpPopup = ({ isOpen, closePopup, newLevel }) => {
           </div>
           {/* Star Image */}
           <Image
-            src="./assets/img/levelup/Level_Star.png"
+            src="./assets/img/levelup/level_star.png"
             alt="Level Up Star"
             width={500}
             height={500}

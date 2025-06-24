@@ -52,6 +52,7 @@ const HubScreen = () => {
   const { user_data } = auth;
   const dispatch = useDispatch();
   const router = useRouter();
+  
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
 
@@ -514,7 +515,7 @@ useEffect(() => {
             Your Songs
           </h1>
           <Link href={"/library"}>
-            <button className="absolute sm:right-[-2rem] md:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
+            <button onClick={handleClickSound} className="absolute sm:right-[-2rem] md:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
               <Image
                 src={"./assets/img/hub/button_blank.png"}
                 alt="your-songs-btn"
@@ -580,7 +581,7 @@ useEffect(() => {
         )}
         <div className="w-full md:-mt-2.5 ">
           <Image
-            src={"./assets/img/library/Divider.png"}
+            src={"./assets/img/library/divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -595,7 +596,7 @@ useEffect(() => {
         />
         <div className="w-full">
           <Image
-            src={"./assets/img/library/Divider.png"}
+            src={"./assets/img/library/divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -627,7 +628,7 @@ useEffect(() => {
           </p>
           <div className="daily-gem-section">
             <Image
-              src="./assets/img/dailyreward/Gem.png"
+              src="./assets/img/dailyreward/gem.png"
               alt="Gem Icon"
               width={1}
               height={1}
@@ -643,7 +644,7 @@ useEffect(() => {
             transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
           >
             <Image
-              src="./assets/img/dailyreward/Collect button.png"
+              src="./assets/img/dailyreward/collect_button.png"
               alt="Claim Button"
               width={220}
               height={100}
