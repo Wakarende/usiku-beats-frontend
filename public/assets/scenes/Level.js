@@ -812,7 +812,9 @@ class Level extends Phaser.Scene {
     texture.refresh();
   }
   updateWaveLogic(seek, delta) {
-    if (seek < 0) return;
+    if (!this.music || seek === undefined) return;
+   
+    if (seek < 0) seek = 0;
 
     const pulseWindow = 0.1;
 
@@ -931,12 +933,10 @@ class Level extends Phaser.Scene {
   }
 
   resetWaveSystem() {
-    // Get current music position for proper synchronization
+    
     const currentSeek = this.music?.seek || 0;
-
     // Reset timing trackers relative to current position
-    // This ensures we don't miss beats that should trigger soon
-    this.lastDividerPulse = currentSeek - 1; // Set to just before current time
+    this.lastDividerPulse = currentSeek - 1; 
     this.lastF2Pulse = currentSeek - 1;
 
     // Reset wave state
@@ -1175,7 +1175,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          // this.checkOverlap(tile);
+          this.checkOverlap(tile);
         }
       });
     }
@@ -1537,6 +1537,7 @@ class Level extends Phaser.Scene {
 
     this.music.on("play", () => {
       this.isSoundPlaying = true;
+      this.resetWaveSystem();
       if (this.audioMotion) {
         this.analyserNode = this.sound.context.createAnalyser();
         this.music.volumeNode.connect(this.analyserNode);

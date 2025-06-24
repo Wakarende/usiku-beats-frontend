@@ -120,6 +120,12 @@ useEffect(() => {
       const newUrl = window.location.pathname;
       window.history.replaceState({}, '', newUrl);
     }
+
+    const handleClick = () => {
+      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }
 }, [isInIframe]);
 
@@ -269,9 +275,11 @@ useEffect(() => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
-    const isDesktopMode = params.get("iframe") === "true";
 
-   
+    if (isCompleted && showFtuePanel) {
+      setShowFtuePanel(false);
+    }
+  
 
   if (!ftueParam && showFtuePanel) {
   
@@ -279,7 +287,7 @@ useEffect(() => {
   }
 
  
-    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown && !isDesktopMode) {
+    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown) {
      
       setShowFtuePanel(true);
       setHubTutorialSeen(true);

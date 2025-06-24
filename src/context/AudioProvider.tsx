@@ -96,7 +96,10 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
   }, [wasPlaying, pathname]);
 
   const playBgMusic = () => {
-    howlsRef.current.bgMusic?.play();
+    const bgMusic = howlsRef.current.bgMusic;
+    if (bgMusic && !bgMusic.playing()) {
+      bgMusic.play();
+    }
   };
 
   const stopBgMusic = () => {
