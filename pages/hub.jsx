@@ -269,6 +269,7 @@ useEffect(() => {
 
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
+    const isDesktopMode = params.get("iframe") === "true";
 
    
 
@@ -278,7 +279,7 @@ useEffect(() => {
   }
 
  
-    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown) {
+    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown && !isDesktopMode) {
      
       setShowFtuePanel(true);
       setHubTutorialSeen(true);

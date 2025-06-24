@@ -706,7 +706,7 @@ class Level extends Phaser.Scene {
 
     let line = this.add.image(this.screenCenterX, 0, "rythm_line");
 
-    line.setDepth(2);
+    line.setDepth(0.2);
     line.setAlpha(0.5);
     line.start = marker.start;
     this.lineGroup.add(line);
@@ -1175,7 +1175,7 @@ class Level extends Phaser.Scene {
 
         if (tile.y > this.screenHeight * this.tileTarget) {
           // Handle cleanup
-          this.checkOverlap(tile);
+          // this.checkOverlap(tile);
         }
       });
     }

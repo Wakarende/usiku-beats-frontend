@@ -32,23 +32,6 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
   const pathname = usePathname() || "";
 
   useEffect(() => {
-    const bgMusic = new Howl({
-      src: ["./assets/sounds/ui/themeMusic.mp3"],
-      loop: true,
-      volume: 1,
-    });
-    howlsRef.current.bgMusic = bgMusic;
-
-    bgMusic.once("playerror", (id, error) => {
-      console.warn("Howler play error:", error);
-    });
-
-    return () => {
-      bgMusic.unload();
-    };
-  }, []);
-
-  useEffect(() => {
     const bgMusic = howlsRef.current.bgMusic;
     if (!bgMusic) return;
   });
