@@ -60,6 +60,7 @@ class BeatMissedSwipe extends Phaser.Scene {
   // Write your code here
   init(data) {
     this.track = data.track;
+    this.analytics = this.registry.get("analytics");
   }
 
   create() {
@@ -74,7 +75,7 @@ class BeatMissedSwipe extends Phaser.Scene {
     this.background_music = this.registry.get("background_music");
     this.background_music.play();
 
-    this.analytics.trackCustomEvent("FTUE", "beat_missed_shown", "swipe");
+    this.analytics.trackCustomEvent("FTUE", "beat_missed_shown_swipe", "swipe");
 
     this.try_again_btn.setInteractive();
     this.try_again_btn.on("pointerup", () => {
@@ -82,7 +83,7 @@ class BeatMissedSwipe extends Phaser.Scene {
       this.button_sfx.play();
       this.background_music.stop();
 
-      this.analytics.trackCustomEvent("FTUE", "retry_clicked", "swipe");
+      this.analytics.trackCustomEvent("FTUE", "retry_clicked_swipe", "swipe");
 
       this.scene.stop("BeatMissedSwipe");
       this.scene.start("Level", { track: this.track, midi: this.track.midi, isFTUE: true });

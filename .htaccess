@@ -1,6 +1,37 @@
+# Enable rewrite engine
 RewriteEngine On
 
-# Redirect all requests not pointing to an actual file to index.html
+# Allow access to _next static files
+RewriteCond %{REQUEST_URI} ^/_next/static/
+RewriteRule ^(.*)$ - [L]
+
+# Handle Next.js static assets in nested path
+RewriteCond %{REQUEST_URI} ^/games/usiku/beats/_next/
+RewriteRule ^games/usiku/beats/_next/(.*)$ _next/$1 [L]
+
+# Handle other static assets (images, fonts, etc.)
+RewriteCond %{REQUEST_URI} ^/games/usiku/beats/assets/
+RewriteRule ^games/usiku/beats/assets/(.*)$ assets/$1 [L]
+
+# Handle client-side routing - redirect all non-file requests to index.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [QSA,L]
+RewriteCond %{REQUEST_URI} !^/_next/
+RewriteRule ^(.*)$ index.html [L]
+
+# Set proper MIME types for fonts
+<FilesMatch "\.(ttf|otf|woff|woff2)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+
+# Cache static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|ttf|otf|woff|woff2)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 year"
+</FilesMatch>
+
+# Ensure proper content types
+AddType font/ttf .ttf
+AddType font/otf .otf
+AddType font/woff .woff
+AddType font/woff2 .woff2

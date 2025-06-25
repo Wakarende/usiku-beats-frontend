@@ -589,6 +589,9 @@ class Level extends Phaser.Scene {
       stroke: "#666363ff",
     });
 
+    this.fpsEventTimes = [2, 10, 30]; // Times in seconds to send FPS events
+    this.fpsEventsSent = new Set(); // Track which events have been sent
+
     this.addProgressBar();
 
     this.vignette.setDepth(2);
@@ -1146,7 +1149,21 @@ class Level extends Phaser.Scene {
     }
     this.frameTime = this.frameTime * 0.99 + delta * 0.01;
     this.fps = ((1 / this.frameTime) * 1000).toFixed(1);
-    // this.fps_text.text = this.fps;
+    this.fps_text.text = this.fps;
+
+    // Track FPS events at specific song times
+    if (this.music && this.music.isPlaying) {
+      const currentTime = this.music.seek;
+
+      this.fpsEventTimes.forEach((eventTime) => {
+        const eventKey = `${eventTime}s`;
+        if (currentTime >= eventTime && !this.fpsEventsSent.has(eventKey)) {
+          this.fpsEventsSent.add(eventKey);
+          // console.log(`${eventKey} ${this.fps}`);
+          this.analytics.trackCustomEvent("Performance", `FPS_${eventTime}s`, parseFloat(this.fps));
+        }
+      });
+    }
 
     const lowFpsThreshold = 50;
 
