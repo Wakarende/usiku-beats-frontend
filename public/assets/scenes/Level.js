@@ -414,7 +414,7 @@ class Level extends Phaser.Scene {
   create() {
     console.log("Level.js create()");
 
-    if (this.logAnalytics && this.sessionId) {
+    if (this.isFTUE && this.logAnalytics && this.sessionId) {
       this.logAnalytics(this.sessionId, `gameplay_start`);
       console.log(`gameplay_start`);
     }
