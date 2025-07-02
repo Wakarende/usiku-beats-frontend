@@ -61,6 +61,8 @@ class BeatMissedSwipe extends Phaser.Scene {
   init(data) {
     this.track = data.track;
     this.analytics = this.registry.get("analytics");
+    this.logAnalytics = this.registry.get("logAnalytics");
+    this.sessionId = this.registry.get("sessionId");
   }
 
   create() {
@@ -76,7 +78,10 @@ class BeatMissedSwipe extends Phaser.Scene {
     this.background_music.play();
 
     this.analytics.trackCustomEvent("FTUE", "beat_missed_shown_swipe", "swipe");
-
+    if (this.logAnalytics && this.sessionId) {
+      this.logAnalytics(this.sessionId, `beat_missed_swipe_display`);
+      console.log(`beat_missed_swipe_display`);
+    }
     this.try_again_btn.setInteractive();
     this.try_again_btn.on("pointerup", () => {
       this.scene.stop();
@@ -84,7 +89,10 @@ class BeatMissedSwipe extends Phaser.Scene {
       this.background_music.stop();
 
       this.analytics.trackCustomEvent("FTUE", "retry_clicked_swipe", "swipe");
-
+      if (this.logAnalytics && this.sessionId) {
+        this.logAnalytics(this.sessionId, `try_again_swipe_clicked`);
+        console.log(`try_again_swipe_clicked`);
+      }
       this.scene.stop("BeatMissedSwipe");
       this.scene.start("Level", { track: this.track, midi: this.track.midi, isFTUE: true });
     });

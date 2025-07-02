@@ -61,6 +61,8 @@ class BeatMissedHeld extends Phaser.Scene {
   init(data) {
     this.track = data.track;
     this.analytics = this.registry.get("analytics");
+    this.logAnalytics = this.registry.get("logAnalytics");
+    this.sessionId = this.registry.get("sessionId");
   }
 
   create() {
@@ -76,6 +78,10 @@ class BeatMissedHeld extends Phaser.Scene {
     this.background_music.play();
 
     this.analytics.trackCustomEvent("FTUE", "beat_missed_shown_held", "held");
+    if (this.logAnalytics && this.sessionId) {
+      this.logAnalytics(this.sessionId, `beat_missed_held_display`);
+      console.log(`beat_missed_held_display`);
+    }
 
     this.try_again_btn.setInteractive();
     this.try_again_btn.on("pointerup", () => {
@@ -84,6 +90,10 @@ class BeatMissedHeld extends Phaser.Scene {
       this.background_music.stop();
 
       this.analytics.trackCustomEvent("FTUE", "retry_clicked_held", "held");
+      if (this.logAnalytics && this.sessionId) {
+        this.logAnalytics(this.sessionId, `try_again_held_clicked`);
+        console.log(`try_again_held_clicked`);
+      }
 
       this.scene.stop("BeatMissedHeld");
       this.scene.start("Level", { track: this.track, midi: this.track.midi, isFTUE: true });

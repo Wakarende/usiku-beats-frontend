@@ -398,6 +398,8 @@ class Level extends Phaser.Scene {
       }
     });
     this.analytics = this.registry.get("analytics");
+    this.logAnalytics = this.registry.get("logAnalytics");
+    this.sessionId = this.registry.get("sessionId");
   }
   preload() {
     this.load.scenePlugin({
@@ -411,6 +413,11 @@ class Level extends Phaser.Scene {
 
   create() {
     console.log("Level.js create()");
+
+    if (this.logAnalytics && this.sessionId) {
+      this.logAnalytics(this.sessionId, `gameplay_start`);
+      console.log(`gameplay_start`);
+    }
 
     this.editorCreate();
     this.adjustViewport();
@@ -1161,6 +1168,13 @@ class Level extends Phaser.Scene {
           this.fpsEventsSent.add(eventKey);
           // console.log(`${eventKey} ${this.fps}`);
           this.analytics.trackCustomEvent("Performance", `FPS_${eventTime}s`, parseFloat(this.fps));
+
+          if (this.isFTUE) {
+            if (this.logAnalytics && this.sessionId) {
+              this.logAnalytics(this.sessionId, `FPS_${eventTime}s, ${parseFloat(this.fps)}`);
+              console.log(`log_FPS_${eventTime}s, ${parseFloat(this.fps)}`);
+            }
+          }
         }
       });
     }
@@ -1653,6 +1667,11 @@ class Level extends Phaser.Scene {
 
     if (this.isFTUE) {
       this.analytics.trackFTUEStep(`1.3 Gameplay SongComplete`);
+
+      if (this.logAnalytics && this.sessionId) {
+        this.logAnalytics(this.sessionId, `song_complete`);
+        console.log(`log_song_complete`);
+      }
     }
 
     // Launch SongComplete scene
@@ -1872,6 +1891,11 @@ class Level extends Phaser.Scene {
       else if (swiped) tileType = "swipe";
       else tileType = "tap";
 
+      if (this.logAnalytics && this.sessionId) {
+        this.logAnalytics(this.sessionId, `${tileType}_tile_clicked`);
+        console.log(`${tileType}_tile_clicked`);
+      }
+
       // Track first click of each type
       if (!this.firstTileClicked[tileType]) {
         this.firstTileClicked[tileType] = true;
@@ -1880,10 +1904,25 @@ class Level extends Phaser.Scene {
         if (tileType == "tap") {
           this.analytics.trackFTUEStep(`1.21 first_${tileType}_clicked`);
           this.analytics.trackCustomEvent("FTUE", "FPS", parseFloat(this.fps));
+
+          if (this.logAnalytics && this.sessionId) {
+            this.logAnalytics(this.sessionId, `first_${tileType}_tile_clicked`);
+            console.log(`first_${tileType}_tile_clicked`);
+          }
         } else if (tileType == "swipe") {
           this.analytics.trackFTUEStep(`1.22 first_${tileType}_clicked`);
+
+          if (this.logAnalytics && this.sessionId) {
+            this.logAnalytics(this.sessionId, `first_${tileType}_tile_clicked`);
+            console.log(`first_${tileType}_tile_clicked`);
+          }
         } else if (tileType == "held") {
           this.analytics.trackFTUEStep(`1.23 first_${tileType}_clicked`);
+
+          if (this.logAnalytics && this.sessionId) {
+            this.logAnalytics(this.sessionId, `first_${tileType}_tile_clicked`);
+            console.log(`first_${tileType}_tile_clicked`);
+          }
         }
       }
     }

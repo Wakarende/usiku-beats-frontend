@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // Initialize with placeholders for server-side rendering
 let gameanalytics = null;
 let initialized = false;
@@ -169,3 +171,24 @@ export const AnalyticsService = {
 //     AnalyticsService.init();
 //   }, 0);
 // }
+
+// utils/analytics.js
+
+const ANALYTICS_ENDPOINT = "https://api.usiku.games/analytics/"; // Adjust this to match your Django URL
+
+export const logAnalytics = async (sessionId, eventId) => {
+  try {
+    await axios.post(ANALYTICS_ENDPOINT, {
+      sessionId,
+      eventId,
+    });
+  } catch (error) {
+    // Silently fail - analytics shouldn't break the game
+    console.warn("Analytics logging failed:", error);
+  }
+};
+
+// Usage examples:
+// logAnalytics('user123', 'game_started');
+// logAnalytics('user123', 'level_completed');
+// logAnalytics('user123', 'song_played');

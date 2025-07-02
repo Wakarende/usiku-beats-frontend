@@ -105,6 +105,13 @@ class TutorialScene extends Phaser.Scene {
     this.editorCreate();
     this.adjustViewport();
 
+    const logAnalytics = this.registry.get("logAnalytics");
+    const sessionId = this.registry.get("sessionId");
+
+    if (logAnalytics && sessionId) {
+      logAnalytics(sessionId, "how_to_play_display");
+      console.log(`how_to_play_display`);
+    }
     this.button_sfx = this.registry.get("button_sfx");
     this.background_music = this.registry.get("background_music");
     this.background_music.play();
@@ -112,6 +119,10 @@ class TutorialScene extends Phaser.Scene {
     this.start_button.setInteractive();
     this.start_button.on("pointerup", () => {
       this.analytics.trackFTUEStep("1.1 - How to Play: Start");
+      if (logAnalytics && sessionId) {
+        logAnalytics(sessionId, "start_click");
+        console.log(`start_click`);
+      }
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
         this.button_sfx.play();
