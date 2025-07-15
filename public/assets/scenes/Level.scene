@@ -243,6 +243,74 @@
             ]
         },
         {
+            "type": "Layer",
+            "id": "e4a7a5c0-3cc0-45fc-85a2-a20be01e8df7",
+            "label": "ftue_pause_layer",
+            "scope": "CLASS",
+            "components": [],
+            "visible": false,
+            "list": [
+                {
+                    "type": "Image",
+                    "id": "367d3492-5bc0-416e-bc5d-ea67e64ee517",
+                    "label": "ftue_pause_bg",
+                    "scope": "CLASS",
+                    "components": [],
+                    "texture": {
+                        "key": "BG_1"
+                    },
+                    "x": 180,
+                    "y": 320,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Image",
+                    "id": "fbc0718f-e555-4fb0-8cd0-35ab8f5475d0",
+                    "label": "tapzone_highlight",
+                    "components": [],
+                    "texture": {
+                        "key": "zone_highlight"
+                    },
+                    "x": 180,
+                    "y": 525,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Image",
+                    "id": "5ee4ddb9-42bb-4563-859b-9b216fc9dad2",
+                    "label": "info_panel",
+                    "components": [],
+                    "texture": {
+                        "key": "panel_info"
+                    },
+                    "x": 180,
+                    "y": 288,
+                    "scaleX": 0.3333,
+                    "scaleY": 0.3333
+                },
+                {
+                    "type": "Text",
+                    "id": "599f67fe-b71e-4d7b-a21d-7997d3c74e3f",
+                    "label": "info_text",
+                    "scope": "CLASS",
+                    "components": [],
+                    "x": 182,
+                    "y": 285,
+                    "originX": 0.5,
+                    "originY": 0.5,
+                    "text": "TAP the beats when they get\nhere, before they fall off the\n screen.\n\nTry it now!",
+                    "align": "center",
+                    "fontFamily": "Carlito-Regular",
+                    "fontSize": "22px",
+                    "color": "#fcb320",
+                    "stroke": "#fcb320",
+                    "wordWrapWidth": 300
+                }
+            ]
+        },
+        {
             "type": "Image",
             "id": "7b7307a0-2fe7-4ce5-b439-aa28c45aa998",
             "label": "perfect_1",
@@ -556,6 +624,21 @@
                     "fontSize": "20px"
                 }
             ]
+        },
+        {
+            "type": "Image",
+            "id": "c78e31f4-350b-4ad2-bf5b-8265467550d1",
+            "label": "hand_icon",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "hand_icon"
+            },
+            "x": 85,
+            "y": 568,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333,
+            "visible": false
         }
     ],
     "plainObjects": [],
@@ -573,7 +656,8 @@
                 "f669c805-a5d3-4459-8f19-b6132df8c0e5",
                 "133ec661-739d-412f-94e4-6a32fedbec52",
                 "5e6aa4d2-41d2-43ca-b214-f57af72b601e",
-                "bd56f0ea-006f-48fe-95a8-7e69f6bb2734"
+                "bd56f0ea-006f-48fe-95a8-7e69f6bb2734",
+                "021c61f4-4d0f-4662-a648-0bfe2f37f15a"
             ]
         },
         {
