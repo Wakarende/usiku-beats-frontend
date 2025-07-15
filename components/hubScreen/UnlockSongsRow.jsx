@@ -290,54 +290,44 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     return timeLeft;
   }
 
-  function TimerBar({ unlockTime, song }) {
-    const [fillPercent, setFillPercent] = useState(0);
+function TimerBar({ unlockTime, song }) {
+  const [fillPercent, setFillPercent] = useState(0);
 
-    useEffect(() => {
-      const calculateFill = () => {
-        const now = new Date();
-        const unlockDate = new Date(unlockTime);
+  useEffect(() => {
+    const calculateFill = () => {
+      const nowMs = Date.now();
+      const unlockMs = new Date(unlockTime).getTime();
 
-        if (now >= unlockDate) {
-          return 100;
-        }
+      const startMs = song.unlock_start_time
+        ? new Date(song.unlock_start_time).getTime()
+        : unlockMs - song.unlockDurationSec * 1000;
 
-        let startTime;
-        if (song && song.unlock_start_time) {
-          startTime = new Date(song.unlock_start_time);
-        } else {
-          const estimatedDuration = 60 * 1000;
-          startTime = new Date(unlockDate.getTime() - estimatedDuration);
-        }
+      const totalMs = unlockMs - startMs;
+      const elapsedMs = nowMs - startMs;
+      const pct = (elapsedMs / totalMs) * 100;
 
-        const totalDuration = unlockDate.getTime() - startTime.getTime();
+      return Math.max(0, Math.min(100, pct));
+    };
 
-        const elapsedTime = now.getTime() - startTime.getTime();
-
-        const percentage = (elapsedTime / totalDuration) * 100;
-
-        return Math.max(0, Math.min(100, percentage));
-      };
-
-      const timer = setInterval(() => {
-        setFillPercent(calculateFill());
-      }, 50);
-
+    setFillPercent(calculateFill());
+    const id = setInterval(() => {
       setFillPercent(calculateFill());
+    }, 50);
 
-      return () => clearInterval(timer);
-    }, [unlockTime, song]);
+    return () => clearInterval(id);
+  }, [unlockTime, song]);
 
-    return (
-      <div
-        className="h-full absolute left-0 rounded-sm transition-all duration-50 ease-linear"
-        style={{
-          width: `${fillPercent}%`,
-          background: "linear-gradient(to right, #edca55, #3bc0b3)",
-        }}
-      />
-    );
-  }
+  return (
+    <div
+      className="h-full rounded-sm w-full"
+      style={{
+        width: `${fillPercent}%`,
+        background: "linear-gradient(to right, #edca55, #3bc0b3)",
+      }}
+    />
+  );
+}
+
   const slots = 3;
   const slotsContent = [];
   for (let i = 0; i < slots; i++) {
@@ -393,20 +383,22 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                     {item.song.song_name}
                   </p>
                 </div>
-                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0">
-                  <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]  lg:top-[30%] lg:left-0 lg:right-2">
-                    {item.unlock_time &&
-                      (isUnlockTimePassed(item.unlock_time) ? (
-                        <div
-                          className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
-                          style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
-                        />
-                      ) : (
-                        <TimerBar
-                          unlockTime={item.unlock_time}
-                          unlockStartTime={item.unlock_start_time}
-                        />
-                      ))}
+                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0"> 
+                  <div className="absolute md:top-[30%] md:left-[-2rem] sm:top-[30%] sm:left-[-2rem] h-2.5 lg:top-[30%] lg:left-[-2rem]" style={{ width: 'calc(100% + 4rem)'}}>
+                    <div className="w-full h-full rounded-sm bg-[#5e203f] relative overflow-hidden">
+                      {item.unlock_time &&
+                        (isUnlockTimePassed(item.unlock_time) ? (
+                          <div
+                            className="h-full w-full rounded-sm"
+                            style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
+                          />
+                        ) : (
+                          <TimerBar
+                            unlockTime={item.unlock_time}
+                            song={item}
+                          />
+                        ))}
+                    </div>
                   </div>
                   <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0  lg:bottom-[3.3rem] lg:left-0 lg:right-0  flex items-center justify-center z-20">
                     <div className="flex items-center justify-center w-full">

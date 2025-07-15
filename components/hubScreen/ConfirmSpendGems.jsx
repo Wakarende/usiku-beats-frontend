@@ -108,16 +108,16 @@ const TimerBar = ({ unlockTime, song }) => {
 
   return (
     <div className="w-full h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
-      <div className="w-full h-2.5 bg-[#4e1b2e] mt-0.5 rounded-sm relative shadow-lg">
-        <div
-          className="h-full absolute left-0 rounded-sm transition-all duration-100 ease-linear"
-          style={{
-            width: `${fillPercent}%`,
-            background: "linear-gradient(to right, #edca55, #3bc0b3)",
-          }}
-        />
-      </div>
+    <div className="w-full h-2.5 bg-[#4e1b2e] mt-0.5 rounded-sm relative shadow-lg">
+      <div
+        className="h-full rounded-sm"
+        style={{
+          width: `${fillPercent}%`,
+          background: "linear-gradient(to right, #edca55, #3bc0b3)",
+        }}
+      />
     </div>
+  </div>
   );
 };
 

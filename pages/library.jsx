@@ -270,15 +270,19 @@ const Library = () => {
     setSessionUnlockCounter((prevCount) => prevCount + 1);
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
+    const now = new Date();
+    const unlockDurationSec = (new Date(unlockTime).getTime() - now.getTime()) / 1000;
 
     let newSongInstance = {
-      date_added: new Date().toISOString(),
+      date_added: now.toISOString(),
       favourited: false,
       high_score: 0,
       maximum_progress: 0,
       no_of_plays: 0,
       paid_for_flag: false,
       unlock_time: unlockTime,
+      unlock_start_time: new Date().toISOString(),
+      unlockDurationSec,
       unlocked: unlockedFlag,
       song,
     };
