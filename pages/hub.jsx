@@ -20,7 +20,7 @@ import useFTUEStore from "../stores/ftueStore";
 import useUnlockSongsStore from "../stores/unlockSongsStore";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
-import { AnalyticsService } from "../services/analytics.service";
+import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
 import "./pages.css";
 // import ZustandDebug from "../components/zustandDebug";
 import useStorageStore from "../stores/storageStore";
@@ -238,6 +238,11 @@ const HubScreen = () => {
     if (ftueParam === "true" && !isCompleted && !hubTutorialSeen) {
       setShowFtuePanel(true);
       setHubTutorialSeen(true);
+
+      AnalyticsService.trackFTUEStep("2.2 - Hub Screen Shown");
+
+      logAnalyticsEvent("2.2 - Hub Screen Shown");
+      console.log("2.2 - Hub Screen Shown");
     }
 
     if (!footerGlowCleared) {
@@ -269,6 +274,7 @@ const HubScreen = () => {
 
   const clearFooterGlow = () => {
     AnalyticsService.trackFTUEStep("3 - Song Library");
+    logAnalyticsEvent("3 - Song Library");
     setFooterGlowActive(false);
     setFooterGlowCleared(true);
   };

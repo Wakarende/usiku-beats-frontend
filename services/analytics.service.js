@@ -178,12 +178,29 @@ const ANALYTICS_ENDPOINT = "https://api.usiku.games/analytics/"; // Adjust this 
 
 export const logAnalytics = async (sessionId, eventId) => {
   try {
+    // console.log(`sending event ${eventId}`);
     await axios.post(ANALYTICS_ENDPOINT, {
       sessionId,
       eventId,
     });
   } catch (error) {
     // Silently fail - analytics shouldn't break the game
+    console.warn("Analytics logging failed:", error);
+  }
+};
+
+// New function that auto-gets sessionId
+export const logAnalyticsEvent = async (eventId, customSessionId = null) => {
+  try {
+    const sessionId = customSessionId || sessionStorage.getItem("sessionId");
+
+    if (!sessionId) {
+      console.warn("No session ID found for analytics");
+      return;
+    }
+
+    return logAnalytics(sessionId, eventId);
+  } catch (error) {
     console.warn("Analytics logging failed:", error);
   }
 };

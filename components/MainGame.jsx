@@ -190,6 +190,7 @@ const PhaserGame = () => {
           // Generate and set session ID
           const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           gameRef.current.registry.set("sessionId", sessionId);
+          sessionStorage.setItem("sessionId", sessionId);
 
           let trackData = null;
           try {

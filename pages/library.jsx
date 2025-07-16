@@ -17,7 +17,7 @@ import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
-import { AnalyticsService } from "../services/analytics.service";
+import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
 // import ZustandDebug from "../components/zustandDebug";
 import "./pages.css";
 
@@ -107,6 +107,14 @@ const Library = () => {
   };
 
   useEffect(() => {
+    // Log analytics event when library is first shown during FTUE
+    if (currentStep === 2 && !isCompleted && !libraryTutorialSeen) {
+      AnalyticsService.trackFTUEStep("3.1 - Song Library Shown");
+      logAnalyticsEvent("3.1 - Song Library Shown");
+    }
+  }, [currentStep, isCompleted, libraryTutorialSeen]);
+
+  useEffect(() => {
     setLoading(true);
 
     const params = new URLSearchParams(window.location.search);
@@ -179,6 +187,7 @@ const Library = () => {
     setUnlockedSong(song);
     if (currentStep === 2) {
       AnalyticsService.trackFTUEStep("4 - Song Select");
+      logAnalyticsEvent("4 - Song Select");
       completeStep(currentStep);
     }
     setIsPopupOpen(true);
@@ -272,6 +281,7 @@ const Library = () => {
     if (isFtue) {
       if (currentStep === 3) {
         AnalyticsService.trackFTUEStep("5 - Confirm SOng Select");
+        logAnalyticsEvent("5 - Confirm Song Select");
         completeStep(currentStep);
       }
       router.push("/hub?ftueGameplayCompleted=true");
