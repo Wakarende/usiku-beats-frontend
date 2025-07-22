@@ -55,6 +55,11 @@ const Library = () => {
     completeStep,
   } = useFTUEStore();
   const [sessionUnlockCounter, setSessionUnlockCounter] = useState(0);
+  const [currentlyPlayingSongId, setCurrentlyPlayingSongId] = useState(null);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [audioRef, setAudioRef] = useState(null);
+
+  
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -68,9 +73,11 @@ const Library = () => {
   const [isInIframe, setIsInIframe] = useState(false);
   const isIframeMode = router.query.iframe === 'true';
 
+  
   useEffect(() => {
     setIsInIframe(window !== window.parent);
   }, []);
+
 
   useEffect(() => {
     // Check if we're returning from game and in iframe
@@ -88,9 +95,21 @@ const Library = () => {
       }
     }
   }, [isInIframe]);
+
+
   useEffect(() => {
     AnalyticsService.trackUIEvent("Library", "View");
   }, []);
+
+  //audio cleanup mp3 preview
+  useEffect(() => {
+    return () => {
+      if (audioRef) {
+        audioRef.pause();
+        audioRef.currentTime = 0;
+      }
+    };
+  }, [audioRef]);
 
   useEffect(() => {
     if (currentStep === 2) {
@@ -101,36 +120,6 @@ const Library = () => {
       setShowLibraryFtuePanel(false);
     }
   }, [currentStep, isCompleted]);
-
-  const unlockSongWithGems = (song) => {
-    let newUserdata = JSON.parse(JSON.stringify(user_data));
-
-    if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
-      console.error("Not enough gems to unlock the song");
-      return;
-    }
-    newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
-
-    const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
-    );
-
-    if (songInstance) {
-      songInstance.unlocked = true;
-      songInstance.unlock_time = null;
-    } else {
-      console.error("Song not found in song instances", song.id);
-      return;
-    }
-
-    dispatch(updateUser(newUserdata));
-
-    setSongs((prevSongs) =>
-      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
-    );
-
-    handleClickSound();
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -172,6 +161,36 @@ const Library = () => {
       // setSongs(songsWithUnlockStatus);
     });
   }, [user_data]);
+
+  const unlockSongWithGems = (song) => {
+    let newUserdata = JSON.parse(JSON.stringify(user_data));
+
+    if (newUserdata.profile.player.total_gems < gemsRequiredToUnlockSong) {
+      console.error("Not enough gems to unlock the song");
+      return;
+    }
+    newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
+
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+
+    if (songInstance) {
+      songInstance.unlocked = true;
+      songInstance.unlock_time = null;
+    } else {
+      console.error("Song not found in song instances", song.id);
+      return;
+    }
+
+    dispatch(updateUser(newUserdata));
+
+    setSongs((prevSongs) =>
+      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
+    );
+
+    handleClickSound();
+  };
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const unlockable = totalDiscs >= 30;
@@ -365,6 +384,126 @@ const Library = () => {
     (instance) => instance.unlocked
   );
 
+  // const handleSongPreview = (song, canPreview) => {
+  //   if(!canPreview) return;
+
+  //   handleClickSound();
+
+  //   if(currentlyPlayingSongId === song.id) {
+  //     stopAudioPreview();
+  //     return;
+  //   }
+
+  //   if(audioRef) {
+  //     stopAudioPreview();
+  //   }
+
+  //   const audio = new Audio(song.preview_file);
+  //   setAudioRef(audio);
+  //   setCurrentPlayingSongId(song.id);
+  //   setAudioProgress(0);
+
+  //   audio.addEventListener("timeupdate", () => {
+  //     const progress = (audio.currentTime / audio.duration) * 100;
+  //     setAudioProgress(progress);
+  //   });
+
+  //   audio.addEventListener("ended", () => {
+  //     stopAudioPreview();
+  //   });
+
+  //   audio.play();
+  //   setTimeout(() => {
+  //     if(audio && !audio.paused) {
+  //       stopAudioPreview();
+  //     }
+  //   }, 10000)
+  // }
+  const handleSongPreview = async (song, canPreview) => {
+    // Check if preview is allowed
+    if (!canPreview) {
+      return;
+    }
+    
+    handleClickSound();
+    
+    // If this song is already playing, stop it
+    if (currentlyPlayingSongId === song.id) {
+      stopAudioPreview();
+      return;
+    }
+    
+    // Stop any currently playing audio
+    if (audioRef) {
+      stopAudioPreview();
+    }
+    
+    try {
+      // Start playing the new song
+      const audio = new Audio(song.mp3_file);
+      
+      // Set up audio event listeners before setting state
+      const handleTimeUpdate = () => {
+        const progress = (audio.currentTime / 10) * 100; // 10 seconds = 100%
+        setAudioProgress(progress);
+      };
+      
+      const handleEnded = () => {
+        stopAudioPreview();
+      };
+      
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('ended', handleEnded);
+      
+      // Set state after listeners are attached
+      setAudioRef(audio);
+      setCurrentlyPlayingSongId(song.id);
+      setAudioProgress(0);
+      
+      // Play the audio and handle the promise properly
+      await audio.play();
+      
+      // Set timeout to stop after 10 seconds, only if audio is still playing
+      const timeoutId = setTimeout(() => {
+        if (audio && !audio.paused && !audio.ended) {
+          stopAudioPreview();
+        }
+      }, 10000); // 10 seconds
+      
+      // Store timeout ID for cleanup if needed
+      audio.timeoutId = timeoutId;
+      
+    } catch (error) {
+      // Handle play errors gracefully
+      console.warn('Audio playback failed:', error);
+      stopAudioPreview();
+    }
+  };
+
+  const stopAudioPreview = () => {
+    if (audioRef) {
+      // Clear timeout if it exists
+      if (audioRef.timeoutId) {
+        clearTimeout(audioRef.timeoutId);
+      }
+      
+      // Only pause if audio is not already paused/ended
+      if (!audioRef.paused && !audioRef.ended) {
+        audioRef.pause();
+      }
+      
+      audioRef.currentTime = 0;
+      
+      // Remove event listeners
+      audioRef.removeEventListener('timeupdate', () => {});
+      audioRef.removeEventListener('ended', () => {});
+    }
+    
+    setCurrentlyPlayingSongId(null);
+    setAudioProgress(0);
+    setAudioRef(null);
+  };
+
   const pageContent = (
     <div className="cmd-page">
       <Header />
@@ -410,17 +549,62 @@ const Library = () => {
             );
             const inQueue = isSongInQueue(instance);
             const showUnlocked = song.isUnlocked || inQueue;
+            console.log("song instance for", song.song_name, instance);
+
             return (
               <div key={index} className="w-full max-w-xl ">
                 <div className="p-4 flex flex-row justify-center items-center">
-                  <div className="flex-shrink-0">
-                    <Image
+                 
+                  <div className="flex-shrink-0 relative md:w-[150px] sm:w- [120px] lg:w-[180px] xl:w-[200px] ">
+                   <Image
                       src={song.thumbnail_file}
                       alt="Song Cover"
                       width={1}
                       height={1}
-                      className="rounded-md md:w-[150px] sm:w-[120px] lg:w-[180px] xl:w-[200px] object-cover"
+                      className="object-cover rounded-lg w-full h-auto"
                     />
+                    <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
+                    {(() => {const canPreview = !showUnlocked && unlockable;
+  return (
+    <button
+    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+    onClick={() => {
+      const canPreview = !showUnlocked && unlockable;
+      if (canPreview) {
+        handleSongPreview(song, canPreview);
+      }
+    }}
+    disabled={showUnlocked || !unlockable}
+    style={{ opacity: (showUnlocked || !unlockable) ? 0.5 : 1 }}
+  >
+    {/* Conditional icon - Play or Stop */}
+    {currentlyPlayingSongId === song.id ? (
+      // Stop icon when playing
+      <svg 
+        className="sm:w-10 sm:h-10 w-12 h-12" 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 24 24"
+        fill="#ff6b03"
+      >
+        <rect x="6" y="6" width="12" height="12" rx="1"/>
+      </svg>
+    ) : (
+      // Play icon when not playing
+      <svg 
+        className="sm:w-10 sm:h-10 w-12 h-12" 
+        xmlns="http://www.w3.org/2000/svg" 
+        version="1.1" 
+        viewBox="-5.0 -10.0 110.0 135.0"
+        fill="white"
+      >
+        <path d="m9.332 83.223v-66.438c0-2.25 0.56641-4.3555 1.6328-6.1875 1.0625-1.832 2.6094-3.3711 4.5625-4.4922 1.9492-1.1172 4.0547-1.6719 6.1758-1.6602 2.1133 0.007813 4.2188 0.58594 6.1641 1.7266l56.699 33.219c1.9336 1.1328 3.457 2.668 4.4922 4.4805 1.043 1.8203 1.5977 3.9062 1.5977 6.1367 0 2.2305-0.55469 4.3203-1.5977 6.1367-1.0391 1.8125-2.5586 3.3438-4.4922 4.4805l-56.699 33.219c-1.9453 1.1406-4.0508 1.7148-6.1641 1.7266-2.1211 0.011719-4.2305-0.54297-6.1758-1.6602-1.957-1.1211-3.5-2.6602-4.5625-4.4922-1.0625-1.8359-1.6328-3.9414-1.6328-6.1875z" fill-rule="evenodd"/>
+        <text x="0.0" y="117.5" font-size="5.0" font-weight="bold" font-family="Arbeit Regular, Helvetica, Arial-Unicode, Arial, Sans-serif" fill="#000000">Created by SUBAIDA</text><text x="0.0" y="122.5" font-size="5.0" font-weight="bold" font-family="Arbeit Regular, Helvetica, Arial-Unicode, Arial, Sans-serif" fill="#000000">from Noun Project</text>
+      </svg>
+    )}
+  </button>
+  );
+})()}
+                    
                   </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
