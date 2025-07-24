@@ -104,6 +104,13 @@
                 "key": "EventComponent"
             },
             {
+                "url": [
+                    "assets/sounds/ui/ftue_button.mp3"
+                ],
+                "type": "audio",
+                "key": "ftue_button"
+            },
+            {
                 "url": "assets/sprites/summaryscene/ftue_game_summary.jpg",
                 "type": "image",
                 "key": "FTUE_Game summary"
@@ -132,6 +139,11 @@
                 "url": "assets/sprites/playscene/great.png",
                 "type": "image",
                 "key": "great"
+            },
+            {
+                "url": "assets/sprites/playscene/hand_icon.png",
+                "type": "image",
+                "key": "hand_icon"
             },
             {
                 "url": "assets/sprites/playscene/Hold.png",
@@ -167,6 +179,11 @@
                 "url": "assets/sprites/summaryscene/no_stars.png",
                 "type": "image",
                 "key": "No of stars"
+            },
+            {
+                "url": "assets/sprites/playscene/panel_info.png",
+                "type": "image",
+                "key": "panel_info"
             },
             {
                 "url": "assets/sprites/playscene/particle_1.png",
@@ -402,6 +419,11 @@
                 "url": "assets/sprites/playscene/Vignette.png",
                 "type": "image",
                 "key": "Vignette"
+            },
+            {
+                "url": "assets/sprites/playscene/zone_highlight.png",
+                "type": "image",
+                "key": "zone_highlight"
             }
         ]
     },
