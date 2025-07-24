@@ -187,8 +187,11 @@ const PhaserGame = () => {
           gameRef.current.registry.set("analytics", AnalyticsService);
           gameRef.current.registry.set("logAnalytics", logAnalytics);
 
+          let version = "0.2.8";
           // Generate and set session ID
-          const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          const sessionId = `session_${version}_${Date.now()}_${Math.random()
+            .toString(36)
+            .substr(2, 9)}`;
           gameRef.current.registry.set("sessionId", sessionId);
           sessionStorage.setItem("sessionId", sessionId);
 

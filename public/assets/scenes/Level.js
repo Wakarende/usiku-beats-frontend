@@ -3,386 +3,439 @@
 /* START OF COMPILED CODE */
 
 class Level extends Phaser.Scene {
+  constructor() {
+    super("Level");
 
-	constructor() {
-		super("Level");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // bG_1
+    const bG_1 = this.add.image(180, 320, "BG_1");
+    bG_1.scaleX = 0.3333;
+    bG_1.scaleY = 0.3333;
+    bG_1.alpha = 0.45;
+    bG_1.alphaTopLeft = 0.45;
+    bG_1.alphaTopRight = 0.45;
+    bG_1.alphaBottomLeft = 0.45;
+    bG_1.alphaBottomRight = 0.45;
 
-		// bG_1
-		const bG_1 = this.add.image(180, 320, "BG_1");
-		bG_1.scaleX = 0.3333;
-		bG_1.scaleY = 0.3333;
-		bG_1.alpha = 0.45;
-		bG_1.alphaTopLeft = 0.45;
-		bG_1.alphaTopRight = 0.45;
-		bG_1.alphaBottomLeft = 0.45;
-		bG_1.alphaBottomRight = 0.45;
+    // vignette
+    const vignette = this.add.image(180, 320, "Vignette");
+    vignette.scaleX = 0.3333;
+    vignette.scaleY = 0.3333;
 
-		// vignette
-		const vignette = this.add.image(180, 320, "Vignette");
-		vignette.scaleX = 0.3333;
-		vignette.scaleY = 0.3333;
+    // pattern
+    const pattern = this.add.image(180, 320, "Pattern");
+    pattern.scaleX = 0.3333;
+    pattern.scaleY = 0.3333;
 
-		// pattern
-		const pattern = this.add.image(180, 320, "Pattern");
-		pattern.scaleX = 0.3333;
-		pattern.scaleY = 0.3333;
+    // artist_text
+    const artist_text = this.add.text(180, 44, "", {});
+    artist_text.setOrigin(0.5, 0.5);
+    artist_text.text = "artist";
+    artist_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "14px" });
 
-		// artist_text
-		const artist_text = this.add.text(180, 44, "", {});
-		artist_text.setOrigin(0.5, 0.5);
-		artist_text.text = "artist";
-		artist_text.setStyle({ "fontFamily": "Carlito-Bold", "fontSize": "14px" });
+    // song_name_text
+    const song_name_text = this.add.text(180, 29, "", {});
+    song_name_text.setOrigin(0.5, 0.5);
+    song_name_text.text = "song";
+    song_name_text.setStyle({
+      align: "center",
+      color: "#1ba6b1",
+      fontFamily: "Carlito-Bold",
+      fontSize: "15px",
+      stroke: "#1ba6b1",
+    });
 
-		// song_name_text
-		const song_name_text = this.add.text(180, 29, "", {});
-		song_name_text.setOrigin(0.5, 0.5);
-		song_name_text.text = "song";
-		song_name_text.setStyle({ "align": "center", "color": "#1ba6b1", "fontFamily": "Carlito-Bold", "fontSize": "15px", "stroke": "#1ba6b1" });
+    // score_text
+    const score_text = this.add.text(180, 80, "", {});
+    score_text.setOrigin(0.5, 0.5);
+    score_text.text = "000";
+    score_text.setStyle({
+      color: "#fcb320",
+      fontFamily: "Afolkalips",
+      fontSize: "65px",
+      stroke: "#fcb320",
+    });
 
-		// score_text
-		const score_text = this.add.text(180, 80, "", {});
-		score_text.setOrigin(0.5, 0.5);
-		score_text.text = "000";
-		score_text.setStyle({ "color": "#fcb320", "fontFamily": "Afolkalips", "fontSize": "65px", "stroke": "#fcb320" });
+    // pause_btn
+    const pause_btn = this.add.image(30, 30, "Pause 2");
+    pause_btn.scaleX = 0.4;
+    pause_btn.scaleY = 0.4;
 
-		// pause_btn
-		const pause_btn = this.add.image(30, 30, "Pause 2");
-		pause_btn.scaleX = 0.4;
-		pause_btn.scaleY = 0.4;
+    // multiplier_text
+    const multiplier_text = this.add.text(180, 132.91874449363797, "", {});
+    multiplier_text.setOrigin(0.5, 0.5);
+    multiplier_text.text = "x 1";
+    multiplier_text.setStyle({ align: "center", fontFamily: "Afolkalips", fontSize: "25px" });
 
-		// multiplier_text
-		const multiplier_text = this.add.text(180, 132.91874449363797, "", {});
-		multiplier_text.setOrigin(0.5, 0.5);
-		multiplier_text.text = "x 1";
-		multiplier_text.setStyle({ "align": "center", "fontFamily": "Afolkalips", "fontSize": "25px" });
+    // tap_zone_area
+    const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
+    tap_zone_area.visible = false;
 
-		// tap_zone_area
-		const tap_zone_area = this.add.image(181, 525, "tap_zone_area");
-		tap_zone_area.visible = false;
+    // divider_1
+    const divider_1 = this.add.image(121.5, 321, "Perfect_Zone_Divider 2");
+    divider_1.scaleX = 0.3;
+    divider_1.scaleY = 0.42;
 
-		// divider_1
-		const divider_1 = this.add.image(121.5, 321, "Perfect_Zone_Divider 2");
-		divider_1.scaleX = 0.3;
-		divider_1.scaleY = 0.42;
+    // divider_2
+    const divider_2 = this.add.image(238, 320, "Perfect_Zone_Divider 2");
+    divider_2.scaleX = 0.3;
+    divider_2.scaleY = 0.42;
 
-		// divider_2
-		const divider_2 = this.add.image(238, 320, "Perfect_Zone_Divider 2");
-		divider_2.scaleX = 0.3;
-		divider_2.scaleY = 0.42;
+    // feedback_text
+    const feedback_text = this.add.image(180, 303, "perfect");
+    feedback_text.scaleX = 0.7;
+    feedback_text.scaleY = 0.7;
+    feedback_text.visible = false;
 
-		// feedback_text
-		const feedback_text = this.add.image(180, 303, "perfect");
-		feedback_text.scaleX = 0.7;
-		feedback_text.scaleY = 0.7;
-		feedback_text.visible = false;
+    // bar
+    const bar = this.add.image(180, 114, "Bar");
+    bar.scaleX = 0.3333;
+    bar.scaleY = 0.3333;
+    bar.visible = false;
 
-		// bar
-		const bar = this.add.image(180, 114, "Bar");
-		bar.scaleX = 0.3333;
-		bar.scaleY = 0.3333;
-		bar.visible = false;
+    // streak_popup
+    const streak_popup = this.add.container(0, 0);
+    streak_popup.visible = false;
 
-		// streak_popup
-		const streak_popup = this.add.container(0, 0);
-		streak_popup.visible = false;
+    // streak_overlay
+    const streak_overlay = this.add.image(180, 352, "streak_blur");
+    streak_overlay.scaleX = 0.3333;
+    streak_overlay.scaleY = 0.3333;
+    streak_popup.add(streak_overlay);
 
-		// streak_overlay
-		const streak_overlay = this.add.image(180, 352, "streak_blur");
-		streak_overlay.scaleX = 0.3333;
-		streak_overlay.scaleY = 0.3333;
-		streak_popup.add(streak_overlay);
+    // streak_text
+    const streak_text = this.add.text(180, 351, "", {});
+    streak_text.setOrigin(0.5, 0.5);
+    streak_text.text = "10 STREAK";
+    streak_text.setStyle({
+      align: "center",
+      color: "#fcb320",
+      fontFamily: "Afolkalips",
+      fontSize: "32px",
+    });
+    streak_popup.add(streak_text);
 
-		// streak_text
-		const streak_text = this.add.text(180, 351, "", {});
-		streak_text.setOrigin(0.5, 0.5);
-		streak_text.text = "10 STREAK";
-		streak_text.setStyle({ "align": "center", "color": "#fcb320", "fontFamily": "Afolkalips", "fontSize": "32px" });
-		streak_popup.add(streak_text);
+    // ftue_pause_layer
+    const ftue_pause_layer = this.add.layer();
+    ftue_pause_layer.visible = false;
 
-		// ftue_pause_layer
-		const ftue_pause_layer = this.add.layer();
-		ftue_pause_layer.visible = false;
+    // ftue_pause_bg
+    const ftue_pause_bg = this.add.image(180, 320, "BG_1");
+    ftue_pause_bg.scaleX = 0.3333;
+    ftue_pause_bg.scaleY = 0.3333;
+    ftue_pause_layer.add(ftue_pause_bg);
 
-		// ftue_pause_bg
-		const ftue_pause_bg = this.add.image(180, 320, "BG_1");
-		ftue_pause_bg.scaleX = 0.3333;
-		ftue_pause_bg.scaleY = 0.3333;
-		ftue_pause_layer.add(ftue_pause_bg);
+    // tapzone_highlight
+    const tapzone_highlight = this.add.image(180, 525, "zone_highlight");
+    tapzone_highlight.scaleX = 0.3333;
+    tapzone_highlight.scaleY = 0.3333;
+    ftue_pause_layer.add(tapzone_highlight);
 
-		// tapzone_highlight
-		const tapzone_highlight = this.add.image(180, 525, "zone_highlight");
-		tapzone_highlight.scaleX = 0.3333;
-		tapzone_highlight.scaleY = 0.3333;
-		ftue_pause_layer.add(tapzone_highlight);
+    // info_panel
+    const info_panel = this.add.image(180, 288, "panel_info");
+    info_panel.scaleX = 0.3333;
+    info_panel.scaleY = 0.3333;
+    ftue_pause_layer.add(info_panel);
 
-		// info_panel
-		const info_panel = this.add.image(180, 288, "panel_info");
-		info_panel.scaleX = 0.3333;
-		info_panel.scaleY = 0.3333;
-		ftue_pause_layer.add(info_panel);
+    // info_text
+    const info_text = this.add.text(182, 285, "", {});
+    info_text.setOrigin(0.5, 0.5);
+    info_text.text =
+      "TAP the beats when they get\nhere, before they fall off the\n screen.\n\nTry it now!";
+    info_text.setStyle({
+      align: "center",
+      color: "#fcb320",
+      fontFamily: "Carlito-Regular",
+      fontSize: "22px",
+      stroke: "#fcb320",
+    });
+    info_text.setWordWrapWidth(300);
+    ftue_pause_layer.add(info_text);
 
-		// info_text
-		const info_text = this.add.text(182, 285, "", {});
-		info_text.setOrigin(0.5, 0.5);
-		info_text.text = "TAP the beats when they get\nhere, before they fall off the\n screen.\n\nTry it now!";
-		info_text.setStyle({ "align": "center", "color": "#fcb320", "fontFamily": "Carlito-Regular", "fontSize": "22px", "stroke": "#fcb320" });
-		info_text.setWordWrapWidth(300);
-		ftue_pause_layer.add(info_text);
+    // perfect_1
+    const perfect_1 = this.add.image(60, 525, "Perfect_1");
+    perfect_1.alpha = 0.5;
+    perfect_1.alphaTopLeft = 0.5;
+    perfect_1.alphaTopRight = 0.5;
+    perfect_1.alphaBottomLeft = 0.5;
+    perfect_1.alphaBottomRight = 0.5;
 
-		// perfect_1
-		const perfect_1 = this.add.image(60, 525, "Perfect_1");
-		perfect_1.alpha = 0.5;
-		perfect_1.alphaTopLeft = 0.5;
-		perfect_1.alphaTopRight = 0.5;
-		perfect_1.alphaBottomLeft = 0.5;
-		perfect_1.alphaBottomRight = 0.5;
+    // perfect_2
+    const perfect_2 = this.add.image(180, 525, "Perfect_2");
+    perfect_2.alpha = 0.5;
+    perfect_2.alphaTopLeft = 0.5;
+    perfect_2.alphaTopRight = 0.5;
+    perfect_2.alphaBottomLeft = 0.5;
+    perfect_2.alphaBottomRight = 0.5;
 
-		// perfect_2
-		const perfect_2 = this.add.image(180, 525, "Perfect_2");
-		perfect_2.alpha = 0.5;
-		perfect_2.alphaTopLeft = 0.5;
-		perfect_2.alphaTopRight = 0.5;
-		perfect_2.alphaBottomLeft = 0.5;
-		perfect_2.alphaBottomRight = 0.5;
+    // perfect_3
+    const perfect_3 = this.add.image(300, 525, "Perfect_3");
+    perfect_3.alpha = 0.5;
+    perfect_3.alphaTopLeft = 0.5;
+    perfect_3.alphaTopRight = 0.5;
+    perfect_3.alphaBottomLeft = 0.5;
+    perfect_3.alphaBottomRight = 0.5;
 
-		// perfect_3
-		const perfect_3 = this.add.image(300, 525, "Perfect_3");
-		perfect_3.alpha = 0.5;
-		perfect_3.alphaTopLeft = 0.5;
-		perfect_3.alphaTopRight = 0.5;
-		perfect_3.alphaBottomLeft = 0.5;
-		perfect_3.alphaBottomRight = 0.5;
+    // colour_highlight
+    const colour_highlight = this.add.image(61, 525, "Colour highlight");
+    colour_highlight.scaleX = 0.1;
+    colour_highlight.scaleY = 0.09;
 
-		// colour_highlight
-		const colour_highlight = this.add.image(61, 525, "Colour highlight");
-		colour_highlight.scaleX = 0.1;
-		colour_highlight.scaleY = 0.09;
+    // colour_highlight_1
+    const colour_highlight_1 = this.add.image(181, 525, "Colour highlight");
+    colour_highlight_1.scaleX = 0.1;
+    colour_highlight_1.scaleY = 0.09;
+    colour_highlight_1.flipX = true;
 
-		// colour_highlight_1
-		const colour_highlight_1 = this.add.image(181, 525, "Colour highlight");
-		colour_highlight_1.scaleX = 0.1;
-		colour_highlight_1.scaleY = 0.09;
-		colour_highlight_1.flipX = true;
+    // colour_highlight_2
+    const colour_highlight_2 = this.add.image(301, 525, "Colour highlight");
+    colour_highlight_2.scaleX = 0.1;
+    colour_highlight_2.scaleY = 0.09;
+    colour_highlight_2.flipY = true;
 
-		// colour_highlight_2
-		const colour_highlight_2 = this.add.image(301, 525, "Colour highlight");
-		colour_highlight_2.scaleX = 0.1;
-		colour_highlight_2.scaleY = 0.09;
-		colour_highlight_2.flipY = true;
+    // song_complete_overlay
+    const song_complete_overlay = this.add.layer();
+    song_complete_overlay.visible = false;
 
-		// song_complete_overlay
-		const song_complete_overlay = this.add.layer();
-		song_complete_overlay.visible = false;
+    // bG
+    const bG = this.add.image(180, 320, "BG_1");
+    bG.scaleX = 0.3333;
+    bG.scaleY = 0.3333;
+    song_complete_overlay.add(bG);
 
-		// bG
-		const bG = this.add.image(180, 320, "BG_1");
-		bG.scaleX = 0.3333;
-		bG.scaleY = 0.3333;
-		song_complete_overlay.add(bG);
+    // bottom_banner
+    const bottom_banner = this.add.image(180, 526.678, "sc_banner");
+    bottom_banner.scaleX = 0.3333;
+    bottom_banner.scaleY = 0.3333;
+    song_complete_overlay.add(bottom_banner);
 
-		// bottom_banner
-		const bottom_banner = this.add.image(180, 526.678, "sc_banner");
-		bottom_banner.scaleX = 0.3333;
-		bottom_banner.scaleY = 0.3333;
-		song_complete_overlay.add(bottom_banner);
+    // artist_name
+    const artist_name = this.add.text(180, 19, "", {});
+    artist_name.setOrigin(0.5, 0.5);
+    artist_name.text = "artist_name";
+    artist_name.setStyle({ color: "#faf05e", fontFamily: "Carlito-Regular", stroke: "#faf05e" });
+    song_complete_overlay.add(artist_name);
 
-		// artist_name
-		const artist_name = this.add.text(180, 19, "", {});
-		artist_name.setOrigin(0.5, 0.5);
-		artist_name.text = "artist_name";
-		artist_name.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "stroke": "#faf05e" });
-		song_complete_overlay.add(artist_name);
+    // song_name
+    const song_name = this.add.text(180, 42, "", {});
+    song_name.setOrigin(0.5, 0.5);
+    song_name.text = "song_name";
+    song_name.setStyle({
+      color: "#ff6a00",
+      fontFamily: "Afolkalips",
+      fontSize: "30px",
+      stroke: "#ff6a00",
+    });
+    song_complete_overlay.add(song_name);
 
-		// song_name
-		const song_name = this.add.text(180, 42, "", {});
-		song_name.setOrigin(0.5, 0.5);
-		song_name.text = "song_name";
-		song_name.setStyle({ "color": "#ff6a00", "fontFamily": "Afolkalips", "fontSize": "30px", "stroke": "#ff6a00" });
-		song_complete_overlay.add(song_name);
+    // difficulty_text
+    const difficulty_text = this.add.text(180, 72.88130950927734, "", {});
+    difficulty_text.setOrigin(0.5, 0.5);
+    difficulty_text.text = "MEDIUM DIFFICULTY";
+    difficulty_text.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "12px",
+      stroke: "#faf05e",
+    });
+    song_complete_overlay.add(difficulty_text);
 
-		// difficulty_text
-		const difficulty_text = this.add.text(180, 72.88130950927734, "", {});
-		difficulty_text.setOrigin(0.5, 0.5);
-		difficulty_text.text = "MEDIUM DIFFICULTY";
-		difficulty_text.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "12px", "stroke": "#faf05e" });
-		song_complete_overlay.add(difficulty_text);
+    // round_frame
+    const round_frame = this.add.image(180, 202, "Round Frame");
+    round_frame.scaleX = 0.3333;
+    round_frame.scaleY = 0.3333;
+    song_complete_overlay.add(round_frame);
 
-		// round_frame
-		const round_frame = this.add.image(180, 202, "Round Frame");
-		round_frame.scaleX = 0.3333;
-		round_frame.scaleY = 0.3333;
-		song_complete_overlay.add(round_frame);
+    // carousel
+    const carousel = this.add.image(180, 202, "carousel_2");
+    carousel.scaleX = 0.6;
+    carousel.scaleY = 0.6;
+    song_complete_overlay.add(carousel);
 
-		// carousel
-		const carousel = this.add.image(180, 202, "carousel_2");
-		carousel.scaleX = 0.6;
-		carousel.scaleY = 0.6;
-		song_complete_overlay.add(carousel);
+    // song_complete_txt
+    const song_complete_txt = this.add.text(180, 348, "", {});
+    song_complete_txt.setOrigin(0.5, 0.5);
+    song_complete_txt.text = "Song Complete";
+    song_complete_txt.setStyle({
+      color: "#faf05e",
+      fontFamily: "Afolkalips",
+      fontSize: "60px",
+      stroke: "#faf05e",
+    });
+    song_complete_overlay.add(song_complete_txt);
 
-		// song_complete_txt
-		const song_complete_txt = this.add.text(180, 348, "", {});
-		song_complete_txt.setOrigin(0.5, 0.5);
-		song_complete_txt.text = "Song Complete";
-		song_complete_txt.setStyle({ "color": "#faf05e", "fontFamily": "Afolkalips", "fontSize": "60px", "stroke": "#faf05e" });
-		song_complete_overlay.add(song_complete_txt);
+    // youve_earned_txt
+    const youve_earned_txt = this.add.text(142, 392, "", {});
+    youve_earned_txt.setOrigin(0.5, 0.5);
+    youve_earned_txt.text = "You've earned:";
+    youve_earned_txt.setStyle({
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+    });
+    song_complete_overlay.add(youve_earned_txt);
 
-		// youve_earned_txt
-		const youve_earned_txt = this.add.text(142, 392, "", {});
-		youve_earned_txt.setOrigin(0.5, 0.5);
-		youve_earned_txt.text = "You've earned:";
-		youve_earned_txt.setStyle({ "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "20px" });
-		song_complete_overlay.add(youve_earned_txt);
+    // disc
+    const disc = this.add.image(180, 551, "Disc");
+    disc.scaleX = 0.4;
+    disc.scaleY = 0.4;
+    song_complete_overlay.add(disc);
 
-		// disc
-		const disc = this.add.image(180, 551, "Disc");
-		disc.scaleX = 0.4;
-		disc.scaleY = 0.4;
-		song_complete_overlay.add(disc);
+    // earn_text
+    const earn_text = this.add.text(180, 616, "", {});
+    earn_text.setOrigin(0.5, 0.5);
+    earn_text.text = "Each new song costs 30 discs";
+    earn_text.setStyle({
+      align: "center",
+      color: "#faf05e",
+      fontFamily: "Carlito-Regular",
+      fontSize: "20px",
+      stroke: "#faf05e",
+    });
+    earn_text.setWordWrapWidth(250);
+    song_complete_overlay.add(earn_text);
 
-		// earn_text
-		const earn_text = this.add.text(180, 616, "", {});
-		earn_text.setOrigin(0.5, 0.5);
-		earn_text.text = "Each new song costs 30 discs";
-		earn_text.setStyle({ "align": "center", "color": "#faf05e", "fontFamily": "Carlito-Regular", "fontSize": "20px", "stroke": "#faf05e" });
-		earn_text.setWordWrapWidth(250);
-		song_complete_overlay.add(earn_text);
+    // youve_earned_txt_1
+    const youve_earned_txt_1 = this.add.text(240, 392, "", {});
+    youve_earned_txt_1.setOrigin(0.5, 0.5);
+    youve_earned_txt_1.text = "45 discs";
+    youve_earned_txt_1.setStyle({ fontFamily: "Carlito-Regular", fontSize: "20px" });
+    song_complete_overlay.add(youve_earned_txt_1);
 
-		// youve_earned_txt_1
-		const youve_earned_txt_1 = this.add.text(240, 392, "", {});
-		youve_earned_txt_1.setOrigin(0.5, 0.5);
-		youve_earned_txt_1.text = "45 discs";
-		youve_earned_txt_1.setStyle({ "fontFamily": "Carlito-Regular", "fontSize": "20px" });
-		song_complete_overlay.add(youve_earned_txt_1);
+    // youve_earned_txt_2
+    const youve_earned_txt_2 = this.add.text(180, 456.1981865735109, "", {});
+    youve_earned_txt_2.setOrigin(0.5, 0.5);
+    youve_earned_txt_2.text = "YOU NOW HAVE";
+    youve_earned_txt_2.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    song_complete_overlay.add(youve_earned_txt_2);
 
-		// youve_earned_txt_2
-		const youve_earned_txt_2 = this.add.text(180, 456.1981865735109, "", {});
-		youve_earned_txt_2.setOrigin(0.5, 0.5);
-		youve_earned_txt_2.text = "YOU NOW HAVE";
-		youve_earned_txt_2.setStyle({ "align": "center", "fontFamily": "Carlito-Bold", "fontSize": "20px" });
-		song_complete_overlay.add(youve_earned_txt_2);
+    // disc_count_txt
+    const disc_count_txt = this.add.text(150, 484, "", {});
+    disc_count_txt.setOrigin(0.5, 0.5);
+    disc_count_txt.text = "30";
+    disc_count_txt.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    song_complete_overlay.add(disc_count_txt);
 
-		// disc_count_txt
-		const disc_count_txt = this.add.text(150, 484, "", {});
-		disc_count_txt.setOrigin(0.5, 0.5);
-		disc_count_txt.text = "30";
-		disc_count_txt.setStyle({ "align": "center", "fontFamily": "Carlito-Bold", "fontSize": "20px" });
-		song_complete_overlay.add(disc_count_txt);
+    // disc_count_txt_1
+    const disc_count_txt_1 = this.add.text(193, 484, "", {});
+    disc_count_txt_1.setOrigin(0.5, 0.5);
+    disc_count_txt_1.text = "DISCS";
+    disc_count_txt_1.setStyle({ align: "center", fontFamily: "Carlito-Bold", fontSize: "20px" });
+    song_complete_overlay.add(disc_count_txt_1);
 
-		// disc_count_txt_1
-		const disc_count_txt_1 = this.add.text(193, 484, "", {});
-		disc_count_txt_1.setOrigin(0.5, 0.5);
-		disc_count_txt_1.text = "DISCS";
-		disc_count_txt_1.setStyle({ "align": "center", "fontFamily": "Carlito-Bold", "fontSize": "20px" });
-		song_complete_overlay.add(disc_count_txt_1);
+    // hand_icon
+    const hand_icon = this.add.image(85, 568, "hand_icon");
+    hand_icon.scaleX = 0.3333;
+    hand_icon.scaleY = 0.3333;
+    hand_icon.visible = false;
 
-		// hand_icon
-		const hand_icon = this.add.image(85, 568, "hand_icon");
-		hand_icon.scaleX = 0.3333;
-		hand_icon.scaleY = 0.3333;
-		hand_icon.visible = false;
+    // lists
+    const ui_layer = [multiplier_text, score_text, song_name_text, artist_text, bar];
+    const perfect_zone = [
+      perfect_1,
+      colour_highlight_2,
+      colour_highlight_1,
+      colour_highlight,
+      perfect_3,
+      perfect_2,
+    ];
 
-		// lists
-		const ui_layer = [multiplier_text, score_text, song_name_text, artist_text, bar];
-		const perfect_zone = [perfect_1, colour_highlight_2, colour_highlight_1, colour_highlight, perfect_3, perfect_2];
+    this.vignette = vignette;
+    this.pattern = pattern;
+    this.artist_text = artist_text;
+    this.song_name_text = song_name_text;
+    this.score_text = score_text;
+    this.pause_btn = pause_btn;
+    this.multiplier_text = multiplier_text;
+    this.tap_zone_area = tap_zone_area;
+    this.divider_1 = divider_1;
+    this.divider_2 = divider_2;
+    this.feedback_text = feedback_text;
+    this.bar = bar;
+    this.streak_popup = streak_popup;
+    this.streak_overlay = streak_overlay;
+    this.streak_text = streak_text;
+    this.ftue_pause_layer = ftue_pause_layer;
+    this.ftue_pause_bg = ftue_pause_bg;
+    this.info_text = info_text;
+    this.song_complete_overlay = song_complete_overlay;
+    this.artist_name = artist_name;
+    this.song_name = song_name;
+    this.difficulty_text = difficulty_text;
+    this.carousel = carousel;
+    this.earn_text = earn_text;
+    this.disc_count_txt = disc_count_txt;
+    this.hand_icon = hand_icon;
+    this.ui_layer = ui_layer;
+    this.perfect_zone = perfect_zone;
 
-		this.vignette = vignette;
-		this.pattern = pattern;
-		this.artist_text = artist_text;
-		this.song_name_text = song_name_text;
-		this.score_text = score_text;
-		this.pause_btn = pause_btn;
-		this.multiplier_text = multiplier_text;
-		this.tap_zone_area = tap_zone_area;
-		this.divider_1 = divider_1;
-		this.divider_2 = divider_2;
-		this.feedback_text = feedback_text;
-		this.bar = bar;
-		this.streak_popup = streak_popup;
-		this.streak_overlay = streak_overlay;
-		this.streak_text = streak_text;
-		this.ftue_pause_layer = ftue_pause_layer;
-		this.ftue_pause_bg = ftue_pause_bg;
-		this.info_text = info_text;
-		this.song_complete_overlay = song_complete_overlay;
-		this.artist_name = artist_name;
-		this.song_name = song_name;
-		this.difficulty_text = difficulty_text;
-		this.carousel = carousel;
-		this.earn_text = earn_text;
-		this.disc_count_txt = disc_count_txt;
-		this.hand_icon = hand_icon;
-		this.ui_layer = ui_layer;
-		this.perfect_zone = perfect_zone;
+    this.events.emit("scene-awake");
+  }
 
-		this.events.emit("scene-awake");
-	}
+  /** @type {Phaser.GameObjects.Image} */
+  vignette;
+  /** @type {Phaser.GameObjects.Image} */
+  pattern;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_text;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name_text;
+  /** @type {Phaser.GameObjects.Text} */
+  score_text;
+  /** @type {Phaser.GameObjects.Image} */
+  pause_btn;
+  /** @type {Phaser.GameObjects.Text} */
+  multiplier_text;
+  /** @type {Phaser.GameObjects.Image} */
+  tap_zone_area;
+  /** @type {Phaser.GameObjects.Image} */
+  divider_1;
+  /** @type {Phaser.GameObjects.Image} */
+  divider_2;
+  /** @type {Phaser.GameObjects.Image} */
+  feedback_text;
+  /** @type {Phaser.GameObjects.Image} */
+  bar;
+  /** @type {Phaser.GameObjects.Container} */
+  streak_popup;
+  /** @type {Phaser.GameObjects.Image} */
+  streak_overlay;
+  /** @type {Phaser.GameObjects.Text} */
+  streak_text;
+  /** @type {Phaser.GameObjects.Layer} */
+  ftue_pause_layer;
+  /** @type {Phaser.GameObjects.Image} */
+  ftue_pause_bg;
+  /** @type {Phaser.GameObjects.Text} */
+  info_text;
+  /** @type {Phaser.GameObjects.Layer} */
+  song_complete_overlay;
+  /** @type {Phaser.GameObjects.Text} */
+  artist_name;
+  /** @type {Phaser.GameObjects.Text} */
+  song_name;
+  /** @type {Phaser.GameObjects.Text} */
+  difficulty_text;
+  /** @type {Phaser.GameObjects.Image} */
+  carousel;
+  /** @type {Phaser.GameObjects.Text} */
+  earn_text;
+  /** @type {Phaser.GameObjects.Text} */
+  disc_count_txt;
+  /** @type {Phaser.GameObjects.Image} */
+  hand_icon;
+  /** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
+  ui_layer;
+  /** @type {Phaser.GameObjects.Image[]} */
+  perfect_zone;
 
-	/** @type {Phaser.GameObjects.Image} */
-	vignette;
-	/** @type {Phaser.GameObjects.Image} */
-	pattern;
-	/** @type {Phaser.GameObjects.Text} */
-	artist_text;
-	/** @type {Phaser.GameObjects.Text} */
-	song_name_text;
-	/** @type {Phaser.GameObjects.Text} */
-	score_text;
-	/** @type {Phaser.GameObjects.Image} */
-	pause_btn;
-	/** @type {Phaser.GameObjects.Text} */
-	multiplier_text;
-	/** @type {Phaser.GameObjects.Image} */
-	tap_zone_area;
-	/** @type {Phaser.GameObjects.Image} */
-	divider_1;
-	/** @type {Phaser.GameObjects.Image} */
-	divider_2;
-	/** @type {Phaser.GameObjects.Image} */
-	feedback_text;
-	/** @type {Phaser.GameObjects.Image} */
-	bar;
-	/** @type {Phaser.GameObjects.Container} */
-	streak_popup;
-	/** @type {Phaser.GameObjects.Image} */
-	streak_overlay;
-	/** @type {Phaser.GameObjects.Text} */
-	streak_text;
-	/** @type {Phaser.GameObjects.Layer} */
-	ftue_pause_layer;
-	/** @type {Phaser.GameObjects.Image} */
-	ftue_pause_bg;
-	/** @type {Phaser.GameObjects.Text} */
-	info_text;
-	/** @type {Phaser.GameObjects.Layer} */
-	song_complete_overlay;
-	/** @type {Phaser.GameObjects.Text} */
-	artist_name;
-	/** @type {Phaser.GameObjects.Text} */
-	song_name;
-	/** @type {Phaser.GameObjects.Text} */
-	difficulty_text;
-	/** @type {Phaser.GameObjects.Image} */
-	carousel;
-	/** @type {Phaser.GameObjects.Text} */
-	earn_text;
-	/** @type {Phaser.GameObjects.Text} */
-	disc_count_txt;
-	/** @type {Phaser.GameObjects.Image} */
-	hand_icon;
-	/** @type {Array<Phaser.GameObjects.Text|Phaser.GameObjects.Image>} */
-	ui_layer;
-	/** @type {Phaser.GameObjects.Image[]} */
-	perfect_zone;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
 
@@ -1563,7 +1616,7 @@ class Level extends Phaser.Scene {
       }
     });
   }
-  // Modify checkOverlap to track failed tile type
+
   checkOverlap(tile) {
     let tileReachedTarget = false;
 
@@ -1587,6 +1640,9 @@ class Level extends Phaser.Scene {
         this.ftuePauseTime = this.time.now;
         this.ftuePausedTile = tile; // Store reference to the paused tile
 
+        // Mark this tile as used for FTUE so it won't trigger beat missed
+        tile.usedForFTUE = true;
+
         // Show FTUE overlay with appropriate animation
         this.showFTUEOverlay(tile);
 
@@ -1594,7 +1650,17 @@ class Level extends Phaser.Scene {
       }
     }
 
+    // Only trigger beat missed if this tile falls off screen AND it's not marked for FTUE
     if (tile.y >= this.screenHeight) {
+      // Check if this tile was used for FTUE pause - if so, don't show beat missed
+      if (this.isFTUE && (tile.usedForFTUE || this.ftuePausedTile === tile)) {
+        // This tile was used for FTUE pause, just clean it up silently
+        tile.overlayTile && tile.overlayTile.destroy();
+        tile.destroy();
+        return;
+      }
+
+      // Normal beat missed logic for all other cases
       const failedTileType = tile.tileType || "tap";
       this.beatMissedDisplay(failedTileType);
       tile.overlayTile && tile.overlayTile.destroy();
