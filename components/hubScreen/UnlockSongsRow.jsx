@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/main/authActions";
 import Popup from "../library/Popup";
@@ -12,9 +13,10 @@ import useUnlockSongsStore from "../../stores/unlockSongsStore";
 import useStorageStore from "../../stores/storageStore";
 import Image from "next/image";
 import { AnalyticsService } from "../../services/analytics.service";
+import MoveTransitionAnimation from "../transition/MoveTransitionAnimation";
 import "../styles.css";
 
-const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
+const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6, yourSongsContainerRef, onSongAdded }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
@@ -55,9 +57,30 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   const handleClickSound = useClickSound();
   const router = useRouter();
 
+  const unlockingCardRefs = useRef([]);
+  // const yourSongsContainerRef = useRef(null);
+  const [moveAnimation, setMoveAnimation] = useState({
+    isActive: false,
+    song: null,
+   
+  });
+
+  const handleAnimationComplete = useCallback(() => {
+  if (moveAnimation.song) {
+    updateSongData(moveAnimation.song);
+  }
+  setMoveAnimation({
+    isActive: false,
+    song: null
+  });
+}, [moveAnimation.song]);
+
+
+const [animatingSlots, setAnimatingSlots] = useState({});
+
   // Track FTUE step and show appropriate panels
   useEffect(() => {
-    // Show "Finish Now" panel for step 4 if not seen yet
+    
     if (currentStep === 4 && !unlockingInfoSeen) {
       setShowUnlockingInfoPanel(true);
     }
@@ -129,58 +152,72 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     setShowUnlockingInfoPanel(false);
   };
 
-  function addToLibrary(song) {
-    // console.log("Add to library clicked for song:", song.id);
-
-    // Update user data
-    const newUserdata = JSON.parse(JSON.stringify(user_data));
-    const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
-    );
-
-    if (songInstance) {
-      songInstance.unlocked = true;
-      songInstance.unlock_time = null;
-      songInstance.unlock_start_time = new Date().toISOString();
-      dispatch(updateUser(newUserdata));
-      // console.log("Song unlocked and added to library:", song.id);
-    } else {
-      // console.error("Song not found in song instances", song.id);
-    }
-
-    resetSongUnlockedState(song.id);
-    resetParticles(song.id);
+  function addToLibrary(song, cardIndex = 0) {
+  const startElementRef = unlockingCardRefs.current[cardIndex];
 
     if (currentStep === 6 && !isCompleted) {
       AnalyticsService.trackFTUEStep("8 - Add to Library");
+      
       setAddToLibrarySeen(true);
-
       completeStep(currentStep);
 
+      // Hide the tutorial overlay immediately
       if (showUnlockOverlayPanel) {
         setShowUnlockOverlayPanel(false);
       }
 
       if (song) {
-        // console.log("Setting currentTrackData for song:", song.id);
         setCurrentTrackData(JSON.stringify(song));
       }
 
-      if (onFtueProgressToStep6) {
-        onFtueProgressToStep6(song);
+       if (onFtueProgressToStep6) {
+      setTimeout(() => {
+      onFtueProgressToStep6(song);
+      }, 3000); // Wait for animation to finish
+    }
+    }
+
+  setAnimatingSlots(prev => ({ ...prev, [cardIndex]: true }));
+  
+  if (startElementRef) {
+    startElementRef.style.transition = 'opacity 0.3s ease-out';
+    startElementRef.style.opacity = '0';
+    startElementRef.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      if (startElementRef) {
+        startElementRef.style.display = 'none';
       }
-
-      return;
-    }
-    // Normal behavior for non-FTUE
-    if (showUnlockOverlayPanel) {
-      setShowUnlockOverlayPanel(false);
-    }
-
-    handleClickSound();
+    }, 300);
   }
+  
+  setMoveAnimation({
+    isActive: true,
+    song: song
+  });
 
-  function handleUnlockNowClick(song) {
+}
+
+function updateSongData(song) {
+  unstable_batchedUpdates(() => {
+    
+    const newUserdata = JSON.parse(JSON.stringify(user_data));
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+    
+    if (songInstance) {
+      songInstance.unlocked = true;
+      songInstance.unlock_time = null;
+      songInstance.unlock_start_time = new Date().toISOString();
+      dispatch(updateUser(newUserdata));
+    }
+  });
+}
+
+
+
+function handleUnlockNowClick(song) {
     setShowUnlockingInfoPanel(false);
 
     if (currentStep === 4 && !isCompleted) {
@@ -327,23 +364,19 @@ function TimerBar({ unlockTime, song }) {
     />
   );
 }
-
   const slots = 3;
   const slotsContent = [];
   for (let i = 0; i < slots; i++) {
     const item = lockedSongs[i];
-    if (item) {
-      const frameImage =
-        i % 2 === 0
-          ? "./assets/img/unlock/unlock_frame.png"
-          : "./assets/img/unlock/unlock_frame.png";
+    if (item && !animatingSlots[i]) {
       slotsContent.push(
         <div
           key={`song${item.song.id}`}
+          ref={(el) => unlockingCardRefs.current[i] = el}
           className="relative"
           onClick={() => {
             if (isUnlockTimePassed(item.unlock_time)) {
-              addToLibrary(item.song);
+              addToLibrary(item.song, i);
             } else {
               handleUnlockNowClick(item.song);
             }
@@ -646,6 +679,14 @@ function TimerBar({ unlockTime, song }) {
           transparentBg={false}
         />
       )}
+      <MoveTransitionAnimation
+        song={moveAnimation.song}
+        isActive={moveAnimation.isActive}
+        targetContainerRef={yourSongsContainerRef}
+        isFirstSong={songs?.length === 0}
+        showBackgroundOverlay={currentStep !== 6 || isCompleted}
+        onComplete={handleAnimationComplete}
+      />
     </div>
   );
 };

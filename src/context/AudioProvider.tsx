@@ -119,23 +119,21 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
     }
   };
 
-  // Add these new functions inside your AudioProvider component (around line 70, after fadeOutBgMusic)
-
 const duckBgMusic = (duckVolume = 0.2) => {
   const bgMusic = howlsRef.current.bgMusic;
   if (bgMusic && bgMusic.playing()) {
-    // Store original volume if we haven't already
+   
     if (!bgMusic.originalVolume) {
       bgMusic.originalVolume = bgMusic.volume();
     }
-    bgMusic.volume(duckVolume); // Lower to 20% volume
+    bgMusic.volume(duckVolume); 
   }
 };
 
 const restoreBgMusic = () => {
   const bgMusic = howlsRef.current.bgMusic;
   if (bgMusic) {
-    // Restore original volume (default to 1.0 if not stored)
+  
     const originalVolume = bgMusic.originalVolume || 1.0;
     bgMusic.volume(originalVolume);
   }

@@ -85,6 +85,7 @@ const ArtistImage = ({
   onPlayClick,
   isPulsing,
   isHighlightedForFtue = false,
+  isNewlyAdded = false,
 }) => {
   const { setPlaySongPanelSeen } = useStorageStore();
   const { currentStep, isCompleted, completeFTUE } = useFTUEStore();
@@ -165,7 +166,13 @@ const ArtistImage = ({
 
   const difficultyStyle = getDifficultyPositioning(song.difficulty);
   return (
-    <div className={`${isHighlightedForFtue && !isCompleted ? "ftue-song-highlight-frame" : ""}`}>
+    <div 
+  className={`${isHighlightedForFtue && !isCompleted ? "ftue-song-highlight-frame" : ""}`}
+  // style={{
+  //   opacity: isNewlyAdded ? 0 : 1,
+  //   animation: isNewlyAdded ? 'fadeInSong 0.5s ease-in forwards' : 'none'
+  // }}
+>
       <div
         className={`sm:mb-0.5 relative overflow-hidden flex justify-center items-center mx-1 sm:w-[140px] sm:h-[200px] md:w-[160px] md:h-[256px] lg:w-[180px] lg:h-[266px] xl:w-[160px] xl:h-[266px]    `}
       >

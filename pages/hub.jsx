@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment-timezone";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Header from "../components/header/Header";
 import { instance as axios } from "../services/axios.config";
@@ -97,8 +97,15 @@ const HubScreen = () => {
   } = useStorageStore();
 
   const [isInIframe, setIsInIframe] = useState(false);
+  const yourSongsContainerRef = useRef(null);
+const [newlyAddedSong, setNewlyAddedSong] = useState(null);
 
-  
+  const handleSongAdded = (songId) => {
+  setNewlyAddedSong(songId);
+  setTimeout(() => {
+    setNewlyAddedSong(null);
+  }, 600);
+}
 
 // Detect if running in iframe
 useEffect(() => {
@@ -149,12 +156,16 @@ useEffect(() => {
    
 
     if (currentStep === 7 && !isCompleted) {
+       setTimeout(() => {
       setShowPlaySongPanel(true);
-     
-      if (songs && songs.length > 0) {
+       if (songs && songs.length > 0) {
         const latestSong = songs[0];
         setHighlightedSongId(latestSong.id);
       }
+    }, 3200);
+      // setShowPlaySongPanel(true);
+     
+     
     } else if (isCompleted) {
       setShowPlaySongPanel(false);
       setHighlightedSongId(null);
@@ -255,7 +266,6 @@ useEffect(() => {
       setSongs(sortedSongs || []);
 
       if (typeof window !== "undefined") {
-        // const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
         if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
           console.log("Setting highlighted song in checkAnonUser");
           setHighlightedSongId(sortedSongs[0].id);
@@ -264,13 +274,6 @@ useEffect(() => {
       setLoading(false);
     }
   };
-
-  //debugging
-  useEffect(() => {
-    console.log('🔄 Hub component mounted');
-    return () => console.log('🔄 Hub component unmounted');
-  }, []);
-
   useEffect(() => {
     // if (typeof window === "undefined") return;
 
@@ -302,6 +305,7 @@ useEffect(() => {
   
   }, [currentStep, isCompleted, hubTutorialSeen, footerGlowCleared, step1PanelShown]);
 
+
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
     setUnlockingInfoSeen(true);
@@ -331,7 +335,6 @@ useEffect(() => {
   };
 
   const closeFtuePanel = () => {
-    // console.log("Closing FTUE panel. Current step:", currentStep);
     setShowFtuePanel(false);
 
 
@@ -365,12 +368,8 @@ useEffect(() => {
   };
 
   const handleFtueProgressToStep6 = (song) => {
-    // console.log("MANUALLY TRIGGERING STEP 6 SETUP");
-    // console.log("Song passed to callback:", song);
-
+    
     completeStep(currentStep);
-
-    setShowPlaySongPanel(true);
 
     // Set the highlighted song explicitly
     if (song) {
@@ -483,9 +482,7 @@ useEffect(() => {
       </div>
     );
   }
-
-
-  const pageContent = (
+const pageContent = (
 <div className="hubscreen-container">
       <Header />
       {/* The FTUE panel if needed */}
@@ -531,12 +528,33 @@ useEffect(() => {
         </div>
         <div className="md:-mt-3">
           <div
+           ref={yourSongsContainerRef}
             className={`overflow-x-auto overflow-y-hidden flex flex-nowrap hide-scrollbar w-full shrink-0 ${
               songs.length === 1 ? "justify-center" : ""
             }`}
+            style={{transition:'none'}}
           >
+            <AnimatePresence  mode="wait">
             {songs?.length > 0 ? (
-              songs.map((item, index) => (
+              songs.map((item, index) => {
+                console.log("🎵 Rendering song card:", item.id, "at index:", index);
+                return(
+                <motion.div 
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                   transition={{ 
+                     layout: { 
+                      duration: 0.3,  
+                      ease: "easeInOut", 
+                      type: "tween"
+                    },
+                    opacity: { duration: 0.3},
+                    scale: { duration: 0.3 }
+                  }}
+                  
+                >
                 <ArtistImage
                   key={index}
                   song={item}
@@ -549,8 +567,12 @@ useEffect(() => {
                   isHighlightedForFtue={
                     currentStep === 7 && highlightedSongId === item.id && !isCompleted
                   }
+                  isNewlyAdded={newlyAddedSong === item.id}
+                  isAnimating={false}
                 />
-              ))
+                </motion.div>
+              )
+              })
             ) : (
               <div className="flex justify-center items-center w-full h-40">
                 <pending className="text-center text-[#6c6b6b] tracking-wide">
@@ -558,6 +580,7 @@ useEffect(() => {
                 </pending>
               </div>
             )}
+            </AnimatePresence>
           </div>
         </div>
         {showPlaySongPanel && (
@@ -593,6 +616,8 @@ useEffect(() => {
           songs={songs}
           loading={loading}
           onFtueProgressToStep6={handleFtueProgressToStep6}
+          yourSongsContainerRef={yourSongsContainerRef}
+          onSongAdded={handleSongAdded}
         />
         <div className="w-full">
           <Image
