@@ -73,6 +73,8 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6, your
     isActive: false,
     song: null
   });
+
+  
 }, [moveAnimation.song]);
 
 
@@ -195,6 +197,7 @@ const [animatingSlots, setAnimatingSlots] = useState({});
     isActive: true,
     song: song
   });
+  
 
 }
 

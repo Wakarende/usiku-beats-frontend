@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AnimationSongCard from './AnimationSongCard';
+// import { clear } from 'console';
 
 const MoveTransitionAnimation = ({ 
   song, 
@@ -26,7 +27,7 @@ const MoveTransitionAnimation = ({
       firstCardX = containerRect.left + (containerRect.width / 2) - 80; 
       firstCardY = containerRect.top;
     } else { 
-      firstCardX = containerRect.left;
+      firstCardX = containerRect.left + 8;
       firstCardY = containerRect.top;
     }
   
@@ -36,36 +37,55 @@ const MoveTransitionAnimation = ({
     });
   };
 
-  // More precise scale calculation matching Tailwind breakpoints
   const getTargetScale = () => {
-    const screenWidth = window.innerWidth;
-    let targetWidth, targetHeight;
-    
-    if (screenWidth >= 1280) { // xl
-      targetWidth = 160;
-      targetHeight = 266;
-    } else if (screenWidth >= 1024) { // lg
-      targetWidth = 180;
-      targetHeight = 266;
-    } else if (screenWidth >= 768) { // md
-      targetWidth = 160;
-      targetHeight = 256;
-    } else if (screenWidth >= 640) { // sm
-      targetWidth = 140;
-      targetHeight = 200;
-    } else { // < sm, default to sm size
-      targetWidth = 140;
-      targetHeight = 200;
-    }
-    
-    // Calculate scale based on width (AnimationSongCard is 200x280)
-    const widthScale = targetWidth / 200;
-    const heightScale = targetHeight / 280;
-    
-    // Use the smaller scale to ensure it fits properly
-    return Math.min(widthScale, heightScale);
-  };
+  const screenWidth = window.innerWidth;
+  let targetWidth, targetHeight;
+  
+  if (screenWidth >= 1024) { // xl: min 1024px
+    targetWidth = 160;
+    targetHeight = 266;
+  } else if (screenWidth >= 641 && screenWidth <= 1023) { // lg: 641px to 1023px
+    targetWidth = 180;
+    targetHeight = 266;
+  } else if (screenWidth >= 400 && screenWidth <= 640) { // md: 400px to 640px
+    targetWidth = 160;
+    targetHeight = 256;
+  } else if (screenWidth <= 395) { // sm: max 395px
+    targetWidth = 140;
+    targetHeight = 200;
+  } else { // fallback for gap between 396-399px
+    targetWidth = 160;
+    targetHeight = 256;
+  }
+  
+  // Calculate both width and height scales
+  const widthScale = targetWidth / 200;   // AnimationSongCard is 200px wide
+  const heightScale = targetHeight / 280;  // AnimationSongCard is 280px tall
+  
+  // Use the smaller scale to ensure the card fits within both dimensions
+  return Math.min(widthScale, heightScale);
+};
 
+// In MoveTransitionAnimation, add this function
+const shiftExistingCards = (shift = true) => {
+  if (!targetContainerRef?.current) return;
+  
+  const container = targetContainerRef.current;
+  const existingCards = container.children;
+  
+  Array.from(existingCards).forEach((card, index) => {
+    if (!shift && index === 0) return;
+    if (shift) {
+      // Shift cards to the right to make space
+      card.style.transform = 'translateX(180px)'; // Adjust based on card width
+      card.style.transition = 'transform 0.6s ease-out';
+    } else {
+      // Remove the transform - let normal layout take over
+      card.style.transform = '';
+      card.style.transition = '';
+    }
+  });
+};
   useEffect(() => {
     if (isActive && song) {
      
@@ -83,6 +103,10 @@ const MoveTransitionAnimation = ({
        
         calculateTargetPosition();
         setAnimationPhase('moving');
+
+         if (!isFirstSong) {
+        shiftExistingCards(true);
+      }
       }, 1500); // Delayed to account for fade-in
       
       setTimeout(() => {
@@ -95,6 +119,12 @@ const MoveTransitionAnimation = ({
           setDataUpdated(true);
           onComplete();
         }
+
+         if (!isFirstSong) {
+          setTimeout(() => {
+            shiftExistingCards(false);
+          }, 10); // Give time for Redux update and re-render
+          }
       }, 3000); 
     }
   }, [isActive, song, onComplete, isFirstSong]);

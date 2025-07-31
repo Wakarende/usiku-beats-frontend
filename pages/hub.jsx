@@ -153,8 +153,6 @@ useEffect(() => {
   }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
 
   useEffect(() => {
-   
-
     if (currentStep === 7 && !isCompleted) {
        setTimeout(() => {
       setShowPlaySongPanel(true);
@@ -541,19 +539,20 @@ const pageContent = (
                 return(
                 <motion.div 
                   key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                   transition={{ 
-                     layout: { 
-                      duration: 0.3,  
-                      ease: "easeInOut", 
-                      type: "tween"
-                    },
+                  initial={
+                    newlyAddedSong === item.id 
+                      ? { opacity: 0, scale: 0.8 } 
+                      : false                       
+                  }
+                  animate={
+                      newlyAddedSong === item.id 
+                        ? { opacity: 1, scale: 1 }     // Only animate the new card
+                        : false                        // Existing cards: no animation
+                  }
+                  transition={{ 
                     opacity: { duration: 0.3},
                     scale: { duration: 0.3 }
                   }}
-                  
                 >
                 <ArtistImage
                   key={index}
