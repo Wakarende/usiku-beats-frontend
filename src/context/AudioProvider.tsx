@@ -17,6 +17,8 @@ export function useAudio() {
       stopBgMusic: () => {},
       fadeOutBgMusic: () => {},
       playBoom: () => {},
+      duckBgMusic: () => {},
+      restoreBgMusic: () => {},
     };
   }
   
