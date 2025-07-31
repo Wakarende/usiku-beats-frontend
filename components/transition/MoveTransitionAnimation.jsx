@@ -57,7 +57,6 @@ const MoveTransitionAnimation = ({
     targetWidth = 160;
     targetHeight = 256;
   }
-  
   // Calculate both width and height scales
   const widthScale = targetWidth / 200;   // AnimationSongCard is 200px wide
   const heightScale = targetHeight / 280;  // AnimationSongCard is 280px tall
@@ -67,6 +66,132 @@ const MoveTransitionAnimation = ({
 };
 
 // In MoveTransitionAnimation, add this function
+// const shiftExistingCards = (shift = true) => {
+//   if (!targetContainerRef?.current) return;
+  
+//   const container = targetContainerRef.current;
+//   const existingCards = container.children;
+  
+  
+//   Array.from(existingCards).forEach((card, index) => {
+//     if (!shift && index === 0) return;
+    
+//     if (shift) {
+//       let shiftAmount;
+      
+//       if (existingCards.length === 1) {
+//         // Card is currently centered, needs to move to "second position" in left-aligned layout
+//         const containerWidth = container.offsetWidth;
+//         const cardWidth = card.offsetWidth;
+//         const gap = 16; // or whatever your gap is
+        
+//         // Calculate where it should be in left-aligned layout (second position)
+//         const targetLeftPosition = cardWidth + gap;
+//         // Calculate where it currently is (centered)
+//         const currentCenterPosition = (containerWidth - cardWidth) / 2;
+        
+//         shiftAmount = targetLeftPosition - currentCenterPosition;
+//       } else {
+//         // Normal case: just shift by one card width + gap
+//         shiftAmount = getCardWidthAndGap();
+//       }
+      
+//       card.style.transform = `translateX(${shiftAmount}px)`;
+//       card.style.transition = 'transform 0.6s ease-out';
+//     } else {
+//       card.style.transform = '';
+//       card.style.transition = '';
+//     }
+//   });
+// };
+// const shiftExistingCards = (shift = true) => {
+//   if (!targetContainerRef?.current) return;
+  
+//   const container = targetContainerRef.current;
+//   const existingCards = container.children;
+  
+//   // Helper function to get responsive card width + gap
+//   const getCardWidthAndGap = () => {
+//     const screenWidth = window.innerWidth;
+//     let cardWidth, gap;
+    
+//     if (screenWidth <= 395) { // sm
+//       cardWidth = 140;
+//       gap = 6; // matching your gap-x-1.5
+//     } else if (screenWidth >= 400 && screenWidth <= 640) { // md
+//       cardWidth = 160;
+//       gap = 6;
+//     } else if (screenWidth >= 641 && screenWidth <= 1023) { // lg
+//       cardWidth = 180;
+//       gap = 6;
+//     } else { // xl
+//       cardWidth = 160;
+//       gap = 6;
+//     }
+    
+//     return { cardWidth, gap };
+//   };
+  
+//   Array.from(existingCards).forEach((card, index) => {
+//     if (!shift && index === 0) return;
+    
+//     if (shift) {
+//       let shiftAmount;
+      
+//       if (existingCards.length === 1) {
+//         // Card is currently centered, should move to make space for new card on the left
+//         const { cardWidth, gap } = getCardWidthAndGap();
+        
+//         // Simple approach: just shift right by card width + gap
+//         // This moves the centered card to the right to make space on the left
+//         shiftAmount = cardWidth + gap;
+//       } else {
+//         // Normal case: shift by one card width + gap
+//         const { cardWidth, gap } = getCardWidthAndGap();
+//         shiftAmount = cardWidth + gap;
+//       }
+      
+//       card.style.transform = `translateX(${shiftAmount}px)`;
+//       card.style.transition = 'transform 0.6s ease-out';
+//     } else {
+//       card.style.transform = '';
+//       card.style.transition = '';
+//     }
+//   });
+// };
+// const shiftExistingCards = (shift = true) => {
+//   if (!targetContainerRef?.current) return;
+  
+//   const container = targetContainerRef.current;
+//   const existingCards = container.children;
+  
+//   Array.from(existingCards).forEach((card, index) => {
+//     if (!shift && index === 0) return;
+    
+//     if (shift) {
+//       // Get the ACTUAL width of this card from the DOM
+//       const cardRect = card.getBoundingClientRect();
+//       const actualCardWidth = cardRect.width;
+      
+//       // Get the container's computed style to find the actual gap
+//       const containerStyle = window.getComputedStyle(container);
+//       const gap = parseFloat(containerStyle.gap) || parseFloat(containerStyle.columnGap) || 6; // fallback to 6px
+      
+//       // const shiftAmount = actualCardWidth + gap;
+//       const shiftAmount = 80;
+      
+//       console.log('Actual card width:', actualCardWidth);
+//       console.log('Actual gap:', gap);
+//       console.log('Shift amount:', shiftAmount);
+      
+//       card.style.transform = `translateX(${shiftAmount}px)`;
+//       card.style.transition = 'transform 0.6s ease-out';
+//     } else {
+//       card.style.transform = '';
+//       card.style.transition = '';
+//     }
+//   });
+// };
 const shiftExistingCards = (shift = true) => {
   if (!targetContainerRef?.current) return;
   
@@ -75,17 +200,34 @@ const shiftExistingCards = (shift = true) => {
   
   Array.from(existingCards).forEach((card, index) => {
     if (!shift && index === 0) return;
+    
     if (shift) {
-      // Shift cards to the right to make space
-      card.style.transform = 'translateX(180px)'; // Adjust based on card width
+      let shiftAmount;
+      
+      if (existingCards.length === 1) {
+        // ONE SONG scenario: smaller shift amount
+        shiftAmount = 50; 
+      } else {
+        // MULTIPLE SONGS scenario: larger shift amount  
+        const cardRect = card.getBoundingClientRect();
+        const actualCardWidth = cardRect.width;
+        const containerStyle = window.getComputedStyle(container);
+        const gap = parseFloat(containerStyle.gap) || parseFloat(containerStyle.columnGap) || 6;
+        shiftAmount = actualCardWidth;
+      }
+      
+      console.log('Existing cards:', existingCards.length);
+      console.log('Shift amount:', shiftAmount);
+      
+      card.style.transform = `translateX(${shiftAmount}px)`;
       card.style.transition = 'transform 0.6s ease-out';
     } else {
-      // Remove the transform - let normal layout take over
       card.style.transform = '';
       card.style.transition = '';
     }
   });
 };
+
   useEffect(() => {
     if (isActive && song) {
      

@@ -99,6 +99,7 @@ const HubScreen = () => {
   const [isInIframe, setIsInIframe] = useState(false);
   const yourSongsContainerRef = useRef(null);
 const [newlyAddedSong, setNewlyAddedSong] = useState(null);
+const [playPanelTimeoutSet, setPlayPanelTimeoutSet] = useState(false);
 
   const handleSongAdded = (songId) => {
   setNewlyAddedSong(songId);
@@ -153,7 +154,8 @@ useEffect(() => {
   }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
 
   useEffect(() => {
-    if (currentStep === 7 && !isCompleted) {
+    if (currentStep === 7 && !isCompleted && !playPanelTimeoutSet) {
+      setPlayPanelTimeoutSet(true);
        setTimeout(() => {
       setShowPlaySongPanel(true);
        if (songs && songs.length > 0) {
@@ -167,8 +169,9 @@ useEffect(() => {
     } else if (isCompleted) {
       setShowPlaySongPanel(false);
       setHighlightedSongId(null);
+      setPlayPanelTimeoutSet(false);
     }
-  }, [currentStep, songs, isCompleted]);
+  }, [currentStep,  isCompleted, playPanelTimeoutSet]);
 
   useEffect(() => {
     
@@ -296,8 +299,10 @@ useEffect(() => {
       setStep1PanelShown(true);  
     }
 
-    if (!footerGlowCleared) {
+    if (!footerGlowCleared && !isCompleted) {
       setFooterGlowActive(true);
+    }else if(isCompleted){
+      setFooterGlowActive(false);
     }
 
   
