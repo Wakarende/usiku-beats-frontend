@@ -547,7 +547,7 @@ const Library = () => {
                     style={{ opacity: (showUnlocked || !unlockable) ? 0.5 : 1 }}
                     >
                       {currentlyPlayingSongId === song.id ? (
-                        <div className="border-2 border-red-500 flex flex-col justify-center items-center">
+                        <div className="flex flex-col justify-center items-center">
                         <Image alt="stop-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto" src={'/assets/img/library/stop-icon.png'} width={100} height={100}/>
                         </div>
                       ) : (
