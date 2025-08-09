@@ -29,10 +29,10 @@
             "label": "bm_BG",
             "components": [],
             "texture": {
-                "key": "bm_BG"
+                "key": "new_bm_bg"
             },
             "x": 180,
-            "y": 320,
+            "y": 110.82225,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -41,8 +41,8 @@
             "id": "c30051a9-c41a-4a35-b96a-7996061c1df2",
             "label": "Beat_Missed_Text",
             "components": [],
-            "x": 180,
-            "y": 182,
+            "x": 185,
+            "y": 97,
             "originX": 0.5,
             "originY": 0.5,
             "text": "Missed \na Beat",
@@ -75,23 +75,10 @@
             "scope": "CLASS",
             "components": [],
             "texture": {
-                "key": "bm_continue"
+                "key": "bm_contiune"
             },
             "x": 180,
-            "y": 541,
-            "scaleX": 0.3333,
-            "scaleY": 0.3333
-        },
-        {
-            "type": "Image",
-            "id": "7670d71f-66aa-466c-a7d7-7aded629edf2",
-            "label": "gem_small",
-            "components": [],
-            "texture": {
-                "key": "Gem_small"
-            },
-            "x": 79,
-            "y": 538,
+            "y": 436,
             "scaleX": 0.3333,
             "scaleY": 0.3333
         },
@@ -101,15 +88,13 @@
             "label": "gem_count",
             "scope": "CLASS",
             "components": [],
-            "x": 106,
-            "y": 538,
+            "x": 206,
+            "y": 434,
             "originX": 0.5,
             "originY": 0.5,
             "text": "5",
-            "fontFamily": "Afolkalips",
-            "fontSize": "30px",
-            "color": "#000",
-            "stroke": "#000"
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "30px"
         },
         {
             "type": "Image",
@@ -130,14 +115,15 @@
             "label": "motivation_text",
             "scope": "CLASS",
             "components": [],
-            "x": 183,
-            "y": 425,
+            "x": 180,
+            "y": 321,
             "originX": 0.5,
             "originY": 0.5,
-            "text": "You missed a beat! Continue from where you left off, or wait to see your score.",
+            "text": "Play on from where you stopped,\nor wait to see your score...",
             "align": "center",
-            "fontFamily": "Carlito-Italic",
-            "fontSize": "20px",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "22px",
+            "color": "#faf05e",
             "maxLines": 4,
             "wordWrapWidth": 300
         },
@@ -146,14 +132,14 @@
             "id": "885ab898-8232-477c-8bce-8881bf87207b",
             "label": "motivation_text_1",
             "components": [],
-            "x": 152,
-            "y": 487,
+            "x": 161,
+            "y": 486,
             "originX": 0.5,
             "originY": 0.5,
             "text": "You have",
             "align": "center",
             "fontFamily": "Carlito-Italic",
-            "fontSize": "20px",
+            "color": "#faf05e",
             "maxLines": 4,
             "wordWrapWidth": 300
         },
@@ -163,14 +149,13 @@
             "label": "total_gem_count_txt",
             "scope": "CLASS",
             "components": [],
-            "x": 208,
-            "y": 488,
+            "x": 206,
+            "y": 486,
             "originX": 0.5,
             "originY": 0.5,
             "text": "15",
             "align": "center",
             "fontFamily": "Carlito-Italic",
-            "fontSize": "20px",
             "maxLines": 4,
             "wordWrapWidth": 300
         },
@@ -182,10 +167,121 @@
             "texture": {
                 "key": "gem_outline"
             },
-            "x": 240,
-            "y": 488,
-            "scaleX": 0.2,
-            "scaleY": 0.2
+            "x": 231,
+            "y": 487,
+            "scaleX": 0.15,
+            "scaleY": 0.15
+        },
+        {
+            "type": "Text",
+            "id": "91f4691d-22a3-4f4c-b37f-623e8a8c7047",
+            "label": "motivation_text_2",
+            "scope": "CLASS",
+            "components": [],
+            "x": 173,
+            "y": 272,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "SO CLOSE!",
+            "align": "center",
+            "fontFamily": "Carlito-Bold",
+            "fontSize": "28px",
+            "color": "#fcb320",
+            "maxLines": 4,
+            "wordWrapWidth": 300
+        },
+        {
+            "type": "Image",
+            "id": "30a1dd89-f1e4-4107-b9f5-f6c38ba8a323",
+            "label": "bm_divider",
+            "components": [],
+            "texture": {
+                "key": "bm_divider"
+            },
+            "x": 180,
+            "y": 359,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "0b26821e-a1a6-42ff-adf5-caddbad1fac6",
+            "label": "motivation_text_3",
+            "scope": "CLASS",
+            "components": [],
+            "x": 181,
+            "y": 384,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Play On?",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "28px",
+            "maxLines": 4,
+            "wordWrapWidth": 300
+        },
+        {
+            "type": "Image",
+            "id": "921221ce-c0ef-48c6-a056-e420e68c4ec2",
+            "label": "bm_video_ad_btn",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "bm_video_ad"
+            },
+            "x": 185,
+            "y": 550,
+            "scaleX": 0.3333,
+            "scaleY": 0.3333
+        },
+        {
+            "type": "Text",
+            "id": "50d0c5bd-4811-43f9-b35f-41fc640bf6d4",
+            "label": "free_txt",
+            "components": [],
+            "x": 180,
+            "y": 535.8262173817607,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "FREE",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "22px",
+            "maxLines": 4,
+            "wordWrapWidth": 300
+        },
+        {
+            "type": "Text",
+            "id": "e8c45f89-edf8-4fee-ac11-fa032b7b8881",
+            "label": "watch_add_txt",
+            "components": [],
+            "x": 180,
+            "y": 559.4338962978347,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "Watch Ad",
+            "align": "center",
+            "fontFamily": "Carlito-Italic",
+            "color": "#faf05e",
+            "maxLines": 4,
+            "wordWrapWidth": 300
+        },
+        {
+            "type": "Text",
+            "id": "7f71e56e-efb8-4598-a25f-a1fc90924301",
+            "label": "total_gem_count_txt_1",
+            "scope": "CLASS",
+            "components": [],
+            "x": 282,
+            "y": 565,
+            "originX": 0.5,
+            "originY": 0.5,
+            "text": "+20",
+            "align": "center",
+            "fontFamily": "Carlito-Regular",
+            "fontSize": "15px",
+            "maxLines": 4,
+            "wordWrapWidth": 300
         }
     ],
     "plainObjects": [],
@@ -203,14 +299,20 @@
                 "22189f46-237f-45fa-a043-d9c04cf744e4",
                 "c30051a9-c41a-4a35-b96a-7996061c1df2",
                 "79d5cc25-17a6-472d-8e86-772073b7edf2",
-                "7670d71f-66aa-466c-a7d7-7aded629edf2",
                 "551b3103-9c63-44c9-8524-d538193e6549",
                 "a0706df7-3c7d-4a71-bf18-c5b30279e580",
                 "17305bd6-380e-4bc2-b79c-df5065db623d",
                 "c95b29b3-8dc3-4c53-a6a5-0ea026eddc56",
                 "885ab898-8232-477c-8bce-8881bf87207b",
                 "681e0c1f-addc-410d-b0ac-d633e672668c",
-                "c922f6c4-53f0-4ce2-a3e2-3dd794eb41ec"
+                "c922f6c4-53f0-4ce2-a3e2-3dd794eb41ec",
+                "91f4691d-22a3-4f4c-b37f-623e8a8c7047",
+                "921221ce-c0ef-48c6-a056-e420e68c4ec2",
+                "50d0c5bd-4811-43f9-b35f-41fc640bf6d4",
+                "e8c45f89-edf8-4fee-ac11-fa032b7b8881",
+                "7f71e56e-efb8-4598-a25f-a1fc90924301",
+                "0b26821e-a1a6-42ff-adf5-caddbad1fac6",
+                "30a1dd89-f1e4-4107-b9f5-f6c38ba8a323"
             ]
         }
     ]

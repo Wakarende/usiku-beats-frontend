@@ -47,6 +47,21 @@
                 "key": "bm_continue"
             },
             {
+                "url": "assets/sprites/beatmissedscene/bm_contiune.png",
+                "type": "image",
+                "key": "bm_contiune"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/bm_divider.png",
+                "type": "image",
+                "key": "bm_divider"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/bm_video_ad.png",
+                "type": "image",
+                "key": "bm_video_ad"
+            },
+            {
                 "url": "assets/sprites/summaryscene/bottom_banner.png",
                 "type": "image",
                 "key": "Bottom banner"
@@ -169,6 +184,11 @@
                 "url": "assets/sprites/beatmissedscene/missed_beat_tap.jpg",
                 "type": "image",
                 "key": "Missed a beat_Tap"
+            },
+            {
+                "url": "assets/sprites/beatmissedscene/new_bm_bg.png",
+                "type": "image",
+                "key": "new_bm_bg"
             },
             {
                 "url": "assets/sprites/playscene/new_held.png",

@@ -40,9 +40,36 @@ export default function Document() {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js" async></script>
+        {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2937340330171499"
+     crossOrigin="anonymous"></script> */}
+
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6193376247880661"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
 
       <body className="App">
+        {/* <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-2937340330171499"
+          data-ad-slot="6442873356"
+          data-ad-format="interstitial"
+          data-full-width-responsive="true"
+        ></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []) .push({});</script> */}
+
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-6193376247880661"
+          data-ad-slot="6804075243"
+          data-ad-format="interstitial"
+          data-full-width-responsive="true"
+        ></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []) .push({});</script>
         <Main />
         <NextScript />
       </body>
