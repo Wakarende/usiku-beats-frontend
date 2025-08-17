@@ -214,13 +214,9 @@ const Library = () => {
         const now = new Date();
         const unlockTime = new Date(existingInstance.unlock_time);
 
-        if (unlockTime > now) {
-          // console.log("Song is still unlocking; cannot purchase again");
+        if (unlockTime > now) { 
           return;
         } else {
-          // console.log(
-          //   "Song has finished unlocking but hasn't been added to library yet; cannot purchase again"
-          // );
           return;
         }
       }
@@ -276,17 +272,11 @@ const Library = () => {
 
       const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
       const unlockTimes = [30, 60, 300, 600, 1200];
+      
 
       const postFtueCount = totalSongs - 1;
       const unlockTimeIndex = Math.max(0, Math.min(postFtueCount, unlockTimes.length - 1));
       const unlockTimeInSeconds = unlockTimes[unlockTimeIndex];
-
-      // console.log(
-      //   `Regular unlock: Using ${unlockTimeInSeconds} seconds for song #${
-      //     postFtueCount + 1
-      //   } after FTUE`
-      // );
-
       unlockTime = moment().add(unlockTimeInSeconds, "seconds").toISOString();
     }
     setSessionUnlockCounter((prevCount) => prevCount + 1);
