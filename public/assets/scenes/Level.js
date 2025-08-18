@@ -487,7 +487,7 @@ class Level extends Phaser.Scene {
     // this.baseTileTextures = [
     //   "beats2", // Add your aesthetic texture keys here
     // ];
-
+    this.registry.set("continueCount", 0);
     this.soundTracker = 0;
 
     this.column = null;

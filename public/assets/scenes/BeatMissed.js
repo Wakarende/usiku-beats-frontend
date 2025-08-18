@@ -243,7 +243,7 @@ class BeatMissed extends Phaser.Scene {
       console.log("beat_missed_screen_shown");
     }
 
-    this.continueCount = 0;
+    this.continueCount = this.registry.get("continueCount") || 0;
     this.adShown = false; // Add this flag to track if ad was already shown
 
     this.editorCreate();
@@ -504,6 +504,9 @@ class BeatMissed extends Phaser.Scene {
     user_data.profile.player.total_gems += 20;
     this.game.events.emit("updateUserEvent", { data: user_data });
 
+    this.continueCount++;
+    this.registry.set("continueCount", this.continueCount); // Persist it
+
     // Get the current song from the Level scene for analytics
     const levelScene = this.scene.get("Level");
     // const currentSong = levelScene.songItem || "unknown";
@@ -528,7 +531,8 @@ class BeatMissed extends Phaser.Scene {
     // Track resource use in analytics, tied to the specific song
     this.analytics.trackResourceUse("Gems", amount, "continue", currentSong);
 
-    this.continueCount++; // Increment the continue count
+    this.continueCount++;
+    this.registry.set("continueCount", this.continueCount); // Persist it
   }
 
   countDown() {

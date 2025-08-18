@@ -22,7 +22,7 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
-  const currentVersion = "0.2.9"; // Match the version displayed in the UI
+  const currentVersion = "0.3.1"; // Match the version displayed in the UI
 
   // Version check
   // Version check
