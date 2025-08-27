@@ -178,10 +178,18 @@ const ANALYTICS_ENDPOINT = "https://api.usiku.games/analytics/"; // Adjust this 
 
 export const logAnalytics = async (sessionId, eventId) => {
   try {
+    // Get or create persistent user ID for debugging session issues
+    let persistentId = localStorage.getItem("persistentUserId");
+    if (!persistentId) {
+      persistentId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem("persistentUserId", persistentId);
+    }
+
     // console.log(`sending event ${eventId}`);
     await axios.post(ANALYTICS_ENDPOINT, {
       sessionId,
       eventId,
+      persistentId,
     });
   } catch (error) {
     // Silently fail - analytics shouldn't break the game
