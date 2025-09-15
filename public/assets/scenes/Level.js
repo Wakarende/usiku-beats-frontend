@@ -1494,8 +1494,59 @@ class Level extends Phaser.Scene {
     let clicked = false;
     let tween = null;
     let activeEffect = null;
+    let swipedDuringHold = false;
 
     ninesliceTile.setInteractive();
+
+    // Add swipe gesture detection to held tiles
+    let swipeConfig = {
+      velocityThreshold: 500,
+    };
+    let swipe = this.rexGestures.add.swipe(ninesliceTile, swipeConfig);
+    swipe.on("swipe", (swipe, gameObject, lastPointer) => {
+      if (ninesliceTile.held) {
+        swipedDuringHold = true;
+        
+        // Calculate hold duration and percentage (same as early release)
+        if (ninesliceTile.holdStartTime > 0) {
+          ninesliceTile.holdDuration = this.time.now - ninesliceTile.holdStartTime;
+          ninesliceTile.holdPercentage = Math.min(
+            ninesliceTile.holdDuration / ninesliceTile.totalDuration,
+            1.0
+          );
+        }
+
+        // Hide the original nineslice
+        ninesliceTile.setVisible(false);
+
+        // Calculate particle position (halfway up the current height)
+        const currentHeight = ninesliceTile.height;
+        const particleY = ninesliceTile.y - currentHeight / 2;
+
+        // Trigger particle effect at the calculated position
+        this.tileEmitter.setPosition(ninesliceTile.x, particleY);
+        this.tileEmitter.explode(10);
+
+        // Also trigger the tile active flash effect for visual feedback
+        this.tileActiveFlash(ninesliceTile, false);
+
+        // Stop the tween and clean up
+        if (tween) {
+          tween.remove();
+          tween = null;
+        }
+        if (activeEffect && activeEffect.active) {
+          activeEffect.destroy();
+          activeEffect = null;
+        }
+
+        // Handle scoring as held tile (early release)
+        if (!clicked) {
+          clicked = true;
+          this.onClickInstrument(ninesliceTile, false, true);
+        }
+      }
+    });
 
     ninesliceTile.on("pointerdown", () => {
       // Fix: Ignore additional touches if already being held
@@ -1561,6 +1612,11 @@ class Level extends Phaser.Scene {
     });
 
     ninesliceTile.on("pointerup", () => {
+      // If swiped during hold, skip hold completion logic as swipe handler already processed it
+      if (swipedDuringHold) {
+        return;
+      }
+
       // Calculate how long the user held the tile
       if (ninesliceTile.holdStartTime > 0) {
         ninesliceTile.holdDuration = this.time.now - ninesliceTile.holdStartTime;

@@ -34,7 +34,7 @@ class GameOverScene extends Phaser.Scene {
     round_frame.scaleY = 0.3333;
 
     // current_score
-    const current_score = this.add.text(180, 434, "", {});
+    const current_score = this.add.text(180, 465, "", {});
     current_score.setOrigin(0.5, 0.5);
     current_score.text = "00000";
     current_score.setStyle({
@@ -67,34 +67,34 @@ class GameOverScene extends Phaser.Scene {
     });
 
     // star_empty_4
-    const star_empty_4 = this.add.image(260, 376, "Star_Inactive");
+    const star_empty_4 = this.add.image(260, 408, "Star_Inactive");
     star_empty_4.scaleX = 0.3333;
     star_empty_4.scaleY = 0.3333;
 
     // star_empty_3
-    const star_empty_3 = this.add.image(220, 375, "Star_Inactive");
+    const star_empty_3 = this.add.image(220, 407, "Star_Inactive");
     star_empty_3.scaleX = 0.3333;
     star_empty_3.scaleY = 0.3333;
 
     // star_empty_2
-    const star_empty_2 = this.add.image(180, 375, "Star_Inactive");
+    const star_empty_2 = this.add.image(180, 407, "Star_Inactive");
     star_empty_2.scaleX = 0.3333;
     star_empty_2.scaleY = 0.3333;
 
     // star_empty_1
-    const star_empty_1 = this.add.image(140, 375, "Star_Inactive");
+    const star_empty_1 = this.add.image(140, 407, "Star_Inactive");
     star_empty_1.scaleX = 0.3333;
     star_empty_1.scaleY = 0.3333;
 
     // star_empty
-    const star_empty = this.add.image(100, 375, "Star_Inactive");
+    const star_empty = this.add.image(100, 407, "Star_Inactive");
     star_empty.scaleX = 0.3333;
     star_empty.scaleY = 0.3333;
 
     // retry_button
-    const retry_button = this.add.image(180, 551, "Button_blank");
-    retry_button.scaleX = 0.4;
-    retry_button.scaleY = 0.5;
+    const retry_button = this.add.image(180, 588, "Button_blank");
+    retry_button.scaleX = 0.5;
+    retry_button.scaleY = 0.7;
     retry_button.setOrigin(0.5, 0.6);
 
     // carousel
@@ -103,7 +103,7 @@ class GameOverScene extends Phaser.Scene {
     carousel.scaleY = 0.6;
 
     // continue_button
-    const continue_button = this.add.image(181, 496, "Button_blank");
+    const continue_button = this.add.image(181, 524, "Button_blank");
     continue_button.scaleX = 0.4;
     continue_button.scaleY = 0.5;
 
@@ -135,27 +135,74 @@ class GameOverScene extends Phaser.Scene {
     });
 
     // continue_text
-    const continue_text = this.add.text(181, 496, "", {});
+    const continue_text = this.add.text(181, 524, "", {});
     continue_text.setOrigin(0.5, 0.5);
-    continue_text.text = "MAIN MENU";
+    continue_text.text = "YOUR SONGS";
     continue_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
 
     // retry_song_text
-    const retry_song_text = this.add.text(180, 548, "", {});
+    const retry_song_text = this.add.text(180, 584, "", {});
     retry_song_text.setOrigin(0.5, 0.6);
     retry_song_text.text = "RETRY SONG";
-    retry_song_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "18px" });
+    retry_song_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "22px" });
 
     // library_button
     const library_button = this.add.image(180, 602, "Button_blank");
     library_button.scaleX = 0.5;
     library_button.scaleY = 0.7;
+    library_button.visible = false;
 
     // library_button_text
     const library_button_text = this.add.text(180, 599, "", {});
     library_button_text.setOrigin(0.5, 0.5);
+    library_button_text.visible = false;
     library_button_text.text = "SONG LIBRARY";
     library_button_text.setStyle({ fontFamily: "Carlito-Bold", fontSize: "22px" });
+
+    // gem_outline
+    const gem_outline = this.add.image(140, 373, "gem_outline");
+    gem_outline.scaleX = 0.25;
+    gem_outline.scaleY = 0.25;
+    gem_outline.visible = false;
+
+    // gem_count_text
+    const gem_count_text = this.add.text(151.55537833529974, 381.02468086157563, "", {});
+    gem_count_text.setOrigin(0.5, 0.5);
+    gem_count_text.visible = false;
+    gem_count_text.text = "5";
+    gem_count_text.setStyle({
+      color: "#00D100",
+      fontFamily: "Carlito-Regular",
+      fontSize: "10px",
+      stroke: "#00D100",
+    });
+
+    // gs_star
+    const gs_star = this.add.image(320, 381, "gs_star");
+    gs_star.scaleX = 0.3333;
+    gs_star.scaleY = 0.3333;
+
+    // ad_button
+    const ad_button = this.add.image(317, 440, "gs_ad");
+    ad_button.scaleX = 0.2;
+    ad_button.scaleY = 0.2;
+
+    // gem_count_text_1
+    const gem_count_text_1 = this.add.text(346, 446, "", {});
+    gem_count_text_1.setOrigin(0.5, 0.5);
+    gem_count_text_1.text = "x2";
+    gem_count_text_1.setStyle({ fontFamily: "Carlito-Regular", fontSize: "8px" });
+
+    // gem_outline_1
+    const gem_outline_1 = this.add.image(320, 389, "gem_outline");
+    gem_outline_1.scaleX = 0.25;
+    gem_outline_1.scaleY = 0.25;
+
+    // final_gem_count
+    const final_gem_count = this.add.text(320, 365, "", {});
+    final_gem_count.setOrigin(0.5, 0.5);
+    final_gem_count.text = "30";
+    final_gem_count.setStyle({ fontFamily: "Carlito-Regular", fontSize: "12px" });
 
     // lists
     const stars = [star_empty, star_empty_1, star_empty_2, star_empty_3, star_empty_4];
@@ -173,6 +220,10 @@ class GameOverScene extends Phaser.Scene {
     this.retry_song_text = retry_song_text;
     this.library_button = library_button;
     this.library_button_text = library_button_text;
+    this.gem_count_text = gem_count_text;
+    this.ad_button = ad_button;
+    this.gem_count_text_1 = gem_count_text_1;
+    this.final_gem_count = final_gem_count;
     this.stars = stars;
 
     this.events.emit("scene-awake");
@@ -204,6 +255,14 @@ class GameOverScene extends Phaser.Scene {
   library_button;
   /** @type {Phaser.GameObjects.Text} */
   library_button_text;
+  /** @type {Phaser.GameObjects.Text} */
+  gem_count_text;
+  /** @type {Phaser.GameObjects.Image} */
+  ad_button;
+  /** @type {Phaser.GameObjects.Text} */
+  gem_count_text_1;
+  /** @type {Phaser.GameObjects.Text} */
+  final_gem_count;
   /** @type {Phaser.GameObjects.Image[]} */
   stars;
 
@@ -290,32 +349,33 @@ class GameOverScene extends Phaser.Scene {
       this.triggerFullScreen();
     });
 
-    this.library_button.setInteractive();
-    this.library_button.on("pointerup", () => {
-      this.analytics.trackUIEvent("GameOverScene", "library_button");
+    // this.library_button.setInteractive();
+    // this.library_button.on("pointerup", () => {
+    //   this.analytics.trackUIEvent("GameOverScene", "library_button");
 
-      this.button_sfx.play();
-      this.background_music.stop();
-      this.current_track.stop();
-      this.scoreTickSound.stop();
-      this.scene.stop("GameOverScene");
+    //   this.button_sfx.play();
+    //   this.background_music.stop();
+    //   this.current_track.stop();
+    //   this.scoreTickSound.stop();
+    //   this.scene.stop("GameOverScene");
 
-      const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
-      const newLevel = updatedUserData.profile.player.level;
+    //   const updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+    //   const newLevel = updatedUserData.profile.player.level;
 
-      this.scene.manager.scenes.forEach((scene) => {
-        this.scene.stop(scene.scene.key);
-      });
-      this.game.events.emit("destroyGame");
+    //   this.scene.manager.scenes.forEach((scene) => {
+    //     this.scene.stop(scene.scene.key);
+    //   });
+    //   this.game.events.emit("destroyGame");
 
-      localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
-      localStorage.setItem("newLevel", JSON.stringify(newLevel));
-      router.push({
-        pathname: "/library",
-        // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
-      });
-      this.triggerFullScreen();
-    });
+    //   localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
+    //   localStorage.setItem("newLevel", JSON.stringify(newLevel));
+    //   router.push({
+    //     pathname: "/library",
+    //     query: { fromGame: "true" }
+    //     // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
+    //   });
+    //   this.triggerFullScreen();
+    // });
 
     this.buildScreen();
     this.animateScore();
@@ -326,7 +386,7 @@ class GameOverScene extends Phaser.Scene {
 
     this.cameras.main.fadeIn(500);
 
-    this.adjustButtons();
+    // this.adjustButtons();
   }
 
   async triggerFullScreen() {
@@ -340,41 +400,41 @@ class GameOverScene extends Phaser.Scene {
       console.error("Error enabling full-screen mode:", err);
     }
   }
-  adjustButtons() {
-    let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
+  // adjustButtons() {
+  //   let updatedUserData = JSON.parse(localStorage.getItem("user_data"));
 
-    if (updatedUserData.profile.player.total_discs < 30) {
-      this.library_button.disableInteractive();
-      this.library_button.setVisible(false);
-      this.library_button_text.setVisible(false);
+  //   if (updatedUserData.profile.player.total_discs < 30) {
+  //     this.library_button.disableInteractive();
+  //     this.library_button.setVisible(false);
+  //     this.library_button_text.setVisible(false);
 
-      if (this.isSongComplete || this.fullStarsCount > 3) {
-        const retryButtonY = this.retry_button.y;
-        const retrySongTextY = this.retry_song_text.y;
-        const continueButtonY = this.continue_button.y + 3;
-        const continueTextY = this.continue_text.y + 2;
+  //     if (this.isSongComplete || this.fullStarsCount > 3) {
+  //       const retryButtonY = this.retry_button.y;
+  //       const retrySongTextY = this.retry_song_text.y;
+  //       const continueButtonY = this.continue_button.y + 3;
+  //       const continueTextY = this.continue_text.y + 2;
 
-        // Then set the new positions
-        this.retry_button.setY(continueButtonY);
-        this.retry_song_text.setY(continueTextY);
+  //       // Then set the new positions
+  //       this.retry_button.setY(continueButtonY);
+  //       this.retry_song_text.setY(continueTextY);
 
-        this.continue_button.setY(retryButtonY);
-        this.continue_text.setY(retrySongTextY);
+  //       this.continue_button.setY(retryButtonY);
+  //       this.continue_text.setY(retrySongTextY);
 
-        this.continue_button.setScale(0.5, 0.7);
-        this.continue_text.setScale(this.continue_text.scale * 1.5);
-        this.continue_button.setY(this.continue_button.y + 10);
-        this.continue_text.setY(this.continue_text.y + 10);
-      }
+  //       this.continue_button.setScale(0.5, 0.7);
+  //       this.continue_text.setScale(this.continue_text.scale * 1.5);
+  //       this.continue_button.setY(this.continue_button.y + 10);
+  //       this.continue_text.setY(this.continue_text.y + 10);
+  //     }
 
-      if (this.fullStarsCount <= 3) {
-        this.retry_button.setScale(0.5, 0.7);
-        this.retry_song_text.setScale(this.retry_song_text.scale * 1.5);
-        this.retry_button.setY(this.retry_button.y + 10);
-        this.retry_song_text.setY(this.retry_song_text.y + 10);
-      }
-    }
-  }
+  //     if (this.fullStarsCount <= 3) {
+  //       this.retry_button.setScale(0.5, 0.7);
+  //       this.retry_song_text.setScale(this.retry_song_text.scale * 1.5);
+  //       this.retry_button.setY(this.retry_button.y + 10);
+  //       this.retry_song_text.setY(this.retry_song_text.y + 10);
+  //     }
+  //   }
+  // }
 
   adjustThumbnailImage() {
     // Create circular mask for carousel
@@ -551,16 +611,21 @@ class GameOverScene extends Phaser.Scene {
 
   setStars(score) {
     this.fullStarsCount = this.getStarsFromScore(score);
+    this.gemsEarned = this.getGemsFromStars(this.fullStarsCount);
+    this.gem_count_text.setText(this.gemsEarned);
     let starSound = this.sound.add("Star_Reward_Sfx");
 
-    // Remove existing yellow bar if it exists
+    // Remove existing yellow bar and gems if they exist
     if (this.yellowBar) {
       this.yellowBar.destroy();
+    }
+    if (this.gemImages) {
+      this.gemImages.forEach((gem) => gem.destroy());
     }
 
     // Create yellow bar
     this.yellowBar = this.add.graphics();
-    // this.yellowBar.setDepth(0);
+    this.gemImages = [];
 
     let activatedStars = 0;
 
@@ -594,6 +659,80 @@ class GameOverScene extends Phaser.Scene {
                   }
 
                   this.yellowBar.strokePath();
+                },
+              });
+            }
+
+            // Add gem reward for stars 2 and above (index 1+)
+            if (index >= 1) {
+              const gemOutline = this.add.image(star.x, 373, "gem_outline");
+              gemOutline.setScale(0).setDepth(3);
+
+              const totalGemsAtThisStar = this.getGemsFromStars(index + 1);
+              const gemText = this.add.text(star.x + 12, 381, totalGemsAtThisStar.toString(), {
+                fontFamily: "Carlito-Regular",
+                fontSize: "10px",
+                color: "#00D100",
+                stroke: "#00D100",
+              });
+              gemText.setOrigin(0.5, 0.5).setDepth(3).setVisible(false);
+
+              this.gemImages.push(gemOutline, gemText);
+
+              // Animate gem outline appearance
+              this.tweens.add({
+                targets: gemOutline,
+                delay: index * 200 + 300,
+                scaleX: { from: 0, to: 0.25 },
+                scaleY: { from: 0, to: 0.25 },
+                duration: 800,
+                ease: "Bounce.easeOut",
+                onComplete: () => {
+                  gemText.setVisible(true);
+
+                  // After gem text appears, animate it moving to final_gem_count position
+                  this.tweens.add({
+                    targets: gemText,
+                    delay: 800, // Wait a bit after appearing
+                    x: 320, // final_gem_count x position
+                    y: 365, // final_gem_count y position
+                    alpha: 0, // Fade out as it moves
+                    duration: 600,
+                    ease: "Quad.easeInOut",
+                    onComplete: () => {
+                      // Animate the final_gem_count counter when gem text arrives
+                      const currentFinalCount = parseInt(this.final_gem_count.text) || 0;
+                      const newFinalCount = currentFinalCount + totalGemsAtThisStar;
+
+                      this.tweens.addCounter({
+                        from: currentFinalCount,
+                        to: newFinalCount,
+                        duration: 400,
+                        ease: "Quad.easeOut",
+                        onUpdate: (tween) => {
+                          this.final_gem_count.setText(Math.round(tween.getValue()).toString());
+                        },
+                        onComplete: () => {
+                          // Small bounce effect when counting completes
+                          this.tweens.add({
+                            targets: this.final_gem_count,
+                            scaleX: 1.2,
+                            scaleY: 1.2,
+                            duration: 100,
+                            ease: "Quad.easeOut",
+                            yoyo: true,
+                            onComplete: () => {
+                              // Ensure scale is exactly 1 after animation
+                              this.final_gem_count.setScale(1);
+                            },
+                          });
+                        },
+                      });
+
+                      // Remove the moved gem text
+                      gemText.destroy();
+                    },
+                  });
                 },
               });
             }
@@ -631,6 +770,11 @@ class GameOverScene extends Phaser.Scene {
     }
 
     return starsCount;
+  }
+
+  getGemsFromStars(starsCount) {
+    if (starsCount <= 1) return 0;
+    return (starsCount - 1) * 5;
   }
 
   updateData() {
@@ -679,8 +823,10 @@ class GameOverScene extends Phaser.Scene {
         this.newLevelAchieved = true; // Set the flag to true if new level is reached
       }
 
-      // // let’s give the player 2 Gems for every star they get
-      // updatedUserData.profile.player.total_gems += this.fullStarsCount * 2;
+      // Award gems based on stars earned (5 gems per star after the first)
+      if (this.gemsEarned > 0) {
+        updatedUserData.profile.player.total_gems += this.gemsEarned;
+      }
 
       // Emit the event with the flag indicating whether a new level has been achieved
       this.game.events.emit("updateUserEvent", { data: updatedUserData });

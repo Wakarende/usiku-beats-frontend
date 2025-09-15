@@ -156,6 +156,16 @@
                 "key": "great"
             },
             {
+                "url": "assets/sprites/summaryscene/gs_ad.png",
+                "type": "image",
+                "key": "gs_ad"
+            },
+            {
+                "url": "assets/sprites/summaryscene/gs_star.png",
+                "type": "image",
+                "key": "gs_star"
+            },
+            {
                 "url": "assets/sprites/playscene/hand_icon.png",
                 "type": "image",
                 "key": "hand_icon"
