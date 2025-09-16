@@ -288,6 +288,8 @@ class GameOverScene extends Phaser.Scene {
       this.isSongComplete
     );
 
+    this.adShown = false; // Add this flag to track if ad was already shown
+
     this.editorCreate();
     this.adjustViewport();
     const router = this.registry.get("router");
@@ -376,6 +378,13 @@ class GameOverScene extends Phaser.Scene {
     //   });
     //   this.triggerFullScreen();
     // });
+
+    // Add ad button interaction
+    this.ad_button.setInteractive();
+    this.ad_button.on("pointerup", () => {
+      this.analytics.trackUIEvent("GameOverScene", "ad_button");
+      this.showAd();
+    });
 
     this.buildScreen();
     this.animateScore();
@@ -831,6 +840,147 @@ class GameOverScene extends Phaser.Scene {
       // Emit the event with the flag indicating whether a new level has been achieved
       this.game.events.emit("updateUserEvent", { data: updatedUserData });
     }
+  }
+
+  showAd() {
+    // Prevent multiple ad calls
+    if (this.adShown) {
+      console.log("Ad already shown, ignoring request");
+      return;
+    }
+
+    console.log("Ad button clicked");
+    this.adShown = true; // Set flag to prevent multiple calls
+
+    // Disable the ad button to prevent multiple clicks
+    this.ad_button.disableInteractive();
+    this.ad_button.setTint(0x888888); // Gray out the button
+
+    // Show real AdSense ad
+    if (window.adsbygoogle) {
+      console.log("Attempting to show AdSense ad");
+      try {
+        // Clean up any existing AdSense elements to prevent conflicts
+        document.querySelectorAll('.adsbygoogle').forEach(el => el.remove());
+        // Create proper DOM element for AdSense
+        const adContainer = document.createElement('div');
+        adContainer.id = 'gameover-ad-container';
+        adContainer.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 90%; max-width: 320px;';
+        
+        const adElement = document.createElement('ins');
+        adElement.className = 'adsbygoogle';
+        adElement.style.cssText = 'display: block; width: 100%;';
+        adElement.setAttribute('data-ad-client', 'ca-pub-6193376247880661');
+        adElement.setAttribute('data-ad-slot', '6804075243');
+        adElement.setAttribute('data-ad-format', 'auto');
+        adElement.setAttribute('data-full-width-responsive', 'true');
+        
+        adContainer.appendChild(adElement);
+        document.body.appendChild(adContainer);
+        
+        // Initialize the ad
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+
+        // Set up observer to detect when ad loads
+        const observer = new MutationObserver(() => {
+          if (adElement.querySelector('iframe')) {
+            console.log("Ad iframe detected, ad loaded successfully");
+            this.analytics.trackUIEvent("GameOverScene", "ad_shown_successfully");
+            observer.disconnect();
+            
+            // Wait for user to "watch" the ad before rewarding
+            setTimeout(() => {
+              this.cleanupAd();
+              this.rewardGemsAfterAd();
+            }, 8000); // 8 seconds watch time
+          }
+        });
+        
+        observer.observe(adElement, { childList: true, subtree: true });
+        
+        // Fallback timeout in case ad doesn't load
+        setTimeout(() => {
+          if (!adElement.querySelector('iframe')) {
+            console.log("Ad failed to load within timeout");
+            observer.disconnect();
+            this.cleanupAd();
+            this.handleAdFailure();
+          }
+        }, 5000); // 5 second timeout
+
+      } catch (error) {
+        console.log("AdSense error:", error);
+        this.analytics.trackUIEvent("GameOverScene", "ad_failed");
+        this.handleAdFailure();
+      }
+    } else {
+      console.log("AdSense not available");
+      this.analytics.trackUIEvent("GameOverScene", "adsense_unavailable");
+      // For testing - simulate ad completion
+      this.rewardGemsAfterAd();
+    }
+  }
+
+  cleanupAd() {
+    const adContainer = document.getElementById('gameover-ad-container');
+    if (adContainer) {
+      adContainer.remove();
+    }
+  }
+
+  handleAdFailure() {
+    // Reset the flag and re-enable button if ad fails
+    this.adShown = false;
+    this.ad_button.setInteractive();
+    this.ad_button.clearTint();
+    this.cleanupAd();
+  }
+
+  rewardGemsAfterAd() {
+    // Double the existing gem reward
+    const doubledGems = this.gemsEarned * 2;
+    
+    // Award doubled gems to the user
+    let user_data = JSON.parse(localStorage.getItem("user_data"));
+    user_data.profile.player.total_gems += doubledGems;
+    this.game.events.emit("updateUserEvent", { data: user_data });
+
+    // Update the final gem count display to show the doubled amount
+    const currentFinalCount = parseInt(this.final_gem_count.text) || 0;
+    const newFinalCount = currentFinalCount + doubledGems;
+    
+    // Animate the final_gem_count to show the bonus
+    this.tweens.addCounter({
+      from: currentFinalCount,
+      to: newFinalCount,
+      duration: 1000,
+      ease: "Quad.easeOut",
+      onUpdate: (tween) => {
+        this.final_gem_count.setText(Math.round(tween.getValue()).toString());
+      },
+      onComplete: () => {
+        // Small bounce effect when counting completes
+        this.tweens.add({
+          targets: this.final_gem_count,
+          scaleX: 1.2,
+          scaleY: 1.2,
+          duration: 200,
+          ease: "Quad.easeOut",
+          yoyo: true,
+          onComplete: () => {
+            this.final_gem_count.setScale(1);
+          },
+        });
+      },
+    });
+
+    this.analytics.trackUIEvent("GameOverScene", "ad_reward_given");
+  }
+
+  destroy() {
+    // Clean up any remaining ad elements when scene is destroyed
+    this.cleanupAd();
+    super.destroy();
   }
 
   /* END-USER-CODE */

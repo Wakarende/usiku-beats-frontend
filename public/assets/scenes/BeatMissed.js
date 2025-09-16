@@ -459,6 +459,8 @@ class BeatMissed extends Phaser.Scene {
     if (window.adsbygoogle) {
       console.log("Attempting to show AdSense ad");
       try {
+        // Clean up any existing AdSense elements to prevent conflicts
+        document.querySelectorAll('.adsbygoogle').forEach(el => el.remove());
         // Create proper DOM element for AdSense
         const adContainer = document.createElement('div');
         adContainer.id = 'beatmissed-ad-container';
