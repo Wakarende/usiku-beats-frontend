@@ -12,9 +12,10 @@ import useUnlockSongsStore from "../../stores/unlockSongsStore";
 import useStorageStore from "../../stores/storageStore";
 import Image from "next/image";
 import { AnalyticsService, logAnalyticsEvent } from "../../services/analytics.service";
+import MoveTransitionAnimation from "../transition/MoveTransitionAnimation";
 import "../styles.css";
 
-const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) => {
+const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6, yourSongsContainerRef }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
@@ -54,6 +55,28 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   const dispatch = useDispatch();
   const handleClickSound = useClickSound();
   const router = useRouter();
+
+ const unlockingCardRefs = useRef([]);
+  // const yourSongsContainerRef = useRef(null);
+  const [moveAnimation, setMoveAnimation] = useState({
+    isActive: false,
+    song: null,
+   
+  });
+
+   const handleAnimationComplete = useCallback(() => {
+  if (moveAnimation.song) {
+    updateSongData(moveAnimation.song);
+  }
+  setMoveAnimation({
+    isActive: false,
+    song: null
+  });
+
+  
+}, [moveAnimation.song]);
+
+const [animatingSlots, setAnimatingSlots] = useState({});
 
   // Track FTUE step and show appropriate panels
   useEffect(() => {
@@ -129,57 +152,130 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
     setShowUnlockingInfoPanel(false);
   };
 
-  function addToLibrary(song) {
-    // console.log("Add to library clicked for song:", song.id);
+  // function addToLibrary(song) {
+  //   // console.log("Add to library clicked for song:", song.id);
 
-    // Update user data
-    const newUserdata = JSON.parse(JSON.stringify(user_data));
-    const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
-    );
+  //   // Update user data
+  //   const newUserdata = JSON.parse(JSON.stringify(user_data));
+  //   const songInstance = newUserdata.profile.player.player_song_instances.find(
+  //     (instance) => instance.song.id === song.id
+  //   );
 
-    if (songInstance) {
-      songInstance.unlocked = true;
-      songInstance.unlock_time = null;
-      songInstance.unlock_start_time = new Date().toISOString();
-      dispatch(updateUser(newUserdata));
-      // console.log("Song unlocked and added to library:", song.id);
-    } else {
-      // console.error("Song not found in song instances", song.id);
-    }
+  //   if (songInstance) {
+  //     songInstance.unlocked = true;
+  //     songInstance.unlock_time = null;
+  //     songInstance.unlock_start_time = new Date().toISOString();
+  //     dispatch(updateUser(newUserdata));
+  //     // console.log("Song unlocked and added to library:", song.id);
+  //   } else {
+  //     // console.error("Song not found in song instances", song.id);
+  //   }
 
-    resetSongUnlockedState(song.id);
-    resetParticles(song.id);
+  //   resetSongUnlockedState(song.id);
+  //   resetParticles(song.id);
+
+  //   if (currentStep === 6 && !isCompleted) {
+  //     AnalyticsService.trackFTUEStep("8 - Add to Library");
+  //     logAnalyticsEvent("8 - Add to Library");
+  //     setAddToLibrarySeen(true);
+
+  //     completeStep(currentStep);
+
+  //     if (showUnlockOverlayPanel) {
+  //       setShowUnlockOverlayPanel(false);
+  //     }
+
+  //     if (song) {
+  //       // console.log("Setting currentTrackData for song:", song.id);
+  //       setCurrentTrackData(JSON.stringify(song));
+  //     }
+
+  //     if (onFtueProgressToStep6) {
+  //       onFtueProgressToStep6(song);
+  //     }
+
+  //     return;
+  //   }
+  //   // Normal behavior for non-FTUE
+  //   if (showUnlockOverlayPanel) {
+  //     setShowUnlockOverlayPanel(false);
+  //   }
+
+  //   handleClickSound();
+  // }
+
+  
+  function addToLibrary(song, cardIndex = 0) {
+  const startElementRef = unlockingCardRefs.current[cardIndex];
 
     if (currentStep === 6 && !isCompleted) {
       AnalyticsService.trackFTUEStep("8 - Add to Library");
-      logAnalyticsEvent("8 - Add to Library");
+      
       setAddToLibrarySeen(true);
-
       completeStep(currentStep);
 
+      // Hide the tutorial overlay immediately
       if (showUnlockOverlayPanel) {
         setShowUnlockOverlayPanel(false);
       }
 
       if (song) {
-        // console.log("Setting currentTrackData for song:", song.id);
         setCurrentTrackData(JSON.stringify(song));
       }
 
-      if (onFtueProgressToStep6) {
-        onFtueProgressToStep6(song);
-      }
-
-      return;
+       if (onFtueProgressToStep6) {
+      setTimeout(() => {
+      onFtueProgressToStep6(song);
+      }, 3000); // Wait for animation to finish
     }
-    // Normal behavior for non-FTUE
-    if (showUnlockOverlayPanel) {
-      setShowUnlockOverlayPanel(false);
     }
 
-    handleClickSound();
+    setAnimatingSlots(prev => ({ ...prev, [cardIndex]: true }));
+  
+    if (startElementRef) {
+      startElementRef.style.transition = 'opacity 0.3s ease-out';
+      startElementRef.style.opacity = '0';
+      startElementRef.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        if (startElementRef) {
+          startElementRef.style.display = 'none';
+        }
+      }, 300);
+    }
+  
+    setMoveAnimation({
+      isActive: true,
+      song: song
+    });
+  } 
+
+  function updateSongData(song) {
+  unstable_batchedUpdates(() => {
+    const newUserdata = JSON.parse(JSON.stringify(user_data));
+    const songInstance = newUserdata.profile.player.player_song_instances.find(
+      (instance) => instance.song.id === song.id
+    );
+    
+    if (songInstance) {
+      songInstance.unlocked = true;
+      songInstance.unlock_time = null;
+      songInstance.unlock_start_time = new Date().toISOString();
+      dispatch(updateUser(newUserdata));
+    }
+  });
+
+  // ADD THESE CLEANUP LINES:
+  resetSongUnlockedState(song.id);
+  resetParticles(song.id);
+
+  // Normal behavior for non-FTUE
+  if (showUnlockOverlayPanel) {
+    setShowUnlockOverlayPanel(false);
   }
+
+  // handleClickSound();
+}
 
   function handleUnlockNowClick(song) {
     setShowUnlockingInfoPanel(false);
@@ -294,65 +390,51 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
   }
 
   function TimerBar({ unlockTime, song }) {
-    const [fillPercent, setFillPercent] = useState(0);
+  const [fillPercent, setFillPercent] = useState(0);
 
-    useEffect(() => {
-      const calculateFill = () => {
-        const now = new Date();
-        const unlockDate = new Date(unlockTime);
+  useEffect(() => {
+    const calculateFill = () => {
+      const nowMs = Date.now();
+      const unlockMs = new Date(unlockTime).getTime();
 
-        if (now >= unlockDate) {
-          return 100;
-        }
+      const startMs = song.unlock_start_time
+        ? new Date(song.unlock_start_time).getTime()
+        : unlockMs - song.unlockDurationSec * 1000;
 
-        let startTime;
-        if (song && song.unlock_start_time) {
-          startTime = new Date(song.unlock_start_time);
-        } else {
-          const estimatedDuration = 60 * 1000;
-          startTime = new Date(unlockDate.getTime() - estimatedDuration);
-        }
+      const totalMs = unlockMs - startMs;
+      const elapsedMs = nowMs - startMs;
+      const pct = (elapsedMs / totalMs) * 100;
 
-        const totalDuration = unlockDate.getTime() - startTime.getTime();
+      return Math.max(0, Math.min(100, pct));
+    };
 
-        const elapsedTime = now.getTime() - startTime.getTime();
-
-        const percentage = (elapsedTime / totalDuration) * 100;
-
-        return Math.max(0, Math.min(100, percentage));
-      };
-
-      const timer = setInterval(() => {
-        setFillPercent(calculateFill());
-      }, 50);
-
+    setFillPercent(calculateFill());
+    const id = setInterval(() => {
       setFillPercent(calculateFill());
+    }, 50);
 
-      return () => clearInterval(timer);
-    }, [unlockTime, song]);
+    return () => clearInterval(id);
+  }, [unlockTime, song]);
 
-    return (
-      <div
-        className="h-full absolute left-0 rounded-sm transition-all duration-50 ease-linear"
-        style={{
-          width: `${fillPercent}%`,
-          background: "linear-gradient(to right, #edca55, #3bc0b3)",
-        }}
-      />
-    );
-  }
+  return (
+    <div
+      className="h-full rounded-sm w-full"
+      style={{
+        width: `${fillPercent}%`,
+        background: "linear-gradient(to right, #edca55, #3bc0b3)",
+      }}
+    />
+  );
+}
   const slots = 3;
   const slotsContent = [];
   for (let i = 0; i < slots; i++) {
     const item = lockedSongs[i];
-    if (item) {
-      const frameImage =
-        i % 2 === 0
-          ? "./assets/img/unlock/unlock_frame.png"
-          : "./assets/img/unlock/unlock_frame.png";
+    if (item && !animatingSlots[i]) {
       slotsContent.push(
         <div
           key={`song${item.song.id}`}
+          ref={(el) => unlockingCardRefs.current[i] = el}
           className="relative"
           onClick={() => {
             if (isUnlockTimePassed(item.unlock_time)) {
@@ -397,19 +479,22 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
                   </p>
                 </div>
                 <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0">
-                  <div className="absolute md:top-[30%] md:left-0 md:right-2 sm:top-[30%] sm:left-0 sm:right-2 h-2.5 rounded-sm w-full bg-[#5e203f]  lg:top-[30%] lg:left-0 lg:right-2">
-                    {item.unlock_time &&
-                      (isUnlockTimePassed(item.unlock_time) ? (
-                        <div
-                          className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
-                          style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
-                        />
-                      ) : (
-                        <TimerBar
-                          unlockTime={item.unlock_time}
-                          unlockStartTime={item.unlock_start_time}
-                        />
-                      ))}
+                 <div className="absolute md:top-[30%] md:left-[-2rem] sm:top-[30%] sm:left-[-2rem] h-2.5 lg:top-[30%] lg:left-[-2rem]" style={{ width: 'calc(100% + 4rem)'}}>
+                    <div className="w-full h-full rounded-sm bg-[#5e203f]   relative overflow-hidden">
+                        {item.unlock_time &&
+                          (isUnlockTimePassed(item.unlock_time) ? (
+                            <div
+                              className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
+                              style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
+                            />
+                          ) : (
+                            <TimerBar
+                              unlockTime={item.unlock_time}
+                              unlockStartTime={item.unlock_start_time}
+                              song={item} 
+                            />
+                          ))}
+                    </div>
                   </div>
                   <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0  lg:bottom-[3.3rem] lg:left-0 lg:right-0  flex items-center justify-center z-20">
                     <div className="flex items-center justify-center w-full">
@@ -657,6 +742,14 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6 }) =>
           transparentBg={false}
         />
       )}
+      <MoveTransitionAnimation
+        song={moveAnimation.song}
+        isActive={moveAnimation.isActive}
+        targetContainerRef={yourSongsContainerRef}
+        isFirstSong={songs?.length === 0}
+        showBackgroundOverlay={currentStep !== 6 || isCompleted}
+        onComplete={handleAnimationComplete}
+      />
     </div>
   );
 };
