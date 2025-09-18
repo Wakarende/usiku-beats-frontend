@@ -459,20 +459,55 @@ class BeatMissed extends Phaser.Scene {
     if (window.adsbygoogle) {
       console.log("Attempting to show AdSense ad");
       try {
-        // This approach works better for interstitial ads
-        window.adsbygoogle.push({
-          ad_slot: "6804075243",
-          ad_client: "ca-pub-6193376247880661",
-          ad_format: "interstitial",
+        // Create proper DOM element for AdSense
+        const adContainer = document.createElement('div');
+        adContainer.id = 'beatmissed-ad-container';
+        adContainer.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 90%; max-width: 320px;';
+        
+        const adElement = document.createElement('ins');
+        adElement.className = 'adsbygoogle';
+        adElement.style.cssText = 'display: block; width: 100%;';
+        adElement.setAttribute('data-ad-client', 'ca-pub-6193376247880661');
+        adElement.setAttribute('data-ad-slot', '6804075243');
+        adElement.setAttribute('data-ad-format', 'auto');
+        adElement.setAttribute('data-full-width-responsive', 'true');
+        
+        adContainer.appendChild(adElement);
+        document.body.appendChild(adContainer);
+        
+        // Initialize the ad
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+
+        // Set up observer to detect when ad loads
+        const observer = new MutationObserver(() => {
+          if (adElement.querySelector('iframe')) {
+            console.log("Ad iframe detected, ad loaded successfully");
+            if (this.logAnalytics && this.sessionId) {
+              this.logAnalytics(this.sessionId, "beat_missed_video_ad_shown_successfully");
+              console.log("beat_missed_video_ad_shown_successfully");
+            }
+            observer.disconnect();
+            
+            // Wait for user to "watch" the ad before rewarding
+            setTimeout(() => {
+              this.cleanupAd();
+              this.rewardGemsAfterAd();
+            }, 8000); // 8 seconds watch time
+          }
         });
+        
+        observer.observe(adElement, { childList: true, subtree: true });
+        
+        // Fallback timeout in case ad doesn't load
+        setTimeout(() => {
+          if (!adElement.querySelector('iframe')) {
+            console.log("Ad failed to load within timeout");
+            observer.disconnect();
+            this.cleanupAd();
+            this.handleAdFailure();
+          }
+        }, 5000); // 5 second timeout
 
-        if (this.logAnalytics && this.sessionId) {
-          this.logAnalytics(this.sessionId, "beat_missed_video_ad_shown_successfully");
-          console.log("beat_missed_video_ad_shown_successfully");
-        }
-
-        // Add reward gems logic after ad is shown
-        this.rewardGemsAfterAd();
       } catch (error) {
         console.log("AdSense error:", error);
 
@@ -480,13 +515,10 @@ class BeatMissed extends Phaser.Scene {
           this.logAnalytics(this.sessionId, "beat_missed_video_ad_failed");
           console.log("beat_missed_video_ad_failed:", error.message);
         }
-        // Reset the flag if there's an error
-        this.adShown = false;
-        this.bm_video_ad_btn.setInteractive();
-        this.bm_video_ad_btn.clearTint();
+        this.handleAdFailure();
       }
     } else {
-      // console.log("AdSense not available");
+      console.log("AdSense not available");
 
       if (this.logAnalytics && this.sessionId) {
         this.logAnalytics(this.sessionId, "beat_missed_adsense_unavailable");
@@ -495,6 +527,21 @@ class BeatMissed extends Phaser.Scene {
       // For testing - simulate ad completion
       this.rewardGemsAfterAd();
     }
+  }
+
+  cleanupAd() {
+    const adContainer = document.getElementById('beatmissed-ad-container');
+    if (adContainer) {
+      adContainer.remove();
+    }
+  }
+
+  handleAdFailure() {
+    // Reset the flag and re-enable button if ad fails
+    this.adShown = false;
+    this.bm_video_ad_btn.setInteractive();
+    this.bm_video_ad_btn.clearTint();
+    this.cleanupAd();
   }
 
   // Add this new method
@@ -533,6 +580,12 @@ class BeatMissed extends Phaser.Scene {
 
     this.continueCount++;
     this.registry.set("continueCount", this.continueCount); // Persist it
+  }
+
+  destroy() {
+    // Clean up any remaining ad elements when scene is destroyed
+    this.cleanupAd();
+    super.destroy();
   }
 
   countDown() {
