@@ -6,8 +6,23 @@ import { usePathname } from "next/navigation";
 
 const AudioContext = createContext<any>(null);
 
+
 export function useAudio() {
-  return useContext(AudioContext);
+  const context = useContext(AudioContext);
+  
+ 
+  if (!context) {
+    return {
+      playBgMusic: () => {},
+      stopBgMusic: () => {},
+      fadeOutBgMusic: () => {},
+      playBoom: () => {},
+      duckBgMusic: () => {},
+      restoreBgMusic: () => {},
+    };
+  }
+  
+  return context;
 }
 
 export default function AudioProvider({ children }: { children: React.ReactNode }) {
@@ -17,23 +32,6 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
 
   const [wasPlaying, setWasPlaying] = useState(false);
   const pathname = usePathname() || "";
-
-  useEffect(() => {
-    const bgMusic = new Howl({
-      src: ["./assets/sounds/ui/themeMusic.mp3"],
-      loop: true,
-      volume: 1,
-    });
-    howlsRef.current.bgMusic = bgMusic;
-
-    bgMusic.once("playerror", (id, error) => {
-      console.warn("Howler play error:", error);
-    });
-
-    return () => {
-      bgMusic.unload();
-    };
-  }, []);
 
   useEffect(() => {
     const bgMusic = howlsRef.current.bgMusic;
@@ -75,6 +73,7 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
     }
   }, [pathname]);
 
+
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -100,7 +99,10 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
   }, [wasPlaying, pathname]);
 
   const playBgMusic = () => {
-    howlsRef.current.bgMusic?.play();
+    const bgMusic = howlsRef.current.bgMusic;
+    if (bgMusic && !bgMusic.playing()) {
+      bgMusic.play();
+    }
   };
 
   const stopBgMusic = () => {
@@ -119,6 +121,26 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
     }
   };
 
+const duckBgMusic = (duckVolume = 0.2) => {
+  const bgMusic = howlsRef.current.bgMusic;
+  if (bgMusic && bgMusic.playing()) {
+   
+    if (!bgMusic.originalVolume) {
+      bgMusic.originalVolume = bgMusic.volume();
+    }
+    bgMusic.volume(duckVolume); 
+  }
+};
+
+const restoreBgMusic = () => {
+  const bgMusic = howlsRef.current.bgMusic;
+  if (bgMusic) {
+  
+    const originalVolume = bgMusic.originalVolume || 1.0;
+    bgMusic.volume(originalVolume);
+  }
+};
+
   const playBoom = () => {
     const boomSfx = new Howl({
       src: ["./assets/sounds/ui/boomHitSfx.mp3"],
@@ -134,6 +156,8 @@ export default function AudioProvider({ children }: { children: React.ReactNode 
         stopBgMusic,
         fadeOutBgMusic,
         playBoom,
+        duckBgMusic,
+        restoreBgMusic,
       }}
     >
       {children}

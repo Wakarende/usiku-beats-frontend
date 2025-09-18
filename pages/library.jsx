@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { updateUser } from "../redux/main/authActions";
 import { motion } from "framer-motion";
 import Header from "../components/header/Header";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 import { OverlayCard } from "../components/artistinfo/OverlayCard";
 import InfoPanel from "../components/infopanel/InfoPanel";
@@ -20,6 +21,7 @@ import useFTUEStore from "../stores/ftueStore";
 import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
 // import ZustandDebug from "../components/zustandDebug";
 import "./pages.css";
+import { useAudio } from "../src/context/AudioProvider";
 
 const isSongInQueue = (songInstance) => {
   if (!songInstance) return false;
@@ -55,6 +57,11 @@ const Library = () => {
   } = useFTUEStore();
   const [sessionUnlockCounter, setSessionUnlockCounter] = useState(0);
 
+  const [currentlyPlayingSongId, setCurrentlyPlayingSongId] = useState(null);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [audioRef, setAudioRef] = useState(null);
+
+
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
@@ -62,9 +69,21 @@ const Library = () => {
 
   const gemsRequiredToUnlockSong = 20;
 
+  const { duckBgMusic, restoreBgMusic } = useAudio();
+
   useEffect(() => {
     AnalyticsService.trackUIEvent("Library", "View");
   }, []);
+
+   //audio cleanup mp3 preview
+  useEffect(() => {
+    return () => {
+      if (audioRef) {
+        audioRef.pause();
+        audioRef.currentTime = 0;
+      }
+    };
+  }, [audioRef]);
 
   useEffect(() => {
     if (currentStep === 2) {
@@ -126,7 +145,7 @@ const Library = () => {
       setLibraryTutorialSeen(true);
     }
 
-    const songIds = [149, 150, 151, 152, 153, 154];
+    const songIds = [149, 150, 151, 152, 153, 154, 155, 156, 158, 159, 160, 161, 162, 163];
     const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
     axios.get(url).then((res) => {
@@ -251,15 +270,19 @@ const Library = () => {
     setSessionUnlockCounter((prevCount) => prevCount + 1);
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
+    const now = new Date();
+    const unlockDurationSec = (new Date(unlockTime).getTime() - now.getTime()) / 1000;
 
     let newSongInstance = {
-      date_added: new Date().toISOString(),
+      date_added: now.toISOString(),
       favourited: false,
       high_score: 0,
       maximum_progress: 0,
       no_of_plays: 0,
       paid_for_flag: false,
       unlock_time: unlockTime,
+      unlock_start_time: new Date().toISOString(),
+      unlockDurationSec,
       unlocked: unlockedFlag,
       song,
     };
@@ -342,6 +365,95 @@ const Library = () => {
     (instance) => instance.unlocked
   );
 
+  const handleSongPreview = async (song, canPreview) => {
+   
+    if (!canPreview) {
+      return;
+    }
+    
+    handleClickSound();
+    
+ 
+    if (currentlyPlayingSongId === song.id) {
+      stopAudioPreview();
+      return;
+    }
+    
+   
+    if (audioRef) {
+      stopAudioPreview();
+    }
+
+    duckBgMusic(0.1);
+    
+    try {
+   
+      const audio = new Audio(song.mp3_file);
+      
+     
+      const handleTimeUpdate = () => {
+        const progress = (audio.currentTime / 10) * 100; 
+        setAudioProgress(progress);
+      };
+      
+      const handleEnded = () => {
+        stopAudioPreview();
+      };
+      
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('ended', handleEnded);
+      
+     
+      setAudioRef(audio);
+      setCurrentlyPlayingSongId(song.id);
+      setAudioProgress(0);
+      
+      
+      await audio.play();
+      
+      
+      const timeoutId = setTimeout(() => {
+        if (audio && !audio.paused && !audio.ended) {
+          stopAudioPreview();
+        }
+      }, 10000); 
+      
+     
+      audio.timeoutId = timeoutId;
+      
+    } catch (error) {
+      
+      console.warn('Audio playback failed:', error);
+      stopAudioPreview();
+    }
+  };
+
+  const stopAudioPreview = () => {
+    if (audioRef) {
+      
+      if (audioRef.timeoutId) {
+        clearTimeout(audioRef.timeoutId);
+      }
+      
+      
+      if (!audioRef.paused && !audioRef.ended) {
+        audioRef.pause();
+      }
+      
+      audioRef.currentTime = 0;
+      
+      
+      audioRef.removeEventListener('timeupdate', () => {});
+      audioRef.removeEventListener('ended', () => {});
+    }
+
+    restoreBgMusic();
+    
+    setCurrentlyPlayingSongId(null);
+    setAudioProgress(0);
+    setAudioRef(null);
+  };
+
   return (
     <div className="cmd-page">
       <Header />
@@ -390,15 +502,38 @@ const Library = () => {
             return (
               <div key={index} className="w-full max-w-xl ">
                 <div className="p-4 flex flex-row justify-center items-center">
-                  <div className="flex-shrink-0">
-                    <Image
+                    <div className="flex-shrink-0 relative md:w-[150px] sm:w-[120px] lg:w-[180px] xl:w-[200px] ">
+                   <Image
                       src={song.thumbnail_file}
                       alt="Song Cover"
                       width={1}
                       height={1}
-                      className="rounded-md md:w-[150px] sm:w-[120px] lg:w-[180px] xl:w-[200px] object-cover"
+                      className="object-cover rounded-lg w-full h-auto"
                     />
-                  </div>
+                    <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
+                    <button
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-28 h-28"
+                    onClick={() => {
+                      const canPreview = !showUnlocked && unlockable;
+                      if (canPreview) {
+                        handleSongPreview(song, canPreview);
+                      }
+                    }}
+                    disabled={showUnlocked || !unlockable}
+                    style={{ opacity: (showUnlocked || !unlockable) ? 0.5 : 1 }}
+                    >
+                      {currentlyPlayingSongId === song.id ? (
+                        <div className="flex flex-col justify-center items-center">
+                        <Image alt="stop-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto" src={'/assets/img/library/stop-icon.png'} width={100} height={100}/>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col justify-center items-center w-full h-full gap-1.5">
+                           <Image alt="speaker-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto object-contain" src={'/assets/img/library/speaker-icon.png'} width={10} height={10}/> 
+                           <p className="text-yellow sm:text-lg md:font-xl uppercase">Preview</p> 
+                        </div>
+                      )}
+                    </button>
+                </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <p className="font-bold text-yellow text-lg md:text-md sm:text-sm text-nowrap lg:text-xl xl:text-2xl">
