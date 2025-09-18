@@ -197,13 +197,10 @@ const [animatingSlots, setAnimatingSlots] = useState({});
     isActive: true,
     song: song
   });
-  
-
 }
 
 function updateSongData(song) {
   unstable_batchedUpdates(() => {
-    
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     const songInstance = newUserdata.profile.player.player_song_instances.find(
       (instance) => instance.song.id === song.id
@@ -216,8 +213,18 @@ function updateSongData(song) {
       dispatch(updateUser(newUserdata));
     }
   });
-}
 
+  // ADD THESE CLEANUP LINES:
+  resetSongUnlockedState(song.id);
+  resetParticles(song.id);
+
+  // Normal behavior for non-FTUE
+  if (showUnlockOverlayPanel) {
+    setShowUnlockOverlayPanel(false);
+  }
+
+  handleClickSound();
+}
 
 
 function handleUnlockNowClick(song) {

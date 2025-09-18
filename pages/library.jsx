@@ -138,7 +138,7 @@ const Library = () => {
       setLibraryTutorialSeen(true);
     }
 
-    const songIds = [149, 150, 151, 152, 153, 154];
+    const songIds = [149, 150, 151, 152, 153, 154, 155, 156, 158, 159, 160, 161, 162, 163];
     const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
     axios.get(url).then((res) => {
@@ -271,7 +271,9 @@ const Library = () => {
       ).length;
 
       const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
-      const unlockTimes = [30, 60, 300, 600, 1200];
+      const unlockTimes = [300, 60, 300, 600, 1200];
+      // const unlockTimes = [30000, 6000, 30000, 6000, 12000];
+
       
 
       const postFtueCount = totalSongs - 1;
@@ -547,7 +549,7 @@ const Library = () => {
                         </div>
                       )}
                     </button>
-                  );  
+                    
                 </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
