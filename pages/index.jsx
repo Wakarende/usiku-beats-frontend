@@ -24,7 +24,7 @@ export default function TitleScreen() {
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
   const [isInIframe, setIsInIframe] = useState(false);
-  const currentVersion = "0.2.6"; // Match the version displayed in the UI
+  const currentVersion = "0.2.8"; // Match the version displayed in the UI
 
   const isIframeMode = router.query.iframe === 'true';
 
