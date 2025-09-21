@@ -15,7 +15,13 @@ import { AnalyticsService, logAnalyticsEvent } from "../../services/analytics.se
 import MoveTransitionAnimation from "../transition/MoveTransitionAnimation";
 import "../styles.css";
 
-const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6, yourSongsContainerRef }) => {
+const UnlockSongsRow = ({
+  user_data,
+  songs,
+  loading,
+  onFtueProgressToStep6,
+  yourSongsContainerRef,
+}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
@@ -56,27 +62,24 @@ const UnlockSongsRow = ({ user_data, songs, loading, onFtueProgressToStep6, your
   const handleClickSound = useClickSound();
   const router = useRouter();
 
- const unlockingCardRefs = useRef([]);
+  const unlockingCardRefs = useRef([]);
   // const yourSongsContainerRef = useRef(null);
   const [moveAnimation, setMoveAnimation] = useState({
     isActive: false,
     song: null,
-   
   });
 
-   const handleAnimationComplete = useCallback(() => {
-  if (moveAnimation.song) {
-    updateSongData(moveAnimation.song);
-  }
-  setMoveAnimation({
-    isActive: false,
-    song: null
-  });
+  const handleAnimationComplete = useCallback(() => {
+    if (moveAnimation.song) {
+      updateSongData(moveAnimation.song);
+    }
+    setMoveAnimation({
+      isActive: false,
+      song: null,
+    });
+  }, [moveAnimation.song]);
 
-  
-}, [moveAnimation.song]);
-
-const [animatingSlots, setAnimatingSlots] = useState({});
+  const [animatingSlots, setAnimatingSlots] = useState({});
 
   // Track FTUE step and show appropriate panels
   useEffect(() => {
@@ -204,13 +207,12 @@ const [animatingSlots, setAnimatingSlots] = useState({});
   //   handleClickSound();
   // }
 
-  
   function addToLibrary(song, cardIndex = 0) {
-  const startElementRef = unlockingCardRefs.current[cardIndex];
+    const startElementRef = unlockingCardRefs.current[cardIndex];
 
     if (currentStep === 6 && !isCompleted) {
       AnalyticsService.trackFTUEStep("8 - Add to Library");
-      
+
       setAddToLibrarySeen(true);
       completeStep(currentStep);
 
@@ -223,59 +225,66 @@ const [animatingSlots, setAnimatingSlots] = useState({});
         setCurrentTrackData(JSON.stringify(song));
       }
 
-       if (onFtueProgressToStep6) {
-      setTimeout(() => {
-      onFtueProgressToStep6(song);
-      }, 3000); // Wait for animation to finish
-    }
+      if (onFtueProgressToStep6) {
+        setTimeout(() => {
+          onFtueProgressToStep6(song);
+        }, 3000); // Wait for animation to finish
+      }
     }
 
-    setAnimatingSlots(prev => ({ ...prev, [cardIndex]: true }));
-  
+    setAnimatingSlots((prev) => ({ ...prev, [cardIndex]: true }));
+
     if (startElementRef) {
-      startElementRef.style.transition = 'opacity 0.3s ease-out';
-      startElementRef.style.opacity = '0';
-      startElementRef.style.pointerEvents = 'none';
+      startElementRef.style.transition = "opacity 0.3s ease-out";
+      startElementRef.style.opacity = "0";
+      startElementRef.style.pointerEvents = "none";
 
       setTimeout(() => {
         if (startElementRef) {
-          startElementRef.style.display = 'none';
+          startElementRef.style.display = "none";
         }
       }, 300);
     }
-  
+
     setMoveAnimation({
       isActive: true,
-      song: song
+      song: song,
     });
-  } 
-
-  function updateSongData(song) {
-  unstable_batchedUpdates(() => {
-    const newUserdata = JSON.parse(JSON.stringify(user_data));
-    const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
-    );
-    
-    if (songInstance) {
-      songInstance.unlocked = true;
-      songInstance.unlock_time = null;
-      songInstance.unlock_start_time = new Date().toISOString();
-      dispatch(updateUser(newUserdata));
-    }
-  });
-
-  // ADD THESE CLEANUP LINES:
-  resetSongUnlockedState(song.id);
-  resetParticles(song.id);
-
-  // Normal behavior for non-FTUE
-  if (showUnlockOverlayPanel) {
-    setShowUnlockOverlayPanel(false);
   }
 
-  // handleClickSound();
-}
+  function updateSongData(song) {
+    unstable_batchedUpdates(() => {
+      const newUserdata = JSON.parse(JSON.stringify(user_data));
+      const songInstance = newUserdata.profile.player.player_song_instances.find(
+        (instance) => instance.song.id === song.id
+      );
+
+      if (songInstance) {
+        songInstance.unlocked = true;
+        songInstance.unlock_time = null;
+        songInstance.unlock_start_time = new Date().toISOString();
+        dispatch(updateUser(newUserdata));
+
+        // Add analytics logging
+        logAnalyticsEvent("song_added_to_library", null, song.song_name || `Song ID: ${song.id}`);
+
+        // console.log("Song unlocked and added to library:", song.id);
+      } else {
+        // console.error("Song not found in song instances", song.id);
+      }
+    });
+
+    // ADD THESE CLEANUP LINES:
+    resetSongUnlockedState(song.id);
+    resetParticles(song.id);
+
+    // Normal behavior for non-FTUE
+    if (showUnlockOverlayPanel) {
+      setShowUnlockOverlayPanel(false);
+    }
+
+    // handleClickSound();
+  }
 
   function handleUnlockNowClick(song) {
     setShowUnlockingInfoPanel(false);
@@ -390,42 +399,42 @@ const [animatingSlots, setAnimatingSlots] = useState({});
   }
 
   function TimerBar({ unlockTime, song }) {
-  const [fillPercent, setFillPercent] = useState(0);
+    const [fillPercent, setFillPercent] = useState(0);
 
-  useEffect(() => {
-    const calculateFill = () => {
-      const nowMs = Date.now();
-      const unlockMs = new Date(unlockTime).getTime();
+    useEffect(() => {
+      const calculateFill = () => {
+        const nowMs = Date.now();
+        const unlockMs = new Date(unlockTime).getTime();
 
-      const startMs = song.unlock_start_time
-        ? new Date(song.unlock_start_time).getTime()
-        : unlockMs - song.unlockDurationSec * 1000;
+        const startMs = song.unlock_start_time
+          ? new Date(song.unlock_start_time).getTime()
+          : unlockMs - song.unlockDurationSec * 1000;
 
-      const totalMs = unlockMs - startMs;
-      const elapsedMs = nowMs - startMs;
-      const pct = (elapsedMs / totalMs) * 100;
+        const totalMs = unlockMs - startMs;
+        const elapsedMs = nowMs - startMs;
+        const pct = (elapsedMs / totalMs) * 100;
 
-      return Math.max(0, Math.min(100, pct));
-    };
+        return Math.max(0, Math.min(100, pct));
+      };
 
-    setFillPercent(calculateFill());
-    const id = setInterval(() => {
       setFillPercent(calculateFill());
-    }, 50);
+      const id = setInterval(() => {
+        setFillPercent(calculateFill());
+      }, 50);
 
-    return () => clearInterval(id);
-  }, [unlockTime, song]);
+      return () => clearInterval(id);
+    }, [unlockTime, song]);
 
-  return (
-    <div
-      className="h-full rounded-sm w-full"
-      style={{
-        width: `${fillPercent}%`,
-        background: "linear-gradient(to right, #edca55, #3bc0b3)",
-      }}
-    />
-  );
-}
+    return (
+      <div
+        className="h-full rounded-sm w-full"
+        style={{
+          width: `${fillPercent}%`,
+          background: "linear-gradient(to right, #edca55, #3bc0b3)",
+        }}
+      />
+    );
+  }
   const slots = 3;
   const slotsContent = [];
   for (let i = 0; i < slots; i++) {
@@ -434,7 +443,7 @@ const [animatingSlots, setAnimatingSlots] = useState({});
       slotsContent.push(
         <div
           key={`song${item.song.id}`}
-          ref={(el) => unlockingCardRefs.current[i] = el}
+          ref={(el) => (unlockingCardRefs.current[i] = el)}
           className="relative"
           onClick={() => {
             if (isUnlockTimePassed(item.unlock_time)) {
@@ -479,21 +488,24 @@ const [animatingSlots, setAnimatingSlots] = useState({});
                   </p>
                 </div>
                 <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0">
-                 <div className="absolute md:top-[30%] md:left-[-2rem] sm:top-[30%] sm:left-[-2rem] h-2.5 lg:top-[30%] lg:left-[-2rem]" style={{ width: 'calc(100% + 4rem)'}}>
+                  <div
+                    className="absolute md:top-[30%] md:left-[-2rem] sm:top-[30%] sm:left-[-2rem] h-2.5 lg:top-[30%] lg:left-[-2rem]"
+                    style={{ width: "calc(100% + 4rem)" }}
+                  >
                     <div className="w-full h-full rounded-sm bg-[#5e203f]   relative overflow-hidden">
-                        {item.unlock_time &&
-                          (isUnlockTimePassed(item.unlock_time) ? (
-                            <div
-                              className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
-                              style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
-                            />
-                          ) : (
-                            <TimerBar
-                              unlockTime={item.unlock_time}
-                              unlockStartTime={item.unlock_start_time}
-                              song={item} 
-                            />
-                          ))}
+                      {item.unlock_time &&
+                        (isUnlockTimePassed(item.unlock_time) ? (
+                          <div
+                            className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
+                            style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
+                          />
+                        ) : (
+                          <TimerBar
+                            unlockTime={item.unlock_time}
+                            unlockStartTime={item.unlock_start_time}
+                            song={item}
+                          />
+                        ))}
                     </div>
                   </div>
                   <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0  lg:bottom-[3.3rem] lg:left-0 lg:right-0  flex items-center justify-center z-20">

@@ -176,7 +176,7 @@ export const AnalyticsService = {
 
 const ANALYTICS_ENDPOINT = "https://api.usiku.games/analytics/"; // Adjust this to match your Django URL
 
-export const logAnalytics = async (sessionId, eventId) => {
+export const logAnalytics = async (sessionId, eventId, data = null) => {
   try {
     // Get or create persistent user ID for debugging session issues
     let persistentId = localStorage.getItem("persistentUserId");
@@ -186,11 +186,18 @@ export const logAnalytics = async (sessionId, eventId) => {
     }
 
     // console.log(`sending event ${eventId}`);
-    await axios.post(ANALYTICS_ENDPOINT, {
+    const payload = {
       sessionId,
       eventId,
       persistentId,
-    });
+    };
+    
+    // Include data field if provided
+    if (data !== null) {
+      payload.data = data;
+    }
+    
+    await axios.post(ANALYTICS_ENDPOINT, payload);
   } catch (error) {
     // Silently fail - analytics shouldn't break the game
     console.warn("Analytics logging failed:", error);
@@ -198,7 +205,7 @@ export const logAnalytics = async (sessionId, eventId) => {
 };
 
 // New function that auto-gets sessionId
-export const logAnalyticsEvent = async (eventId, customSessionId = null) => {
+export const logAnalyticsEvent = async (eventId, customSessionId = null, data = null) => {
   try {
     const sessionId = customSessionId || sessionStorage.getItem("sessionId");
 
@@ -207,7 +214,7 @@ export const logAnalyticsEvent = async (eventId, customSessionId = null) => {
       return;
     }
 
-    return logAnalytics(sessionId, eventId);
+    return logAnalytics(sessionId, eventId, data);
   } catch (error) {
     console.warn("Analytics logging failed:", error);
   }

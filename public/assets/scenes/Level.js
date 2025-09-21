@@ -1974,6 +1974,15 @@ class Level extends Phaser.Scene {
     this.music.pause();
     this.scene.pause();
 
+    // Add song finished analytics
+    if (this.logAnalytics && this.sessionId) {
+      this.logAnalytics(
+        this.sessionId,
+        "song_complete",
+        `${this.track.song_name} - Score: ${this.score}`
+      );
+    }
+
     const sceneData = {
       track: this.track,
       score: this.score,

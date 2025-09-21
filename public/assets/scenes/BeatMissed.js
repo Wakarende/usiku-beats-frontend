@@ -504,6 +504,10 @@ class BeatMissed extends Phaser.Scene {
         setTimeout(() => {
           if (!adElement.querySelector('iframe')) {
             console.log("Ad failed to load within timeout");
+            if (this.logAnalytics && this.sessionId) {
+              this.logAnalytics(this.sessionId, "beat_missed_video_ad_timeout", "Failed to load within 5 seconds");
+              console.log("beat_missed_video_ad_timeout");
+            }
             observer.disconnect();
             this.cleanupAd();
             this.handleAdFailure();
@@ -514,7 +518,7 @@ class BeatMissed extends Phaser.Scene {
         console.log("AdSense error:", error);
 
         if (this.logAnalytics && this.sessionId) {
-          this.logAnalytics(this.sessionId, "beat_missed_video_ad_failed");
+          this.logAnalytics(this.sessionId, "beat_missed_video_ad_failed", error.message);
           console.log("beat_missed_video_ad_failed:", error.message);
         }
         this.handleAdFailure();
@@ -523,7 +527,7 @@ class BeatMissed extends Phaser.Scene {
       console.log("AdSense not available");
 
       if (this.logAnalytics && this.sessionId) {
-        this.logAnalytics(this.sessionId, "beat_missed_adsense_unavailable");
+        this.logAnalytics(this.sessionId, "beat_missed_adsense_unavailable", "window.adsbygoogle not available");
         console.log("beat_missed_adsense_unavailable");
       }
       // For testing - simulate ad completion
