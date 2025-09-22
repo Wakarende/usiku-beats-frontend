@@ -201,7 +201,7 @@ class GameOverScene extends Phaser.Scene {
     // final_gem_count
     const final_gem_count = this.add.text(320, 365, "", {});
     final_gem_count.setOrigin(0.5, 0.5);
-    final_gem_count.text = "30";
+    final_gem_count.text = "0";
     final_gem_count.setStyle({ fontFamily: "Carlito-Regular", fontSize: "12px" });
 
     // lists

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/main/authActions";
 import Popup from "../library/Popup";

@@ -20,7 +20,7 @@ export const AnalyticsService = {
     // Only initialize once and only on client-side
     if (!initialized && typeof window !== "undefined" && gameanalytics) {
       try {
-        gameanalytics.GameAnalytics.configureBuild("0.3.1");
+        gameanalytics.GameAnalytics.configureBuild("0.3.2");
         gameanalytics.GameAnalytics.configureAvailableResourceCurrencies([
           "Gems",
           "Discs",
@@ -191,12 +191,12 @@ export const logAnalytics = async (sessionId, eventId, data = null) => {
       eventId,
       persistentId,
     };
-    
+
     // Include data field if provided
     if (data !== null) {
       payload.data = data;
     }
-    
+
     await axios.post(ANALYTICS_ENDPOINT, payload);
   } catch (error) {
     // Silently fail - analytics shouldn't break the game

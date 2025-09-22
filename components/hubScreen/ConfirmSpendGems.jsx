@@ -260,7 +260,7 @@ useEffect(() => {
     return (
       <div className="fixed inset-0 flex items-center justify-center z-[110] bg-black/80">
         <div
-          style={{ backgroundImage: `url("./assets/img/dailyreward/bg-v1.png")` }}
+          style={{ backgroundImage: `url("./assets/img/dailyreward/bg_v1.png")` }}
           className="text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
         >
           <div className="flex flex-col gap-0 mt-10">
@@ -395,7 +395,7 @@ useEffect(() => {
   <>   
     <div className="fixed inset-0 flex items-center justify-center z-[110] bg-black/80">
       <div
-        style={{ backgroundImage: `url("./assets/img/dailyreward/bg-v1.png")` }}
+        style={{ backgroundImage: `url("./assets/img/dailyreward/bg_v1.png")` }}
         className="text-center relative w-full h-auto bg-no-repeat bg-center bg-contain"
       >
         <div className="flex flex-col gap-0 mt-10">

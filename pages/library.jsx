@@ -484,7 +484,7 @@ const Library = () => {
         </div>
         <div className="gradient-container item-stretch w-full p-0">
           <Image
-            src={"./assets/img/library/Gradient-copy.png"}
+            src={"./assets/img/library/gradient_copy.png"}
             alt="gradient-separator"
             width={150}
             height={10}
@@ -524,11 +524,11 @@ const Library = () => {
                     >
                       {currentlyPlayingSongId === song.id ? (
                         <div className="flex flex-col justify-center items-center">
-                        <Image alt="stop-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto" src={'/assets/img/library/stop-icon.png'} width={100} height={100}/>
+                        <Image alt="stop-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto" src={'./assets/img/library/stop_icon.png'} width={100} height={100}/>
                         </div>
                       ) : (
                         <div className="flex flex-col justify-center items-center w-full h-full gap-1.5">
-                           <Image alt="speaker-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto object-contain" src={'/assets/img/library/speaker-icon.png'} width={10} height={10}/> 
+                           <Image alt="speaker-icon" className="sm:w-12 md:w-16 lg:w-20 xl:w-28 h-auto object-contain" src={'./assets/img/library/speaker_icon.png'} width={10} height={10}/> 
                            <p className="text-yellow sm:text-lg md:font-xl uppercase">Preview</p> 
                         </div>
                       )}
