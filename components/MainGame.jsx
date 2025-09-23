@@ -9,6 +9,7 @@ import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
 import { useAudio } from "../src/context/AudioProvider";
 import { AnalyticsService, logAnalytics } from "../services/analytics.service";
 import useFTUEStore from "../stores/ftueStore";
+import { getPhaserBaseURL } from "../src/utils/css-config";
 
 class Boot extends Phaser.Scene {
   preload() {
@@ -143,7 +144,7 @@ const PhaserGame = () => {
             height: 1280,
             backgroundColor: "#000000",
             loader: {
-              baseURL: "/games/usiku/beats/", // This will be '/games/usiku/beats/'
+              baseURL: getPhaserBaseURL(),
             },
             scale: {
               mode: Phaser.Scale.FIT,

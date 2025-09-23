@@ -11,12 +11,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AnalyticsService } from "../services/analytics.service";
 import { useEffect } from "react";
 import AudioProvider from "../src/context/AudioProvider";
+import { injectCSSVariables, injectFonts } from "../src/utils/css-config";
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   const currentRouter = useRouter();
   useEffect(() => {
     // Initialize analytics on client-side
     AnalyticsService.init();
+    
+    // Inject CSS variables for configurable paths
+    injectCSSVariables();
+    
+    // Inject dynamic font declarations
+    injectFonts();
   }, []);
 
   return (

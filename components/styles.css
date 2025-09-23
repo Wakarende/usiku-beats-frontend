@@ -27,7 +27,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-image: url("/games/usiku/beats/assets/img/header/Top_banner.png");
+  background-image: var(--header-top-banner-url);
   background-size: cover;
   background-position: center;
   padding-top: 8px;
@@ -119,7 +119,7 @@
 
 .disc-indicator-wrapper {
   position: relative;
-  background-image: url("/games/usiku/beats/assets/img/hub/Disc_bg.png");
+  background-image: var(--hub-disc-bg-url);
   width: 137px;
   height: 160px;
   aspect-ratio: 1/1;
@@ -231,7 +231,7 @@
 /* HUBSCREEN CARD  */
 .frame {
   position: relative;
-  background-image: url("/games/usiku/beats/assets/img/hub/frame.png");
+  background-image: var(--hub-frame-url);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 7px 8px 6px 6px;
@@ -405,7 +405,7 @@ svg {
 }
 
 .enough-gems-btn {
-  background-image: url("/games/usiku/beats/assets/img/hub/button_blank.png");
+  background-image: var(--hub-button-blank-url);
   width: 100%;
   height: auto;
   padding: 0.5rem;
@@ -471,15 +471,15 @@ svg {
 
 /* Level Info Component and Page  */
 .bg-level-active {
-  background-image: url("/games/usiku/beats/assets/img/levelinfo/Tile_Active.png");
+  background-image: var(--levelinfo-tile-active-url);
 }
 
 .bg-level-completed {
-  background-image: url("/games/usiku/beats/assets/img/levelinfo/Tile_completed.png");
+  background-image: var(--levelinfo-tile-completed-url);
 }
 
 .bg-level-inactive {
-  background-image: url("/games/usiku/beats/assets/img/levelinfo/Tile_Inactive.png");
+  background-image: var(--levelinfo-tile-inactive-url);
 }
 
 /* .stars {
@@ -616,7 +616,7 @@ svg {
 }
 
 .levelup-btn {
-  background-image: url("/games/usiku/beats/assets/img/levelup/see_unlock_btn.png");
+  background-image: var(--levelup-see-unlock-btn-url);
 }
 
 /* LEVEL UP POPUP END  */

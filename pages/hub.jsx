@@ -18,6 +18,7 @@ import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import InfoPanel from "../components/infopanel/InfoPanel";
 import useFTUEStore from "../stores/ftueStore";
 import useUnlockSongsStore from "../stores/unlockSongsStore";
+import { getPagePath } from "../src/utils/css-config";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
 import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
@@ -336,7 +337,7 @@ const HubScreen = () => {
 
     setCurrentTrackData(JSON.stringify(track));
 
-    const src = process.env.NODE_ENV === "production" ? `/games/usiku/beats/game.html` : `/game`;
+    const src = process.env.NODE_ENV === "production" ? getPagePath("game.html") : `/game`;
     window.location.href = src;
     // router.push("/game");
   };
