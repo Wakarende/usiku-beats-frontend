@@ -18,7 +18,7 @@ import DailyRewardPopup from "../components/dailyreward/DailyPopup";
 import InfoPanel from "../components/infopanel/InfoPanel";
 import useFTUEStore from "../stores/ftueStore";
 import useUnlockSongsStore from "../stores/unlockSongsStore";
-import { getPagePath } from "../src/utils/css-config";
+import { getPagePath } from "../src/utils/env-config";
 import useClickSound from "../hooks/useClickSound";
 import { useAudio } from "../src/context/AudioProvider";
 import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";

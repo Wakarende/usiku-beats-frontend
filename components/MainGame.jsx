@@ -9,7 +9,7 @@ import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
 import { useAudio } from "../src/context/AudioProvider";
 import { AnalyticsService, logAnalytics } from "../services/analytics.service";
 import useFTUEStore from "../stores/ftueStore";
-import { getPhaserBaseURL } from "../src/utils/css-config";
+import { getPhaserBaseURL, GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_SLOT } from "../src/utils/env-config";
 
 class Boot extends Phaser.Scene {
   preload() {
@@ -187,6 +187,8 @@ const PhaserGame = () => {
 
           gameRef.current.registry.set("analytics", AnalyticsService);
           gameRef.current.registry.set("logAnalytics", logAnalytics);
+          gameRef.current.registry.set("googleAdsClientId", GOOGLE_ADS_CLIENT_ID);
+          gameRef.current.registry.set("googleAdsSlot", GOOGLE_ADS_SLOT);
 
           let version = "0.3.2";
           // Check for existing session ID before creating new one

@@ -469,8 +469,8 @@ class BeatMissed extends Phaser.Scene {
         const adElement = document.createElement('ins');
         adElement.className = 'adsbygoogle';
         adElement.style.cssText = 'display: block; width: 100%;';
-        adElement.setAttribute('data-ad-client', 'ca-pub-6193376247880661');
-        adElement.setAttribute('data-ad-slot', '6804075243');
+        adElement.setAttribute('data-ad-client', this.registry.get("googleAdsClientId") || 'ca-pub-6193376247880661');
+        adElement.setAttribute('data-ad-slot', this.registry.get("googleAdsSlot") || '6804075243');
         adElement.setAttribute('data-ad-format', 'auto');
         adElement.setAttribute('data-full-width-responsive', 'true');
         

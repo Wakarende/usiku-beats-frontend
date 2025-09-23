@@ -8,6 +8,10 @@ export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 // Get asset prefix from environment variable with fallback
 export const ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
+// Get Google Ads configuration from environment variables
+export const GOOGLE_ADS_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID ?? '';
+export const GOOGLE_ADS_SLOT = process.env.NEXT_PUBLIC_GOOGLE_ADS_SLOT ?? '';
+
 // Helper function to construct asset URLs
 export const getAssetPath = (path) => {
   // Remove leading slash if present to avoid double slashes
@@ -161,3 +165,5 @@ export const injectFonts = () => {
     document.head.appendChild(style);
   }
 };
+
+// Google Ads client ID is now passed via Phaser registry in MainGame.jsx

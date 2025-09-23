@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import "../styles.css";
 import useFTUEStore from "../../stores/ftueStore";
+import { GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_SLOT } from "../../src/utils/env-config";
 
 // assets for the ads  buttons
 const SPEND_GEMS_BTN_SRC = "./assets/img/spendgems/spend_gems_btn.png";
@@ -474,8 +475,8 @@ useEffect(() => {
                 ref={adRef}
                 className="adsbygoogle"
                 style={{ display: "block", width: "100%" }}
-                data-ad-client="ca-pub-6193376247880661"
-                data-ad-slot="6804075243"
+                data-ad-client={GOOGLE_ADS_CLIENT_ID}
+                data-ad-slot={GOOGLE_ADS_SLOT}
                 data-ad-format="auto"
                 data-full-width-responsive="true"
               />

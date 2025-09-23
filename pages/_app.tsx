@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AnalyticsService } from "../services/analytics.service";
 import { useEffect } from "react";
 import AudioProvider from "../src/context/AudioProvider";
-import { injectCSSVariables, injectFonts } from "../src/utils/css-config";
+import { injectCSSVariables, injectFonts } from "../src/utils/env-config";
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   const currentRouter = useRouter();
