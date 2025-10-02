@@ -85,6 +85,7 @@ const ArtistImage = ({
   onPlayClick,
   isPulsing,
   isHighlightedForFtue = false,
+  isNewlyAdded = false,
 }) => {
   const { setPlaySongPanelSeen } = useStorageStore();
   const { currentStep, isCompleted, completeFTUE } = useFTUEStore();
@@ -122,7 +123,7 @@ const ArtistImage = ({
   };
 
   const getDifficultyPositioning = (difficulty) => {
-    const difficultyLower = difficulty.toLowerCase();
+  const difficultyLower = difficulty.toLowerCase();
 
     switch (difficultyLower) {
       case "easy":
@@ -158,9 +159,10 @@ const ArtistImage = ({
 
     onPlayClick();
   };
+
   useEffect(() => {
     if (isHighlightedForFtue) {
-      console.log("Song highlighted for FTUE:", song.id, song.song_name);
+      // console.log("Song highlighted for FTUE:", song.id, song.song_name);
     }
   }, [isHighlightedForFtue, song]);
 
@@ -224,26 +226,6 @@ const ArtistImage = ({
               ))}
             </div>
           )}
-          {/* <div className="absolute sm:top-0 md:top-[0rem] left-1/2 transform -translate-x-1/2 flex mt-2">
-            {[...Array(5)].map((_, index) => (
-              <div
-                key={index}
-                className="relative md:w-5 md:h-5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-5 xl:h-5"
-              >
-                <Image
-                  src={
-                    starCount > 0 && index < starCount
-                      ? "./assets/img/hub/Star_Active.png"
-                      : "./assets/img/hub/Star_Inactive.png"
-                  }
-                  alt="star"
-                  width={15}
-                  height={15}
-                  className="stars object-contain md:min-w-5 md:min-h-5 sm:min-w-5 sm:min-h-5 lg:min-w-5 lg:min-h-5 xl:min-w-5 xl:min-h-5"
-                />
-              </div>
-            ))}
-          </div> */}
         </div>
         {/* Country and Difficulty Labels */}
         <div className="absolute w-full flex justify-start items-end z-20 sm:bottom-[76px] sm:left-[-9px] md:bottom-[102px] md:left-0 lg:bottom-[6.8rem] lg:left-0 xl:bottom-[102px] xl:left-0">
@@ -286,7 +268,7 @@ const ArtistImage = ({
           </p>
           <div className="md:w-[130px] sm:w-[120px] lg:w-[140px] xl:w-[140px] relative">
             <button
-              onClick={handlePlay}
+              onClick={(e) => { e.stopPropagation(); handlePlay(); }}
               className={`md:mt-1 relative ${
                 isHighlightedForFtue ? "ftue-play-button-highlight" : ""
               }`}

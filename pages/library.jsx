@@ -69,7 +69,32 @@ const Library = () => {
 
   const gemsRequiredToUnlockSong = 20;
 
+  //Desktop Viewport
+  const [isInIframe, setIsInIframe] = useState(false);
+  const isIframeMode = router.query.iframe === 'true';
+
   const { duckBgMusic, restoreBgMusic } = useAudio();
+
+  useEffect(() => {
+    setIsInIframe(window !== window.parent);
+  }, []);
+
+  useEffect(() => {
+    // Check if we're returning from game and in iframe
+    if (isInIframe) {
+      const params = new URLSearchParams(window.location.search);
+      const fromGame = params.get('fromGame');
+      
+      if (fromGame === 'true') {
+        // Notify parent to resume music
+        window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+        
+        // Clean up URL parameter
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+  }, [isInIframe]);
 
   useEffect(() => {
     AnalyticsService.trackUIEvent("Library", "View");
@@ -145,7 +170,7 @@ const Library = () => {
       setLibraryTutorialSeen(true);
     }
 
-    const songIds = [149, 150, 151, 152, 153, 154, 155, 156, 158, 159, 160, 161, 162, 163];
+    const songIds = [149, 150, 151, 152, 153, 154, 155, 156, 158, 159, 160, 161, 162, 163, 164, 165, 166];
     const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
 
     axios.get(url).then((res) => {
@@ -454,8 +479,8 @@ const Library = () => {
     setAudioRef(null);
   };
 
-  return (
-    <div className="cmd-page">
+  const pageContent = (
+      <div className="cmd-page">
       <Header />
       <div>
         <div className="flex justify-center items-center mt-4 w-full ">
@@ -743,6 +768,14 @@ const Library = () => {
       />
       {/* <ZustandDebug /> */}
     </div>
+  );
+
+  if (isIframeMode) {
+    return pageContent;
+  }
+
+  return (
+  <DesktopViewport>{pageContent}</DesktopViewport>
   );
 };
 

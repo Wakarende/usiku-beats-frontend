@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment-timezone";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Header from "../components/header/Header";
 import { instance as axios } from "../services/axios.config";
@@ -25,6 +25,8 @@ import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.servi
 import "./pages.css";
 // import ZustandDebug from "../components/zustandDebug";
 import useStorageStore from "../stores/storageStore";
+import DesktopViewport from "../components/viewport/DesktopViewport";
+
 
 const HubScreen = () => {
   const [isDailyPopupOpen, setIsDailyPopupOpen] = useState(false);
@@ -44,8 +46,9 @@ const HubScreen = () => {
   const [newLevel, setNewLevel] = useState();
   const [isPulsing, setIsPulsing] = useState(false);
 
-  const [showFtuePanel, setShowFtuePanel] = useState(false);
-
+  
+  const { showFtuePanel, setShowFtuePanel, step1PanelShown, setStep1PanelShown } = useFTUEStore();
+ 
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const dispatch = useDispatch();
@@ -53,7 +56,7 @@ const HubScreen = () => {
 
   const unlockable = user_data?.profile?.player?.total_discs >= 30;
 
-  const { fadeOutBgMusic, playBoom } = useAudio();
+  const { fadeOutBgMusic, playBoom, stopBgMusic } = useAudio();
 
   const [footerGlowActive, setFooterGlowActive] = useState(false);
 
@@ -93,9 +96,46 @@ const HubScreen = () => {
     trackDailyLogin,
   } = useStorageStore();
 
-  useEffect(() => {
-    // if (typeof window === "undefined") return;
+  const [isInIframe, setIsInIframe] = useState(false);
+  const yourSongsContainerRef = useRef(null);
+  const [newlyAddedSong, setNewlyAddedSong] = useState(null);
+  const [playPanelTimeoutSet, setPlayPanelTimeoutSet] = useState(false);
 
+  const handleSongAdded = (songId) => {
+    setNewlyAddedSong(songId);
+    setTimeout(() => {
+        setNewlyAddedSong(null);
+    }, 600);
+  }
+
+  useEffect(() => {
+   setIsInIframe(window !== window.parent);
+  }, []);
+
+  useEffect(() => {
+  // Check if we're returning from game and in iframe
+  if (isInIframe) {
+    const params = new URLSearchParams(window.location.search);
+    const fromGame = params.get('fromGame');
+    
+    if (fromGame === 'true') {
+      // Notify parent to resume music
+      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+      
+      // Clean up URL parameter
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+
+    const handleClick = () => {
+      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }
+}, [isInIframe]);
+
+  useEffect(() => {
     // Set appropriate panels based on FTUE step
     if (currentStep === 4 && !unlockingInfoSeen) {
       setShowUnlockingInfoPanel(true);
@@ -111,24 +151,26 @@ const HubScreen = () => {
   }, [currentStep, unlockingInfoSeen, addToLibrarySeen]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
-
-    if (currentStep === 7 && !isCompleted) {
+    if (currentStep === 7 && !isCompleted && !playPanelTimeoutSet) {
+      setPlayPanelTimeoutSet(true);
+       setTimeout(() => {
       setShowPlaySongPanel(true);
-      // Find the latest song to highlight
-      if (songs && songs.length > 0) {
+       if (songs && songs.length > 0) {
         const latestSong = songs[0];
         setHighlightedSongId(latestSong.id);
       }
+    }, 3200);
+      // setShowPlaySongPanel(true);
+     
+     
     } else if (isCompleted) {
       setShowPlaySongPanel(false);
       setHighlightedSongId(null);
+      setPlayPanelTimeoutSet(false);
     }
-  }, [currentStep, songs, isCompleted]);
+  }, [currentStep,  isCompleted, playPanelTimeoutSet]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
-
     checkAnonUser();
     checkRedirect();
     checkFirstLoginOfDay();
@@ -144,8 +186,6 @@ const HubScreen = () => {
   }, [songs]);
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
-
     if (currentStep === 7 && !isCompleted) {
       const matchingSong = songs.find((s) => s.id === highlightedSongId);
     }
@@ -220,7 +260,6 @@ const HubScreen = () => {
       setSongs(sortedSongs || []);
 
       if (typeof window !== "undefined") {
-        // const currentStep = parseInt(getLocalStorage("ftueStep", "1"));
         if (currentStep === 6 && sortedSongs && sortedSongs.length > 0) {
           console.log("Setting highlighted song in checkAnonUser");
           setHighlightedSongId(sortedSongs[0].id);
@@ -231,25 +270,37 @@ const HubScreen = () => {
   };
 
   useEffect(() => {
-    // if (typeof window === "undefined") return;
-
     const params = new URLSearchParams(window.location.search);
     const ftueParam = params.get("ftueGameplayCompleted");
 
-    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen) {
+    if (currentStep > 1 && showFtuePanel) {
+      setShowFtuePanel(false);
+      return;
+    }
+
+    if (isCompleted && showFtuePanel) {
+      setShowFtuePanel(false);
+      return;
+    }
+
+    if (!ftueParam && showFtuePanel) {
+      setShowFtuePanel(false);
+      return;
+    }
+
+    if (ftueParam === "true" && !isCompleted && !hubTutorialSeen && !step1PanelShown) {
       setShowFtuePanel(true);
       setHubTutorialSeen(true);
-
-      AnalyticsService.trackFTUEStep("2.2 - Hub Screen Shown");
-
-      logAnalyticsEvent("2.2 - Hub Screen Shown");
-      console.log("2.2 - Hub Screen Shown");
+      setStep1PanelShown(true);  
     }
 
-    if (!footerGlowCleared) {
+    // Footer glow
+    if (!footerGlowCleared && !isCompleted) {
       setFooterGlowActive(true);
+    } else if(isCompleted) {
+      setFooterGlowActive(false);
     }
-  }, [isCompleted, hubTutorialSeen, footerGlowCleared]);
+}, [currentStep, isCompleted, hubTutorialSeen, footerGlowCleared, step1PanelShown, showFtuePanel]);
 
   const closeUnlockingInfoPanel = () => {
     setShowUnlockingInfoPanel(false);
@@ -281,11 +332,24 @@ const HubScreen = () => {
   };
 
   const closeFtuePanel = () => {
-    console.log("Closing FTUE panel. Current step:", currentStep);
+    // console.log("Closing FTUE panel. Current step:", currentStep);
     setShowFtuePanel(false);
 
+    if (currentStep === 1) {
+      completeStep(currentStep);
+    }
+
+    // const currentQuery = { ...router.query };
+    // delete currentQuery.ftueGameplayCompleted;
+    setTimeout(() => {
     const currentQuery = { ...router.query };
     delete currentQuery.ftueGameplayCompleted;
+
+    router.replace({
+      pathname: "/hub",
+      query: currentQuery,
+    });
+  }, 50);
 
     router.replace({
       pathname: "/hub",
@@ -309,22 +373,41 @@ const HubScreen = () => {
     });
   };
 
-  const handleFtueProgressToStep6 = (song) => {
-    console.log("MANUALLY TRIGGERING STEP 6 SETUP");
-    console.log("Song passed to callback:", song);
+  // const handleFtueProgressToStep6 = (song) => {
+  //   // console.log("MANUALLY TRIGGERING STEP 6 SETUP");
+  //   // console.log("Song passed to callback:", song);
 
+  //   completeStep(currentStep);
+
+  //   setShowPlaySongPanel(true);
+
+  //   // Set the highlighted song explicitly
+  //   if (song) {
+  //     console.log("Setting highlighted song ID to:", song.id);
+  //     setHighlightedSongId(song.id);
+  //     setCurrentTrackData(JSON.stringify(song));
+  //   } else if (songs && songs.length > 0) {
+  //     const latestSong = songs[0];
+  //     console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
+  //     setHighlightedSongId(latestSong.id);
+  //     setCurrentTrackData(JSON.stringify(latestSong));
+  //   }
+
+  //   checkAnonUser();
+  // };
+
+   const handleFtueProgressToStep6 = (song) => {
+    
     completeStep(currentStep);
-
-    setShowPlaySongPanel(true);
 
     // Set the highlighted song explicitly
     if (song) {
-      console.log("Setting highlighted song ID to:", song.id);
+      // console.log("Setting highlighted song ID to:", song.id);
       setHighlightedSongId(song.id);
       setCurrentTrackData(JSON.stringify(song));
     } else if (songs && songs.length > 0) {
       const latestSong = songs[0];
-      console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
+      // console.log("Fallback - Setting highlighted song ID to:", latestSong.id);
       setHighlightedSongId(latestSong.id);
       setCurrentTrackData(JSON.stringify(latestSong));
     }
@@ -336,6 +419,13 @@ const HubScreen = () => {
     console.log("Setting current track data:", track.id, track.song_name);
 
     setCurrentTrackData(JSON.stringify(track));
+
+     if (window !== window.parent) {
+      window.parent.postMessage({ type: 'STOP_MUSIC' }, '*');
+    } else {
+      // Direct mode - stop music directly
+      stopBgMusic();
+    }
 
     const src = process.env.NODE_ENV === "production" ? getPagePath("game.html") : `/game`;
     window.location.href = src;
@@ -421,10 +511,10 @@ const HubScreen = () => {
       </div>
     );
   }
-  return (
-    <div className="hubscreen-container">
+
+  const pageContent = (
+      <div className="hubscreen-container">
       <Header />
-      {/* The FTUE panel if needed */}
       {showFtuePanel && (
         <InfoPanel
           customPosition={true}
@@ -465,14 +555,37 @@ const HubScreen = () => {
             </button>
           </Link>
         </div>
+
         <div className="md:-mt-3">
           <div
+           ref={yourSongsContainerRef}
             className={`overflow-x-auto overflow-y-hidden flex flex-nowrap hide-scrollbar w-full shrink-0 ${
               songs.length === 1 ? "justify-center" : ""
             }`}
+            style={{transition:'none'}}
           >
+            <AnimatePresence  mode="wait">
             {songs?.length > 0 ? (
-              songs.map((item, index) => (
+              songs.map((item, index) => {
+                console.log("🎵 Rendering song card:", item.id, "at index:", index);
+                return(
+                <motion.div 
+                  key={item.id}
+                  initial={
+                    newlyAddedSong === item.id 
+                      ? { opacity: 0, scale: 0.8 } 
+                      : false                       
+                  }
+                  animate={
+                      newlyAddedSong === item.id 
+                        ? { opacity: 1, scale: 1 }     // Only animate the new card
+                        : false                        // Existing cards: no animation
+                  }
+                  transition={{ 
+                    opacity: { duration: 0.3},
+                    scale: { duration: 0.3 }
+                  }}
+                >
                 <ArtistImage
                   key={index}
                   song={item}
@@ -485,8 +598,12 @@ const HubScreen = () => {
                   isHighlightedForFtue={
                     currentStep === 7 && highlightedSongId === item.id && !isCompleted
                   }
+                  isNewlyAdded={newlyAddedSong === item.id}
+                  isAnimating={false}
                 />
-              ))
+                </motion.div>
+              )
+              })
             ) : (
               <div className="flex justify-center items-center w-full h-40">
                 <pending className="text-center text-[#6c6b6b] tracking-wide">
@@ -494,6 +611,7 @@ const HubScreen = () => {
                 </pending>
               </div>
             )}
+            </AnimatePresence>
           </div>
         </div>
         {showPlaySongPanel && (
@@ -529,6 +647,8 @@ const HubScreen = () => {
           songs={songs}
           loading={loading}
           onFtueProgressToStep6={handleFtueProgressToStep6}
+          yourSongsContainerRef={yourSongsContainerRef}
+          onSongAdded={handleSongAdded}
         />
         <div className="w-full">
           <Image
@@ -592,6 +712,9 @@ const HubScreen = () => {
       <LibraryFooter footerGlowActive={footerGlowActive} clearFooterGlow={clearFooterGlow} />
       {/* <ZustandDebug /> */}
     </div>
+  );
+  return (
+  <DesktopViewport>{pageContent}</DesktopViewport>
   );
 };
 

@@ -10,6 +10,7 @@ import { updateUser } from "../redux/main/authActions";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { useAudio } from "../src/context/AudioProvider";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 import "./pages.css";
 
@@ -22,7 +23,14 @@ export default function TitleScreen() {
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
+  const [isInIframe, setIsInIframe] = useState(false);
   const currentVersion = "0.3.2"; // Match the version displayed in the UI
+
+  const isIframeMode = router.query.iframe === 'true';
+
+  useEffect(() => {
+    setIsInIframe(window !== window.parent);
+  }, []);
 
   // Version check
   // Version check
@@ -104,10 +112,21 @@ export default function TitleScreen() {
     checkAnon();
   }, [user_data, dispatch]);
 
+  const handleNavigation = (url) => {
+    if (isInIframe) {
+     
+      window.parent.postMessage({ type: 'NAVIGATE', url }, '*');
+    } else {
+     
+      router.push(url);
+    }
+  };
+
   // Combined intro and index logic
   const handleStart = async () => {
     handleClickSound();
-    router.push("/sound");
+    // router.push("/sound");
+    handleNavigation("/sound");
     try {
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
@@ -118,37 +137,6 @@ export default function TitleScreen() {
       console.error("Error enabling full-screen mode:", err);
     }
   };
-  // const handleStart = async () => {
-  //   handleClickSound();
-  //   playBoom();
-
-  //   try {
-  //     if (document.documentElement.requestFullscreen) {
-  //       await document.documentElement.requestFullscreen();
-  //     } else {
-  //       console.warn("Fullscreen API is not supported");
-  //     }
-  //   } catch (err) {
-  //     console.error("Error enabling full-screen mode:", err);
-  //   }
-
-  //   // Check FTUE
-  //   const ftueCompleted = localStorage.getItem("ftueCompleted");
-  //   if (!ftueCompleted || ftueCompleted === "false") {
-  //     try {
-  //       const response = await axios.get(`${BASE_URL}song-detail/148/`);
-  //       const tutorialTrack = response.data;
-
-  //       localStorage.setItem("currentTrackData", JSON.stringify(tutorialTrack));
-  //       router.push("/game");
-  //     } catch (err) {
-  //       console.log("Error fetching tutorial track", err);
-  //       router.push("/hub");
-  //     }
-  //   } else {
-  //     router.push("/hub");
-  //   }
-  // };
 
   // Animation states
   const [backgroundVisible, setBackgroundVisible] = useState(false);
@@ -170,7 +158,7 @@ export default function TitleScreen() {
     sequence();
   }, []);
 
-  return (
+  const pageContent = (
     <div className="fixed inset-0 overflow-hidden ">
       <div className="flex justify-end px-2 py-1">
         <p className="text-white leading-wide small:text-[10px] medium:text-sm">
@@ -243,5 +231,14 @@ export default function TitleScreen() {
         </div>
       </div>
     </div>
+  );
+
+  if (isIframeMode) {
+    return pageContent;
+  }
+  return (
+    <DesktopViewport>
+      {pageContent}
+    </DesktopViewport>
   );
 }

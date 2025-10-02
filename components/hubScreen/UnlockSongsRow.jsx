@@ -156,58 +156,6 @@ const UnlockSongsRow = ({
     setShowUnlockingInfoPanel(false);
   };
 
-  // function addToLibrary(song) {
-  //   // console.log("Add to library clicked for song:", song.id);
-
-  //   // Update user data
-  //   const newUserdata = JSON.parse(JSON.stringify(user_data));
-  //   const songInstance = newUserdata.profile.player.player_song_instances.find(
-  //     (instance) => instance.song.id === song.id
-  //   );
-
-  //   if (songInstance) {
-  //     songInstance.unlocked = true;
-  //     songInstance.unlock_time = null;
-  //     songInstance.unlock_start_time = new Date().toISOString();
-  //     dispatch(updateUser(newUserdata));
-  //     // console.log("Song unlocked and added to library:", song.id);
-  //   } else {
-  //     // console.error("Song not found in song instances", song.id);
-  //   }
-
-  //   resetSongUnlockedState(song.id);
-  //   resetParticles(song.id);
-
-  //   if (currentStep === 6 && !isCompleted) {
-  //     AnalyticsService.trackFTUEStep("8 - Add to Library");
-  //     logAnalyticsEvent("8 - Add to Library");
-  //     setAddToLibrarySeen(true);
-
-  //     completeStep(currentStep);
-
-  //     if (showUnlockOverlayPanel) {
-  //       setShowUnlockOverlayPanel(false);
-  //     }
-
-  //     if (song) {
-  //       // console.log("Setting currentTrackData for song:", song.id);
-  //       setCurrentTrackData(JSON.stringify(song));
-  //     }
-
-  //     if (onFtueProgressToStep6) {
-  //       onFtueProgressToStep6(song);
-  //     }
-
-  //     return;
-  //   }
-  //   // Normal behavior for non-FTUE
-  //   if (showUnlockOverlayPanel) {
-  //     setShowUnlockOverlayPanel(false);
-  //   }
-
-  //   handleClickSound();
-  // }
-
   function addToLibrary(song, cardIndex = 0) {
     const startElementRef = unlockingCardRefs.current[cardIndex];
 
@@ -284,7 +232,7 @@ const UnlockSongsRow = ({
       setShowUnlockOverlayPanel(false);
     }
 
-    // handleClickSound();
+    handleClickSound();
   }
 
   function handleUnlockNowClick(song) {

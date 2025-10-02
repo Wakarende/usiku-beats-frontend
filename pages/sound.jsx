@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useState, useEffect} from "react";
 import "./pages.css";
 import Image from "next/image";
 import { useAudio } from "../src/context/AudioProvider";
@@ -6,10 +6,21 @@ import { useRouter } from "next/router";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import useFTUEStore from "../stores/ftueStore";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 const Sound = () => {
   const { playBoom } = useAudio();
   const router = useRouter();
+  const [isInIframe, setIsInIframe] = useState(false);
+
+   // Check if this is iframe mode
+  const isIframeMode = router.query.iframe === 'true';
+
+  // Detect if running in iframe
+  useEffect(() => {
+    setIsInIframe(window !== window.parent);
+  }, []);
+
   const stars = [
     //Left top star
     {
@@ -38,9 +49,30 @@ const Sound = () => {
   ];
 
   const { isCompleted } = useFTUEStore();
+  
+   const handlePlayBoom = () => {
+    if (isInIframe) {
+      // Send message to parent
+      window.parent.postMessage({ type: 'PLAY_BOOM' }, '*');
+    } else {
+      // Direct call (fallback)
+      playBoom();
+    }
+  };
+
+  // Handle navigation - iframe vs direct
+  const handleNavigation = (url) => {
+    if (isInIframe) {
+      // Send message to parent
+      window.parent.postMessage({ type: 'NAVIGATE', url }, '*');
+    } else {
+      // Direct navigation (fallback)
+      router.push(url);
+    }
+  };
 
   const handleFtue = async () => {
-    playBoom();
+    handlePlayBoom();
 
     if (!isCompleted) {
       try {
@@ -48,16 +80,17 @@ const Sound = () => {
         const tutorialTrack = response.data;
 
         localStorage.setItem("currentTrackData", JSON.stringify(tutorialTrack));
-        router.push("/game");
+        handleNavigation('/game');
       } catch (err) {
         console.log("Error fetching tutorial track", err);
-        router.push("/hub");
+        handleNavigation("/hub");
       }
     } else {
-      router.push("/hub");
+      handleNavigation("/hub");
     }
   };
-  return (
+
+   const pageContent = (
     <div className="sound-page flex flex-col justify-center">
       {stars.map((star, index) => (
         <div key={index} className={`${star.className} ${star.animation}`}>
@@ -110,6 +143,16 @@ const Sound = () => {
         </button>
       </div>
     </div>
+  );
+
+  if (isIframeMode) {
+    return pageContent;
+  }
+
+  return (
+     <DesktopViewport>
+      {pageContent}
+    </DesktopViewport>
   );
 };
 

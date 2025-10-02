@@ -344,6 +344,7 @@ class GameOverScene extends Phaser.Scene {
       localStorage.setItem("ftueCompleted", "true"),
         router.push({
           pathname: "/hub",
+          query: { fromGame: "true" }
 
           // query: { newLevelAchieved: this.newLevelAchieved, newLevel: newLevel },
         });
