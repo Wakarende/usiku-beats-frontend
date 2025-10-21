@@ -276,8 +276,9 @@ class Preload extends Phaser.Scene {
     this.difficulty_text.setText(`${this.track.difficulty.toUpperCase()}`);
     // console.log("this.track.artist.bio", this.track.artist.bio);
 
-    let scores = JSON.parse(localStorage.getItem("scores") || "{}");
-    let savedScore = scores[this.track.song_name] || 0;
+    // let scores = JSON.parse(localStorage.getItem("scores") || "{}");
+    // let savedScore = scores[this.track.song_name] || 0;
+    let savedScore = this.track.high_score || 0;
     this.my_high_score.setText(Math.round(savedScore));
 
     if (savedScore > 0) {
