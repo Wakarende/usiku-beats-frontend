@@ -30,7 +30,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
     <>
       {footerGlowActive && (
         <div
-          className="fixed bottom-[120px] right-6 lg:bottom-[180px] animate-bounce pointer-events-none"
+          className="fixed sm:bottom-[18rem] sm:left-[15rem] bottom-[-10rem] left-[15rem] lg:bottom-[-15rem] xl:bottom-[-10rem] xl:right-[15rem] animate-bounce pointer-events-none relative"
           style={{ zIndex: handZIndex }}
         >
           <Image
@@ -38,17 +38,17 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             width={1}
             height={1}
             alt="Hand pointing to Song Library"
-            className="w-24 h-24 lg:w-32 lg:h-32 xl:w-32 xl:h-32 object-contain transform -rotate-[120deg]"
+            className="w-24 h-24 lg:w-32 lg:h-32 xl:w-24 xl:h-24 object-contain transform -rotate-[120deg]"
           />
         </div>
       )}
       <div className="h-[120px]"></div>
       <footer
-        className="fixed bottom-0 left-0 right-0 w-full pointer-events-none"
+        className="viewport-footer w-full pointer-events-none"
         style={{ zIndex: footerZIndex }}
       >
         <div
-          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[140px] md:h-[180px] lg:h-[300px] overflow-visible`}
+          className={`absolute bottom-0 left-0 right-0 w-full h-[130px] sm:h-[140px] md:h-[180px] lg:h-[300px] xl:h-[130px] overflow-visible`}
           style={{
             zIndex: footerBgZIndex,
             filter: footerGlowActive ? "drop-shadow(0 -10px 10px rgba(0, 245, 255, 0.8))" : "none",
@@ -67,7 +67,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
           />
         </div>
         <div
-          className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] lg:h-[220px] xl:h-[220px] pointer-events-auto"
+          className="relative w-full h-[130px] sm:h-[150px] md:h-[180px] lg:h-[220px] xl:h-[150px] pointer-events-auto"
           style={{ zIndex: contentZIndex }}
         >
           <Link
@@ -82,7 +82,7 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
             className="absolute inset-0 w-full h-full"
           ></Link>
 
-          <div className="absolute bottom-8  sm:right-[0.4rem] sm:bottom-10 md:bottom-14 lg:bottom-24 right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
+          <div className="absolute bottom-8  sm:right-[0.4rem] sm:bottom-10 md:bottom-14 lg:bottom-24 xl:bottom-10 right-[0rem] xl:right-[0rem] lg:right-[4rem] tracking-widest leading-tight">
             <motion.div
               className="flex flex-col items-center"
               animate={canUnlockSongs ? { scale: [1, 1.15, 1] } : {}}
@@ -97,10 +97,10 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
                   : {}
               }
             >
-              <p className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white ">
+              <p className="text-xs sm:text-xs md:text-base lg:text-xl xl:text-sm font-bold uppercase text-center text-white ">
                 YOU HAVE
               </p>
-              <p className="text-xs sm:text-xs md:text-base lg:text-xl font-bold uppercase text-center text-white md:-mt-2 sm:-mt-0.5">
+              <p className="text-xs sm:text-xs md:text-base lg:text-xl xl:text-base font-bold uppercase text-center text-white md:-mt-2 sm:-mt-0.5 xl:-mt-2">
                 {totalDiscs} DISCS
               </p>
             </motion.div>

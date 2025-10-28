@@ -513,12 +513,12 @@ const HubScreen = () => {
   }
 
   const pageContent = (
-      <div className="hubscreen-container">
+    <div className="hubscreen-container">
       <Header />
       {showFtuePanel && (
         <InfoPanel
           customPosition={true}
-          customClassName=" sm:top-[45%] md:top-[50%] lg:top-[45%] xl:top-[70%] w-full"
+          customClassName=" sm:top-[45%] md:top-[50%] lg:top-[45%] xl:top-[50%] w-full"
           onClose={closeFtuePanel}
           paragraphs={[
             <>
@@ -537,11 +537,11 @@ const HubScreen = () => {
       <div className=" mx-auto hub-content-wrapper">
         {/* Your Songs Section */}
         <div className="flex items-center w-full relative">
-          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5  sm:mb-1 sm:mt-1 text-5xl uppercase tracking-wider lg:text-6xl xl:text-7xl lg:mt-2.5 xl:mt-2.5">
+          <h1 className="text-[#ff6b03] text-center w-full md:mt-3.5  sm:mb-1 sm:mt-1 text-5xl uppercase tracking-wider lg:text-6xl xl:text-5xl lg:mt-2.5 xl:mt-2.5">
             Your Songs
           </h1>
           <Link href={"/library"}>
-            <button className="absolute sm:right-[-2rem] md:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
+            <button className="absolute sm:right-[-2rem] md:right-[-2rem] lg:right-[-2rem] xl:right-[-2rem] top-[2rem] transform -translate-y-1/2 h-10">
               <Image
                 src={"./assets/img/hub/button_blank.png"}
                 alt="your-songs-btn"
@@ -549,68 +549,64 @@ const HubScreen = () => {
                 height={40}
                 className="h-full w-24"
               />
-              <span className="absolute sm:inset-2.5 md:inset-2 flex items-center justify-center text-white font-bold tracking-wider sm:text-xs md:text-xs uppercase text-nowrap ">
+              <span className="absolute sm:inset-2.5 md:inset-2 xl:inset-1 flex items-center justify-center text-white font-bold tracking-wider sm:text-xs md:text-xs  xl:text-xs uppercase text-nowrap ">
                 + ADD SONGS
               </span>
             </button>
           </Link>
         </div>
-
-        <div className="md:-mt-3">
+        <div className="md:-mt-3 xl:-mt-5">
           <div
-           ref={yourSongsContainerRef}
+            ref={yourSongsContainerRef}
+            data-role="your-songs-container"
             className={`overflow-x-auto overflow-y-hidden flex flex-nowrap hide-scrollbar w-full shrink-0 ${
               songs.length === 1 ? "justify-center" : ""
             }`}
-            style={{transition:'none'}}
+            style={{ transition: "none" }}
           >
-            <AnimatePresence  mode="wait">
-            {songs?.length > 0 ? (
-              songs.map((item, index) => {
-                console.log("🎵 Rendering song card:", item.id, "at index:", index);
-                return(
-                <motion.div 
-                  key={item.id}
-                  initial={
-                    newlyAddedSong === item.id 
-                      ? { opacity: 0, scale: 0.8 } 
-                      : false                       
-                  }
-                  animate={
-                      newlyAddedSong === item.id 
-                        ? { opacity: 1, scale: 1 }     // Only animate the new card
-                        : false                        // Existing cards: no animation
-                  }
-                  transition={{ 
-                    opacity: { duration: 0.3},
-                    scale: { duration: 0.3 }
-                  }}
-                >
-                <ArtistImage
-                  key={index}
-                  song={item}
-                  onArtistClick={(e, artist) => openOverlay(artist.id)}
-                  onPlayClick={() => {
-                    handlePlayClick(item, index);
-                    playBoom();
-                  }}
-                  isPulsing={isPulsing && index === 0}
-                  isHighlightedForFtue={
-                    currentStep === 7 && highlightedSongId === item.id && !isCompleted
-                  }
-                  isNewlyAdded={newlyAddedSong === item.id}
-                  isAnimating={false}
-                />
-                </motion.div>
-              )
-              })
-            ) : (
-              <div className="flex justify-center items-center w-full h-40">
-                <pending className="text-center text-[#6c6b6b] tracking-wide">
-                  No unlocked songs yet. Head to the <span className="text-yellow">Library!</span>
-                </pending>
-              </div>
-            )}
+            <AnimatePresence mode="wait">
+              {songs?.length > 0 ? (
+                songs.map((item, index) => {
+                  console.log("🎵 Rendering song card:", item.id, "at index:", index);
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={newlyAddedSong === item.id ? { opacity: 0, scale: 0.8 } : false}
+                      animate={
+                        newlyAddedSong === item.id
+                          ? { opacity: 1, scale: 1 } // Only animate the new card
+                          : false // Existing cards: no animation
+                      }
+                      transition={{
+                        opacity: { duration: 0.3 },
+                        scale: { duration: 0.3 },
+                      }}
+                    >
+                      <ArtistImage
+                        key={index}
+                        song={item}
+                        onArtistClick={(e, artist) => openOverlay(artist.id)}
+                        onPlayClick={() => {
+                          handlePlayClick(item, index);
+                          playBoom();
+                        }}
+                        isPulsing={isPulsing && index === 0}
+                        isHighlightedForFtue={
+                          currentStep === 7 && highlightedSongId === item.id && !isCompleted
+                        }
+                        isNewlyAdded={newlyAddedSong === item.id}
+                        isAnimating={false}
+                      />
+                    </motion.div>
+                  );
+                })
+              ) : (
+                <div className="flex justify-center items-center w-full h-40">
+                  <pending className="text-center text-[#6c6b6b] tracking-wide">
+                    No unlocked songs yet. Head to the <span className="text-yellow">Library!</span>
+                  </pending>
+                </div>
+              )}
             </AnimatePresence>
           </div>
         </div>
@@ -624,7 +620,7 @@ const HubScreen = () => {
               }
             }}
             customPosition={true}
-            customClassName="sm:top-[56%] md:top-[50%] lg:top-[45%] xl:top-[40%] w-full"
+            customClassName="sm:top-[56%] md:top-[50%] lg:top-[45%] xl:top-[60%] w-full"
             paragraphs={[
               <>
                 <p className="font-bold sm:text-sm mb-4">Awesome! Your new song is now ready!</p>
@@ -635,7 +631,7 @@ const HubScreen = () => {
         )}
         <div className="w-full md:-mt-2.5 ">
           <Image
-            src={"./assets/img/library/Divider.png"}
+            src={"./assets/img/library/divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -652,7 +648,7 @@ const HubScreen = () => {
         />
         <div className="w-full">
           <Image
-            src={"./assets/img/library/Divider.png"}
+            src={"./assets/img/library/divider.png"}
             width={4}
             height={1}
             alt="divider"

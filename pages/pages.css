@@ -5,6 +5,213 @@
   max-width: 300px;
 }
 
+/* Landing Page Sections */
+.landing-section {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.landing-section-title {
+  font-family: "Afolkalips", sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
+}
+
+.landing-section-content {
+  font-family: "Carlito", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.landing-section-content p {
+  margin-bottom: 1rem;
+}
+
+.landing-section-content h3,
+.landing-section-content h4 {
+  font-family: "Afolkalips", sans-serif;
+  text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Feature Cards Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.feature-title {
+  font-family: "Afolkalips", sans-serif;
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.feature-description {
+  font-family: "Carlito", sans-serif;
+  color: white;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Artist Cards Grid */
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.artist-card {
+  background: linear-gradient(135deg, rgba(255, 106, 0, 0.2) 0%, rgba(40, 4, 57, 0.3) 100%);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 106, 0, 0.3);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  text-align: center;
+}
+
+.artist-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(255, 106, 0, 0.3);
+  border-color: rgba(255, 106, 0, 0.6);
+}
+
+.artist-name {
+  font-family: "Afolkalips", sans-serif;
+  color: #ffa500;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.03em;
+}
+
+.artist-description {
+  font-family: "Carlito", sans-serif;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* How To Play Steps */
+.how-to-play-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.play-step {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.play-step:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 106, 0, 0.4);
+  transform: translateX(10px);
+}
+
+.step-number {
+  font-family: "Afolkalips", sans-serif;
+  font-size: 3rem;
+  color: #ffa500;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+  min-width: 60px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content p {
+  font-family: "Carlito", sans-serif;
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  margin: 0;
+}
+
+/* Why Usiku Content */
+.why-usiku-content {
+  font-family: "Carlito", sans-serif;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .landing-section-content {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .features-grid,
+  .artists-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .feature-card,
+  .artist-card {
+    padding: 1.5rem;
+  }
+
+  .feature-title,
+  .artist-name {
+    font-size: 1.3rem;
+  }
+
+  .play-step {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .step-number {
+    font-size: 2.5rem;
+  }
+
+  .step-content p {
+    font-size: 1.1rem;
+  }
+}
+
 /* INDEX PAGE END  */
 
 /* TURN ON YOUR SOUND PAGE  */

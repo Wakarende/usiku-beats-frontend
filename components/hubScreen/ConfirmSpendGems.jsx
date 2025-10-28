@@ -52,7 +52,7 @@ const CountdownTimer = ({ unlockTime, onExpire }) => {
 
   return (
     <span
-      className="text-[#0af0e4] font-bold md:text-xl sm:text-md lg:text-3xl xl:text-3xl tracking-widest"
+      className="text-[#0af0e4] font-bold md:text-xl sm:text-md lg:text-3xl xl:text-xl tracking-widest"
       style={{ fontFamily: "Digital-7" }}
     >
       {timeLeft.hours?.toString().padStart(2, "0") || "00"}:
@@ -114,7 +114,7 @@ const TimerBar = ({ unlockTime, song }) => {
   }, [unlockTime, song]);
 
   return (
-    <div className="w-full h-3.5 px-[4px] md:-mt-1 sm:-mt-2">
+    <div className="w-full h-3.5 px-[4px] md:-mt-1 sm:-mt-2 xl:-mt-1  mx-auto">
       <div className="w-full h-2.5 bg-[#4e1b2e] mt-0.5 rounded-sm relative shadow-lg">
         <div
           className="h-full rounded-sm"
@@ -131,12 +131,12 @@ const TimerBar = ({ unlockTime, song }) => {
 // class map ONLY for ads 
 const ADS_UI = {
   frameClass:
-    "w-[80px] h-auto sm:w-[150px] sm:h-[140px] md:w-[180px] md:h-[200px] lg:w-[200px] lg:h-[200px] xl:w-[200px] xl:h-[200px] z-10",
+    "w-[80px] h-auto sm:w-[150px] sm:h-[140px] md:w-[180px] md:h-[200px] lg:w-[200px] lg:h-[200px] xl:w-[180px] xl:h-[200px] z-10",
   thumbClass:
-    "mx-auto rounded mb-3 sm:w-[145px] sm:h-[150px] sm:mb-1 md:w-[170px] md:h-[180px] lg:w-[170px] lg:h-[170px] rounded-t-md",
+    "mx-auto rounded mb-3 sm:w-[145px] sm:h-[150px] sm:mb-1 md:w-[170px] md:h-[180px] lg:w-[170px] lg:h-[170px] xl:w-[170px] xl:h-[180px] rounded-t-md",
   titleClass: "text-5xl",
   timerWrapClass:
-    "absolute sm:bottom-[0.3rem] md:bottom-[0.5rem] lg:bottom-[12rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-md md:text-xl lg:text-3xl tracking-wider text-nowrap sm:w-[55%] md:w-[55%] lg:w-[55%] xl:w-[50%]",
+    "absolute sm:bottom-[0.3rem] md:bottom-[0.5rem] lg:bottom-[12rem] xl:bottom-[0.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-md md:text-xl lg:text-3xl xl:text-xl tracking-wider text-nowrap  sm:w-[55%] md:w-[55%] xl:w-[240px]",
 };
 
 const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, currentGems }) => {
@@ -274,35 +274,37 @@ useEffect(() => {
               src={"./assets/img/unlock/spendgems-frame.png"}
               width={100}
               height={100}
-              className="w-[100px] h-auto sm:w-[200px] sm:h-[200px] md:w-[220px] md:h-[250px] lg:w-[300px] lg:h-[300px] xl:w-[300px] xl:h-[300px] z-10"
+              className="w-[100px] h-auto sm:w-[200px] sm:h-[200px] md:w-[220px] md:h-[250px] lg:w-[300px] lg:h-[300px] xl:w-[220px] xl:h-[250px] z-10"
             />
-            <div className="absolute sm:top-[4.5rem] md:top-[5rem] lg:top-[7rem] flex items-center justify-center">
+            <div className="absolute sm:top-[4.5rem] md:top-[5rem] lg:top-[7rem] xl:top-[5rem] flex items-center justify-center">
               {thumbnailFile && (
                 <Image
                   src={thumbnailFile}
                   alt="Song Thumbnail"
                   width={100}
                   height={100}
-                  className="mx-auto rounded mb-3 sm:w-[192px] sm:h-[200px] sm:mb-1 md:w-[210px] md:h-[233px] lg:w-[285px] lg:h-[290px] rounded-t-md"
+                  className="mx-auto rounded mb-3 sm:w-[192px] sm:h-[200px] sm:mb-1 md:w-[210px] md:h-[233px] lg:w-[285px] lg:h-[290px] xl:w-[210px] xl:h-[233px] rounded-t-md"
                 />
               )}
             </div>
-            <div className="absolute sm:bottom-[1rem] md:bottom-[1rem] lg:bottom-[15rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-xl lg:text-3xl tracking-widest text-nowrap md:w-[64%] lg:w-[45%] xl:w-[40%]">
+            <div className="absolute sm:bottom-[1rem] md:bottom-[1rem] lg:bottom-[15rem] xl:bottom-[1rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-xl md:text-xl lg:text-3xl xl:text-xl tracking-widest text-nowrap md:w-[64%] lg:w-[45%] xl:w-[240px]">
               <p className=" text-yellow ">
                 Time Left:{" "}
                 {unlockTime ? (
-                    <CountdownTimer unlockTime={unlockTime} onExpire={handleTimerExpire} />
-                  ) : (
-                    <span className="text-[#0af0e4] font-bold" style={{ fontFamily: "Digital-7" }}>
-                      00:00:00
-                    </span>
-                  )}
-                </p>
+                  <CountdownTimer unlockTime={unlockTime} onExpire={handleTimerExpire} />
+                ) : (
+                  <span className="text-[#0af0e4] font-bold" style={{ fontFamily: "Digital-7" }}>
+                    00:00:00
+                  </span>
+                )}
+              </p>
               {unlockTime && <TimerBar unlockTime={unlockTime} song={selectedSong} />}
             </div>
           </div>
           <div className="mb-2">
-            <p className="text-orange text-xl sm:text-md tracking-widest mt-2.5">Unlock this track</p>
+            <p className="text-orange text-xl sm:text-md tracking-widest mt-2.5">
+              Unlock this track
+            </p>
             <div className="flex items-center gap-1 justify-center">
               <p className="text-orange text-xl sm:text-md tracking-widest">
                 instantly for <span className="text-white font-semibold">20</span>
@@ -317,7 +319,7 @@ useEffect(() => {
                 />
               </span>
             </div>
-            <p className="text-white text-md lg:text-lg tracking-widest mt-4 mb-3">
+            <p className="text-white text-md lg:text-lg xl:text-md tracking-widest mt-4 mb-3">
               You have:
               <div className=" ml-1 inline-flex items-center gap-0.5">
                 <span className="text-white">{currentGems} </span>
@@ -334,13 +336,16 @@ useEffect(() => {
             </p>
           </div>
           {/* Confirm / Cancel buttons */}
-          <div className="flex justify-center gap-4 pb-4">
+          <div className="relative flex justify-center gap-4 pb-4">
             <div
               className={`relative ${
                 currentStep === 5 && !isCompleted ? "ftue-gems-highlight-frame" : ""
               }`}
             >
-              <button onClick={() => onConfirm({ source: "spend_gems" })} className="relative text-white font-bold w-24 h-20" >
+              <button
+                onClick={() => onConfirm({ source: "spend_gems" })}
+                className="relative text-white font-bold w-24 h-20"
+              >
                 <Image
                   src="./assets/img/spendgems/left_button.png"
                   width={50}
@@ -348,22 +353,24 @@ useEffect(() => {
                   className="w-full h-20"
                   alt="Yes Button"
                 />
-                <span className="absolute -inset-4 flex items-center justify-center text-4xl tracking-widest uppercase">
+                <span className="absolute -inset-4 xl:-inset-7 flex items-center justify-center text-4xl tracking-widest uppercase">
                   Yes
                 </span>
               </button>
             </div>
-            {currentStep === 5 && !isCompleted && (
-              <div className="absolute sm:bottom-[-1rem] sm:left-[4rem] md:bottom-[-1.5rem] md:left-[6rem] lg:bottom-[-2rem] lg:left-[16rem] xl:bottom-[-2rem] xl:left-[16rem] animate-bounce z-[10000] pointer-events-none">
-                <Image
-                  src="./assets/img/ftue/hand_icon.png"
-                  width={80}
-                  height={80}
-                  alt="Hand pointing to yes button"
-                  className="w-20 h-20 object-contain transform"
-                />
-              </div>
-            )}
+            
+              {currentStep === 5 && !isCompleted && (
+                <div className="absolute sm:bottom-[-1rem] sm:left-[4rem] md:bottom-[-1.5rem] md:left-[6rem] lg:bottom-[-2rem] lg:left-[16rem] xl:bottom-[-1.5rem] xl:left-[38rem] animate-bounce z-[10000] pointer-events-none">
+                  <Image
+                    src="./assets/img/ftue/hand_icon.png"
+                    width={80}
+                    height={80}
+                    alt="Hand pointing to yes button"
+                    className="w-20 h-20 object-contain transform"
+                  />
+                </div>
+              )}
+            
             <button
               className="relative text-white font-bold w-24 h-20"
               onClick={currentStep === 5 && !isCompleted ? null : onCancel}
@@ -413,7 +420,7 @@ useEffect(() => {
             height={100}
             className={ADS_UI.frameClass}
           />
-          <div className="absolute sm:top-[3.3rem] md:top-[4.2rem] lg:top-[7rem] flex items-center justify-center">
+          <div className="absolute sm:top-[3.3rem] md:top-[4.2rem] lg:top-[7rem] xl:top-[4.2rem] flex items-center justify-center">
             {thumbnailFile && (
               <Image
                 src={thumbnailFile}
@@ -446,7 +453,7 @@ useEffect(() => {
           <button onClick={() => onConfirm({ source: "spend_gems" })} className="relative" aria-label="Unlock with gems">
             <Image src={SPEND_GEMS_BTN_SRC} width={120} height={110} alt="Spend Gems" />
             <div className="absolute inset-8 flex items-center justify-center gap-2 pointer-events-none">
-              <span className="text-white font-bold sm:text-3xl md:text-3xl tracking-widest -mt-3 mx-1">20</span>  
+              <span className="text-white font-bold sm:text-3xl md:text-3xl tracking-widest -mt-3 mx-1 xl:text-3xl">20</span>  
             </div>
           </button>
            <div className="inline-flex items-center gap-1 -mt-4"> 

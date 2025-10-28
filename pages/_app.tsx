@@ -15,10 +15,10 @@ import { injectCSSVariables, injectFonts } from "../src/utils/env-config";
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   const currentRouter = useRouter();
-  const [isInIframe, setIsInIframe] = useState(false);
+  // const [isInIframe, setIsInIframe] = useState(false);
 
   useEffect(() => {
-    setIsInIframe(window !== window.parent);
+    // setIsInIframe(window !== window.parent);
     // Initialize analytics on client-side
     AnalyticsService.init();
     
@@ -31,7 +31,6 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
 
   return (
     <Provider store={mainStore}>
-      {!isInIframe ? (
       <AudioProvider>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -45,20 +44,6 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
           </motion.div>
         </AnimatePresence>
       </AudioProvider>
-      ): (
-        <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={currentRouter.asPath}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Component {...pageProps} />
-        </motion.div>
-      </AnimatePresence>
-      )
-    }
     </Provider>
   );
 }

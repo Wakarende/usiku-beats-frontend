@@ -64,23 +64,77 @@ const UnlockSongsRow = ({
   const router = useRouter();
 
   const unlockingCardRefs = useRef([]);
+  const animatingCardRefs = useRef({});
+  const animatingHideTimeouts = useRef({});
   // const yourSongsContainerRef = useRef(null);
   const [moveAnimation, setMoveAnimation] = useState({
     isActive: false,
     song: null,
+    slotIndex: null,
   });
 
   const handleAnimationComplete = useCallback(() => {
     if (moveAnimation.song) {
       updateSongData(moveAnimation.song);
     }
+
+    const slotIndex = moveAnimation.slotIndex;
+    if (slotIndex !== null && slotIndex !== undefined) {
+      setAnimatingSlots((prev) => {
+        if (!prev || !Object.prototype.hasOwnProperty.call(prev, slotIndex)) {
+          return prev;
+        }
+        const next = { ...prev };
+        delete next[slotIndex];
+        return next;
+      });
+
+      const timeoutId = animatingHideTimeouts.current[slotIndex];
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        delete animatingHideTimeouts.current[slotIndex];
+      }
+
+      const cardElement = animatingCardRefs.current[slotIndex];
+      if (cardElement) {
+        cardElement.style.transition = "";
+        cardElement.style.opacity = "";
+        cardElement.style.pointerEvents = "";
+        cardElement.style.display = "";
+      }
+
+      delete animatingCardRefs.current[slotIndex];
+    }
+
     setMoveAnimation({
       isActive: false,
       song: null,
+      slotIndex: null,
     });
-  }, [moveAnimation.song]);
+  }, [moveAnimation.slotIndex, moveAnimation.song]);
 
   const [animatingSlots, setAnimatingSlots] = useState({});
+
+  useEffect(() => {
+    return () => {
+      Object.values(animatingHideTimeouts.current).forEach((timeoutId) => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      });
+      Object.keys(animatingCardRefs.current).forEach((key) => {
+        const element = animatingCardRefs.current[key];
+        if (element) {
+          element.style.transition = "";
+          element.style.opacity = "";
+          element.style.pointerEvents = "";
+          element.style.display = "";
+        }
+      });
+      animatingHideTimeouts.current = {};
+      animatingCardRefs.current = {};
+    };
+  }, []);
 
   // Track FTUE step and show appropriate panels
   useEffect(() => {
@@ -159,6 +213,19 @@ const UnlockSongsRow = ({
   function addToLibrary(song, cardIndex = 0) {
     const startElementRef = unlockingCardRefs.current[cardIndex];
 
+    const existingTimeout = animatingHideTimeouts.current[cardIndex];
+    if (existingTimeout) {
+      clearTimeout(existingTimeout);
+    }
+
+    const existingElement = animatingCardRefs.current[cardIndex];
+    if (existingElement && existingElement !== startElementRef) {
+      existingElement.style.transition = "";
+      existingElement.style.opacity = "";
+      existingElement.style.pointerEvents = "";
+      existingElement.style.display = "";
+    }
+
     if (currentStep === 6 && !isCompleted) {
       AnalyticsService.trackFTUEStep("8 - Add to Library");
 
@@ -188,16 +255,23 @@ const UnlockSongsRow = ({
       startElementRef.style.opacity = "0";
       startElementRef.style.pointerEvents = "none";
 
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         if (startElementRef) {
           startElementRef.style.display = "none";
         }
       }, 300);
+
+      animatingHideTimeouts.current[cardIndex] = timeoutId;
+      animatingCardRefs.current[cardIndex] = startElementRef;
+    } else {
+      delete animatingHideTimeouts.current[cardIndex];
+      animatingCardRefs.current[cardIndex] = null;
     }
 
     setMoveAnimation({
       isActive: true,
       song: song,
+      slotIndex: cardIndex,
     });
   }
 
@@ -396,7 +470,7 @@ const UnlockSongsRow = ({
           className="relative"
           onClick={() => {
             if (isUnlockTimePassed(item.unlock_time)) {
-              addToLibrary(item.song);
+              addToLibrary(item.song, i);
             } else {
               handleUnlockNowClick(item.song);
             }
@@ -417,35 +491,35 @@ const UnlockSongsRow = ({
       }`}
             >
               {/* Main card container with exact dimensions */}
-              <div className="unlock-card relative overflow-hidden rounded-lg sm:w-[110px] sm:h-[130px] md:w-[134px] md:h-[140px] lg:w-[200px] lg:h-[200px]">
+              <div className="unlock-card relative overflow-hidden rounded-lg sm:w-[110px] sm:h-[130px] md:w-[134px] md:h-[140px] lg:w-[200px] lg:h-[200px] xl:w-[134px] xl:h-[140px]  ">
                 {/* Background image covering the entire card */}
-                <div className="absolute md:top-0 md:left-0 md:right-0 md:bottom-0 sm:top-0 sm:left-0 sm:right-0 sm:bottom-0 w-full h-full overflow-hidden">
+                <div className="absolute md:top-0 md:left-0 md:right-0 md:bottom-0 sm:top-0 sm:left-0 sm:right-0 sm:bottom-0 w-full h-full overflow-hidden xl:top-0 xl:left-0 xl:right-0 xl:bottom-0 ">
                   <Image
                     src={item.song.thumbnail_file}
                     alt={`${item.song.song_name} thumbnail`}
                     width={500}
                     height={500}
-                    className="absolute sm:top-0 sm:left-[-0.2rem] md:top-0 md:left-0  md:w-[150%] md:h-[120%] sm:w-[160%] sm:h-[120%]  lg:top-0 lg:left-0  lg:w-[150%] lg:h-[120%] xl:top-0 xl:left-0  xl:w-[150%] xl:h-[120%] max-w-none object-cover"
+                    className="absolute sm:top-0 sm:left-[-0.2rem] md:top-0 md:left-0  md:w-[150%] md:h-[120%] sm:w-[160%] sm:h-[120%]  lg:top-0 lg:left-0  lg:w-[150%] lg:h-[120%] xl:top-0 xl:left-0 xl:w-[150%] xl:h-[120%] max-w-none object-cover"
                     style={{ transform: "translate(-16%, -10%)" }}
                     priority
                   />
                 </div>
                 {/* Top purple frame */}
-                <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] lg:h-[25px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10  lg:top-0 lg:left-0 lg:right-0">
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow text-center tracking-wide whitespace-nowrap text-sm lg:text-lg xl:text-lg">
+                <div className="absolute md:top-0 md:left-0 md:right-0 h-[20px] lg:h-[25px] bg-[#461159] sm:top-0 sm:left-0 sm:right-0 z-10  lg:top-0 lg:left-0 lg:right-0 xl:top-0 xl:left-0 xl:right-0 xl:h-[20px]">
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow text-center tracking-wide whitespace-nowrap text-sm lg:text-lg xl:text-sm">
                     {item.song.song_name}
                   </p>
                 </div>
-                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0">
+                <div className="absolute md:bottom-0 md:left-0 md:right-0 sm:bottom-0 sm:left-0 sm:right-0 h-[60px] lg:h-[80px] bg-[#73274e] z-10 lg:bottom-0 lg:left-0 lg:right-0 xl:bottom-0 xl:left-0 xl:right-0">
                   <div
-                    className="absolute md:top-[30%] md:left-[-2rem] sm:top-[30%] sm:left-[-2rem] h-2.5 lg:top-[30%] lg:left-[-2rem]"
+                    className="absolute md:top-[30%] md:left-[-2rem] sm:top-[30%] sm:left-[-2rem] h-2.5 lg:top-[30%] lg:left-[-2rem] xl:top-[30%] xl:left-[-2rem]"
                     style={{ width: "calc(100% + 4rem)" }}
                   >
                     <div className="w-full h-full rounded-sm bg-[#5e203f]   relative overflow-hidden">
                       {item.unlock_time &&
                         (isUnlockTimePassed(item.unlock_time) ? (
                           <div
-                            className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm "
+                            className="h-full absolute  sm:left-0 sm:top-0 md:left-0 md:top-0 lg:top-0 lg:left-0 w-full rounded-sm xl:left-0 xl:top-0 "
                             style={{ background: "linear-gradient(to right, #edca55, #3bc0b3)" }}
                           />
                         ) : (
@@ -457,19 +531,19 @@ const UnlockSongsRow = ({
                         ))}
                     </div>
                   </div>
-                  <div className="absolute sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0  lg:bottom-[3.3rem] lg:left-0 lg:right-0  flex items-center justify-center z-20">
+                  <div className="absolute flex items-center justify-center z-20 sm:bottom-[2.5rem] sm:left-0 sm:right-0 md:bottom-[2.3rem] md:left-0 md:right-0  lg:bottom-[3.3rem] lg:left-0 lg:right-0 xl:bottom-[2.3rem] xl:left-0 xl:right-0  ">
                     <div className="flex items-center justify-center w-full">
-                      <span className="text-nowrap text-yellow sm:text-[13px] md:text-[15px] lg:text-lg xl:text-lg">
+                      <span className="text-nowrap text-yellow sm:text-[13px] md:text-[15px] lg:text-lg xl:text-[15px]">
                         Time Left:
                       </span>
                       <span className="text-white font-bold ml-2 flex items-center">
                         {isUnlockTimePassed(item.unlock_time) ? (
                           <button
-                            onClick={() => addToLibrary(item.song)}
+                            onClick={() => addToLibrary(item.song, i)}
                             className="flex items-center"
                           >
                             <span
-                              className="tracking-wider text-nowrap sm:text-[13px] md:text-[15px] lg:text-lg xl:text-lg text-[#0af0e4] -ml-1"
+                              className="tracking-wider text-nowrap sm:text-[13px] md:text-[15px] lg:text-lg xl:text-[15px] text-[#0af0e4] -ml-1"
                               style={{ fontFamily: "Digital-7", lineHeight: 1 }}
                             >
                               00:00:00
@@ -490,7 +564,7 @@ const UnlockSongsRow = ({
                 </div>
               </div>
               {!isUnlockTimePassed(item.unlock_time) ? (
-                <div className="absolute sm:bottom-[-0.1rem] sm:w-[190px] sm:left-[-1.35rem] md:bottom-[-0.2rem] md:w-[190px] md:left-[-1.8rem] lg:bottom-[-0.2rem] lg:w-[240px] lg:left-[0.1rem]">
+                <div className="absolute sm:bottom-[-0.1rem] sm:w-[190px] sm:left-[-1.35rem] md:bottom-[-0.2rem] md:w-[190px] md:left-[-1.8rem] lg:bottom-[-0.2rem] lg:w-[240px] lg:left-[0.1rem] xl:bottom-[-0.2rem] xl:w-[190px] xl:left-[-1.65rem]">
                   <div className="relative mt-0.5 z-20">
                     <button
                       className="w-full relative"
@@ -501,24 +575,24 @@ const UnlockSongsRow = ({
                         alt="Button"
                         width={10}
                         height={10}
-                        className="sm:h-[20px] sm:w-[100px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                        className="sm:h-[20px] sm:w-[100px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[25px]"
                       />
                       <div className="absolute inset-0 flex items-center justify-between px-1">
                         <div className="flex items-center gap-0.5">
                           <Image
-                            src="./assets/img/hub/Gem.png"
+                            src="./assets/img/hub/gem.png"
                             alt="Gem"
                             width={16}
                             height={16}
-                            className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[20px] xl:h-[20px]"
+                            className="sm:w-[16px] sm:h-[16px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] xl:w-[16px] xl:h-[16px]"
                           />
                           <div className="flex items-center">
-                            <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[20px] xl:text-[20px]">
+                            <span className="text-yellow sm:text-[12px] md:text-[12px] lg:text-[20px] xl:text-[12px]">
                               {gemsRequiredToUnlockSong}
                             </span>
                           </div>
                         </div>
-                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[9px] md:text-[12px] lg:text-[18px] xl:text-[18px] tracking-widest">
+                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[9px] md:text-[12px] lg:text-[18px] xl:text-[12px] tracking-widest">
                           Finish Now
                         </p>
                       </div>
@@ -526,7 +600,7 @@ const UnlockSongsRow = ({
                   </div>
                 </div>
               ) : (
-                <div className="absolute sm:bottom-[-0.1rem] sm:w-[185px] sm:left-[-1.3rem] md:bottom-[-0.1rem] md:w-[185px] md:left-[-1.6rem] lg:bottom-[-0.1rem] lg:w-[230px] lg:left-[0.5rem]">
+                <div className="absolute sm:bottom-[-0.1rem] sm:w-[185px] sm:left-[-1.3rem] md:bottom-[-0.1rem] md:w-[185px] md:left-[-1.6rem] lg:bottom-[-0.1rem] lg:w-[230px] lg:left-[0.5rem] xl:bottom-[-0.1rem] xl:w-[185px] xl:left-[-1.6rem]">
                   <div className="relative  z-20">
                     <button
                       className="w-full relative"
@@ -537,10 +611,10 @@ const UnlockSongsRow = ({
                         alt="Button"
                         width={10}
                         height={10}
-                        className="sm:h-[20px] sm:w-[100px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[35px]"
+                        className="sm:h-[20px] sm:w-[100px] md:w-[200px] md:h-[25px] lg:w-[200px] lg:h-[35px] xl:w-[200px] xl:h-[25px]"
                       />
                       <div className="absolute -inset-[26px] flex items-center justify-center">
-                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[10px] md:text-[12px] lg:text-lg xl:text-lg tracking-widest">
+                        <p className="text-white uppercase whitespace-nowrap font-bold unlock-now-text sm:text-[10px] md:text-[12px] lg:text-lg xl:text-[11px] tracking-widest">
                           Add to Library
                         </p>
                       </div>
@@ -548,7 +622,6 @@ const UnlockSongsRow = ({
                   </div>
                 </div>
               )}
-
               {/* Particle effect */}
               {particleTrigger[item.song.id] && (
                 <ParticleEffect
@@ -589,7 +662,7 @@ const UnlockSongsRow = ({
     } else {
       slotsContent.push(
         <div key={i} className="flex flex-col items-center unlock-card-wrapper">
-          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[120px] md:w-[132px] md:h-[140px]  lg:w-[180px]  lg:h-[180px]xl:w-[202px] xl:h-[220px]">
+          <div className="relative bg-cover bg-center bg-no-repeat overflow-hidden rounded-t-lg sm:w-[115px] sm:h-[120px] md:w-[132px] md:h-[140px]  lg:w-[180px]  lg:h-[180px] xl:w-[132px] xl:h-[140px]">
             <Image
               src="./assets/img/hub/empty_slot.png"
               width={200}
@@ -612,7 +685,7 @@ const UnlockSongsRow = ({
           height={10}
           className="sm:w-5 sm:h-5 sm:-mb-2 md:w-6 md:h-6 "
         /> */}
-        <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-6xl md:mb-3 lg:mb-3">
+        <h1 className="text-[#6e6d6d] text-center sm:text-3xl md:text-4xl lg:text-6xl xl:text-4xl md:mb-3 lg:mb-3">
           Currently Unlocking
         </h1>
         {/* <Image
@@ -627,7 +700,7 @@ const UnlockSongsRow = ({
       {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
       {/* Popups */}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg sm:w-[280px]">
+        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg sm:w-[280px] xl:w-2/3">
           <p className="text-yellow font-bold text-2xl mb-3">Not Enough Gems!</p>
           <p className="text-white mb-3">{popupMessage}</p>
           <button

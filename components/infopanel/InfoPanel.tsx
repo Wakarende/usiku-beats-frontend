@@ -14,9 +14,20 @@ export default function InfoPanel({
   customPosition = false,
   allowClickThrough = false,
 }) {
+  const basePanelStyles = customPosition
+    ? {}
+    : {
+        left: "50%",
+        top: bottomPosition ? "auto" : "50%",
+        bottom: bottomPosition ? `${positionOffset}px` : "auto",
+        transform: `translateX(-50%) ${!bottomPosition ? "translateY(-50%)" : ""}`,
+        maxWidth: "320px",
+        width: "min(90vw, 320px)",
+      };
+
   return (
     <div
-      className={transparentBg ? "" : "bg-black/70"}
+      className={`${transparentBg ? "" : "bg-black/70"} info-panel-overlay`}
       style={{
         position: "fixed",
         inset: 0,
@@ -34,21 +45,12 @@ export default function InfoPanel({
           backgroundPosition: "center",
           padding: "2rem",
           position: "absolute",
-          ...(customPosition
-            ? {}
-            : {
-                left: "50%",
-                top: bottomPosition ? "auto" : "50%",
-                bottom: bottomPosition ? `${positionOffset}px` : "auto",
-                transform: `translateX(-50%) ${!bottomPosition ? "translateY(-50%)" : ""}`,
-                maxWidth: "3xl",
-                width: "100%",
-              }),
+          ...basePanelStyles,
           ...customStyle,
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-lg text-white w-full mx-auto">
+        <div className="text-lg xl:text-lg text-white w-full mx-auto">
           {paragraphs.map((paragraph, index) => (
             <p key={index} className="mb-2">
               {paragraph}
