@@ -11,9 +11,9 @@ const MoveTransitionAnimation = ({
 }) => {
   const [animationPhase, setAnimationPhase] = useState("hidden");
   const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
-  const [dataUpdated, setDataUpdated] = useState(false);
   const [useViewportCoordinates, setUseViewportCoordinates] = useState(false);
   const activeContainerRef = useRef(null);
+  const hasCompletedRef = useRef(false);
 
   const calculateTargetPosition = () => {
     if (!targetContainerRef?.current) return;
@@ -101,8 +101,6 @@ const MoveTransitionAnimation = ({
     const existingCards = container.children;
 
     Array.from(existingCards).forEach((card, index) => {
-      if (!shift && index === 0) return;
-
       if (shift) {
         let shiftAmount;
 
@@ -130,40 +128,50 @@ const MoveTransitionAnimation = ({
 
   useEffect(() => {
     if (isActive && song) {
-      setDataUpdated(false);
+      hasCompletedRef.current = false;
+      const timeouts = [];
 
       calculateTargetPosition();
       setAnimationPhase("centerFadeIn");
-      setTimeout(() => {
-        setAnimationPhase("center");
-      }, 500);
+      timeouts.push(
+        setTimeout(() => {
+          setAnimationPhase("center");
+        }, 500)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          calculateTargetPosition();
+          setAnimationPhase("moving");
 
-      setTimeout(() => {
-        calculateTargetPosition();
-        setAnimationPhase("moving");
+          if (!isFirstSong) {
+            shiftExistingCards(true);
+          }
+        }, 1500)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setAnimationPhase("fadeOut");
+        }, 2700)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setAnimationPhase("hidden");
+          if (onComplete && !hasCompletedRef.current) {
+            hasCompletedRef.current = true;
+            onComplete();
+          }
 
-        if (!isFirstSong) {
-          shiftExistingCards(true);
-        }
-      }, 1500);
+          if (!isFirstSong) {
+            setTimeout(() => {
+              shiftExistingCards(false);
+            }, 10);
+          }
+        }, 3000)
+      );
 
-      setTimeout(() => {
-        setAnimationPhase("fadeOut");
-      }, 2700);
-
-      setTimeout(() => {
-        setAnimationPhase("hidden");
-        if (onComplete && !dataUpdated) {
-          setDataUpdated(true);
-          onComplete();
-        }
-
-        if (!isFirstSong) {
-          setTimeout(() => {
-            shiftExistingCards(false);
-          }, 10);
-        }
-      }, 3000);
+      return () => {
+        timeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+      };
     }
   }, [isActive, song, onComplete, isFirstSong]);
 

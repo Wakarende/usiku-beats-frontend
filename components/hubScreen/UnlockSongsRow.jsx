@@ -286,6 +286,7 @@ const UnlockSongsRow = ({
         songInstance.unlocked = true;
         songInstance.unlock_time = null;
         songInstance.unlock_start_time = new Date().toISOString();
+        songInstance.unlock_completed_at = new Date().toISOString();
         dispatch(updateUser(newUserdata));
 
         // Add analytics logging

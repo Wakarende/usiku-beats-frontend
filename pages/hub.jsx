@@ -254,7 +254,14 @@ const HubScreen = () => {
     } else {
       const sortedSongs = user_data?.profile?.player?.player_song_instances
         ?.filter((item) => item.unlocked)
-        .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
+        .sort((a, b) => {
+          const getSortTime = (item) => {
+            const timestamp = item.unlock_completed_at || item.date_added;
+            const time = timestamp ? new Date(timestamp).getTime() : 0;
+            return Number.isNaN(time) ? 0 : time;
+          };
+          return getSortTime(b) - getSortTime(a);
+        })
         .map(({ song, ...rest }) => ({ ...song, ...rest }));
 
       setSongs(sortedSongs || []);
@@ -629,7 +636,7 @@ const HubScreen = () => {
             ]}
           />
         )}
-        <div className="w-full md:-mt-2.5 ">
+        <div className="w-full md:-mt-2.5 xl:-mt-3.5">
           <Image
             src={"./assets/img/library/divider.png"}
             width={4}

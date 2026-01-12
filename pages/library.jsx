@@ -136,6 +136,7 @@ const Library = () => {
     if (songInstance) {
       songInstance.unlocked = true;
       songInstance.unlock_time = null;
+      songInstance.unlock_completed_at = new Date().toISOString();
     } else {
       console.error("Song not found in song instances", song.id);
       return;
@@ -527,14 +528,14 @@ const Library = () => {
             return (
               <div key={index} className="w-full max-w-xl ">
                 <div className="p-4 flex flex-row justify-center items-center">
-                    <div className="flex-shrink-0 relative w-[150px] sm:w-[120px]">
-                   <Image
-                      src={song.thumbnail_file}
-                      alt="Song Cover"
-                      width={1}
-                      height={1}
-                      className="object-cover rounded-lg w-full h-auto"
-                    />
+                    <div className="flex-shrink-0 relative w-[150px] sm:w-[120px] h-auto">
+                      <Image
+                          src={song.thumbnail_file}
+                          alt="Song Cover"
+                          width={1}
+                          height={1}
+                          className="object-cover rounded-lg w-full sm:h-[120px] h-[150px]"
+                      />
                     <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
                     <button
                     className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-28 h-28"
@@ -561,7 +562,7 @@ const Library = () => {
                 </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
-                      <p className="font-bold text-yellow text-lg md:text-md sm:text-sm text-nowrap">
+                      <p className="font-bold text-yellow text-lg md:text-md sm:text-sm ">
                         {song.song_name}
                       </p>
                       <p className="text-yellow uppercase text-xs text-nowrap">{song.difficulty}</p>
