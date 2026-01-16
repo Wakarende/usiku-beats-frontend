@@ -244,7 +244,6 @@ class BeatMissed extends Phaser.Scene {
     }
 
     this.continueCount = this.registry.get("continueCount") || 0;
-    this.adShown = false; // Add this flag to track if ad was already shown
 
     this.editorCreate();
     this.adjustViewport();
@@ -429,147 +428,149 @@ class BeatMissed extends Phaser.Scene {
       });
     }
 
+    // Initialize rewarded ad placement early - disable button initially
+    this.bm_video_ad_btn.disableInteractive();
+    this.bm_video_ad_btn.setTint(0x888888);
+    this.showRewardedAdFn = null;
+
     this.time.delayedCall(800, () => {
-      this.bm_video_ad_btn.setInteractive();
-      this.bm_video_ad_btn.once("pointerup", () => {
+      // Initialize ad placement to check availability
+      if (window.adBreak) {
+        console.log("Initializing rewarded ad placement");
+        window.adBreak({
+          type: 'reward',
+          name: 'beat_missed_continue',
+          beforeReward: (showAdFn) => {
+            console.log("Rewarded ad available - enabling button");
+            // Ad is available - store showAdFn and enable button
+            this.showRewardedAdFn = showAdFn;
+            this.bm_video_ad_btn.setInteractive();
+            this.bm_video_ad_btn.clearTint();
+            // Don't pause timer here - let it continue counting down
+          },
+          beforeAd: () => {
+            console.log("Preparing to show ad - exiting fullscreen and pausing game");
+            // Exit fullscreen so ad overlay is visible
+            // this.scale.stopFullscreen();
+            // Track when ad started for minimum view time check
+            this.adStartTime = Date.now();
+            // Pause game and timer before ad shows
+            this.background_music.pause();
+            if (this.autoQuitTimer) {
+              this.autoQuitTimer.paused = true;
+            }
+          },
+          adViewed: () => {
+            console.log("User watched ad to completion");
+            if (this.logAnalytics && this.sessionId) {
+              this.logAnalytics(this.sessionId, "beat_missed_video_ad_viewed_complete");
+            }
+            // Don't grant reward here - let afterAd handle it
+          },
+          adDismissed: () => {
+            console.log("User dismissed ad");
+            if (this.logAnalytics && this.sessionId) {
+              this.logAnalytics(this.sessionId, "beat_missed_video_ad_dismissed");
+            }
+            // Don't resume here - let afterAd handle everything
+          },
+          afterAd: () => {
+            const adViewTime = this.adStartTime ? (Date.now() - this.adStartTime) / 1000 : 0;
+            console.log(`Ad finished after ${adViewTime.toFixed(1)}s`);
+
+            // Re-enter fullscreen after ad
+            // this.scale.startFullscreen();
+
+            // If viewed for 5+ seconds, grant reward
+            if (adViewTime >= 5) {
+              console.log("Minimum view time met - granting reward");
+              if (this.logAnalytics && this.sessionId) {
+                this.logAnalytics(this.sessionId, "beat_missed_ad_reward_granted");
+              }
+              this.rewardGemsAfterAd(); // Countdown handles everything
+            } else {
+              console.log("Dismissed too early - resuming game");
+              // Resume music and timer
+              this.background_music.resume();
+              if (this.autoQuitTimer) {
+                this.autoQuitTimer.paused = false;
+              }
+              this.handleAdFailure();
+            }
+
+            // Reset time tracking
+            this.adStartTime = null;
+          },
+          adBreakDone: (placementInfo) => {
+            console.log("Ad break done", placementInfo);
+            if (this.logAnalytics && this.sessionId) {
+              this.logAnalytics(
+                this.sessionId,
+                "beat_missed_ad_break_done",
+                placementInfo?.breakStatus || "unknown"
+              );
+            }
+          },
+        });
+      } else {
+        console.log("H5 Ad Placement API not available");
         if (this.logAnalytics && this.sessionId) {
-          this.logAnalytics(this.sessionId, "beat_missed_video_ad_clicked");
-          console.log("beat_missed_video_ad_clicked");
+          this.logAnalytics(this.sessionId, "beat_missed_h5_api_unavailable");
         }
-        this.showAd();
+      }
+
+      // Set up button click handler
+      this.bm_video_ad_btn.on("pointerup", () => {
+        if (this.showRewardedAdFn) {
+          console.log("User clicked to watch ad");
+          if (this.logAnalytics && this.sessionId) {
+            this.logAnalytics(this.sessionId, "beat_missed_video_ad_clicked");
+          }
+          // Call the stored showAdFn from user interaction
+          this.showRewardedAdFn();
+          // Clear the function so it can only be called once
+          this.showRewardedAdFn = null;
+          this.bm_video_ad_btn.disableInteractive();
+          this.bm_video_ad_btn.setTint(0x888888);
+        }
       });
     });
   }
 
-  showAd() {
-    // Prevent multiple ad calls
-    if (this.adShown) {
-      console.log("Ad already shown, ignoring request");
-      return;
-    }
-
-    console.log("Ad button clicked");
-    this.adShown = true; // Set flag to prevent multiple calls
-
-    // Disable the ad button to prevent multiple clicks
-    this.bm_video_ad_btn.disableInteractive();
-    this.bm_video_ad_btn.setTint(0x888888); // Gray out the button
-
-    // Show real AdSense ad
-    if (window.adsbygoogle) {
-      console.log("Attempting to show AdSense ad");
-      try {
-        // Clean up any existing AdSense elements to prevent conflicts
-        document.querySelectorAll('.adsbygoogle').forEach(el => el.remove());
-        // Create proper DOM element for AdSense
-        const adContainer = document.createElement('div');
-        adContainer.id = 'beatmissed-ad-container';
-        adContainer.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 90%; max-width: 320px;';
-        
-        const adElement = document.createElement('ins');
-        adElement.className = 'adsbygoogle';
-        adElement.style.cssText = 'display: block; width: 100%;';
-        adElement.setAttribute('data-ad-client', this.registry.get("googleAdsClientId") || 'ca-pub-6193376247880661');
-        adElement.setAttribute('data-ad-slot', this.registry.get("googleAdsSlot") || '6804075243');
-        adElement.setAttribute('data-ad-format', 'auto');
-        adElement.setAttribute('data-full-width-responsive', 'true');
-        
-        adContainer.appendChild(adElement);
-        document.body.appendChild(adContainer);
-        
-        // Initialize the ad
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-
-        // Set up observer to detect when ad loads
-        const observer = new MutationObserver(() => {
-          if (adElement.querySelector('iframe')) {
-            console.log("Ad iframe detected, ad loaded successfully");
-            if (this.logAnalytics && this.sessionId) {
-              this.logAnalytics(this.sessionId, "beat_missed_video_ad_shown_successfully");
-              console.log("beat_missed_video_ad_shown_successfully");
-            }
-            observer.disconnect();
-            
-            // Wait for user to "watch" the ad before rewarding
-            setTimeout(() => {
-              this.cleanupAd();
-              this.rewardGemsAfterAd();
-            }, 8000); // 8 seconds watch time
-          }
-        });
-        
-        observer.observe(adElement, { childList: true, subtree: true });
-        
-        // Fallback timeout in case ad doesn't load
-        setTimeout(() => {
-          if (!adElement.querySelector('iframe')) {
-            console.log("Ad failed to load within timeout");
-            if (this.logAnalytics && this.sessionId) {
-              this.logAnalytics(this.sessionId, "beat_missed_video_ad_timeout", "Failed to load within 5 seconds");
-              console.log("beat_missed_video_ad_timeout");
-            }
-            observer.disconnect();
-            this.cleanupAd();
-            this.handleAdFailure();
-          }
-        }, 5000); // 5 second timeout
-
-      } catch (error) {
-        console.log("AdSense error:", error);
-
-        if (this.logAnalytics && this.sessionId) {
-          this.logAnalytics(this.sessionId, "beat_missed_video_ad_failed", error.message);
-          console.log("beat_missed_video_ad_failed:", error.message);
-        }
-        this.handleAdFailure();
-      }
-    } else {
-      console.log("AdSense not available");
-
-      if (this.logAnalytics && this.sessionId) {
-        this.logAnalytics(this.sessionId, "beat_missed_adsense_unavailable", "window.adsbygoogle not available");
-        console.log("beat_missed_adsense_unavailable");
-      }
-      // For testing - simulate ad completion
-      this.rewardGemsAfterAd();
-    }
-  }
-
-  cleanupAd() {
-    const adContainer = document.getElementById('beatmissed-ad-container');
-    if (adContainer) {
-      adContainer.remove();
-    }
-  }
 
   handleAdFailure() {
-    // Reset the flag and re-enable button if ad fails
-    this.adShown = false;
-    this.bm_video_ad_btn.setInteractive();
-    this.bm_video_ad_btn.clearTint();
-    this.cleanupAd();
+    // Clear the stored ad function - user dismissed without reward
+    this.showRewardedAdFn = null;
   }
 
-  // Add this new method
   rewardGemsAfterAd() {
-    // Award 10 gems to the user
-    let user_data = JSON.parse(localStorage.getItem("user_data"));
-    user_data.profile.player.total_gems += 20;
-    this.game.events.emit("updateUserEvent", { data: user_data });
-
+    // Continue game immediately
     this.continueCount++;
-    this.registry.set("continueCount", this.continueCount); // Persist it
-
-    // Get the current song from the Level scene for analytics
-    const levelScene = this.scene.get("Level");
-    // const currentSong = levelScene.songItem || "unknown";
-
-    // Track ad reward in analytics
-    // this.analytics.trackResourceUse("Gems", -10, "ad_reward", currentSong);
-
-    // Stop background music and start countdown
+    this.registry.set("continueCount", this.continueCount);
     this.background_music.stop();
     this.countDown();
+
+    // Delay localStorage access to allow iOS Safari to restore access after ad iframe
+    this.time.delayedCall(300, () => {
+      try {
+        let user_data = JSON.parse(localStorage.getItem("user_data"));
+
+        if (!user_data || !user_data.profile) {
+          console.error("Unable to access user_data - reward failed");
+          if (this.logAnalytics && this.sessionId) {
+            this.logAnalytics(this.sessionId, "beat_missed_reward_failed_no_userdata");
+          }
+        } else {
+          user_data.profile.player.total_gems += 20;
+          this.game.events.emit("updateUserEvent", { data: user_data });
+        }
+      } catch (error) {
+        console.error("Error in rewardGemsAfterAd:", error);
+        if (this.logAnalytics && this.sessionId) {
+          this.logAnalytics(this.sessionId, "beat_missed_reward_error");
+        }
+      }
+    });
   }
 
   subtractGems(amount) {
@@ -589,8 +590,6 @@ class BeatMissed extends Phaser.Scene {
   }
 
   destroy() {
-    // Clean up any remaining ad elements when scene is destroyed
-    this.cleanupAd();
     super.destroy();
   }
 

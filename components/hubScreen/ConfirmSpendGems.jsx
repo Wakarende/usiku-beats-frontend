@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import "../styles.css";
 import useFTUEStore from "../../stores/ftueStore";
-import { GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_SLOT } from "../../src/utils/env-config";
 
 // assets for the ads  buttons
 const SPEND_GEMS_BTN_SRC = "./assets/img/spendgems/spend_gems_btn.png";
@@ -146,89 +145,88 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
 
   const [shouldClose, setShouldClose] = useState(false);
 
-  //Ads 
-  const [adVisible, setAdVisible] = useState(false);
-  const [adPushed, setAdPushed] = useState(false);
-  const [adSeen, setAdSeen] = useState(false);
-  const adRef = useRef(null);
-  const observerRef = useRef(null);
-  const timersRef = useRef({});
+  // H5 Ad API state
+  const [showRewardedAdFn, setShowRewardedAdFn] = useState(null);
+  const adStartTime = useRef(null);
 
-  const RENDER_TIMEOUT_MS = 5000;// how long we wait for an ad iframe to appear
-  const WATCH_TIME_MS = 8000;// how long counts as "watched" before we reward
+  // Initialize H5 Ad Placement on mount
+  useEffect(() => {
+    if (!isOpen || !selectedSong || !isCompleted) return;
 
-  function addGems(amount) {
-  try {
-    const raw = localStorage.getItem("user_data");
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    const current = data?.profile?.player?.total_gems ?? 0;
-    if (data?.profile?.player) {
-      data.profile.player.total_gems = current + amount;
-      localStorage.setItem("user_data", JSON.stringify(data));
-      window.dispatchEvent?.(new CustomEvent("updateUserEvent", { detail: { data } }));
+    if (window.adBreak) {
+      console.log("Initializing H5 rewarded ad placement");
+      window.adBreak({
+        type: 'reward',
+        name: 'unlock_finish_now',
+        beforeReward: (showAdFn) => {
+          console.log("Rewarded ad available");
+          setShowRewardedAdFn(() => showAdFn);
+        },
+        beforeAd: () => {
+          console.log("Preparing to show ad - exiting fullscreen");
+          // Exit fullscreen so ad overlay is visible
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(err => console.error("Error exiting fullscreen:", err));
+          }
+          // Track when ad started for minimum view time check
+          adStartTime.current = Date.now();
+        },
+        adViewed: () => {
+          console.log("User watched ad to completion");
+        },
+        adDismissed: () => {
+          console.log("User dismissed ad");
+        },
+        afterAd: () => {
+          const adViewTime = adStartTime.current ? (Date.now() - adStartTime.current) / 1000 : 0;
+          console.log(`Ad finished after ${adViewTime.toFixed(1)}s`);
+
+          // Re-enter fullscreen after ad
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(err => console.error("Error entering fullscreen:", err));
+          }
+
+          // If viewed for 5+ seconds, grant reward
+          if (adViewTime >= 5) {
+            console.log("Minimum view time met - granting reward");
+            rewardGemsAfterAd();
+          } else {
+            console.log("Dismissed too early - no reward");
+            // Close modal without reward
+            onCancel();
+          }
+
+          // Reset time tracking
+          adStartTime.current = null;
+        },
+        adBreakDone: (placementInfo) => {
+          console.log("Ad break done", placementInfo);
+        },
+      });
+    } else {
+      console.log("H5 Ad Placement API not available");
     }
-  } catch {}
-}
+  }, [isOpen, selectedSong, isCompleted]);
 
-function unlockOnly() {
-  setAdVisible(false);
-  onConfirm({ source: "ad_fail" });
-}
+  function rewardGemsAfterAd() {
+    setTimeout(() => {
+      try {
+        let user_data = JSON.parse(localStorage.getItem("user_data"));
 
-function rewardAndUnlock() {
-  addGems(10);
-  setAdVisible(false);
-  onConfirm({ source: "reward_ad" });
-}
+        if (!user_data || !user_data.profile) {
+          console.error("Unable to access user_data - reward failed");
+        } else {
+          user_data.profile.player.total_gems += 10;
+          localStorage.setItem("user_data", JSON.stringify(user_data));
+          window.dispatchEvent?.(new CustomEvent("updateUserEvent", { detail: { data: user_data } }));
 
-useEffect(() => {
-  if (!adVisible || adPushed) return;
-
-  
-  if (typeof window === "undefined" || !window.adsbygoogle) {
-    unlockOnly();
-    return;
+          onConfirm({ source: "reward_ad" });
+        }
+      } catch (error) {
+        console.error("Error in rewardGemsAfterAd:", error);
+      }
+    }, 300);
   }
-
-  
-  try {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-    setAdPushed(true);
-  } catch (e) {
-    
-    unlockOnly();
-    return;
-  }
-
-  // 2) watch the <ins> 
-  const el = adRef.current;
-  if (!el) {
-    // if no container, fail fast
-    unlockOnly();
-    return;
-  }
-
-  observerRef.current = new MutationObserver(() => {
-    if (!adSeen && el.querySelector("iframe")) {
-      setAdSeen(true);
-      // user "watch" window; after this delay, give reward + unlock
-      timersRef.current.watch = setTimeout(rewardAndUnlock, WATCH_TIME_MS);
-    }
-  });
-  observerRef.current.observe(el, { childList: true, subtree: true });
-
-  // 3) if no iframe shows up in time, fail path = unlock only
-  timersRef.current.renderTimeout = setTimeout(() => {
-    if (!adSeen) unlockOnly();
-  }, RENDER_TIMEOUT_MS);
-
-  return () => {
-    observerRef.current?.disconnect();
-    clearTimeout(timersRef.current.watch);
-    clearTimeout(timersRef.current.renderTimeout);
-  };
-}, [adVisible, adPushed, adSeen]);
 
   useEffect(() => {
     if (shouldClose) {
@@ -461,7 +459,18 @@ useEffect(() => {
               <Image src={"./assets/img/spendgems/gem.png"} width={18} height={22} alt="gem" />
             </div>
           {/* Watch Video button*/}
-          <button  onClick={() => { setAdPushed(false); setAdSeen(false); setAdVisible(true);}} disabled={adVisible} className="relative -mt-2" aria-label="Watch ad">
+          <button
+            onClick={() => {
+              if (showRewardedAdFn) {
+                console.log("User clicked to watch ad");
+                showRewardedAdFn();
+                setShowRewardedAdFn(null);
+              }
+            }}
+            disabled={!showRewardedAdFn}
+            className={`relative -mt-2 ${!showRewardedAdFn ? 'opacity-50' : ''}`}
+            aria-label="Watch ad"
+          >
             <Image src={WATCH_AD_BTN_SRC} width={250} height={110} alt="Watch Video" />
             <div className="absolute inset-7 flex items-center justify-center gap-3 pointer-events-none mx-2.5">
               <div className="flex flex-col items-center justify-center">
@@ -475,20 +484,6 @@ useEffect(() => {
               </span>
             </div>
           </button>
-          {/* Show the ad container only after click */}
-          {adVisible && (
-            <div className="mt-3 w-full flex justify-center">
-              <ins
-                ref={adRef}
-                className="adsbygoogle"
-                style={{ display: "block", width: "100%" }}
-                data-ad-client={GOOGLE_ADS_CLIENT_ID}
-                data-ad-slot={GOOGLE_ADS_SLOT}
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              />
-            </div>
-          )}
           {/* No thanks */}
           <button onClick={onCancel} className="text-white underline underline-offset-4 text-xl -mt-2">
             No thanks!

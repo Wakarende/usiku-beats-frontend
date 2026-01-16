@@ -1,7 +1,5 @@
 "use client";
 
-import type { AppProps } from "next/app";
-
 import "../src/App.css";
 import { Provider } from "react-redux";
 import mainStore from "../redux/main/mainStore";
@@ -9,24 +7,38 @@ import mainStore from "../redux/main/mainStore";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import { AnalyticsService } from "../services/analytics.service";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AudioProvider from "../src/context/AudioProvider";
 import { injectCSSVariables, injectFonts } from "../src/utils/env-config";
 
-export default function MyApp({ Component, pageProps, router }: AppProps) {
+export default function MyApp({ Component, pageProps, router }) {
   const currentRouter = useRouter();
-  // const [isInIframe, setIsInIframe] = useState(false);
-
   useEffect(() => {
-    // setIsInIframe(window !== window.parent);
     // Initialize analytics on client-side
     AnalyticsService.init();
-    
+
     // Inject CSS variables for configurable paths
     injectCSSVariables();
-    
+
     // Inject dynamic font declarations
     injectFonts();
+
+    // Initialize H5 Ad Placement API (client-side only)
+    if (typeof window !== 'undefined') {
+      // Initialize adsbygoogle array
+      window.adsbygoogle = window.adsbygoogle || [];
+
+      // Define adBreak and adConfig functions
+      window.adBreak = window.adConfig = function(o) {
+        window.adsbygoogle.push(o);
+      };
+
+      // Configure ad preloading
+      if (window.adConfig) {
+        window.adConfig({ preloadAdBreaks: 'on' });
+        console.log('H5 Ad Placement API initialized');
+      }
+    }
   }, []);
 
   return (

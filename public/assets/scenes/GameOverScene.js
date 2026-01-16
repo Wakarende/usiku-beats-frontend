@@ -288,8 +288,6 @@ class GameOverScene extends Phaser.Scene {
       this.isSongComplete
     );
 
-    this.adShown = false; // Add this flag to track if ad was already shown
-
     this.editorCreate();
     this.adjustViewport();
     const router = this.registry.get("router");
@@ -380,11 +378,97 @@ class GameOverScene extends Phaser.Scene {
     //   this.triggerFullScreen();
     // });
 
-    // Add ad button interaction
-    this.ad_button.setInteractive();
+    // Initialize rewarded ad placement early - disable button initially
+    this.ad_button.disableInteractive();
+    this.ad_button.setTint(0x888888);
+    this.showRewardedAdFn = null;
+
+    // Initialize ad placement to check availability
+    if (window.adBreak) {
+      console.log("Initializing rewarded ad placement");
+      window.adBreak({
+        type: 'reward',
+        name: 'gameover_double_gems',
+        beforeReward: (showAdFn) => {
+          console.log("Rewarded ad available - enabling button");
+          // Ad is available - store showAdFn and enable button
+          this.showRewardedAdFn = showAdFn;
+          this.ad_button.setInteractive();
+          this.ad_button.clearTint();
+        },
+        beforeAd: () => {
+          console.log("Preparing to show ad - exiting fullscreen and pausing game");
+          // Exit fullscreen so ad overlay is visible
+          this.scale.stopFullscreen();
+          // Track when ad started for minimum view time check
+          this.adStartTime = Date.now();
+          // Pause before ad shows
+          this.background_music.pause();
+          if (this.current_track) {
+            this.current_track.pause();
+          }
+          if (this.scoreTickSound) {
+            this.scoreTickSound.pause();
+          }
+        },
+        adViewed: () => {
+          console.log("User watched ad to completion");
+          this.analytics.trackUIEvent("GameOverScene", "ad_viewed_complete");
+          // Don't grant reward here - let afterAd handle it
+        },
+        adDismissed: () => {
+          console.log("User dismissed ad");
+          this.analytics.trackUIEvent("GameOverScene", "ad_dismissed");
+          // Don't handle reward/resume here - let afterAd handle everything
+        },
+        afterAd: () => {
+          const adViewTime = this.adStartTime ? (Date.now() - this.adStartTime) / 1000 : 0;
+          console.log(`Ad finished after ${adViewTime.toFixed(1)}s`);
+
+          // Re-enter fullscreen after ad
+          this.scale.startFullscreen();
+
+          // If viewed for 5+ seconds, grant reward
+          if (adViewTime >= 5) {
+            console.log("Minimum view time met - granting reward");
+            this.analytics.trackUIEvent("GameOverScene", "ad_reward_granted");
+            this.rewardGemsAfterAd(); // Handles gem doubling
+          } else {
+            console.log("Dismissed too early - no reward");
+            // Resume music only (no timer in GameOverScene)
+            this.background_music.resume();
+            this.handleAdFailure();
+          }
+
+          // Reset time tracking
+          this.adStartTime = null;
+        },
+        adBreakDone: (placementInfo) => {
+          console.log("Ad break done", placementInfo);
+          this.analytics.trackUIEvent(
+            "GameOverScene",
+            "ad_break_done",
+            placementInfo?.breakStatus || "unknown"
+          );
+        },
+      });
+    } else {
+      console.log("H5 Ad Placement API not available");
+      this.analytics.trackUIEvent("GameOverScene", "h5_api_unavailable");
+    }
+
+    // Set up button click handler
     this.ad_button.on("pointerup", () => {
-      this.analytics.trackUIEvent("GameOverScene", "ad_button");
-      this.showAd();
+      if (this.showRewardedAdFn) {
+        console.log("User clicked to watch ad");
+        this.analytics.trackUIEvent("GameOverScene", "user_clicked_watch_ad");
+        // Call the stored showAdFn from user interaction
+        this.showRewardedAdFn();
+        // Clear the function so it can only be called once
+        this.showRewardedAdFn = null;
+        this.ad_button.disableInteractive();
+        this.ad_button.setTint(0x888888);
+      }
     });
 
     this.buildScreen();
@@ -843,114 +927,19 @@ class GameOverScene extends Phaser.Scene {
     }
   }
 
-  showAd() {
-    // Prevent multiple ad calls
-    if (this.adShown) {
-      console.log("Ad already shown, ignoring request");
-      return;
-    }
-
-    console.log("Ad button clicked");
-    this.adShown = true; // Set flag to prevent multiple calls
-
-    // Disable the ad button to prevent multiple clicks
-    this.ad_button.disableInteractive();
-    this.ad_button.setTint(0x888888); // Gray out the button
-
-    // Show real AdSense ad
-    if (window.adsbygoogle) {
-      console.log("Attempting to show AdSense ad");
-      try {
-        // Clean up any existing AdSense elements to prevent conflicts
-        document.querySelectorAll('.adsbygoogle').forEach(el => el.remove());
-        // Create proper DOM element for AdSense
-        const adContainer = document.createElement('div');
-        adContainer.id = 'gameover-ad-container';
-        adContainer.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 90%; max-width: 320px;';
-        
-        const adElement = document.createElement('ins');
-        adElement.className = 'adsbygoogle';
-        adElement.style.cssText = 'display: block; width: 100%;';
-        adElement.setAttribute('data-ad-client', this.registry.get("googleAdsClientId") || 'ca-pub-6193376247880661');
-        adElement.setAttribute('data-ad-slot', this.registry.get("googleAdsSlot") || '6804075243');
-        adElement.setAttribute('data-ad-format', 'auto');
-        adElement.setAttribute('data-full-width-responsive', 'true');
-        
-        adContainer.appendChild(adElement);
-        document.body.appendChild(adContainer);
-        
-        // Initialize the ad
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-
-        // Set up observer to detect when ad loads
-        const observer = new MutationObserver(() => {
-          if (adElement.querySelector('iframe')) {
-            console.log("Ad iframe detected, ad loaded successfully");
-            this.analytics.trackUIEvent("GameOverScene", "ad_shown_successfully");
-            observer.disconnect();
-            
-            // Wait for user to "watch" the ad before rewarding
-            setTimeout(() => {
-              this.cleanupAd();
-              this.rewardGemsAfterAd();
-            }, 8000); // 8 seconds watch time
-          }
-        });
-        
-        observer.observe(adElement, { childList: true, subtree: true });
-        
-        // Fallback timeout in case ad doesn't load
-        setTimeout(() => {
-          if (!adElement.querySelector('iframe')) {
-            console.log("Ad failed to load within timeout");
-            observer.disconnect();
-            this.cleanupAd();
-            this.handleAdFailure();
-          }
-        }, 5000); // 5 second timeout
-
-      } catch (error) {
-        console.log("AdSense error:", error);
-        this.analytics.trackUIEvent("GameOverScene", "ad_failed");
-        this.handleAdFailure();
-      }
-    } else {
-      console.log("AdSense not available");
-      this.analytics.trackUIEvent("GameOverScene", "adsense_unavailable");
-      // For testing - simulate ad completion
-      this.rewardGemsAfterAd();
-    }
-  }
-
-  cleanupAd() {
-    const adContainer = document.getElementById('gameover-ad-container');
-    if (adContainer) {
-      adContainer.remove();
-    }
-  }
 
   handleAdFailure() {
-    // Reset the flag and re-enable button if ad fails
-    this.adShown = false;
-    this.ad_button.setInteractive();
-    this.ad_button.clearTint();
-    this.cleanupAd();
+    // Clear the stored ad function - user dismissed without reward
+    this.showRewardedAdFn = null;
   }
 
   rewardGemsAfterAd() {
-    // Double the existing gem reward
     const doubledGems = this.gemsEarned * 2;
-    
-    // Award doubled gems to the user
-    let user_data = JSON.parse(localStorage.getItem("user_data"));
-    user_data.profile.player.total_gems += doubledGems;
-    this.game.events.emit("updateUserEvent", { data: user_data });
 
-    // Update the final gem count display to show the doubled amount
+    // Update UI immediately
     const currentFinalCount = parseInt(this.final_gem_count.text) || 0;
     const newFinalCount = currentFinalCount + doubledGems;
-    
-    // Animate the final_gem_count to show the bonus
+
     this.tweens.addCounter({
       from: currentFinalCount,
       to: newFinalCount,
@@ -960,7 +949,6 @@ class GameOverScene extends Phaser.Scene {
         this.final_gem_count.setText(Math.round(tween.getValue()).toString());
       },
       onComplete: () => {
-        // Small bounce effect when counting completes
         this.tweens.add({
           targets: this.final_gem_count,
           scaleX: 1.2,
@@ -975,12 +963,27 @@ class GameOverScene extends Phaser.Scene {
       },
     });
 
-    this.analytics.trackUIEvent("GameOverScene", "ad_reward_given");
+    // Delay localStorage access to allow iOS Safari to restore access after ad iframe
+    this.time.delayedCall(300, () => {
+      try {
+        let user_data = JSON.parse(localStorage.getItem("user_data"));
+
+        if (!user_data || !user_data.profile) {
+          console.error("Unable to access user_data - reward failed");
+          this.analytics.trackUIEvent("GameOverScene", "ad_reward_failed_no_userdata");
+        } else {
+          user_data.profile.player.total_gems += doubledGems;
+          this.game.events.emit("updateUserEvent", { data: user_data });
+          this.analytics.trackUIEvent("GameOverScene", "ad_reward_given");
+        }
+      } catch (error) {
+        console.error("Error in rewardGemsAfterAd:", error);
+        this.analytics.trackUIEvent("GameOverScene", "ad_reward_error");
+      }
+    });
   }
 
   destroy() {
-    // Clean up any remaining ad elements when scene is destroyed
-    this.cleanupAd();
     super.destroy();
   }
 
