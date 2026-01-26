@@ -348,7 +348,18 @@ class PreloadJ extends Phaser.Scene {
       }
       this.tweens.killTweensOf(this.loading_txt);
 
-      this.scale.startFullscreen();
+      // Use native fullscreen API (works better with ads)
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+
       this.cameras.main.fadeOut(500);
       this.cameras.main.once("camerafadeoutcomplete", () => {
         this.button_sfx.play();

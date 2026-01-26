@@ -163,11 +163,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
           setShowRewardedAdFn(() => showAdFn);
         },
         beforeAd: () => {
-          console.log("Preparing to show ad - exiting fullscreen");
-          // Exit fullscreen so ad overlay is visible
-          if (document.fullscreenElement) {
-            document.exitFullscreen().catch(err => console.error("Error exiting fullscreen:", err));
-          }
+          console.log("Preparing to show ad");
           // Track when ad started for minimum view time check
           adStartTime.current = Date.now();
         },
@@ -180,11 +176,6 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
         afterAd: () => {
           const adViewTime = adStartTime.current ? (Date.now() - adStartTime.current) / 1000 : 0;
           console.log(`Ad finished after ${adViewTime.toFixed(1)}s`);
-
-          // Re-enter fullscreen after ad
-          if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen().catch(err => console.error("Error entering fullscreen:", err));
-          }
 
           // If viewed for 5+ seconds, grant reward
           if (adViewTime >= 5) {

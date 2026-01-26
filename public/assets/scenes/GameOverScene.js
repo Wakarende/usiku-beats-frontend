@@ -397,9 +397,14 @@ class GameOverScene extends Phaser.Scene {
           this.ad_button.clearTint();
         },
         beforeAd: () => {
-          console.log("Preparing to show ad - exiting fullscreen and pausing game");
-          // Exit fullscreen so ad overlay is visible
-          this.scale.stopFullscreen();
+          console.log("Preparing to show ad");
+
+          // Disable pointer events on canvas so ad can be clicked
+          const canvas = document.querySelector('canvas');
+          if (canvas) {
+            canvas.style.pointerEvents = 'none';
+          }
+
           // Track when ad started for minimum view time check
           this.adStartTime = Date.now();
           // Pause before ad shows
@@ -425,8 +430,11 @@ class GameOverScene extends Phaser.Scene {
           const adViewTime = this.adStartTime ? (Date.now() - this.adStartTime) / 1000 : 0;
           console.log(`Ad finished after ${adViewTime.toFixed(1)}s`);
 
-          // Re-enter fullscreen after ad
-          this.scale.startFullscreen();
+          // Restore canvas pointer events
+          const canvas = document.querySelector('canvas');
+          if (canvas) {
+            canvas.style.pointerEvents = 'auto';
+          }
 
           // If viewed for 5+ seconds, grant reward
           if (adViewTime >= 5) {
