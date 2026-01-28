@@ -40,14 +40,16 @@ export default function Document() {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js" async></script>
-
         {process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID && (
           <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
             crossOrigin="anonymous"
           ></script>
+          
         )}
+
+        
       </Head>
 
       <body className="App">

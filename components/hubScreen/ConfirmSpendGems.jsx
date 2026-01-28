@@ -5,6 +5,7 @@ import Image from "next/image";
 import "../styles.css";
 import useFTUEStore from "../../stores/ftueStore";
 
+
 // assets for the ads  buttons
 const SPEND_GEMS_BTN_SRC = "./assets/img/spendgems/spend_gems_btn.png";
 const WATCH_AD_BTN_SRC   = "./assets/img/spendgems/watch_add_btn.png"; 
@@ -176,6 +177,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
         afterAd: () => {
           const adViewTime = adStartTime.current ? (Date.now() - adStartTime.current) / 1000 : 0;
           console.log(`Ad finished after ${adViewTime.toFixed(1)}s`);
+          
 
           // If viewed for 5+ seconds, grant reward
           if (adViewTime >= 5) {

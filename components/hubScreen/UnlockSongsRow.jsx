@@ -320,7 +320,7 @@ const UnlockSongsRow = ({
     }
 
     if (user_data.profile.player.total_gems < gemsRequiredToUnlockSong) {
-      setPopupMessage("You don't have enough gems to unlock this song right now.");
+      // setPopupMessage("You don't have enough gems to unlock this song right now.");
       setIsPopupOpen(true);
       return;
     }
@@ -701,18 +701,50 @@ const UnlockSongsRow = ({
       {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
       {/* Popups */}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-        <div className="bg-[#1a1a1a] p-4 text-center md:w-2/3 rounded-lg sm:w-[280px] xl:w-2/3">
-          <p className="text-yellow font-bold text-2xl mb-3">Not Enough Gems!</p>
-          <p className="text-white mb-3">{popupMessage}</p>
+        <div className="bg-[#1a1a1a] p-4 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto">
+          <h1 className="text-[#ff6b03] font-bold text-2xl mb-3 tracking-widest uppercase">Not Enough Gems!</h1>
+          {/* <p className="text-white mb-3">{popupMessage}</p> */}
+          <p className="text-white mb-3">You don't have enough gems to unlock this song right now.</p>
+          <div className="flex items-center gap-2 justify-center">
+            <Image src={'/assets/img/hub/gem.png'} alt="gem" width={20} height={20}/>
+            <p className="text-white">Get more gems</p>
+          </div>
+          <div className="">
+            <p className="text-white">Login required to purchase games</p>
+          </div>
+          <div className="flex items-center gap-2 justify-center mt-4">
           <button
-            className="text-white bg-yellow-600 hover:bg-yellow-700 py-2 px-6 rounded uppercase font-bold"
+            className="relative text-white bg-yellow-600 hover:bg-yellow-700 py-2 px-6 rounded uppercase font-bold"
             onClick={() => {
               setIsPopupOpen(false);
               handleClickSound();
             }}
           >
-            Ok
+            <Image
+              src={"./assets/img/hub/button_blank.png"}
+              alt="your-songs-btn"
+              width={120}
+              height={40}
+              className="h-full w-24"
+            />
+            <span className="absolute inset-3 flex items-center justify-center">Cancel</span>
           </button>
+          <button className="relative uppercase font-bold text-white"
+          onClick = {()=>{
+            handleClickSound();
+          }}>
+            <Image
+              src={"./assets/img/hub/button_blank.png"}
+              alt="your-songs-btn"
+              width={120}
+              height={40}
+              className="h-full w-24"
+            />
+            <span className="absolute inset-0 flex items-center justify-center">
+              Login
+            </span>
+          </button>
+        </div>
         </div>
       </Popup>
       <ConfirmSpendGemsPopup
@@ -722,7 +754,7 @@ const UnlockSongsRow = ({
         selectedSong={selectedSong}
         currentGems={user_data?.profile?.player?.total_gems}
       />
-      {/* "Finish Now" overlay panel (moved from HubScreen) */}
+      {/* "Finish Now" overlay panel */}
       {showUnlockingInfoPanel && !isCompleted && (
         <InfoPanel
           onClose={closeUnlockingInfoPanel}

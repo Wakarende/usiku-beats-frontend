@@ -4,8 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import Image from "next/image";
 
+
 import { updateUser } from "../../redux/main/authActions";
 import { useSelector, useDispatch } from "react-redux";
+import useClickSound from "../../hooks/useClickSound";
+import Popup from "../library/Popup";
+import useXsollaPayment from "../../hooks/useXsollaPayment";
 
 import "../styles.css";
 
@@ -16,7 +20,15 @@ const Header = () => {
   const [gems, setGems] = useState(0);
   const [level, setLevel] = useState(1);
   const [lastTapTime, setLastTapTime] = useState(0);
+  const [showBuyGemsPopup, setShowBuyGemsPopup] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const {createPaymentOrder, loading, error, paymentStatus, resetPaymentStatus} = useXsollaPayment();
+
+
+
   const dispatch = useDispatch();
+
+  const handleClickSound = useClickSound();
 
   useEffect(() => {
     // console.log("updating header", user_data);
@@ -24,6 +36,22 @@ const Header = () => {
     setGems(user_data?.profile.player.total_gems || 0);
     setLevel(user_data?.profile.player.level || 1);
   }, [user_data]);
+
+// payment success
+  useEffect(() => {
+    if (paymentStatus === 'success') {
+      setShowBuyGemsPopup(false);
+      setShowSuccessPopup(true);
+      
+      // Mock gem update
+      setGems(prev => prev + 100);
+      
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+        resetPaymentStatus();
+      }, 3000);
+    }
+  }, [paymentStatus]);
 
   const addGems = () => {
     const updatedUser = {
@@ -61,7 +89,25 @@ const Header = () => {
     setLastTapTime(currentTime);
   };
 
+  const handleBuyGemsClick = () =>{
+    handleClickSound();
+    setShowBuyGemsPopup(true);
+  }
+
+  const closeBuyGemsPopup = () =>{
+    setShowBuyGemsPopup(false);
+  }
+
+  const handleBuyBundle = async () => {
+  handleClickSound();
+  const result = await createPaymentOrder('bundle_starter');
+  
+  if (!result.success) {
+    alert(`Payment failed: ${result.error}`);
+  }
+};
   return (
+    <>
     <Navbar expand="lg" className="navbar" style={{ zIndex: 21 }}>
       <Container fluid className="flex items-center justify-between">
         {/* Stars and Gems Section */}
@@ -88,9 +134,11 @@ const Header = () => {
               height={100}
               className="header-gem"
             />
-            <div className="absolute inset-0 flex items-center justify-center pl-8">
+            <button className="absolute inset-0 flex items-center justify-center pl-8" onClick={()=>{
+              handleBuyGemsClick();
+            }}>
               <p className="text-yellow text-lg whitespace-nowrap">{gems}</p>
-            </div>
+            </button>
           </div>
         </div>
         {/* Level Info Section */}
@@ -141,6 +189,28 @@ const Header = () => {
         </div>
       </Container>
     </Navbar>
+    <Popup isOpen={showBuyGemsPopup} onClose={closeBuyGemsPopup}  >
+      <div className='bg-[#1a1a1a] p-4 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
+      <h1 className="text-white bold uppercase tracking-widest">Buy!</h1>
+      <div className="flex items-center gap-2 justify-center mt-4">
+        <button onClick={handleBuyBundle}  disabled={loading} className="bg-[#1ba6b1] text-white font-bold uppercase p-1">
+      {loading ? 'Opening...' : 'Buy Now'}
+      </button>
+      <button onClick={closeBuyGemsPopup} className="bg-[#1ba6b1] text-white font-bold uppercase p-1">
+      Close
+      </button>
+      </div>
+      </div>
+    </Popup>
+    {/* Success Popup */}
+<Popup isOpen={showSuccessPopup} closePopup={() => setShowSuccessPopup(false)}>
+  <div className='bg-[#1a1a1a] p-6 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
+    <h1 className="text-green-500 bold uppercase tracking-widest text-2xl">✅ Success!</h1>
+    <p className="text-white mt-4">Payment completed successfully!</p>
+    <p className="text-gray-400 text-sm mt-2">Your gems will be added shortly</p>
+  </div>
+</Popup>
+    </>
   );
 };
 export default Header;
