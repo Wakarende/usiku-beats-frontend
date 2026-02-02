@@ -75,6 +75,53 @@ export const signUpFailure = (error) => {
   };
 };
 
+export const googleSignIn = (accessToken) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${BASE_URL}google-login/`, {
+        access_token: accessToken,
+      });
+
+      if (response.data.access) {
+        const { access, refresh } = response.data;
+        const server_data = response.data.data;
+
+        // Preserve existing local user data (gems, songs, etc.) if present
+        const existingRaw = localStorage.getItem("user_data");
+        let user_data;
+        if (existingRaw) {
+          const existing = JSON.parse(existingRaw);
+          // Keep local player progress, just update profile identity
+          user_data = {
+            ...existing,
+            profile: {
+              ...existing.profile,
+              id: server_data.profile.id,
+              user: server_data.profile.user,
+              google_id: server_data.profile.google_id,
+            },
+          };
+        } else {
+          user_data = server_data;
+        }
+
+        localStorage.setItem("access", access);
+        localStorage.setItem("refresh", refresh);
+        localStorage.setItem("user_data", JSON.stringify(user_data));
+
+        dispatch(loginSuccess(access, refresh, user_data));
+        return { success: true, data: response.data };
+      } else {
+        dispatch(loginFailure(response.data.error || "Google login failed"));
+        return { success: false, error: response.data.error };
+      }
+    } catch (error) {
+      dispatch(loginFailure("Google login failed"));
+      return { success: false, error: "Google login failed" };
+    }
+  };
+};
+
 export const signUp = (email, password) => {
   return async (dispatch) => {
     try {

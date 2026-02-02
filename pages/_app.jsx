@@ -3,6 +3,7 @@
 import "../src/App.css";
 import { Provider } from "react-redux";
 import mainStore from "../redux/main/mainStore";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
@@ -38,10 +39,12 @@ export default function MyApp({ Component, pageProps, router }) {
         window.adConfig({ preloadAdBreaks: 'on' });
         console.log('H5 Ad Placement API initialized');
       }
+
     }
   }, []);
 
   return (
+    <GoogleOAuthProvider clientId="775195618835-tn6pl5dodd41sa183l116cffifbnkuoh.apps.googleusercontent.com">
     <Provider store={mainStore}>
       <AudioProvider>
         <AnimatePresence mode="wait" initial={false}>
@@ -57,5 +60,6 @@ export default function MyApp({ Component, pageProps, router }) {
         </AnimatePresence>
       </AudioProvider>
     </Provider>
+    </GoogleOAuthProvider>
   );
 }

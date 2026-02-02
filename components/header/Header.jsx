@@ -5,11 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 
 
-import { updateUser } from "../../redux/main/authActions";
+import { updateUser, googleSignIn, logout } from "../../redux/main/authActions";
 import { useSelector, useDispatch } from "react-redux";
 import useClickSound from "../../hooks/useClickSound";
 import Popup from "../library/Popup";
 import useXsollaPayment from "../../hooks/useXsollaPayment";
+import GoogleButton from "react-google-button";
+import { useGoogleLogin } from "@react-oauth/google";
 
 import "../styles.css";
 
@@ -87,6 +89,31 @@ const Header = () => {
 
     // Update the last tap time
     setLastTapTime(currentTime);
+  };
+
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setGoogleLoading(true);
+      try {
+        const response = await dispatch(googleSignIn(tokenResponse.access_token));
+        if (response?.success) {
+          setShowBuyGemsPopup(false);
+        }
+      } catch (error) {
+        console.error('Google sign-in error:', error);
+      } finally {
+        setGoogleLoading(false);
+      }
+    },
+    onError: (error) => {
+      console.error('Google login error:', error);
+    },
+  });
+
+  const handleGoogleSignIn = () => {
+    googleLogin();
   };
 
   const handleBuyGemsClick = () =>{
@@ -200,6 +227,35 @@ const Header = () => {
       Close
       </button>
       </div>
+      {/* Google Sign-In / Logout */}
+      {!isAuthenticated ? (
+        <div className="mt-4 pt-4 border-t border-gray-700">
+          <p className="text-gray-400 text-sm mb-3">Sign in to save your progress</p>
+          <div className="flex justify-center">
+            <GoogleButton
+              type="dark"
+              onClick={handleGoogleSignIn}
+              disabled={googleLoading}
+              label={googleLoading ? "Signing in..." : "Sign in with Google"}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 pt-4 border-t border-gray-700">
+          <p className="text-gray-400 text-sm mb-3">
+            Signed in as <span className="text-white">{user_data?.profile?.user?.email}</span>
+          </p>
+          <button
+            onClick={() => {
+              dispatch(logout());
+              setShowBuyGemsPopup(false);
+            }}
+            className="w-full py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors"
+          >
+            Sign Out
+          </button>
+        </div>
+      )}
       </div>
     </Popup>
     {/* Success Popup */}
