@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState, useRef } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
@@ -24,9 +24,10 @@ const Header = () => {
   const [lastTapTime, setLastTapTime] = useState(0);
   const [showBuyGemsPopup, setShowBuyGemsPopup] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const {createPaymentOrder, loading, error, paymentStatus, resetPaymentStatus} = useXsollaPayment();
-
-
+  const paymentProcessedRef = useRef(false);
 
   const dispatch = useDispatch();
 
@@ -40,34 +41,46 @@ const Header = () => {
   }, [user_data]);
 
 // payment success
-  useEffect(() => {
-    if (paymentStatus === 'success') {
-      setShowBuyGemsPopup(false);
-      setShowSuccessPopup(true);
-      
-      // Mock gem update
-      setGems(prev => prev + 100);
-      
-      setTimeout(() => {
-        setShowSuccessPopup(false);
-        resetPaymentStatus();
-      }, 3000);
-    }
-  }, [paymentStatus]);
-
-  const addGems = () => {
+useEffect(() => {
+  if (paymentStatus === 'success' && !paymentProcessedRef.current) {
+    paymentProcessedRef.current = true; // Mark as processed
+    
+    setShowSuccessPopup(true);
+    
+    // Real gem update using Redux
     const updatedUser = {
       ...user_data,
       profile: {
         ...user_data.profile,
         player: {
           ...user_data.profile.player,
-          total_gems: user_data.profile.player.total_gems + 20,
+          total_gems: user_data.profile.player.total_gems + 100,
+          total_discs: user_data.profile.player.total_discs + 100,
         },
       },
     };
     dispatch(updateUser(updatedUser));
-  };
+    
+    setTimeout(() => {
+      setShowSuccessPopup(false);
+      resetPaymentStatus();
+      paymentProcessedRef.current = false; // Reset for next payment
+    }, 3000);
+
+    //Handle payment failure
+    if (paymentStatus === 'failed' && !paymentProcessedRef.current) {
+    paymentProcessedRef.current = true;
+    
+    setErrorMessage('Payment was cancelled or failed. Please try again.');
+    setShowErrorPopup(true);
+    
+    setTimeout(() => {
+      resetPaymentStatus();
+      paymentProcessedRef.current = false;
+    }, 500);
+  }
+  }
+}, [paymentStatus]);
 
   function resetGame() {
     // Clear all items in localStorage
@@ -127,10 +140,22 @@ const Header = () => {
 
   const handleBuyBundle = async () => {
   handleClickSound();
-  const result = await createPaymentOrder('bundle_starter');
+  
+  const userEmail = user_data?.profile?.user?.email;
+  
+  if (!userEmail) {
+    alert('Please log in first');
+    return;
+  }
+  
+  setShowBuyGemsPopup(false);
+  const result = await createPaymentOrder('bundle_starter', userEmail);
   
   if (!result.success) {
-    alert(`Payment failed: ${result.error}`);
+    setErrorMessage(result.error || 'Unable to open payment. Please check your connection and try again.');
+    setShowErrorPopup(true);
+  }else{
+    setShowBuyGemsPopup(true);
   }
 };
   return (
@@ -200,9 +225,6 @@ const Header = () => {
             style={{
               width: "50px",
               height: "50px",
-
-              // border: "1px dashed red",
-              // opacity: 0.3,
             }}
           >
             <div
@@ -216,17 +238,29 @@ const Header = () => {
         </div>
       </Container>
     </Navbar>
-    <Popup isOpen={showBuyGemsPopup} onClose={closeBuyGemsPopup}  >
+    {/* Buy Gems Popup */}
+    <Popup isOpen={showBuyGemsPopup} closePopup={closeBuyGemsPopup}  >
       <div className='bg-[#1a1a1a] p-4 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
       <h1 className="text-white bold uppercase tracking-widest">Buy!</h1>
-      <div className="flex items-center gap-2 justify-center mt-4">
-        <button onClick={handleBuyBundle}  disabled={loading} className="bg-[#1ba6b1] text-white font-bold uppercase p-1">
-      {loading ? 'Opening...' : 'Buy Now'}
+      <div className="flex flex-col items-center gap-2 justify-center mt-4">
+  {isAuthenticated ? (
+    <div className="flex items-center gap-2">
+      <button onClick={handleBuyBundle} disabled={loading} className="bg-[#1ba6b1] text-white font-bold uppercase p-2">
+        {loading ? 'Opening...' : 'Buy Now'}
       </button>
-      <button onClick={closeBuyGemsPopup} className="bg-[#1ba6b1] text-white font-bold uppercase p-1">
-      Close
+      <button onClick={closeBuyGemsPopup} className="bg-gray-600 text-white font-bold uppercase p-2">
+        Close
       </button>
-      </div>
+    </div>
+      ) : (
+        <>
+          <p className="text-gray-400 text-sm mb-2">Please sign in to purchase gems</p>
+          <button onClick={closeBuyGemsPopup} className="bg-gray-600 text-white font-bold uppercase p-2">
+            Close
+          </button>
+        </>
+      )}
+    </div>
       {/* Google Sign-In / Logout */}
       {!isAuthenticated ? (
         <div className="mt-4 pt-4 border-t border-gray-700">
@@ -259,13 +293,37 @@ const Header = () => {
       </div>
     </Popup>
     {/* Success Popup */}
-<Popup isOpen={showSuccessPopup} closePopup={() => setShowSuccessPopup(false)}>
-  <div className='bg-[#1a1a1a] p-6 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
-    <h1 className="text-green-500 bold uppercase tracking-widest text-2xl">✅ Success!</h1>
-    <p className="text-white mt-4">Payment completed successfully!</p>
-    <p className="text-gray-400 text-sm mt-2">Your gems will be added shortly</p>
-  </div>
-</Popup>
+    <Popup isOpen={showSuccessPopup} closePopup={() => setShowSuccessPopup(false)}>
+      <div className='bg-[#1a1a1a] p-6 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
+        <h1 className="text-green-500 bold uppercase tracking-widest text-2xl">Success!</h1>
+        <p className="text-white mt-4">Payment completed successfully!</p>
+        <p className="text-gray-400 text-sm mt-2">Your gems will be added shortly</p>
+      </div>
+    </Popup>
+     {/* Error Popup */}
+      <Popup isOpen={showErrorPopup} closePopup={() => setShowErrorPopup(false)}>
+        <div className='bg-[#1a1a1a] p-6 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
+          <h1 className="text-red-500 bold uppercase tracking-widest text-2xl">⚠️ Payment Failed</h1>
+          <p className="text-white mt-4">{errorMessage}</p>
+          <div className="flex gap-2 justify-center mt-6">
+            <button 
+              onClick={() => {
+                setShowErrorPopup(false);
+                setShowBuyGemsPopup(true); // Reopen buy popup to retry
+              }}
+              className="bg-[#1ba6b1] text-white font-bold uppercase p-2"
+            >
+              Try Again
+            </button>
+            <button 
+              onClick={() => setShowErrorPopup(false)}
+              className="bg-gray-600 text-white font-bold uppercase p-2"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </Popup>
     </>
   );
 };

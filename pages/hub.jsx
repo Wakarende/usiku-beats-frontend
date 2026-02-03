@@ -236,7 +236,7 @@ const HubScreen = () => {
             player: {
               level: 1,
               total_discs: 30,
-              total_gems: 150,
+              total_gems: 50,
               total_stars: 0,
               player_song_instances: [],
               data: null,
@@ -573,7 +573,6 @@ const HubScreen = () => {
             <AnimatePresence mode="wait">
               {songs?.length > 0 ? (
                 songs.map((item, index) => {
-                  console.log("🎵 Rendering song card:", item.id, "at index:", index);
                   return (
                     <motion.div
                       key={item.id}

@@ -26,7 +26,7 @@ const useXsollaPayment = () => {
     if (event.data.command === 'open-status-success' || 
         event.data.type === 'payment_complete') {
       setPaymentStatus('success');
-    } else if (event.data.command === 'status-close') {
+    } else if (event.data.command === 'status-close' || event.data.status === 'close') {
       setPaymentStatus('failed');
     }
   }
