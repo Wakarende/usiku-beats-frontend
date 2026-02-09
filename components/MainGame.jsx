@@ -8,6 +8,7 @@ import ViewportCoordinatePlugin from "phaser3-rex-plugins/plugins/viewportcoordi
 import ScaleOuterPlugin from "phaser3-rex-plugins/plugins/scaleouter-plugin.js";
 import { useAudio } from "../src/context/AudioProvider";
 import { AnalyticsService, logAnalytics } from "../services/analytics.service";
+import { syncFromLocalStorage } from "../services/sync.service";
 import useFTUEStore from "../stores/ftueStore";
 import { getPhaserBaseURL, GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_SLOT } from "../src/utils/env-config";
 
@@ -189,6 +190,16 @@ const PhaserGame = () => {
           gameRef.current.registry.set("logAnalytics", logAnalytics);
           gameRef.current.registry.set("googleAdsClientId", GOOGLE_ADS_CLIENT_ID);
           gameRef.current.registry.set("googleAdsSlot", GOOGLE_ADS_SLOT);
+
+          // Sync function for Phaser scenes to call
+          gameRef.current.registry.set("syncPlayerData", async () => {
+            const result = await syncFromLocalStorage();
+            if (result.success) {
+              console.log("Player data synced successfully");
+            } else if (result.error !== "Not logged in") {
+              console.log("Sync failed:", result.error);
+            }
+          });
 
           let version = "0.3.2";
           // Check for existing session ID before creating new one

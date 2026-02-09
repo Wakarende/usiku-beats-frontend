@@ -64,15 +64,17 @@ const authReducer = (state = initialState, action) => {
       };
 
     case "LOGOUT":
-      // Clear auth tokens only, preserve user_data for local progress
+      // Clear all auth data - prevents data mixing between users
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
+      localStorage.removeItem("user_data");
 
       return {
         ...state,
         isAuthenticated: false,
         access: null,
         refresh: null,
+        user_data: null,
         error: null,
       };
 

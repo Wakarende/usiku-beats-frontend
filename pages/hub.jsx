@@ -262,7 +262,7 @@ const HubScreen = () => {
           };
           return getSortTime(b) - getSortTime(a);
         })
-        .map(({ song, ...rest }) => ({ ...song, ...rest }));
+        .map(({ song, ...rest }) => ({ ...song, ...rest, id: song.id }));
 
       setSongs(sortedSongs || []);
 
@@ -495,7 +495,6 @@ const HubScreen = () => {
     if (index === 0 && songs.length === 1) {
       setIsPulsing(false);
     }
-    setCurrentTrackData(song);
     gotoGameDetail(song);
   };
 

@@ -276,9 +276,20 @@ class Preload extends Phaser.Scene {
     this.difficulty_text.setText(`${this.track.difficulty.toUpperCase()}`);
     // console.log("this.track.artist.bio", this.track.artist.bio);
 
-    // let scores = JSON.parse(localStorage.getItem("scores") || "{}");
-    // let savedScore = scores[this.track.song_name] || 0;
-    let savedScore = this.track.high_score || 0;
+    // Look up high score from user_data player_song_instances (source of truth)
+    let savedScore = 0;
+    try {
+      const userData = JSON.parse(localStorage.getItem("user_data"));
+      const songInstance = userData?.profile?.player?.player_song_instances?.find(
+        (instance) => instance.song?.id === this.track.id
+      );
+      if (songInstance) {
+        savedScore = songInstance.high_score || 0;
+      }
+    } catch (e) {
+      // Fall back to track data if user_data lookup fails
+      savedScore = this.track.high_score || 0;
+    }
     this.my_high_score.setText(Math.round(savedScore));
 
     if (savedScore > 0) {
@@ -320,6 +331,12 @@ class Preload extends Phaser.Scene {
   }
   async create() {
     console.log("Preload.js create()");
+
+    // Background sync via MainGame.jsx - non-blocking
+    const syncPlayerData = this.registry.get("syncPlayerData");
+    if (syncPlayerData) {
+      syncPlayerData();
+    }
 
     this.midi = await Midi.fromUrl(this.track.midi_url);
     // this.midi = await Midi.fromUrl(`assets/sounds/test.mid`);
