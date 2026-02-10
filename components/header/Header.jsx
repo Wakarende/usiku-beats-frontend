@@ -12,6 +12,7 @@ import Popup from "../library/Popup";
 import useXsollaPayment from "../../hooks/useXsollaPayment";
 import GoogleButton from "react-google-button";
 import { useGoogleLogin } from "@react-oauth/google";
+import { syncPlayerData } from "../../services/sync.service";
 
 import "../styles.css";
 
@@ -41,46 +42,39 @@ const Header = () => {
   }, [user_data]);
 
 // payment success
+// payment success
 useEffect(() => {
   if (paymentStatus === 'success' && !paymentProcessedRef.current) {
-    paymentProcessedRef.current = true; // Mark as processed
+    paymentProcessedRef.current = true;
     
     setShowSuccessPopup(true);
     
-    // Real gem update using Redux
-    const updatedUser = {
-      ...user_data,
-      profile: {
-        ...user_data.profile,
-        player: {
-          ...user_data.profile.player,
-          total_gems: user_data.profile.player.total_gems + 100,
-          total_discs: user_data.profile.player.total_discs + 100,
-        },
-      },
-    };
-    dispatch(updateUser(updatedUser));
+    // Get access token from Redux (not localStorage)
+    const accessToken = auth.access;
+    
+    // Sync with backend to get updated gems/discs
+    syncPlayerData(accessToken, user_data).then((result) => {
+      if (result.success && result.data) {
+        //debugging
+        console.log('Updated gems:', result.data.profile.player.total_gems); 
+        console.log('Updated discs:', result.data.profile.player.total_discs)
+        // Backend returned updated user data (includes webhook-granted gems)
+        const updatedUserData = { profile: result.data.profile };
+        dispatch(updateUser(updatedUserData));
+      } else {
+        console.error('Sync failed after payment:', result.error);
+      }
+    });
     
     setTimeout(() => {
       setShowSuccessPopup(false);
       resetPaymentStatus();
-      paymentProcessedRef.current = false; // Reset for next payment
-    }, 3000);
-
-    //Handle payment failure
-    if (paymentStatus === 'failed' && !paymentProcessedRef.current) {
-    paymentProcessedRef.current = true;
-    
-    setErrorMessage('Payment was cancelled or failed. Please try again.');
-    setShowErrorPopup(true);
-    
-    setTimeout(() => {
-      resetPaymentStatus();
       paymentProcessedRef.current = false;
-    }, 500);
-  }
+    }, 3000);
   }
 }, [paymentStatus]);
+// payment success
+
 
   function resetGame() {
     // Clear all items in localStorage

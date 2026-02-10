@@ -52,19 +52,25 @@ const useXsollaPayment = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-  sandbox: CONFIG.SANDBOX,
+     sandbox: CONFIG.SANDBOX,
   user: {
     id: {
       value: userIdToUse
     },
     name: {
-      value: "Guest User"
-    }
+      value: "Guest User", 
+    },
+    // email:{
+    //   value:userIdToUse
+    // },
   },
+  
   settings: {
     return_url: window.location.origin + '/payment-callback'
   }
-})
+},
+
+)
         }
       );
 
