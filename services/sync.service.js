@@ -77,6 +77,38 @@ export async function syncPlayerData(accessToken, userData) {
 }
 
 /**
+ * Fetches fresh player data from the server WITHOUT pushing local state.
+ * Use this after payments/webhooks to avoid overwriting server-side balance updates.
+ * @param {string} accessToken - JWT access token
+ * @returns {Promise<{success: boolean, data?: object, error?: string}>}
+ */
+export async function fetchPlayerData(accessToken) {
+  if (!accessToken) {
+    return { success: false, error: "No access token" };
+  }
+
+  try {
+    const response = await axios.get(`${BASE_URL}player/profile/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.data?.profile) {
+      return { success: true, data: response.data };
+    }
+
+    return { success: false, error: "Invalid response from server" };
+  } catch (error) {
+    console.error("Fetch player data failed:", error?.response?.data || error.message);
+    return {
+      success: false,
+      error: error?.response?.data?.detail || error.message || "Fetch failed",
+    };
+  }
+}
+
+/**
  * Syncs player data using localStorage values
  * Call this from Phaser scenes or anywhere without direct access to Redux
  * @returns {Promise<{success: boolean, data?: object, error?: string}>}

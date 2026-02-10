@@ -12,7 +12,7 @@ import Popup from "../library/Popup";
 import useXsollaPayment from "../../hooks/useXsollaPayment";
 import GoogleButton from "react-google-button";
 import { useGoogleLogin } from "@react-oauth/google";
-import { syncPlayerData } from "../../services/sync.service";
+import { syncPlayerData, fetchPlayerData } from "../../services/sync.service";
 
 import "../styles.css";
 
@@ -52,17 +52,15 @@ useEffect(() => {
     // Get access token from Redux (not localStorage)
     const accessToken = auth.access;
     
-    // Sync with backend to get updated gems/discs
-    syncPlayerData(accessToken, user_data).then((result) => {
+    // Fetch fresh data from backend (don't sync - would overwrite webhook-updated balances)
+    fetchPlayerData(accessToken).then((result) => {
       if (result.success && result.data) {
-        //debugging
-        console.log('Updated gems:', result.data.profile.player.total_gems); 
+        console.log('Updated gems:', result.data.profile.player.total_gems);
         console.log('Updated discs:', result.data.profile.player.total_discs)
-        // Backend returned updated user data (includes webhook-granted gems)
         const updatedUserData = { profile: result.data.profile };
         dispatch(updateUser(updatedUserData));
       } else {
-        console.error('Sync failed after payment:', result.error);
+        console.error('Fetch failed after payment:', result.error);
       }
     });
     
