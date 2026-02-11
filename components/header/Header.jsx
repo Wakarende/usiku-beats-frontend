@@ -140,6 +140,10 @@ useEffect(() => {
     return;
   }
   
+  if (document.fullscreenElement) {
+    await document.exitFullscreen();
+  }
+
   setShowBuyGemsPopup(false);
   const result = await createPaymentOrder('bundle_starter', userEmail);
   
