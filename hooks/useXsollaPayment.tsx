@@ -15,7 +15,7 @@ const useXsollaPayment = () => {
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed'>('idle');
 
   const CONFIG = {
-    SANDBOX: true
+    SANDBOX: false
   };
 
   // Listen for payment completion from popup
