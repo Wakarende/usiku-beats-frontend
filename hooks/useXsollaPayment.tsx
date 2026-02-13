@@ -51,6 +51,11 @@ const useXsollaPayment = () => {
         throw new Error('Please log in to make a purchase');
       }
 
+      const callbackPath =
+        process.env.NODE_ENV === 'production'
+          ? '/payment-callback.html'
+          : '/payment-callback';
+
       const response = await fetch(
         `${API_BASE_URL}/payment/create-token/`,
         {
@@ -62,7 +67,7 @@ const useXsollaPayment = () => {
           body: JSON.stringify({
             sku: sku,
             sandbox: CONFIG.SANDBOX,
-            return_url: window.location.origin + '/payment-callback'
+            return_url: window.location.origin + callbackPath
           })
         }
       );
