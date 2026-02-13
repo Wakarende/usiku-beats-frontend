@@ -231,6 +231,14 @@
     flex-direction: column;
 } */
 
+.hubscreen-container {
+  background-image: var(--bg-image-url);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: #000;
+}
+
 /* DAILY REWARD POPUP  */
 .popup-overlay {
   position: fixed;
