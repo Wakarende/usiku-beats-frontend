@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function PaymentCallback() {
+  const router = useRouter();
+  
   useEffect(() => {
+    // Desktop flow - popup window
     if (window.opener && !window.opener.closed) {
       window.opener.postMessage(
         { 
@@ -10,8 +14,13 @@ export default function PaymentCallback() {
         }, 
         window.location.origin
       );
+      window.close();
+      return;
     }
-    window.close();
+    
+    localStorage.setItem('payment_complete', 'true');
+    router.replace('/hub');
+    
   }, []);
 
   return null; 
