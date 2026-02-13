@@ -94,24 +94,6 @@ const useXsollaPayment = () => {
     setError(null);
   };
 
-  useEffect(() => {
-  const checkPaymentComplete = () => {
-    const paymentComplete = localStorage.getItem('payment_complete');
-    if (paymentComplete === 'true') {
-      localStorage.removeItem('payment_complete');
-      setPaymentStatus('success');
-    }
-  };
-
-  // Check immediately on mount
-  checkPaymentComplete();
-
-  // Listen for window focus (when user returns to hub tab after payment)
-  window.addEventListener('focus', checkPaymentComplete);
-  
-  return () => window.removeEventListener('focus', checkPaymentComplete);
-}, []);
-
   return {
     createPaymentOrder,
     loading,
