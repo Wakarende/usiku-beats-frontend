@@ -264,9 +264,6 @@ const PhaserGame = () => {
         top: 0,
         left: 0,
         overflow: "hidden",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
       <style jsx global>{`
