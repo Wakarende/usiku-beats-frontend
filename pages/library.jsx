@@ -171,10 +171,7 @@ const Library = () => {
       setLibraryTutorialSeen(true);
     }
 
-    const songIds = [174, 149, 150, 151, 152, 153, 154, 155, 156, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173];
-    const url = `${BASE_URL}/songs/?${songIds.map((id) => `ids=${id}`).join("&")}`;
-
-    axios.get(url).then((res) => {
+    axios.get(`${BASE_URL}/library-songs/`).then((res) => {
       const songsWithUnlockStatus = res.data.map((song) => ({
         ...song,
         isUnlocked: user_data?.profile?.player?.player_song_instances.some(
