@@ -19,6 +19,10 @@ import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
 import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
+import {
+  DEFAULT_DISCS_TRACK_UNLOCK_COST,
+  getDiscsTrackUnlockCost,
+} from "../services/gameSettings.service";
 // import ZustandDebug from "../components/zustandDebug";
 import "./pages.css";
 import { useAudio } from "../src/context/AudioProvider";
@@ -66,6 +70,9 @@ const Library = () => {
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const router = useRouter();
+  const [discsTrackUnlockCost, setDiscsTrackUnlockCost] = useState(
+    DEFAULT_DISCS_TRACK_UNLOCK_COST
+  );
 
   const gemsRequiredToUnlockSong = 20;
 
@@ -98,6 +105,23 @@ const Library = () => {
 
   useEffect(() => {
     AnalyticsService.trackUIEvent("Library", "View");
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadDiscsTrackUnlockCost = async () => {
+      const unlockCost = await getDiscsTrackUnlockCost();
+      if (!cancelled) {
+        setDiscsTrackUnlockCost(unlockCost);
+      }
+    };
+
+    loadDiscsTrackUnlockCost();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
    //audio cleanup mp3 preview
@@ -196,7 +220,7 @@ const Library = () => {
   }, [user_data]);
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
-  const unlockable = totalDiscs >= 30;
+  const unlockable = totalDiscs >= discsTrackUnlockCost;
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
@@ -310,7 +334,7 @@ const Library = () => {
       song,
     };
 
-    newUserdata.profile.player.total_discs -= 30;
+    newUserdata.profile.player.total_discs -= discsTrackUnlockCost;
     newUserdata.profile.player.player_song_instances.push(newSongInstance);
 
     dispatch(updateUser(newUserdata));
@@ -491,7 +515,9 @@ const Library = () => {
             <p className="text-library uppercase font-bold">You have {totalDiscs} discs!</p>
             {unlockable ? (
               <>
-                <p className="text-white mt-1">Each song costs 30 discs</p>
+                <p className="text-white mt-1">
+                  Each song costs {discsTrackUnlockCost} discs
+                </p>
                 <p className="text-white">Find your next song now!</p>
               </>
             ) : (
@@ -596,7 +622,7 @@ const Library = () => {
                             className="object-contain"
                           />
                           <span className="absolute text-yellow font-bold text-lg top-[20%] left-[10%] sm:top-[10%] sm:left-[9%] sm:text-sm">
-                            30
+                            {discsTrackUnlockCost}
                           </span>
                         </div>
                         {currentStep === 2 && !isCompleted && (

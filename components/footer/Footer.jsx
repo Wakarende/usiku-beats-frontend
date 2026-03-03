@@ -5,12 +5,19 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import useClickSound from "../../hooks/useClickSound";
 import useFTUEStore from "../../stores/ftueStore";
+import {
+  DEFAULT_DISCS_TRACK_UNLOCK_COST,
+  getDiscsTrackUnlockCost,
+} from "../../services/gameSettings.service";
 import { current } from "immer";
 const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
-  const canUnlockSongs = totalDiscs >= 30;
+  const [discsTrackUnlockCost, setDiscsTrackUnlockCost] = useState(
+    DEFAULT_DISCS_TRACK_UNLOCK_COST
+  );
+  const canUnlockSongs = totalDiscs >= discsTrackUnlockCost;
   const [inFtue, setInFtue] = useState(false);
 
   const handleClickSound = useClickSound();
@@ -20,6 +27,23 @@ const LibraryFooter = ({ footerGlowActive, clearFooterGlow }) => {
   useEffect(() => {
     setInFtue(currentStep === 1 && !isCompleted);
   }, [currentStep, isCompleted]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadDiscsTrackUnlockCost = async () => {
+      const unlockCost = await getDiscsTrackUnlockCost();
+      if (!cancelled) {
+        setDiscsTrackUnlockCost(unlockCost);
+      }
+    };
+
+    loadDiscsTrackUnlockCost();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const footerZIndex = inFtue ? 61 : 10;
   const handZIndex = inFtue ? 62 : 11;

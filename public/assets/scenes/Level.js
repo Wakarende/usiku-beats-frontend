@@ -474,6 +474,11 @@ class Level extends Phaser.Scene {
       console.log(`gameplay_start`);
     }
 
+    // Default disc reward fallbacks; replaced by API values if available
+    this.ftueDiscsInitialReward = 30;
+    this.discsFinishedTrackReward = 15;
+    this.loadFtueDiscsInitialReward();
+
     this.editorCreate();
     this.adjustViewport();
     // this.scale.setGameSize(360, 640);
@@ -737,6 +742,54 @@ class Level extends Phaser.Scene {
     ];
     this.waveThickness = 4;
     this.lastF2Pulse = -999;
+  }
+
+  async loadFtueDiscsInitialReward() {
+    try {
+      const response = await fetch("https://api.usiku.games/game-settings/");
+      if (!response.ok) {
+        throw new Error(`Game settings request failed: ${response.status}`);
+      }
+
+      const settings = await response.json();
+      const now = new Date();
+
+      const getActiveSettingValue = (key, fallbackValue) => {
+        const activeSettings = (Array.isArray(settings) ? settings : [])
+          .filter((item) => {
+            if (!item || item.key !== key) return false;
+
+            const startsAt = item.effective_from ? new Date(item.effective_from) : null;
+            const endsAt = item.effective_to ? new Date(item.effective_to) : null;
+
+            const started = !startsAt || startsAt <= now;
+            const notExpired = !endsAt || endsAt > now;
+
+            return started && notExpired;
+          })
+          .sort((a, b) => {
+            const aStart = a.effective_from ? new Date(a.effective_from).getTime() : 0;
+            const bStart = b.effective_from ? new Date(b.effective_from).getTime() : 0;
+            return bStart - aStart;
+          });
+
+        const settingValue = Number(activeSettings[0]?.value);
+        return Number.isFinite(settingValue) ? settingValue : fallbackValue;
+      };
+
+      this.ftueDiscsInitialReward = getActiveSettingValue(
+        "discs_inital",
+        this.ftueDiscsInitialReward
+      );
+      this.discsFinishedTrackReward = getActiveSettingValue(
+        "discs_finished_track_reward",
+        this.discsFinishedTrackReward
+      );
+    } catch (error) {
+      console.error("Failed to fetch disc reward settings:", error);
+      this.ftueDiscsInitialReward = 30;
+      this.discsFinishedTrackReward = 15;
+    }
   }
 
   detectWaveNotes(note) {
@@ -1987,7 +2040,9 @@ class Level extends Phaser.Scene {
       track: this.track,
       score: this.score,
       currentDiscs: JSON.parse(localStorage.getItem("user_data")).profile.player.total_discs,
-      earnedDiscs: 30,
+      earnedDiscs: this.isFTUE
+        ? this.ftueDiscsInitialReward || 30
+        : this.discsFinishedTrackReward || 15,
       isFTUE: this.isFTUE,
     };
 

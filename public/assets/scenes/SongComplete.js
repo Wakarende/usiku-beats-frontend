@@ -232,6 +232,7 @@ class SongComplete extends Phaser.Scene {
     this.maskGraphics = maskGraphics;
 
     // Update disc counts
+    this.discs_text.setText(`${this.sceneData.earnedDiscs} discs`);
     this.disc_count_txt.setText(this.sceneData.currentDiscs + this.sceneData.earnedDiscs);
 
     // Add animations if desired

@@ -1,6 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import {
+  DEFAULT_GEMS_FASTTRACK_UNLOCK_SONG_COST,
+  DEFAULT_GEMS_AD_REWARD,
+  getGemsAdReward,
+} from "../../services/gameSettings.service";
 
 import "../styles.css";
 import useFTUEStore from "../../stores/ftueStore";
@@ -139,16 +144,44 @@ const ADS_UI = {
     "absolute sm:bottom-[0.3rem] md:bottom-[0.5rem] lg:bottom-[12rem] xl:bottom-[0.5rem] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 sm:text-md md:text-xl lg:text-3xl xl:text-xl tracking-wider text-nowrap  sm:w-[55%] md:w-[55%] xl:w-[240px]",
 };
 
-const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, currentGems }) => {
+const ConfirmSpendGemsPopup = ({
+  isOpen,
+  onConfirm,
+  onCancel,
+  selectedSong,
+  currentGems,
+  gemsFasttrackUnlockSongCost,
+}) => {
   const ftueStore = useFTUEStore();
   const currentStep = ftueStore?.currentStep || 0;
   const isCompleted = ftueStore?.isCompleted || false;
+  const spendGemsCost = Number.isFinite(Number(gemsFasttrackUnlockSongCost))
+    ? Number(gemsFasttrackUnlockSongCost)
+    : DEFAULT_GEMS_FASTTRACK_UNLOCK_SONG_COST;
 
   const [shouldClose, setShouldClose] = useState(false);
+  const [gemsAdReward, setGemsAdReward] = useState(DEFAULT_GEMS_AD_REWARD);
 
   // H5 Ad API state
   const [showRewardedAdFn, setShowRewardedAdFn] = useState(null);
   const adStartTime = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadGemsAdReward = async () => {
+      const reward = await getGemsAdReward();
+      if (!cancelled) {
+        setGemsAdReward(reward);
+      }
+    };
+
+    loadGemsAdReward();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Initialize H5 Ad Placement on mount
   useEffect(() => {
@@ -209,7 +242,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
         if (!user_data || !user_data.profile) {
           console.error("Unable to access user_data - reward failed");
         } else {
-          user_data.profile.player.total_gems += 10;
+          user_data.profile.player.total_gems += gemsAdReward;
           localStorage.setItem("user_data", JSON.stringify(user_data));
           window.dispatchEvent?.(new CustomEvent("updateUserEvent", { detail: { data: user_data } }));
 
@@ -298,7 +331,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
             </p>
             <div className="flex items-center gap-1 justify-center">
               <p className="text-orange text-xl sm:text-md tracking-widest">
-                instantly for <span className="text-white font-semibold">20</span>
+                instantly for <span className="text-white font-semibold">{spendGemsCost}</span>
               </p>
               <span className="inline flex items-center">
                 <Image
@@ -444,7 +477,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
           <button onClick={() => onConfirm({ source: "spend_gems" })} className="relative" aria-label="Unlock with gems">
             <Image src={SPEND_GEMS_BTN_SRC} width={120} height={110} alt="Spend Gems" />
             <div className="absolute inset-8 flex items-center justify-center gap-2 pointer-events-none">
-              <span className="text-white font-bold sm:text-3xl md:text-3xl tracking-widest -mt-3 mx-1 xl:text-3xl">20</span>  
+              <span className="text-white font-bold sm:text-3xl md:text-3xl tracking-widest -mt-3 mx-1 xl:text-3xl">{spendGemsCost}</span>
             </div>
           </button>
            <div className="inline-flex items-center gap-1 -mt-4"> 
@@ -473,7 +506,7 @@ const ConfirmSpendGemsPopup = ({ isOpen, onConfirm, onCancel, selectedSong, curr
               <span className="text-yellow  text-nowrap tracking-widest text-lg -mt-2">Watch Video</span>
               </div>
               <span className="inline-flex items-center text-white font-extrabold text-sm mt-[2rem] mx-3">
-                +10
+                +20
               </span>
             </div>
           </button>

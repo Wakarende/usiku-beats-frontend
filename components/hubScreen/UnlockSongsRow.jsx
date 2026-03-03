@@ -13,6 +13,10 @@ import useUnlockSongsStore from "../../stores/unlockSongsStore";
 import useStorageStore from "../../stores/storageStore";
 import Image from "next/image";
 import { AnalyticsService, logAnalyticsEvent } from "../../services/analytics.service";
+import {
+  DEFAULT_GEMS_FASTTRACK_UNLOCK_SONG_COST,
+  getGemsFasttrackUnlockSongCost,
+} from "../../services/gameSettings.service";
 import MoveTransitionAnimation from "../transition/MoveTransitionAnimation";
 import "../styles.css";
 
@@ -57,7 +61,9 @@ const UnlockSongsRow = ({
 
   // Add this near your other hooks
   const { setCurrentTrackData } = useStorageStore();
-  const gemsRequiredToUnlockSong = 20;
+  const [gemsRequiredToUnlockSong, setGemsRequiredToUnlockSong] = useState(
+    DEFAULT_GEMS_FASTTRACK_UNLOCK_SONG_COST
+  );
 
   const dispatch = useDispatch();
   const handleClickSound = useClickSound();
@@ -114,6 +120,23 @@ const UnlockSongsRow = ({
   }, [moveAnimation.slotIndex, moveAnimation.song]);
 
   const [animatingSlots, setAnimatingSlots] = useState({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadGemsFasttrackUnlockSongCost = async () => {
+      const gemsCost = await getGemsFasttrackUnlockSongCost();
+      if (!cancelled) {
+        setGemsRequiredToUnlockSong(gemsCost);
+      }
+    };
+
+    loadGemsFasttrackUnlockSongCost();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -753,6 +776,7 @@ const UnlockSongsRow = ({
         onCancel={() => setConfirmPopupOpen(false)}
         selectedSong={selectedSong}
         currentGems={user_data?.profile?.player?.total_gems}
+        gemsFasttrackUnlockSongCost={gemsRequiredToUnlockSong}
       />
       {/* "Finish Now" overlay panel */}
       {showUnlockingInfoPanel && !isCompleted && (

@@ -247,6 +247,16 @@ class BeatMissed extends Phaser.Scene {
 
     this.editorCreate();
     this.adjustViewport();
+
+    // Default values; replaced by API values if available
+    this.gemsAdReward = 20;
+    this.gemsPerRetry = 5;
+    this.total_gem_count_txt_1.setText(`+${this.gemsAdReward}`);
+    this.loadGameSettings().finally(() => {
+      this.checkGems();
+      this.startAutoQuitTimer();
+    });
+
     console.log("BeatMissed create.js()");
     this.cameras.main.shake(500, 0.0025);
 
@@ -257,8 +267,6 @@ class BeatMissed extends Phaser.Scene {
     this.background_music = this.registry.get("background_music");
     this.background_music.play();
 
-    this.checkGems();
-
     // this.continue_button.setInteractive()
     // this.continue_button.on('pointerup', ()=>{
     // 	this.subtractGems(5);
@@ -267,8 +275,6 @@ class BeatMissed extends Phaser.Scene {
 
     // })
 
-    this.startAutoQuitTimer();
-
     // this.quit_button.setInteractive();
     // this.quit_button.on("pointerup", () => {
     //   this.scene.stop();
@@ -276,6 +282,69 @@ class BeatMissed extends Phaser.Scene {
     //   levelScene.gameOver(); // clean-up Level scene
     //   // this.scene.stop("Level");
     // });
+  }
+
+  async loadGameSettings() {
+    let timeoutId = null;
+    try {
+      const controller = new AbortController();
+      timeoutId = setTimeout(() => controller.abort(), 3000);
+
+      const response = await fetch("https://api.usiku.games/game-settings/", {
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      timeoutId = null;
+
+      if (!response.ok) {
+        throw new Error(`Game settings request failed: ${response.status}`);
+      }
+
+      const settings = await response.json();
+      const now = new Date();
+      const allSettings = Array.isArray(settings) ? settings : [];
+
+      const getActiveSettingValue = (settingKey, fallbackValue) => {
+        const activeSettings = allSettings
+          .filter((item) => {
+            if (!item || item.key !== settingKey) return false;
+
+            const startsAt = item.effective_from ? new Date(item.effective_from) : null;
+            const endsAt = item.effective_to ? new Date(item.effective_to) : null;
+
+            const started = !startsAt || startsAt <= now;
+            const notExpired = !endsAt || endsAt > now;
+
+            return started && notExpired;
+          })
+          .sort((a, b) => {
+            const aStart = a.effective_from ? new Date(a.effective_from).getTime() : 0;
+            const bStart = b.effective_from ? new Date(b.effective_from).getTime() : 0;
+            return bStart - aStart;
+          });
+
+        const value = Number(activeSettings[0]?.value);
+        return Number.isFinite(value) ? value : fallbackValue;
+      };
+
+      this.gemsAdReward = getActiveSettingValue("gems_ad_reward", 20);
+      this.gemsPerRetry = getActiveSettingValue("gems_per_retry", 5);
+
+      if (this.total_gem_count_txt_1) {
+        this.total_gem_count_txt_1.setText(`+${this.gemsAdReward}`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch game settings:", error);
+      this.gemsAdReward = 20;
+      this.gemsPerRetry = 5;
+      if (this.total_gem_count_txt_1) {
+        this.total_gem_count_txt_1.setText(`+${this.gemsAdReward}`);
+      }
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
   }
 
   adjustViewport() {
@@ -387,7 +456,7 @@ class BeatMissed extends Phaser.Scene {
     let user_data = JSON.parse(localStorage.getItem("user_data"));
     const total_gems = user_data.profile.player.total_gems;
 
-    const continueCost = (this.continueCount + 1) * 5; // Calculate the cost
+    const continueCost = (this.continueCount + 1) * (this.gemsPerRetry || 5);
     this.total_gem_count_txt.setText(total_gems);
     this.gem_count.setText(continueCost);
 
@@ -569,7 +638,7 @@ class BeatMissed extends Phaser.Scene {
             this.logAnalytics(this.sessionId, "beat_missed_reward_failed_no_userdata");
           }
         } else {
-          user_data.profile.player.total_gems += 20;
+          user_data.profile.player.total_gems += this.gemsAdReward || 20;
           this.game.events.emit("updateUserEvent", { data: user_data });
         }
       } catch (error) {

@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "../redux/main/authActions";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
+import { getInitialGems } from "../services/gameSettings.service";
 import { useAudio } from "../src/context/AudioProvider";
 import DesktopViewport from "../components/viewport/DesktopViewport";
 
@@ -65,13 +66,14 @@ export default function TitleScreen() {
       if (!user_data) {
         setLoading(true);
         try {
+          const initialGems = await getInitialGems();
           const anonUserObject = {
             profile: {
               id: Math.floor(100000 + Math.random() * 900000).toString(),
               player: {
                 level: 1,
                 total_discs: 0,
-                total_gems: 150,
+                total_gems: initialGems,
                 total_stars: 0,
                 player_song_instances: [],
                 data: null,
