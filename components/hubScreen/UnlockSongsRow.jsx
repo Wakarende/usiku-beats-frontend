@@ -722,52 +722,32 @@ const UnlockSongsRow = ({
       </div>
       <div className="grid grid-cols-3 w-full gap-x-1.5">{slotsContent}</div>
       {songs?.length === 0 && <div className="p-1">{!loading ? "" : "loading..."}</div>}
-      {/* Popups */}
+      {/* Not Enough Gems Popup */}
       <Popup isOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)}>
-        <div className="bg-[#1a1a1a] p-4 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto">
-          <h1 className="text-[#ff6b03] font-bold text-2xl mb-3 tracking-widest uppercase">Not Enough Gems!</h1>
-          {/* <p className="text-white mb-3">{popupMessage}</p> */}
-          <p className="text-white mb-3">You don't have enough gems to unlock this song right now.</p>
-          <div className="flex items-center gap-2 justify-center">
-            <Image src={'/assets/img/hub/gem.png'} alt="gem" width={20} height={20}/>
-            <p className="text-white">Get more gems</p>
-          </div>
-          <div className="">
-            <p className="text-white">Login required to purchase games</p>
-          </div>
-          <div className="flex items-center gap-2 justify-center mt-4">
+        <div 
+        style={{ backgroundImage: `url("./assets/img/header/bg.png")` }}
+        className="bg-no-repeat bg-contain bg-center text-center min-w-[700px] min-h-[400px] flex flex-col items-center justify-center ">
+          <p className="text-yellow font-bold text-2xl w-[200px] mb-10">Not enough gems to continue this song!</p>
+          {/* Purchase Gems Btn  */}
           <button
-            className="relative text-white bg-yellow-600 hover:bg-yellow-700 py-2 px-6 rounded uppercase font-bold"
+            onClick={() => {
+              handleClickSound();
+              setIsPopupOpen(false);
+              window.dispatchEvent(new CustomEvent('openBuyGemsPopup'));
+            }}
+            className="relative flex items-center justify-center">
+            <Image src="/assets/img/header/blank_btn.png" alt="back-btn" width={240} height={60} className="w-44 h-auto"/>
+            <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">Purchase Gems</span>
+          </button>
+          <button
             onClick={() => {
               setIsPopupOpen(false);
               handleClickSound();
             }}
-          >
-            <Image
-              src={"./assets/img/hub/button_blank.png"}
-              alt="your-songs-btn"
-              width={120}
-              height={40}
-              className="h-full w-24"
-            />
-            <span className="absolute inset-3 flex items-center justify-center">Cancel</span>
+            className="relative flex items-center justify-center mt-4">
+            <Image src="/assets/img/header/blank_btn.png" alt="back-btn" width={240} height={60} className="w-44 h-auto"/>
+            <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">Back</span>
           </button>
-          <button className="relative uppercase font-bold text-white"
-          onClick = {()=>{
-            handleClickSound();
-          }}>
-            <Image
-              src={"./assets/img/hub/button_blank.png"}
-              alt="your-songs-btn"
-              width={120}
-              height={40}
-              className="h-full w-24"
-            />
-            <span className="absolute inset-0 flex items-center justify-center">
-              Login
-            </span>
-          </button>
-        </div>
         </div>
       </Popup>
       <ConfirmSpendGemsPopup

@@ -10,11 +10,33 @@ import { useSelector, useDispatch } from "react-redux";
 import useClickSound from "../../hooks/useClickSound";
 import Popup from "../library/Popup";
 import useXsollaPayment from "../../hooks/useXsollaPayment";
-import GoogleButton from "react-google-button";
 import { useGoogleLogin } from "@react-oauth/google";
 import { syncPlayerData, fetchPlayerData } from "../../services/sync.service";
 
 import "../styles.css";
+
+const PRICING_API_URL = "https://api.usiku.games/pricing/";
+const DEFAULT_BUNDLE_PRICING = {
+  currencyCode: "",
+  finalPrice: "",
+};
+
+const formatPriceValue = (priceValue) => {
+  if (priceValue === null || priceValue === undefined) {
+    return "";
+  }
+
+  const normalized = String(priceValue).trim();
+  if (!normalized) {
+    return "";
+  }
+
+  if (normalized.endsWith(".00")) {
+    return normalized.slice(0, -3);
+  }
+
+  return normalized;
+};
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
@@ -24,9 +46,12 @@ const Header = () => {
   const [level, setLevel] = useState(1);
   const [lastTapTime, setLastTapTime] = useState(0);
   const [showBuyGemsPopup, setShowBuyGemsPopup] = useState(false);
+  const [showBundlePopup, setShowBundlePopup] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [bundlePricing, setBundlePricing] = useState(DEFAULT_BUNDLE_PRICING);
+  const [isPricingLoading, setIsPricingLoading] = useState(false);
   const {createPaymentOrder, loading, error, paymentStatus, resetPaymentStatus} = useXsollaPayment();
   const paymentProcessedRef = useRef(false);
 
@@ -40,6 +65,50 @@ const Header = () => {
     setGems(user_data?.profile.player.total_gems || 0);
     setLevel(user_data?.profile.player.level || 1);
   }, [user_data]);
+
+useEffect(() => {
+  if (!showBundlePopup) {
+    return;
+  }
+
+  let isActive = true;
+
+  const loadBundlePricing = async () => {
+    setIsPricingLoading(true);
+
+    try {
+      const response = await fetch(PRICING_API_URL);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Pricing request failed: ${response.status}`);
+      }
+
+      const currencyCode =
+        typeof data.currency_code === "string" && data.currency_code.trim().length > 0
+          ? data.currency_code.trim().toUpperCase()
+          : "";
+
+      const finalPrice = formatPriceValue(data.final_price);
+
+      if (isActive) {
+        setBundlePricing({ currencyCode, finalPrice });
+      }
+    } catch (pricingError) {
+      console.error("Failed to load bundle pricing:", pricingError);
+    } finally {
+      if (isActive) {
+        setIsPricingLoading(false);
+      }
+    }
+  };
+
+  loadBundlePricing();
+
+  return () => {
+    isActive = false;
+  };
+}, [showBundlePopup]);
 
 // payment success
 // payment success
@@ -126,11 +195,27 @@ useEffect(() => {
     setShowBuyGemsPopup(true);
   }
 
+  useEffect(() => {
+    const handler = () => setShowBuyGemsPopup(true);
+    window.addEventListener('openBuyGemsPopup', handler);
+    return () => window.removeEventListener('openBuyGemsPopup', handler);
+  }, []);
+
   const closeBuyGemsPopup = () =>{
     setShowBuyGemsPopup(false);
   }
 
-  const handleBuyBundle = async () => {
+  const handleBuyBundle = () => {
+  handleClickSound();
+  setShowBuyGemsPopup(false);
+  setShowBundlePopup(true);
+};
+
+  const closeBundlePopup = () =>{
+    setShowBundlePopup(false);
+  }
+
+  const handleBundleCheckout = async (sku) => {
   handleClickSound();
   
   const userEmail = user_data?.profile?.user?.email;
@@ -144,14 +229,12 @@ useEffect(() => {
     await document.exitFullscreen();
   }
 
-  setShowBuyGemsPopup(false);
-  const result = await createPaymentOrder('bundle_starter', userEmail);
+  setShowBundlePopup(false);
+  const result = await createPaymentOrder(sku);
   
   if (!result.success) {
     setErrorMessage(result.error || 'Unable to open payment. Please check your connection and try again.');
     setShowErrorPopup(true);
-  }else{
-    setShowBuyGemsPopup(true);
   }
 };
   return (
@@ -234,66 +317,154 @@ useEffect(() => {
         </div>
       </Container>
     </Navbar>
-    {/* Buy Gems Popup */}
-    <Popup isOpen={showBuyGemsPopup} closePopup={closeBuyGemsPopup}  >
-      <div className='bg-[#1a1a1a] p-4 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
-      <h1 className="text-white bold uppercase tracking-widest">Buy!</h1>
+    {/* Authentication Popup */}
+    <Popup isOpen={showBuyGemsPopup} closePopup={closeBuyGemsPopup}>
+      <div
+       style={{ backgroundImage: `url("./assets/img/header/bg.png")` }}
+      className='bg-no-repeat bg-center bg-contain  text-center rounded-lg w-[600px] min-h-[600px] flex flex-col items-center justify-center overflow-hidden'>
+      <h1 className="bold tracking-wide text-5xl auth-header">
+        {isAuthenticated ? <>Grab a Bundle<br />Amp Up!</> : <span className="text-nowrap text-4xl">Sign In To Continue</span>}
+      </h1>
+     
       <div className="flex flex-col items-center gap-2 justify-center mt-4">
   {isAuthenticated ? (
-    <div className="flex items-center gap-2">
-      <button onClick={handleBuyBundle} disabled={loading} className="bg-[#1ba6b1] text-white font-bold uppercase p-2">
-        {loading ? 'Opening...' : 'Buy Now'}
+    <div className="flex flex-col items-center gap-3 justify-center mt-10">
+      {/* Go To Store */}
+      <button 
+      onClick={() => { handleClickSound(); handleBuyBundle(); }}
+      disabled={loading} className="relative flex items-center justify-center">
+        <Image src="/assets/img/header/blank_btn.png" alt="go-to-store-btn" width={240} height={60} className="w-52 h-auto"/>
+        <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">
+          {loading ? 'Opening...' : 'Go to Store'}
+        </span>
       </button>
-      <button onClick={closeBuyGemsPopup} className="bg-gray-600 text-white font-bold uppercase p-2">
-        Close
+      {/* Cancel */}
+      <button 
+      onClick={() => { handleClickSound(); closeBuyGemsPopup(); }} 
+      className="relative flex items-center justify-center">
+        <Image src="/assets/img/header/blank_btn.png" alt="cancel-btn" width={240} height={60} className="w-52 h-auto"/>
+        <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">Cancel</span>
+      </button>
+      {/* Signed in as + Sign Out */}
+      <p className="text-yellow text-sm mt-2">
+        Signed in as <span>{user_data?.profile?.user?.email}</span>
+      </p>
+      <button
+        onClick={() => { dispatch(logout()); setShowBuyGemsPopup(false); handleClickSound(); }}
+        className="relative flex items-center justify-center"
+      >
+        <Image src="/assets/img/header/blank_btn.png" alt="sign-out-btn" width={240} height={60} className="w-52 h-auto"/>
+        <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">Sign Out</span>
       </button>
     </div>
       ) : (
         <>
-          <p className="text-gray-400 text-sm mb-2">Please sign in to purchase gems</p>
-          <button onClick={closeBuyGemsPopup} className="bg-gray-600 text-white font-bold uppercase p-2">
-            Close
+          <p className="text-yellow text-lg w-[230px] text-center font-bold mb-5">To purchase gems, discs and keeps your progress secure, please sign in with Google.</p>
+          <div className="flex justify-center">
+            <button
+              onClick={() => { handleClickSound(); handleGoogleSignIn(); }}
+              disabled={googleLoading}
+              className="relative flex items-center justify-center"
+            >
+              <Image
+                src="/assets/img/header/blank_btn.png"
+                alt="sign-in-button"
+                width={240}
+                height={60}
+                className="w-52 h-auto"
+              />
+              <span className="absolute text-white font-extrabold uppercase tracking-widest text-md text-nowrap">
+                {googleLoading ? "Signing in..." : "Sign in with Google"}
+              </span>
+            </button>
+          </div>
+          {/* Cancel btn  */}
+          <button 
+          onClick={() => { handleClickSound(); closeBuyGemsPopup(); }}
+          className="relative flex items-center justify-center mt-3">
+            <Image src="/assets/img/header/blank_btn.png" alt="cancel-btn" width={240} height={60} className="w-52 h-auto"/>
+            <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">Cancel</span>
           </button>
+          <p className="text-yellow w-[200px] mt-2 font-thin">Your purchases are securely linked to your account.</p>
         </>
       )}
     </div>
-      {/* Google Sign-In / Logout */}
-      {!isAuthenticated ? (
-        <div className="mt-4 pt-4 border-t border-gray-700">
-          <p className="text-gray-400 text-sm mb-3">Sign in to save your progress</p>
-          <div className="flex justify-center">
-            <GoogleButton
-              type="dark"
-              onClick={handleGoogleSignIn}
-              disabled={googleLoading}
-              label={googleLoading ? "Signing in..." : "Sign in with Google"}
-            />
+      </div>
+    </Popup>
+    {/* Bundle Selection Popup */}
+    <Popup isOpen={showBundlePopup} closePopup={closeBundlePopup}>
+      <div
+        style={{ backgroundImage: `url("./assets/img/header/bg.png")` }}
+        className='bg-no-repeat bg-contain bg-center p-4 text-center w-[600px] min-h-[600px] flex flex-col items-center'
+      >
+        <h1 className="auth-header bold uppercase tracking-wide text-4xl mt-2 mb-1.5 ">Bundle Purchase</h1>
+
+        {/* Scrollable bundle list — baseline 3 visible, scrollable for more */}
+        <div className="mt-6 flex flex-col gap-3 w-[230px] overflow-y-auto max-h-[300px] px-2 py-1">
+          {/* Starter Bundle */}
+          <div style={{ borderRadius: '12px', background: 'transparent', boxShadow: '0 0 6px 1px rgba(0, 180, 255, 0.6), 0 0 12px 0px rgba(0, 180, 255, 0.25)' }}>
+          <div className="border-2 border-yellow rounded-xl p-2 text-left bg-black/60 flex items-center justify-between">
+            <div className="flex-1">
+              <paymentStatus className="text-yellow font-extrabold italic uppercase tracking-wider text-xl text-nowrap">Starter Bundle</paymentStatus>
+              <p className="text-white text-4xl font-bold">
+                {bundlePricing.currencyCode && bundlePricing.finalPrice
+                  ? `${bundlePricing.currencyCode} ${bundlePricing.finalPrice}`
+                  : isPricingLoading
+                  ? "Loading..."
+                  : "Price unavailable"}
+              </p>
+              {isPricingLoading && (
+                <p className="text-gray-400 text-xs mt-1">Loading localized pricing...</p>
+              )}
+              <div className="flex items-center justify-end gap-4 ">
+              <div className="flex flex-col">
+                <div className="flex items-center">
+                  <Image src="/assets/img/header/disc.png" alt="disc-icon" width={26} height={26} className="w-[26px] h-[26px] object-contain"/>
+                  <span className="text-yellow text-nowrap text-xs">100 Discs</span>
+                </div>
+                <div className="flex items-center">
+                  <Image src="/assets/img/header/gem.png" alt="gem" width={18} height={18} className="w-[18px] h-[18px] object-contain"/>
+                  <span className="text-yellow text-nowrap text-xs">100 Gems</span>
+                </div>
+                </div>
+                {/* Buy Button  */}
+                <button
+                  onClick={() => {
+                    handleClickSound();
+                    handleBundleCheckout("bundle_starter");
+                  }}
+                  disabled={loading}
+                  className="relative flex items-center justify-center mt-3"
+                >
+                  <Image src="/assets/img/header/blank_btn.png" alt="buy-btn" width={240} height={60} className="w-24 h-auto"/>
+                  <span className="absolute text-white font-extrabold uppercase tracking-widest text-sm text-nowrap">
+                    {loading ? "..." : "BUY"}
+                  </span>
+                </button>
+              </div>
+            </div>
+            
+          </div>
           </div>
         </div>
-      ) : (
-        <div className="mt-4 pt-4 border-t border-gray-700">
-          <p className="text-gray-400 text-sm mb-3">
-            Signed in as <span className="text-white">{user_data?.profile?.user?.email}</span>
-          </p>
-          <button
-            onClick={() => {
-              dispatch(logout());
-              setShowBuyGemsPopup(false);
-            }}
-            className="w-full py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors"
-          >
-            Sign Out
-          </button>
-        </div>
-      )}
+        {/* Back button */}
+        <button
+          onClick={() => { setShowBundlePopup(false); setShowBuyGemsPopup(true); handleClickSound(); }}
+          className="relative flex items-center justify-center mt-auto mb-4"
+        >
+          <Image src="/assets/img/header/blank_btn.png" alt="back-btn" width={240} height={60} className="w-52 h-auto"/>
+          <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">Back</span>
+        </button>
       </div>
     </Popup>
     {/* Success Popup */}
     <Popup isOpen={showSuccessPopup} closePopup={() => setShowSuccessPopup(false)}>
-      <div className='bg-[#1a1a1a] p-6 text-center md:w-[300px] rounded-lg sm:w-[280px] xl:w-[400px] h-auto'>
-        <h1 className="text-green-500 bold uppercase tracking-widest text-2xl">Success!</h1>
-        <p className="text-white mt-4">Payment completed successfully!</p>
-        <p className="text-gray-400 text-sm mt-2">Your gems will be added shortly</p>
+      <div
+       style={{ backgroundImage: `url("./assets/img/header/bg.png")` }}
+      className='bg-no-repeat bg-contain bg-center text-center w-[600px] min-h-[400px] flex flex-col items-center justify-center'>
+        <h1 className=" tracking-wide text-5xl auth-header">Success!</h1>
+        <p className="text-yellow font-bold mt-4 w-[200px] text-lg">Payment completed successfully!</p>
+        <p className="text-yellow text-sm font-light mt-2 w-[200px] text-md">Your gems will be added shortly!</p>
       </div>
     </Popup>
      {/* Error Popup */}
@@ -305,7 +476,7 @@ useEffect(() => {
             <button 
               onClick={() => {
                 setShowErrorPopup(false);
-                setShowBuyGemsPopup(true); // Reopen buy popup to retry
+                setShowBundlePopup(true); // Reopen bundle popup to retry
               }}
               className="bg-[#1ba6b1] text-white font-bold uppercase p-2"
             >
