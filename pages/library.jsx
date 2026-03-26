@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import moment from "moment-timezone";
 import { useSelector, useDispatch } from "react-redux";
@@ -39,6 +39,7 @@ const Library = () => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isNotEnoughDiscsPopupOpen, setIsNotEnoughDiscsPopupOpen] = useState(false);
   const [unlockedSong, setUnlockedSong] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState({
@@ -73,6 +74,8 @@ const Library = () => {
   const [discsTrackUnlockCost, setDiscsTrackUnlockCost] = useState(
     DEFAULT_DISCS_TRACK_UNLOCK_COST
   );
+  const [isDiscsTrackUnlockCostReady, setIsDiscsTrackUnlockCostReady] = useState(false);
+  const hasEvaluatedInitialDiscsPopupRef = useRef(false);
 
   const gemsRequiredToUnlockSong = 20;
 
@@ -114,6 +117,7 @@ const Library = () => {
       const unlockCost = await getDiscsTrackUnlockCost();
       if (!cancelled) {
         setDiscsTrackUnlockCost(unlockCost);
+        setIsDiscsTrackUnlockCostReady(true);
       }
     };
 
@@ -221,6 +225,24 @@ const Library = () => {
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const unlockable = totalDiscs >= discsTrackUnlockCost;
+
+  useEffect(() => {
+    if (hasEvaluatedInitialDiscsPopupRef.current) return;
+    if (!isDiscsTrackUnlockCostReady) return;
+    if (!user_data?.profile?.player) return;
+
+    hasEvaluatedInitialDiscsPopupRef.current = true;
+
+    if (!unlockable) {
+      setIsNotEnoughDiscsPopupOpen(true);
+    }
+  }, [unlockable, isDiscsTrackUnlockCostReady, user_data]);
+
+  useEffect(() => {
+    if (unlockable && isNotEnoughDiscsPopupOpen) {
+      setIsNotEnoughDiscsPopupOpen(false);
+    }
+  }, [unlockable, isNotEnoughDiscsPopupOpen]);
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
@@ -721,6 +743,56 @@ const Library = () => {
                 />
               </div>
             )}
+          </div>
+        </Popup>
+        <Popup
+          isOpen={isNotEnoughDiscsPopupOpen}
+          closePopup={() => setIsNotEnoughDiscsPopupOpen(false)}
+        >
+          <div
+            style={{ backgroundImage: `url("./assets/img/header/bg.png")` }}
+            className="bg-no-repeat bg-contain bg-center text-center min-w-[700px] min-h-[500px] flex flex-col items-center justify-center"
+          >
+            <p className="text-yellow font-bold text-2xl w-[240px] mb-10">
+              Not enough discs to unlock this song!
+            </p>
+            <button
+              onClick={() => {
+                handleClickSound();
+                setIsNotEnoughDiscsPopupOpen(false);
+                window.dispatchEvent(new CustomEvent("openBuyGemsPopup"));
+              }}
+              className="relative flex items-center justify-center"
+            >
+              <Image
+                src="/assets/img/header/blank_btn.png"
+                alt="purchase-discs-btn"
+                width={240}
+                height={60}
+                className="w-44 h-auto"
+              />
+              <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">
+                Purchase Discs
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                setIsNotEnoughDiscsPopupOpen(false);
+                handleClickSound();
+              }}
+              className="relative flex items-center justify-center mt-4"
+            >
+              <Image
+                src="/assets/img/header/blank_btn.png"
+                alt="back-btn"
+                width={240}
+                height={60}
+                className="w-44 h-auto"
+              />
+              <span className="absolute text-white font-extrabold uppercase tracking-widest text-lg text-nowrap">
+                Back
+              </span>
+            </button>
           </div>
         </Popup>
       </div>
