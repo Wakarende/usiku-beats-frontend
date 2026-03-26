@@ -48,7 +48,6 @@ const Sound = () => {
 
   const handleFtue = async () => {
     handlePlayBoom();
-
     if (!isCompleted) {
       try {
         const response = await axios.get(`${BASE_URL}song-detail/148/`);
@@ -101,22 +100,14 @@ const Sound = () => {
           <p className="text-[#cab05a]">Turn on your sound to hear the beats.</p>
         </div>
         <div className="flex justify-center">
-          <button
-            onClick={handleFtue}
-            className="flex justify-center items-center absolute bottom-10"
-          >
-            <Image
-              src={"./assets/img/hub/button_blank.png"}
-              alt="sound-btn"
-              width={1}
-              height={1}
-              className="w-full px-5"
-              priority={true}
-            />
-            <span className="absolute  sm:right-[5rem] right-[4.5rem] lg:right-[4.5rem] xl:right-[4.5rem] flex items-center justify-center z-10 text-white font-bold text-3xl sm:text-2xl uppercase tracking-widest text-center">
-              Yes, its on!
-            </span>
-          </button>
+          <div className="absolute bottom-10">
+          <button 
+                onClick={handleFtue} 
+                className="relative flex items-center justify-center">
+                  <Image src="/assets/img/header/blank_btn.png" alt="cancel-btn" width={240} height={60} className="w-64 h-auto"/>
+                  <span className="absolute text-white font-extrabold uppercase tracking-widest text-4xl text-nowrap">YES IT'S ON!</span>
+            </button>
+            </div>
         </div>
       </div>
     </DesktopViewport>

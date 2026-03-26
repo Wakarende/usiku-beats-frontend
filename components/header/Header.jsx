@@ -398,7 +398,6 @@ useEffect(() => {
         className='bg-no-repeat bg-contain bg-center p-4 text-center w-[600px] min-h-[600px] flex flex-col items-center'
       >
         <h1 className="auth-header bold uppercase tracking-wide text-4xl mt-2 mb-1.5 ">Bundle Purchase</h1>
-
         {/* Scrollable bundle list — baseline 3 visible, scrollable for more */}
         <div className="mt-6 flex flex-col gap-3 w-[230px] overflow-y-auto max-h-[300px] px-2 py-1">
           {/* Starter Bundle */}

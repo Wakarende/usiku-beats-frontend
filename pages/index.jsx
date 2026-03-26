@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 import useClickSound from "../hooks/useClickSound";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser } from "../redux/main/authActions";
+import { updateUser, googleSignIn } from "../redux/main/authActions";
+import { useGoogleLogin } from "@react-oauth/google";
 import { instance as axios } from "../services/axios.config";
 import { BASE_URL } from "../services/config";
 import { getInitialGems } from "../services/gameSettings.service";
@@ -21,7 +22,13 @@ export default function TitleScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const { user_data } = auth;
+  const { user_data, isAuthenticated } = auth;
+  const player = user_data?.profile?.player;
+  const hasProgress =
+    (player?.level || 1) > 1 ||
+    (player?.total_stars || 0) > 0 ||
+    (player?.player_song_instances?.length || 0) > 0;
+  const hideGuestOption = isAuthenticated && hasProgress;
 
   const { playBoom } = useAudio();
   const [loading, setLoading] = useState(false);
@@ -90,6 +97,25 @@ export default function TitleScreen() {
     };
     checkAnon();
   }, [user_data, dispatch]);
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const response = await dispatch(googleSignIn(tokenResponse.access_token));
+      if (response?.success) {
+        handleStart();
+      }
+    },
+    onError: (error) => console.error("Google login error:", error),
+  });
+
+  const handleLogIn = () => {
+    handleClickSound();
+    if (isAuthenticated) {
+      handleStart();
+    } else {
+      googleLogin();
+    }
+  };
 
   // Combined intro and index logic
   const handleStart = async () => {
@@ -167,38 +193,92 @@ export default function TitleScreen() {
             priority={true}
           />
         </motion.div>
-        {/* Start Button */}
-        <div className="absolute left-1/2 bottom-32 w-3/5 max-w-xs transform -translate-x-1/2 z-10">
-          <motion.div
-            onClick={handleStart}
-            initial={{ x: "100vw", opacity: 0 }}
-            animate={
-              buttonVisible ? { x: 0, opacity: 1, scale: [1, 1.05, 1] } : { x: "100vw", opacity: 0 }
-            }
-            transition={{
-              x: { type: "spring", stiffness: 100, damping: 10 },
-              scale: {
-                duration: 1,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut",
-              },
-            }}
-            className="relative"
+        {/* Log In + Guest buttons (shared wrapper) */}
+        {(!isAuthenticated || !hideGuestOption) && (
+          <div
+            className="inset-x-2 bottom-20 z-10 index-auth-guest-wrapper"
+            style={{ position: "absolute", display: "flex", justifyContent: "center", padding: 0 }}
           >
-            <Image
-              src={"./assets/img/hub/button_blank.png"}
-              width={1}
-              height={1}
-              alt="play-btn"
-              className="w-full"
-              priority={true}
-            />
-            <span className="absolute sm:-inset-0 md:inset-1 lg:inset-1 xl:inset-3 flex items-center justify-center z-10 text-white font-bold text-3xl uppercase tracking-widest">
-              Start
-            </span>
-          </motion.div>
-        </div>
+            <motion.div
+              className="mx-auto flex w-[52%] max-w-xs flex-col items-center gap-3"
+              initial={{ x: "100vw", opacity: 0 }}
+              animate={buttonVisible ? { x: 0, opacity: 1 } : { x: "100vw", opacity: 0 }}
+              transition={{ type: "spring", stiffness: 100, damping: 10 }}
+            >
+              {!isAuthenticated && (
+                <button
+                  onClick={handleLogIn}
+                  className="relative flex items-center justify-center w-full index-login-btn"
+                >
+                  <Image
+                    src={"/assets/img/header/blank_btn.png"}
+                    width={240}
+                    height={60}
+                    alt="log-in-btn"
+                    className="w-full h-auto"
+                    priority={true}
+                  />
+                  <span className="absolute text-white font-extrabold uppercase tracking-widest text-xl text-nowrap">
+                    Log In
+                  </span>
+                </button>
+              )}
+              {!hideGuestOption && (
+                <button
+                  onClick={() => {
+                    handleStart();
+                    handleClickSound();
+                  }}
+                  className="relative flex items-center justify-center w-full index-guest-btn"
+                >
+                  <Image
+                    src={"/assets/img/header/blank_btn.png"}
+                    width={240}
+                    height={60}
+                    alt="guest-btn"
+                    className="w-full h-auto"
+                    priority={true}
+                  />
+                  <span className="absolute text-white font-extrabold uppercase tracking-widest text-xl text-nowrap">
+                    Play as Guest
+                  </span>
+                </button>
+              )}
+            </motion.div>
+          </div>
+        )}
+
+        {/* Continue button (independent wrapper) */}
+        {isAuthenticated && (
+          <div
+            className={`inset-x-2 z-10 index-continue-wrapper ${hideGuestOption ? "bottom-28" : "bottom-40"}`}
+            style={{ position: "absolute", display: "flex", justifyContent: "center", padding: 0 }}
+          >
+            <motion.div
+              className="mx-auto flex w-[52%] max-w-xs flex-col items-center"
+              initial={{ x: "100vw", opacity: 0 }}
+              animate={buttonVisible ? { x: 0, opacity: 1 } : { x: "100vw", opacity: 0 }}
+              transition={{ type: "spring", stiffness: 100, damping: 10 }}
+            >
+              <button
+                onClick={handleStart}
+                className="relative flex items-center justify-center w-full index-continue-btn"
+              >
+                <Image
+                  src={"/assets/img/header/blank_btn.png"}
+                  width={240}
+                  height={60}
+                  alt="continue-btn"
+                  className="w-full h-auto"
+                  priority={true}
+                />
+                <span className="absolute text-white font-extrabold uppercase tracking-widest text-xl text-nowrap">
+                  Continue
+                </span>
+              </button>
+            </motion.div>
+          </div>
+        )}
       </div>
       {/* Content Sections */}
       <div className="relative z-20 -mt-6">
@@ -334,7 +414,6 @@ export default function TitleScreen() {
             </div>
           </div>
         </section>
-
         {/* Why Usiku Beats Section */}
         <section className="landing-section py-16 px-6 md:px-12 lg:px-24">
           <div className="max-w-4xl mx-auto">
@@ -352,7 +431,6 @@ export default function TitleScreen() {
             </div>
           </div>
         </section>
-
         {/* About Us Section */}
         <section className="landing-section py-16 px-6 md:px-12 lg:px-24">
           <div className="max-w-6xl mx-auto">
