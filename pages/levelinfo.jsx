@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import Header from "../components/header/Header";
 import LevelInfo from "../components/levelinfo/LevelInfo";
+import DesktopViewport from "../components/viewport/DesktopViewport";
 
 import "./pages.css";
 const LevelInfoPage = () => {
@@ -72,7 +73,7 @@ const LevelInfoPage = () => {
     }
   }, [currentLevel, levelsData]);
 
-  return (
+  const pageContent = (
     <div className="gradient-bg flex flex-col">
       <Header />
       <div className="items-center justify-center">
@@ -118,6 +119,8 @@ const LevelInfoPage = () => {
       </div>
     </div>
   );
+
+  return <DesktopViewport>{pageContent}</DesktopViewport>;
 };
 
 export default LevelInfoPage;

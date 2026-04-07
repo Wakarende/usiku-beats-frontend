@@ -151,10 +151,10 @@ const LevelInfo = ({
             </div>
           </div>
           {/* Stars Needed Footer */}
-          <div className="w-full ">
+          <div className="w-full mt-4">
             <div className="flex flex-col items-center justify-center">
-              <div className="flex items-center gap-1">
-                <div className="w-7 h-7 relative top-[-15px] ">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-12 h-12 relative shrink-0 flex items-center">
                   <Image
                     src="./assets/img/levelinfo/Star.png"
                     alt="Star"
@@ -162,9 +162,9 @@ const LevelInfo = ({
                     objectFit="contain"
                   />
                 </div>
-                <h1 className="text-black text-6xl tracking-wider">{starsNeeded}</h1>
+                <h1 className="text-black text-6xl tracking-wider leading-none">{starsNeeded}</h1>
               </div>
-              <p className="text-yellow text-lg tracking-widest ">Stars needed</p>
+              <p className="text-black text-xl tracking-widest font-semibold">Stars needed for next level</p>
             </div>
           </div>
         </div>

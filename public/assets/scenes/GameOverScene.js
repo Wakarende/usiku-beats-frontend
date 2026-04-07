@@ -339,7 +339,11 @@ class GameOverScene extends Phaser.Scene {
 
       localStorage.setItem("newLevelAchieved", JSON.stringify(this.newLevelAchieved));
       localStorage.setItem("newLevel", JSON.stringify(newLevel));
-      localStorage.setItem("ftueCompleted", "true"),
+      const wasFirstSong = localStorage.getItem("ftueCompleted") !== "true";
+      localStorage.setItem("ftueCompleted", "true");
+      if (wasFirstSong) {
+        localStorage.setItem("showLevelInfoAfterFirstSong", "true");
+      }
         router.push({
           pathname: "/hub",
           query: { fromGame: "true" }

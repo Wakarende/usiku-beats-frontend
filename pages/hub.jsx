@@ -113,27 +113,51 @@ const HubScreen = () => {
   }, []);
 
   useEffect(() => {
-  // Check if we're returning from game and in iframe
-  if (isInIframe) {
     const params = new URLSearchParams(window.location.search);
-    const fromGame = params.get('fromGame');
-    
-    if (fromGame === 'true') {
-      // Notify parent to resume music
-      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
-      
-      // Clean up URL parameter
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, '', newUrl);
+    const fromGame = params.get("fromGame");
+
+    if (fromGame !== "true") {
+      return;
+    }
+
+    if (window !== window.parent) {
+      window.parent.postMessage({ type: "RESUME_MUSIC" }, "*");
+    }
+
+    const showLevelInfo = localStorage.getItem("showLevelInfoAfterFirstSong");
+    if (showLevelInfo === "true") {
+      localStorage.removeItem("showLevelInfoAfterFirstSong");
+      router.push("/levelinfo");
+      return;
+    }
+
+    const levelUpAchieved = JSON.parse(localStorage.getItem("newLevelAchieved") || "false");
+    const storedNewLevel = JSON.parse(localStorage.getItem("newLevel") || "null");
+
+    if (levelUpAchieved && typeof storedNewLevel === "number") {
+      setNewLevel(storedNewLevel);
+      setIsLevelUpPopupOpen(true);
+    }
+
+    localStorage.removeItem("newLevelAchieved");
+    localStorage.removeItem("newLevel");
+
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, "", newUrl);
+  }, []);
+
+  useEffect(() => {
+    if (!isInIframe) {
+      return;
     }
 
     const handleClick = () => {
-      window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
+      window.parent.postMessage({ type: "RESUME_MUSIC" }, "*");
     };
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
-  }
-}, [isInIframe]);
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [isInIframe]);
 
   useEffect(() => {
     // Set appropriate panels based on FTUE step
@@ -502,6 +526,11 @@ const HubScreen = () => {
     setIsDailyPopupOpen(!isDailyPopupOpen);
   };
 
+  const closeLevelUpPopup = () => {
+    setIsLevelUpPopupOpen(false);
+    setNewLevel(undefined);
+  };
+
   const level = user_data?.profile?.player?.level || 1;
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
@@ -668,6 +697,11 @@ const HubScreen = () => {
         artistName={selectedArtist.artistName}
         bio={selectedArtist.bio}
         socialMedia={selectedArtist.socialMedia}
+      />
+      <LevelUpPopup
+        isOpen={isLevelUpPopupOpen}
+        closePopup={closeLevelUpPopup}
+        newLevel={newLevel}
       />
       {/* Daily Reward Popup */}
       {/* <DailyRewardPopup

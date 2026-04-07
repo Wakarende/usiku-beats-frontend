@@ -286,15 +286,15 @@ useEffect(() => {
           </div>
         </Link> */}
         {/* Ayoba Test  */}
-        <div className="header-level relative flex items-center justify-center">
+        <Link href={"/levelinfo"} className="header-level relative flex items-center justify-center">
           <Image
             src="./assets/img/start/usiku.png"
-            alt="Star Level"
+            alt="Level Info"
             width={70}
             height={70}
             className="logo md:w-[75px] h-auto "
           />
-        </div>
+        </Link>
         {/* Header Icons Section */}
         <div className="header-right flex items-center justify-end gap-x-2 h-full">
           <div className="ml-10"></div>
