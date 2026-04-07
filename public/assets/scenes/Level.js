@@ -568,8 +568,21 @@ class Level extends Phaser.Scene {
       this.resetWaveSystem();
     });
 
-    this.song_name_text.setText(this.songItem.toUpperCase());
-    this.artist_text.setText(this.artist.toUpperCase());
+    if (this.isFTUE) {
+      this.song_name_text.setText("TRAINING\nMODE");
+      this.song_name_text.setStyle({
+        align: "center",
+        color: "#ffffff",
+        fontFamily: "Carlito-Bold",
+        fontSize: "36px",
+        stroke: "#ffffff",
+      });
+      this.song_name_text.setY(30);
+      this.artist_text.setVisible(false);
+    } else {
+      this.song_name_text.setText(this.songItem.toUpperCase());
+      this.artist_text.setText(this.artist.toUpperCase());
+    }
 
     this.pause_btn.on("pointerup", () => {
       this.music.pause();
