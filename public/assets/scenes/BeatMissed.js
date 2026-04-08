@@ -423,7 +423,7 @@ class BeatMissed extends Phaser.Scene {
   }
 
   startAutoQuitTimer() {
-    let timeLeft = 4;
+    let timeLeft = 7;
     this.timer_text.setText(timeLeft);
 
     this.autoQuitTimer = this.time.addEvent({
