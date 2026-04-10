@@ -1,4 +1,5 @@
 "use client";
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -154,6 +155,19 @@ export default function TitleScreen() {
 
   return (
     <DesktopViewport>
+      <Head>
+        <title>Usiku Beats | African Rhythm Mobile Game</title>
+        <meta name="description" content="Usiku Beats is a rhythm-based mobile game where you tap, swipe, and hold notes to real African music. Play to Afrobeats, Amapiano, Bongo Flava and more." />
+        <meta property="og:title" content="Usiku Beats | African Rhythm Mobile Game" />
+        <meta property="og:description" content="Tap, swipe, and hold notes to real African music. Every beat, sound, and visual is designed to immerse you in the vibrant energy of Africa's soundscape." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.usikubeats.com" />
+        <meta property="og:image" content="https://www.usikubeats.com/assets/img/start/logo_beta.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Usiku Beats | African Rhythm Mobile Game" />
+        <meta name="twitter:description" content="A rhythm-based mobile game celebrating African music. Play to Afrobeats, Amapiano, Bongo Flava and more." />
+        <link rel="icon" href="/icon-192-192.png" />
+      </Head>
       <div className="desktop-only-scroll relative min-h-screen">
       <div className="flex justify-end px-2 py-1">
         <p className="text-white leading-wide sm:text-[10px] md:text-sm xl:text-sm">
