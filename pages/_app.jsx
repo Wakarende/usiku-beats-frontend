@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import AudioProvider from "../src/context/AudioProvider";
 import { injectCSSVariables, injectFonts } from "../src/utils/env-config";
 import OneSignal from "react-onesignal";
+import LandscapeBlocker from "../components/LandscapeBlocker";
 
 export default function MyApp({ Component, pageProps, router }) {
   const currentRouter = useRouter();
@@ -107,7 +108,8 @@ export default function MyApp({ Component, pageProps, router }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-          >
+            >
+            <LandscapeBlocker />  
             <Component {...pageProps} />
           </motion.div>
         </AnimatePresence>
