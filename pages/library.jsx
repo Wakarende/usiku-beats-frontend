@@ -18,7 +18,10 @@ import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
-import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
+import {
+  AnalyticsService,
+  logAnalyticsEvent,
+} from "../services/analytics.service";
 import {
   DEFAULT_DISCS_TRACK_UNLOCK_COST,
   getDiscsTrackUnlockCost,
@@ -39,7 +42,8 @@ const Library = () => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isNotEnoughDiscsPopupOpen, setIsNotEnoughDiscsPopupOpen] = useState(false);
+  const [isNotEnoughDiscsPopupOpen, setIsNotEnoughDiscsPopupOpen] =
+    useState(false);
   const [unlockedSong, setUnlockedSong] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState({
@@ -66,22 +70,30 @@ const Library = () => {
   const [audioProgress, setAudioProgress] = useState(0);
   const [audioRef, setAudioRef] = useState(null);
 
+  // --- FILTER STATE (new) ---
+  const [filters, setFilters] = useState({
+    country: "All",
+    genre: "All",
+    difficulty: "All",
+    label: "All",
+  });
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const router = useRouter();
   const [discsTrackUnlockCost, setDiscsTrackUnlockCost] = useState(
-    DEFAULT_DISCS_TRACK_UNLOCK_COST
+    DEFAULT_DISCS_TRACK_UNLOCK_COST,
   );
-  const [isDiscsTrackUnlockCostReady, setIsDiscsTrackUnlockCostReady] = useState(false);
+  const [isDiscsTrackUnlockCostReady, setIsDiscsTrackUnlockCostReady] =
+    useState(false);
   const hasEvaluatedInitialDiscsPopupRef = useRef(false);
 
   const gemsRequiredToUnlockSong = 20;
 
   //Desktop Viewport
   const [isInIframe, setIsInIframe] = useState(false);
-  const isIframeMode = router.query.iframe === 'true';
+  const isIframeMode = router.query.iframe === "true";
 
   const { duckBgMusic, restoreBgMusic } = useAudio();
 
@@ -93,15 +105,15 @@ const Library = () => {
     // Check if we're returning from game and in iframe
     if (isInIframe) {
       const params = new URLSearchParams(window.location.search);
-      const fromGame = params.get('fromGame');
-      
-      if (fromGame === 'true') {
+      const fromGame = params.get("fromGame");
+
+      if (fromGame === "true") {
         // Notify parent to resume music
-        window.parent.postMessage({ type: 'RESUME_MUSIC' }, '*');
-        
+        window.parent.postMessage({ type: "RESUME_MUSIC" }, "*");
+
         // Clean up URL parameter
         const newUrl = window.location.pathname;
-        window.history.replaceState({}, '', newUrl);
+        window.history.replaceState({}, "", newUrl);
       }
     }
   }, [isInIframe]);
@@ -128,7 +140,7 @@ const Library = () => {
     };
   }, []);
 
-   //audio cleanup mp3 preview
+  //audio cleanup mp3 preview
   useEffect(() => {
     return () => {
       if (audioRef) {
@@ -158,7 +170,7 @@ const Library = () => {
     newUserdata.profile.player.total_gems -= gemsRequiredToUnlockSong;
 
     const songInstance = newUserdata.profile.player.player_song_instances.find(
-      (instance) => instance.song.id === song.id
+      (instance) => instance.song.id === song.id,
     );
 
     if (songInstance) {
@@ -173,7 +185,7 @@ const Library = () => {
     dispatch(updateUser(newUserdata));
 
     setSongs((prevSongs) =>
-      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
+      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s)),
     );
 
     handleClickSound();
@@ -200,10 +212,11 @@ const Library = () => {
     }
 
     axios.get(`${BASE_URL}/library-songs/`).then((res) => {
+      console.log("Songs from backend:", res.data);
       const songsWithUnlockStatus = res.data.map((song) => ({
         ...song,
         isUnlocked: user_data?.profile?.player?.player_song_instances.some(
-          (instance) => instance.song.id === song.id && instance.unlocked
+          (instance) => instance.song.id === song.id && instance.unlocked,
         ),
       }));
       const sortedSongs = [...songsWithUnlockStatus].sort((a, b) => {
@@ -215,7 +228,9 @@ const Library = () => {
           return 4;
         };
 
-        return getDifficultyRank(a.difficulty) - getDifficultyRank(b.difficulty);
+        return (
+          getDifficultyRank(a.difficulty) - getDifficultyRank(b.difficulty)
+        );
       });
       setSongs(sortedSongs);
       setLoading(false);
@@ -225,6 +240,36 @@ const Library = () => {
 
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const unlockable = totalDiscs >= discsTrackUnlockCost;
+
+  // --- FILTER OPTIONS (new) ---
+  const uniqueCountries = [
+    "All",
+    ...new Set(songs.map((s) => s.country_name).filter(Boolean)),
+  ];
+  const uniqueGenres = [
+    "All",
+    ...new Set(songs.map((s) => s.genre).filter(Boolean)),
+  ];
+  const uniqueDifficulties = [
+    "All",
+    ...new Set(songs.map((s) => s.difficulty).filter(Boolean)),
+  ];
+  const uniqueLabels = [
+    "All",
+    ...new Set(songs.map((s) => s.label).filter(Boolean)),
+  ];
+
+  // --- FILTERED SONGS (new) ---
+  const filteredSongs = songs.filter((song) => {
+    const matchCountry =
+      filters.country === "All" || song.country_name === filters.country;
+    const matchGenre = filters.genre === "All" || song.genre === filters.genre;
+    const matchDifficulty =
+      filters.difficulty === "All" ||
+      song.difficulty?.toLowerCase() === filters.difficulty.toLowerCase();
+    const matchLabel = filters.label === "All" || song.label === filters.label;
+    return matchCountry && matchGenre && matchDifficulty && matchLabel;
+  });
 
   useEffect(() => {
     if (hasEvaluatedInitialDiscsPopupRef.current) return;
@@ -246,14 +291,15 @@ const Library = () => {
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
-    const existingInstance = user_data.profile.player.player_song_instances.find(
-      (instance) =>
-        instance.song.id === song.id || // Direct match
-        (instance.song &&
-          instance.song.id &&
-          song.id &&
-          instance.song.id.toString() === song.id.toString())
-    );
+    const existingInstance =
+      user_data.profile.player.player_song_instances.find(
+        (instance) =>
+          instance.song.id === song.id || // Direct match
+          (instance.song &&
+            instance.song.id &&
+            song.id &&
+            instance.song.id.toString() === song.id.toString()),
+      );
 
     if (existingInstance && !existingInstance.unlocked) {
       if (existingInstance.unlock_time) {
@@ -313,19 +359,25 @@ const Library = () => {
     if (!isCompleted && currentStep <= 5) {
       unlockTime = moment().add(15, "minutes").toISOString();
     } else {
-      const unlockedSongsCount = user_data.profile.player.player_song_instances.filter(
-        (instance) => instance.unlocked
-      ).length;
+      const unlockedSongsCount =
+        user_data.profile.player.player_song_instances.filter(
+          (instance) => instance.unlocked,
+        ).length;
 
-      const inQueueCount = user_data.profile.player.player_song_instances.filter(
-        (instance) => !instance.unlocked && instance.unlock_time
-      ).length;
+      const inQueueCount =
+        user_data.profile.player.player_song_instances.filter(
+          (instance) => !instance.unlocked && instance.unlock_time,
+        ).length;
 
-      const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
+      const totalSongs =
+        unlockedSongsCount + inQueueCount + sessionUnlockCounter;
       const unlockTimes = [30, 60, 300, 600, 1200];
 
       const postFtueCount = totalSongs - 1;
-      const unlockTimeIndex = Math.max(0, Math.min(postFtueCount, unlockTimes.length - 1));
+      const unlockTimeIndex = Math.max(
+        0,
+        Math.min(postFtueCount, unlockTimes.length - 1),
+      );
       const unlockTimeInSeconds = unlockTimes[unlockTimeIndex];
 
       // console.log(
@@ -340,7 +392,8 @@ const Library = () => {
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     const now = new Date();
-    const unlockDurationSec = (new Date(unlockTime).getTime() - now.getTime()) / 1000;
+    const unlockDurationSec =
+      (new Date(unlockTime).getTime() - now.getTime()) / 1000;
 
     let newSongInstance = {
       date_added: now.toISOString(),
@@ -362,7 +415,7 @@ const Library = () => {
     dispatch(updateUser(newUserdata));
 
     setSongs((prevSongs) =>
-      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s))
+      prevSongs.map((s) => (s.id === song.id ? { ...s, isUnlocked: true } : s)),
     );
     handleClickSound();
   };
@@ -430,101 +483,88 @@ const Library = () => {
     );
   }
 
-  const hasUnlockedSong = user_data?.profile?.player?.player_song_instances?.some(
-    (instance) => instance.unlocked
-  );
+  const hasUnlockedSong =
+    user_data?.profile?.player?.player_song_instances?.some(
+      (instance) => instance.unlocked,
+    );
 
   const handleSongPreview = async (song, canPreview) => {
-   
     if (!canPreview) {
       return;
     }
-    
+
     handleClickSound();
-    
- 
+
     if (currentlyPlayingSongId === song.id) {
       stopAudioPreview();
       return;
     }
-    
-   
+
     if (audioRef) {
       stopAudioPreview();
     }
 
     duckBgMusic(0.1);
-    
+
     try {
-   
       const audio = new Audio(song.mp3_file);
-      
-     
+
       const handleTimeUpdate = () => {
-        const progress = (audio.currentTime / 10) * 100; 
+        const progress = (audio.currentTime / 10) * 100;
         setAudioProgress(progress);
       };
-      
+
       const handleEnded = () => {
         stopAudioPreview();
       };
-      
-      audio.addEventListener('timeupdate', handleTimeUpdate);
-      audio.addEventListener('ended', handleEnded);
-      
-     
+
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+      audio.addEventListener("ended", handleEnded);
+
       setAudioRef(audio);
       setCurrentlyPlayingSongId(song.id);
       setAudioProgress(0);
-      
-      
+
       await audio.play();
-      
-      
+
       const timeoutId = setTimeout(() => {
         if (audio && !audio.paused && !audio.ended) {
           stopAudioPreview();
         }
-      }, 10000); 
-      
-     
+      }, 10000);
+
       audio.timeoutId = timeoutId;
-      
     } catch (error) {
-      
-      console.warn('Audio playback failed:', error);
+      console.warn("Audio playback failed:", error);
       stopAudioPreview();
     }
   };
 
   const stopAudioPreview = () => {
     if (audioRef) {
-      
       if (audioRef.timeoutId) {
         clearTimeout(audioRef.timeoutId);
       }
-      
-      
+
       if (!audioRef.paused && !audioRef.ended) {
         audioRef.pause();
       }
-      
+
       audioRef.currentTime = 0;
-      
-      
-      audioRef.removeEventListener('timeupdate', () => {});
-      audioRef.removeEventListener('ended', () => {});
+
+      audioRef.removeEventListener("timeupdate", () => {});
+      audioRef.removeEventListener("ended", () => {});
     }
 
     restoreBgMusic();
-    
+
     setCurrentlyPlayingSongId(null);
     setAudioProgress(0);
     setAudioRef(null);
   };
 
   const pageContent = (
-      <div className="cmd-page">
+    <div className="cmd-page">
       <Header />
       <div className="library-content">
         <div className="flex justify-center items-center mt-4 w-full ">
@@ -534,7 +574,9 @@ const Library = () => {
         </div>
         <div className=" flex  justify-center items-center">
           <div className="flex justify-center flex-col items-center text-lg sm:text-sm ">
-            <p className="text-library uppercase font-bold">You have {totalDiscs} discs!</p>
+            <p className="text-library uppercase font-bold">
+              You have {totalDiscs} discs!
+            </p>
             {unlockable ? (
               <>
                 <p className="text-white mt-1">
@@ -550,7 +592,12 @@ const Library = () => {
             )}
           </div>
           <div className="mt-0">
-            <Image src={"./assets/img/hub/disc.png"} width={120} height={120} alt="disc-icon" />
+            <Image
+              src={"./assets/img/hub/disc.png"}
+              width={120}
+              height={120}
+              alt="disc-icon"
+            />
           </div>
         </div>
         <div className="gradient-container item-stretch w-full p-0">
@@ -562,55 +609,105 @@ const Library = () => {
             className="gradient-image w-full h-[20px]"
           />
         </div>
+
+        {/* --- FILTER DROPDOWNS (new) --- */}
+        <div className="flex flex-wrap justify-center gap-2 px-4 py-3">
+          {[
+            { label: "Country", key: "country", options: uniqueCountries },
+            { label: "Genre", key: "genre", options: uniqueGenres },
+            {
+              label: "Difficulty",
+              key: "difficulty",
+              options: uniqueDifficulties,
+            },
+            { label: "Label", key: "label", options: uniqueLabels },
+          ].map(({ label, key, options }) => (
+            <select
+              key={key}
+              value={filters[key]}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, [key]: e.target.value }))
+              }
+              disabled={options.length <= 1}
+              className={`bg-black text-white border border-yellow-500 rounded px-2 py-1 text-sm uppercase text-center ${
+                options.length <= 1 ? "opacity-40 cursor-not-allowed" : ""
+              }`}
+            >
+              {options.map((opt) => (
+                <option key={opt} value={opt}>
+                  {label}: {opt}
+                </option>
+              ))}
+            </select>
+          ))}
+        </div>
+
         {/* Songs List */}
         <div className="w-full flex flex-wrap justify-center  ">
-          {songs.map((song, index) => {
-            const instance = user_data?.profile?.player?.player_song_instances.find(
-              (inst) => inst.song.id === song.id
-            );
+          {filteredSongs.map((song, index) => {
+            const instance =
+              user_data?.profile?.player?.player_song_instances.find(
+                (inst) => inst.song.id === song.id,
+              );
             const inQueue = isSongInQueue(instance);
             const showUnlocked = song.isUnlocked || inQueue;
             return (
               <div key={index} className="w-full max-w-xl ">
                 <div className="p-4 flex flex-row justify-center items-center">
-                    <div className="flex-shrink-0 relative w-[150px] sm:w-[120px] h-auto">
-                      <Image
-                          src={song.thumbnail_file}
-                          alt="Song Cover"
-                          width={1}
-                          height={1}
-                          className="object-cover rounded-lg w-full sm:h-[120px] h-[150px]"
-                      />
+                  <div className="flex-shrink-0 relative w-[150px] sm:w-[120px] h-auto">
+                    <Image
+                      src={song.thumbnail_file}
+                      alt="Song Cover"
+                      width={1}
+                      height={1}
+                      className="object-cover rounded-lg w-full sm:h-[120px] h-[150px]"
+                    />
                     <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
                     <button
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-28 h-28"
-                    onClick={() => {
-                      const canPreview = !showUnlocked && unlockable;
-                      if (canPreview) {
-                        handleSongPreview(song, canPreview);
-                      }
-                    }}
-                    disabled={showUnlocked || !unlockable}
-                    style={{ opacity: (showUnlocked || !unlockable) ? 0.5 : 1 }}
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-28 h-28"
+                      onClick={() => {
+                        const canPreview = !showUnlocked && unlockable;
+                        if (canPreview) {
+                          handleSongPreview(song, canPreview);
+                        }
+                      }}
+                      disabled={showUnlocked || !unlockable}
+                      style={{ opacity: showUnlocked || !unlockable ? 0.5 : 1 }}
                     >
                       {currentlyPlayingSongId === song.id ? (
                         <div className="flex flex-col justify-center items-center">
-                        <Image alt="stop-icon" className="w-16 sm:w-12 h-auto" src={'./assets/img/library/stop_icon.png'} width={100} height={100}/>
+                          <Image
+                            alt="stop-icon"
+                            className="w-16 sm:w-12 h-auto"
+                            src={"./assets/img/library/stop_icon.png"}
+                            width={100}
+                            height={100}
+                          />
                         </div>
                       ) : (
                         <div className="flex flex-col justify-center items-center w-full h-full gap-1.5">
-                           <Image alt="speaker-icon" className="w-16 sm:w-12 h-auto object-contain" src={'./assets/img/library/speaker_icon.png'} width={10} height={10}/> 
-                           <p className="text-yellow sm:text-lg md:font-xl uppercase">Preview</p> 
+                          <Image
+                            alt="speaker-icon"
+                            className="w-16 sm:w-12 h-auto object-contain"
+                            src={"./assets/img/library/speaker_icon.png"}
+                            width={10}
+                            height={10}
+                          />
+                          <p className="text-yellow sm:text-lg md:font-xl uppercase">
+                            Preview
+                          </p>
                         </div>
                       )}
                     </button>
-                </div>
+                  </div>
                   <div className="flex-grow ml-6 min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <p className="font-bold text-yellow text-lg md:text-md sm:text-sm ">
                         {song.song_name}
                       </p>
-                      <p className="text-yellow uppercase text-xs text-nowrap">{song.difficulty}</p>
+                      <p className="text-yellow uppercase text-xs text-nowrap">
+                        {song.difficulty}
+                      </p>
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <p
@@ -625,7 +722,9 @@ const Library = () => {
                     </div>
                     {/* Unlock Button */}
                     {showUnlocked ? (
-                      <div className="text-green-500 font-bold mt-4 ">Unlocked</div>
+                      <div className="text-green-500 font-bold mt-4 ">
+                        Unlocked
+                      </div>
                     ) : (
                       <div
                         className={`
@@ -711,7 +810,9 @@ const Library = () => {
           </div>
           <div
             className={`relative flex justify-center items-center  ${
-              currentStep === 3 && !isCompleted ? "ftue-continue-highlight-frame" : ""
+              currentStep === 3 && !isCompleted
+                ? "ftue-continue-highlight-frame"
+                : ""
             }`}
           >
             <button
@@ -802,8 +903,8 @@ const Library = () => {
           paragraphs={[
             <div key="wrapper">
               <p className="text-lg sm:text-sm">
-                This is the <span className="font-bold">Song Library!</span>. Scroll through, and
-                choose a song to start with.
+                This is the <span className="font-bold">Song Library!</span>.
+                Scroll through, and choose a song to start with.
               </p>
             </div>,
           ]}

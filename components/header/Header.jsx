@@ -250,23 +250,15 @@ const Header = () => {
 
   const handleOpenShop = () => {
     handleClickSound();
-    openShop();
+    handleBuyBundle();
+
+    //openShop();
   };
 
   const handleOpenProfile = () => {
     handleClickSound();
-    openProfile();
+    //openProfile();
   };
-
-  function openShop() {
-    const shopEvent = new Event("openShop");
-    window.dispatchEvent(shopEvent);
-  }
-
-  function openProfile() {
-    const profileEvent = new Event("openProfile");
-    window.dispatchEvent(profileEvent);
-  }
 
   return (
     <>
@@ -369,7 +361,11 @@ const Header = () => {
             {/* Profile Icon */}
             <button
               onClick={() => {
-                handleOpenProfile();
+                //handleOpenProfile();
+                if (!auth?.isAuthenticated) {
+                  handleGoogleSignIn();
+                }
+                //console.log("Auth status: " + auth?.isAuthenticated);
               }}
               className="flex items-center justify-center"
               style={{ width: 44, height: 44 }}

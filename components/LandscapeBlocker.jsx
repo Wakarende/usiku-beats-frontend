@@ -4,7 +4,6 @@ import { createPortal } from "react-dom";
 export default function LandscapeBlocker() {
   const [mounted, setMounted] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
-
   useEffect(() => {
     setMounted(true);
     const check = () => {
