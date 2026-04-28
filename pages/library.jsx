@@ -629,7 +629,7 @@ const Library = () => {
                 setFilters((prev) => ({ ...prev, [key]: e.target.value }))
               }
               disabled={options.length <= 1}
-              className={`bg-black text-white border border-yellow-500 rounded px-2 py-1 text-sm uppercase text-center ${
+              className={`bg-black text-yellow border border-yellow-500 rounded px-2 py-1 text-sm uppercase text-center ${
                 options.length <= 1 ? "opacity-40 cursor-not-allowed" : ""
               }`}
             >
