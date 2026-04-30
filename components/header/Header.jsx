@@ -350,7 +350,7 @@ const Header = () => {
               style={{ width: 44, height: 44 }}
             >
               <Image
-                src="/assets/img/header/Shop_icon.png"
+                src="/assets/img/header/shop_icon.png"
                 alt="Shop"
                 width={44}
                 height={44}
@@ -371,7 +371,7 @@ const Header = () => {
               style={{ width: 44, height: 44 }}
             >
               <Image
-                src="/assets/img/header/User_icon.png"
+                src="/assets/img/header/user_icon.png"
                 alt="Profile"
                 width={44}
                 height={44}

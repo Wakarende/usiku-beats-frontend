@@ -611,7 +611,7 @@ const Library = () => {
         </div>
 
         {/* --- FILTER DROPDOWNS (new) --- */}
-        <div className="flex flex-wrap justify-center gap-2 px-4 py-3">
+        {!isFtue && <div className="flex flex-wrap justify-center gap-2 px-4 py-3">
           {[
             { label: "Country", key: "country", options: uniqueCountries },
             { label: "Genre", key: "genre", options: uniqueGenres },
@@ -640,7 +640,7 @@ const Library = () => {
               ))}
             </select>
           ))}
-        </div>
+        </div>}
 
         {/* Songs List */}
         <div className="w-full flex flex-wrap justify-center  ">

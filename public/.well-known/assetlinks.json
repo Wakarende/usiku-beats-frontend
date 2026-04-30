@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.usiku.beats",
+    "sha256_cert_fingerprints": ["5A:AB:A5:33:E0:CD:E4:AA:D1:6B:EC:A0:CF:21:9C:1D:0E:BA:03:B0:DC:42:BF:29:95:F8:68:63:DB:04:07:A0"]
+  }
+}]

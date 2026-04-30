@@ -436,7 +436,7 @@ class BeatMissed extends Phaser.Scene {
           this.autoQuit();
         }
       },
-      repeat: 3,
+      repeat: timeLeft - 1,
     });
   }
 
