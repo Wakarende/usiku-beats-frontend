@@ -16,7 +16,10 @@ import InfoPanel from "../components/infopanel/InfoPanel";
 import useSound from "use-sound";
 import useClickSound from "../hooks/useClickSound";
 import useFTUEStore from "../stores/ftueStore";
-import { AnalyticsService, logAnalyticsEvent } from "../services/analytics.service";
+import {
+  AnalyticsService,
+  logAnalyticsEvent,
+} from "../services/analytics.service";
 import {
   DEFAULT_DISCS_TRACK_UNLOCK_COST,
   getDiscsTrackUnlockCost,
@@ -44,11 +47,10 @@ function CustomDropdown({ label, value, options, onChange, disabled }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const displayValue = value === "All" ? "ALL" : value.toUpperCase();
+  const displayValue = value === "All" ? "ALL" : String(value).toUpperCase();
 
   return (
     <div ref={ref} className="relative">
-      {/* Trigger button */}
       <button
         onClick={() => !disabled && setOpen((o) => !o)}
         disabled={disabled}
@@ -63,7 +65,6 @@ function CustomDropdown({ label, value, options, onChange, disabled }) {
         <span className="text-xs">{open ? "▲" : "▼"}</span>
       </button>
 
-      {/* Dropdown list */}
       {open && (
         <ul
           style={{ backgroundColor: "#111", borderColor: "#FFD700" }}
@@ -92,7 +93,7 @@ function CustomDropdown({ label, value, options, onChange, disabled }) {
                 }
               }}
             >
-              {opt === "All" ? "ALL" : opt.toUpperCase()}
+              {opt === "All" ? "ALL" : String(opt).toUpperCase()}
             </li>
           ))}
         </ul>
@@ -105,7 +106,8 @@ const Library = () => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isNotEnoughDiscsPopupOpen, setIsNotEnoughDiscsPopupOpen] = useState(false);
+  const [isNotEnoughDiscsPopupOpen, setIsNotEnoughDiscsPopupOpen] =
+    useState(false);
   const [unlockedSong, setUnlockedSong] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState({
@@ -135,15 +137,17 @@ const Library = () => {
     country: "All",
     genre: "All",
     difficulty: "All",
-    label: "All",
   });
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user_data } = auth;
   const router = useRouter();
-  const [discsTrackUnlockCost, setDiscsTrackUnlockCost] = useState(DEFAULT_DISCS_TRACK_UNLOCK_COST);
-  const [isDiscsTrackUnlockCostReady, setIsDiscsTrackUnlockCostReady] = useState(false);
+  const [discsTrackUnlockCost, setDiscsTrackUnlockCost] = useState(
+    DEFAULT_DISCS_TRACK_UNLOCK_COST,
+  );
+  const [isDiscsTrackUnlockCostReady, setIsDiscsTrackUnlockCostReady] =
+    useState(false);
   const hasEvaluatedInitialDiscsPopupRef = useRef(false);
 
   const gemsRequiredToUnlockSong = 20;
@@ -274,19 +278,37 @@ const Library = () => {
   const totalDiscs = user_data?.profile?.player?.total_discs || 0;
   const unlockable = totalDiscs >= discsTrackUnlockCost;
 
-  const uniqueCountries = ["All", ...new Set(songs.map((s) => s.country_name).filter(Boolean))];
-  const uniqueGenres = ["All", ...new Set(songs.map((s) => s.genre).filter(Boolean))];
-  const uniqueDifficulties = ["All", ...new Set(songs.map((s) => s.difficulty).filter(Boolean))];
-  const uniqueLabels = ["All", ...new Set(songs.map((s) => s.label).filter(Boolean))];
+  const uniqueCountries = [
+    "All",
+    ...new Set(
+      songs.map((s) => (s.country_name != null ? String(s.country_name) : null)).filter(Boolean)
+    ),
+  ];
+  const uniqueGenres = [
+    "All",
+    ...new Set(
+      songs.map((s) => (s.genre != null ? String(s.genre) : null)).filter(Boolean)
+    ),
+  ];
+  const uniqueDifficulties = [
+    "All",
+    ...new Set(
+      songs.map((s) => (s.difficulty != null ? String(s.difficulty) : null)).filter(Boolean)
+    ),
+  ];
 
   const filteredSongs = songs.filter((song) => {
-    const matchCountry = filters.country === "All" || song.country_name === filters.country;
-    const matchGenre = filters.genre === "All" || song.genre === filters.genre;
+    const matchCountry =
+      filters.country === "All" ||
+      (song.country_name != null && String(song.country_name) === filters.country);
+    const matchGenre =
+      filters.genre === "All" ||
+      (song.genre != null && String(song.genre) === filters.genre);
     const matchDifficulty =
       filters.difficulty === "All" ||
-      song.difficulty?.toLowerCase() === filters.difficulty.toLowerCase();
-    const matchLabel = filters.label === "All" || song.label === filters.label;
-    return matchCountry && matchGenre && matchDifficulty && matchLabel;
+      (song.difficulty != null &&
+        String(song.difficulty).toLowerCase() === filters.difficulty.toLowerCase());
+    return matchCountry && matchGenre && matchDifficulty;
   });
 
   useEffect(() => {
@@ -307,14 +329,15 @@ const Library = () => {
 
   const handleSongUnlock = (song) => {
     if (song.isUnlocked) return;
-    const existingInstance = user_data.profile.player.player_song_instances.find(
-      (instance) =>
-        instance.song.id === song.id ||
-        (instance.song &&
-          instance.song.id &&
-          song.id &&
-          instance.song.id.toString() === song.id.toString()),
-    );
+    const existingInstance =
+      user_data.profile.player.player_song_instances.find(
+        (instance) =>
+          instance.song.id === song.id ||
+          (instance.song &&
+            instance.song.id &&
+            song.id &&
+            instance.song.id.toString() === song.id.toString()),
+      );
     if (existingInstance && !existingInstance.unlocked) {
       if (existingInstance.unlock_time) {
         const now = new Date();
@@ -337,16 +360,22 @@ const Library = () => {
     if (!isCompleted && currentStep <= 5) {
       unlockTime = moment().add(15, "minutes").toISOString();
     } else {
-      const unlockedSongsCount = user_data.profile.player.player_song_instances.filter(
-        (instance) => instance.unlocked,
-      ).length;
-      const inQueueCount = user_data.profile.player.player_song_instances.filter(
-        (instance) => !instance.unlocked && instance.unlock_time,
-      ).length;
-      const totalSongs = unlockedSongsCount + inQueueCount + sessionUnlockCounter;
+      const unlockedSongsCount =
+        user_data.profile.player.player_song_instances.filter(
+          (instance) => instance.unlocked,
+        ).length;
+      const inQueueCount =
+        user_data.profile.player.player_song_instances.filter(
+          (instance) => !instance.unlocked && instance.unlock_time,
+        ).length;
+      const totalSongs =
+        unlockedSongsCount + inQueueCount + sessionUnlockCounter;
       const unlockTimes = [30, 60, 300, 600, 1200];
       const postFtueCount = totalSongs - 1;
-      const unlockTimeIndex = Math.max(0, Math.min(postFtueCount, unlockTimes.length - 1));
+      const unlockTimeIndex = Math.max(
+        0,
+        Math.min(postFtueCount, unlockTimes.length - 1),
+      );
       const unlockTimeInSeconds = unlockTimes[unlockTimeIndex];
       unlockTime = moment().add(unlockTimeInSeconds, "seconds").toISOString();
     }
@@ -354,7 +383,8 @@ const Library = () => {
 
     const newUserdata = JSON.parse(JSON.stringify(user_data));
     const now = new Date();
-    const unlockDurationSec = (new Date(unlockTime).getTime() - now.getTime()) / 1000;
+    const unlockDurationSec =
+      (new Date(unlockTime).getTime() - now.getTime()) / 1000;
 
     let newSongInstance = {
       date_added: now.toISOString(),
@@ -440,9 +470,10 @@ const Library = () => {
     );
   }
 
-  const hasUnlockedSong = user_data?.profile?.player?.player_song_instances?.some(
-    (instance) => instance.unlocked,
-  );
+  const hasUnlockedSong =
+    user_data?.profile?.player?.player_song_instances?.some(
+      (instance) => instance.unlocked,
+    );
 
   const handleSongPreview = async (song, canPreview) => {
     if (!canPreview) return;
@@ -495,14 +526,20 @@ const Library = () => {
       <Header />
       <div className="library-content">
         <div className="flex justify-center items-center mt-4 w-full">
-          <h1 className="uppercase lib-header text-7xl sm:text-5xl">Full Song Library</h1>
+          <h1 className="uppercase lib-header text-7xl sm:text-5xl">
+            Full Song Library
+          </h1>
         </div>
         <div className="flex justify-center items-center">
           <div className="flex justify-center flex-col items-center text-lg sm:text-sm">
-            <p className="text-library uppercase font-bold">You have {totalDiscs} discs!</p>
+            <p className="text-library uppercase font-bold">
+              You have {totalDiscs} discs!
+            </p>
             {unlockable ? (
               <>
-                <p className="text-white mt-1">Each song costs {discsTrackUnlockCost} discs</p>
+                <p className="text-white mt-1">
+                  Each song costs {discsTrackUnlockCost} discs
+                </p>
                 <p className="text-white">Find your next song now!</p>
               </>
             ) : (
@@ -513,7 +550,12 @@ const Library = () => {
             )}
           </div>
           <div className="mt-0">
-            <Image src={"./assets/img/hub/disc.png"} width={120} height={120} alt="disc-icon" />
+            <Image
+              src={"./assets/img/hub/disc.png"}
+              width={120}
+              height={120}
+              alt="disc-icon"
+            />
           </div>
         </div>
         <div className="gradient-container item-stretch w-full p-0">
@@ -532,14 +574,15 @@ const Library = () => {
             { label: "Country", key: "country", options: uniqueCountries },
             { label: "Genre", key: "genre", options: uniqueGenres },
             { label: "Difficulty", key: "difficulty", options: uniqueDifficulties },
-            { label: "Label", key: "label", options: uniqueLabels },
           ].map(({ label, key, options }) => (
             <CustomDropdown
               key={key}
               label={label}
               value={filters[key]}
               options={options}
-              onChange={(val) => setFilters((prev) => ({ ...prev, [key]: val }))}
+              onChange={(val) =>
+                setFilters((prev) => ({ ...prev, [key]: val }))
+              }
               disabled={options.length <= 1}
             />
           ))}
@@ -548,9 +591,10 @@ const Library = () => {
         {/* Songs List */}
         <div className="w-full flex flex-wrap justify-center">
           {filteredSongs.map((song, index) => {
-            const instance = user_data?.profile?.player?.player_song_instances.find(
-              (inst) => inst.song.id === song.id,
-            );
+            const instance =
+              user_data?.profile?.player?.player_song_instances.find(
+                (inst) => inst.song.id === song.id,
+              );
             const inQueue = isSongInQueue(instance);
             const showUnlocked = song.isUnlocked || inQueue;
             return (
@@ -593,7 +637,9 @@ const Library = () => {
                             width={10}
                             height={10}
                           />
-                          <p className="text-yellow sm:text-lg md:font-xl uppercase">Preview</p>
+                          <p className="text-yellow sm:text-lg md:font-xl uppercase">
+                            Preview
+                          </p>
                         </div>
                       )}
                     </button>
@@ -603,7 +649,9 @@ const Library = () => {
                       <p className="font-bold text-yellow text-lg md:text-md sm:text-sm">
                         {song.song_name}
                       </p>
-                      <p className="text-yellow uppercase text-xs text-nowrap">{song.difficulty}</p>
+                      <p className="text-yellow uppercase text-xs text-nowrap">
+                        {song.difficulty}
+                      </p>
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <p
@@ -617,7 +665,9 @@ const Library = () => {
                       </p>
                     </div>
                     {showUnlocked ? (
-                      <div className="text-green-500 font-bold mt-4">Unlocked</div>
+                      <div className="text-green-500 font-bold mt-4">
+                        Unlocked
+                      </div>
                     ) : (
                       <div
                         className={`
@@ -702,10 +752,15 @@ const Library = () => {
           </div>
           <div
             className={`relative flex justify-center items-center ${
-              currentStep === 3 && !isCompleted ? "ftue-continue-highlight-frame" : ""
+              currentStep === 3 && !isCompleted
+                ? "ftue-continue-highlight-frame"
+                : ""
             }`}
           >
-            <button onClick={handlePopupContinue} className="button-image-container">
+            <button
+              onClick={handlePopupContinue}
+              className="button-image-container"
+            >
               <Image
                 src={"./assets/img/hub/button_blank.png"}
                 width={1}
@@ -789,8 +844,8 @@ const Library = () => {
           paragraphs={[
             <div key="wrapper">
               <p className="text-lg sm:text-sm">
-                This is the <span className="font-bold">Song Library!</span>. Scroll through, and
-                choose a song to start with.
+                This is the <span className="font-bold">Song Library!</span>.
+                Scroll through, and choose a song to start with.
               </p>
             </div>,
           ]}

@@ -359,7 +359,7 @@ const Header = () => {
             </button>
 
             {/* Profile Icon */}
-            <button
+            {/* <button
               onClick={() => {
                 //handleOpenProfile();
                 if (!auth?.isAuthenticated) {
@@ -377,7 +377,7 @@ const Header = () => {
                 height={44}
                 className="w-7 h-auto"
               />
-            </button>
+            </button> */}
           </div>
         </Container>
       </Navbar>
