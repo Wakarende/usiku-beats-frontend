@@ -105,7 +105,7 @@ const Sound = () => {
                 onClick={handleFtue} 
                 className="relative flex items-center justify-center">
                   <Image src="/assets/img/header/blank_btn.png" alt="cancel-btn" width={240} height={60} className="w-64 h-auto"/>
-                  <span className="absolute text-white font-extrabold uppercase tracking-widest text-4xl text-nowrap">YES IT'S ON!</span>
+                  <span className="absolute text-white font-extrabold uppercase tracking-widest text-3xl text-nowrap">YES IT'S ON!</span>
             </button>
             </div>
         </div>

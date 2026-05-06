@@ -263,10 +263,16 @@ const Header = () => {
   return (
     <>
       <Navbar expand="lg" className="navbar" style={{ zIndex: 21 }}>
-        <Container fluid className="flex items-center justify-between">
-          {/* Stars and Gems Section */}
-          <div className="header-left flex flex-col items-center gap-x-">
-            {/* Number of stars */}
+        <Container
+          fluid
+          className="flex items-center justify-between"
+          style={{ display: "flex", alignItems: "center", padding: "0 12px" }}
+        >
+          {/* Left: Stars and Gems */}
+          <div
+            style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start" }}
+          >
+            {/* Stars */}
             <div className="relative flex items-center mb-1">
               <Image
                 src="./assets/img/header/No_of_stars.png"
@@ -279,7 +285,7 @@ const Header = () => {
                 <p className="text-yellow text-lg whitespace-nowrap">{stars}</p>
               </div>
             </div>
-            {/* Number of gems */}
+            {/* Gems */}
             <div className="relative flex items-center">
               <Image
                 src="./assets/img/header/No_of_gems.png"
@@ -290,64 +296,41 @@ const Header = () => {
               />
               <button
                 className="absolute inset-0 flex items-center justify-center pl-8"
-                onClick={() => {
-                  handleBuyGemsClick();
-                }}
+                onClick={handleBuyGemsClick}
               >
                 <p className="text-yellow text-lg whitespace-nowrap">{gems}</p>
               </button>
             </div>
           </div>
-          {/* Level Info Section */}
-          {/* <Link href={"/levelinfo"}>
-          <div className="header-level relative flex items-center justify-center">
-            <Image
-              src="./assets/img/header/Star_Level.png"
-              alt="Star Level"
-              width={110}
-              height={110}
-              className="star-levels"
-            />
-            <h3 className="level-text text-white text-4xl">{level}</h3>
-          </div>
-        </Link> */}
-          {/* Ayoba Test  */}
-          <Link
-            href={"/levelinfo"}
-            className="header-level relative flex items-center justify-center"
-          >
-            <Image
-              src="./assets/img/start/usiku.png"
-              alt="Level Info"
-              width={70}
-              height={70}
-              className="logo md:w-[75px] h-auto "
-            />
-          </Link>
-          {/* Header Icons Section */}
-          <div className="header-right flex items-center justify-end gap-x-3 h-full">
-            {/* Hidden double-tap reset button */}
-            {/* <button
-              onClick={handleTap}
-              className="flex items-center justify-center"
-              style={{ width: 50, height: 50 }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  touchAction: "manipulation",
-                }}
-              />
-            </button> */}
 
-            {/* Shop Icon */}
+          {/* Center: Logo */}
+          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            <Link href="/levelinfo">
+              <Image
+                src="./assets/img/start/usiku.png"
+                alt="Level Info"
+                width={70}
+                height={70}
+                className="logo"
+                style={{ width: 70, height: "auto" }}
+              />
+            </Link>
+          </div>
+
+          {/* Right: Shop + Profile */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 8,
+            }}
+          >
+            {/* Shop */}
             <button
-              onClick={() => {
-                handleOpenShop();
-              }}
-              className="flex items-center justify-center"
-              style={{ width: 44, height: 44 }}
+              onClick={handleOpenShop}
+              style={{ width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
               <Image
                 src="./assets/img/header/shop_icon.png"
@@ -358,17 +341,14 @@ const Header = () => {
               />
             </button>
 
-            {/* Profile Icon */}
-            {/* <button
+            {/* Profile */}
+            <button
               onClick={() => {
-                //handleOpenProfile();
                 if (!auth?.isAuthenticated) {
                   handleGoogleSignIn();
                 }
-                //console.log("Auth status: " + auth?.isAuthenticated);
               }}
-              className="flex items-center justify-center"
-              style={{ width: 44, height: 44 }}
+              style={{ width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
               <Image
                 src="./assets/img/header/user_icon.png"
@@ -377,7 +357,7 @@ const Header = () => {
                 height={44}
                 className="w-7 h-auto"
               />
-            </button> */}
+            </button>
           </div>
         </Container>
       </Navbar>

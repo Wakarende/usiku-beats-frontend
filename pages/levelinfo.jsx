@@ -107,7 +107,7 @@ const LevelInfoPage = () => {
             <Link href="/hub" passHref>
               <div className="relative">
                 <Image
-                  src="./assets/img/levelinfo/Back_Button.png"
+                  src="./assets/img/levelinfo/back_button.png"
                   alt="Back"
                   width={300}
                   height={300}
