@@ -53,6 +53,17 @@ class LoginPage extends Component<any, any> {
     const { router } = this.props;
     if (this.props.isAuthenticated) {
       router.push('/');
+      return;
+    }
+    // Arriving here because the stored session expired (see _app.jsx)
+    if (
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("session") === "expired"
+    ) {
+      this.setState({
+        error: true,
+        errorMessage: "Your session has expired. Please log in again to continue.",
+      });
     }
     // this.getUserCountry()
   }
