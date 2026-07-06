@@ -13,9 +13,35 @@ import AudioProvider from "../src/context/AudioProvider";
 import { injectCSSVariables, injectFonts } from "../src/utils/env-config";
 import OneSignal from "react-onesignal";
 import LandscapeBlocker from "../components/LandscapeBlocker";
+import { checkAndRefreshSession } from "../services/session.service";
+import { loginSuccess, logout } from "../redux/main/authActions";
 
 export default function MyApp({ Component, pageProps, router }) {
   const currentRouter = useRouter();
+
+  useEffect(() => {
+    // Validate the stored session on load: silently renew an expired access
+    // token via the refresh token, or log the user out and prompt them to
+    // sign in again instead of letting stale tokens fail with 401s later
+    // (e.g. "Payment API Error: 401" at purchase time).
+    (async () => {
+      const status = await checkAndRefreshSession();
+
+      if (status === "refreshed") {
+        const access = localStorage.getItem("access");
+        const refresh = localStorage.getItem("refresh");
+        const rawUser = localStorage.getItem("user_data");
+        const user_data = rawUser ? JSON.parse(rawUser) : null;
+        mainStore.dispatch(loginSuccess(access, refresh, user_data));
+      } else if (status === "expired") {
+        mainStore.dispatch(logout());
+        if (!window.location.pathname.startsWith("/login")) {
+          currentRouter.push("/login?session=expired");
+        }
+      }
+    })();
+  }, []);
+
   useEffect(() => {
     // Initialize OneSignal push notifications
     let oneSignalReady = false;
