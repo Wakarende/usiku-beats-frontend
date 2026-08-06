@@ -735,7 +735,7 @@ const HubScreen = () => {
             transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
           >
             <Image
-              src="./assets/img/dailyreward/Collect button.png"
+              src="./assets/img/dailyreward/Collect_button.png"
               alt="Claim Button"
               width={220}
               height={100}

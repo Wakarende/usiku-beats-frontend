@@ -1,0 +1,22 @@
+name: Asset case check
+
+# Fails the build when a source file references an /assets file whose casing
+# (or name) doesn't exactly match what's committed under public/. These
+# mismatches are invisible on case-insensitive dev machines (macOS/Windows)
+# but 404 on the case-sensitive Linux production host.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  asset-case:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Verify /assets references resolve with exact case
+        run: node scripts/check-asset-case.js
