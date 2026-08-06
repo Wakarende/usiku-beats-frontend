@@ -333,7 +333,7 @@ const Header = () => {
               style={{ width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
               <Image
-                src="./assets/img/header/shop_icon.png"
+                src="./assets/img/header/Shop_Icon.png"
                 alt="Shop"
                 width={44}
                 height={44}
@@ -351,7 +351,7 @@ const Header = () => {
               style={{ width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
               <Image
-                src="./assets/img/header/user_icon.png"
+                src="./assets/img/header/User_Icon.png"
                 alt="Profile"
                 width={44}
                 height={44}

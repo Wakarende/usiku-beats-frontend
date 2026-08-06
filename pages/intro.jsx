@@ -87,7 +87,7 @@ export default function IntroPanel() {
     <div className="intro-bg">
       <div className="intro-card flex flex-col justify-center items-center text-white mb-4">
         <div className="intro-logo flex justify-center">
-          <Image src={"./assets/img/start/LogoTail.png"} width={130} height={130} alt="w-full" />
+          <Image src={"./assets/img/start/logo_beta.png"} width={130} height={130} alt="w-full" />
         </div>
         <div className="flex flex-col justify-center items-center mb-3 px-2 mt-1 tracking-widest text-center small: text-xs small:w-[75vw] medium:text-sm medium: w-[75vw] large:text-xl large:w-[80vw] xl:text-2xl xl:w-[80vw]">
           <p className=" mb-4 font-bold medium:text-xl large:text-2xl large:mt-4 text-nowrap">

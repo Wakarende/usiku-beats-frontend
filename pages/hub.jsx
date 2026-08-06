@@ -665,7 +665,7 @@ const HubScreen = () => {
         )}
         <div className="w-full md:-mt-2.5 xl:-mt-3.5">
           <Image
-            src={"./assets/img/library/divider.png"}
+            src={"./assets/img/library/Divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -682,7 +682,7 @@ const HubScreen = () => {
         />
         <div className="w-full">
           <Image
-            src={"./assets/img/library/divider.png"}
+            src={"./assets/img/library/Divider.png"}
             width={4}
             height={1}
             alt="divider"
