@@ -335,7 +335,7 @@ const ConfirmSpendGemsPopup = ({
               </p>
               <span className="inline flex items-center">
                 <Image
-                  src={"./assets/img/spendgems/gem.png"}
+                  src={"./assets/img/spendgems/Gem.png"}
                   width={50}
                   height={50}
                   className="w-6 h-6"
@@ -349,7 +349,7 @@ const ConfirmSpendGemsPopup = ({
                 <span className="text-white">{currentGems} </span>
                 <span>
                   <Image
-                    src={"./assets/img/spendgems/gem.png"}
+                    src={"./assets/img/spendgems/Gem.png"}
                     width={50}
                     height={50}
                     className="w-4 h-auto"
@@ -482,7 +482,7 @@ const ConfirmSpendGemsPopup = ({
           </button>
            <div className="inline-flex items-center gap-1 -mt-4"> 
               <span className="text-yellow text-lg ml-2">You have <span className="text-white font-extrabold">{currentGems}</span></span>
-              <Image src={"./assets/img/spendgems/gem.png"} width={18} height={22} alt="gem" />
+              <Image src={"./assets/img/spendgems/Gem.png"} width={18} height={22} alt="gem" />
             </div>
           {/* Watch Video button*/}
           <button

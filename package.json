@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
+    "check:assets": "node scripts/check-asset-case.js",
+    "prebuild": "npm run check:assets",
     "build": "rm -f out.zip && next build && cp ads.txt out/ads.txt && zip -r out.zip out/",
     "start": "next start",
     "lint": "next lint"

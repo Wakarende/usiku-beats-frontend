@@ -665,7 +665,7 @@ const HubScreen = () => {
         )}
         <div className="w-full md:-mt-2.5 xl:-mt-3.5">
           <Image
-            src={"./assets/img/library/divider.png"}
+            src={"./assets/img/library/Divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -682,7 +682,7 @@ const HubScreen = () => {
         />
         <div className="w-full">
           <Image
-            src={"./assets/img/library/divider.png"}
+            src={"./assets/img/library/Divider.png"}
             width={4}
             height={1}
             alt="divider"
@@ -735,7 +735,7 @@ const HubScreen = () => {
             transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
           >
             <Image
-              src="./assets/img/dailyreward/Collect button.png"
+              src="./assets/img/dailyreward/Collect_button.png"
               alt="Claim Button"
               width={220}
               height={100}
